@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Método Office Visual</title>
 <meta name="description" content="Disciplina interativa de Word, Excel e PowerPoint">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -202,6 +207,8 @@ kbd{font-family:var(--f-mono);font-size:12.5px;font-weight:700;padding:2px 7px;b
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
+</head>
+<body>
 
 <div class="app" id="app">
   <aside class="side" id="side">
@@ -839,7 +846,7 @@ if(!PROF) S.teacher = false;
 if(PROF) document.getElementById('tModeRow').hidden = false;
 const save = () => { try{ localStorage.setItem('mov-v1', JSON.stringify(S)); }catch(e){} };
 const get = k => S.p[k];
-const put = (k,v) => { S.p[k] = v; save(); refreshProgress(); };
+const put = (k,v) => { S.p[k] = v; save(); refreshProgress(); if(!S.teacher && window.progressoMudou) progressoMudou(); };
 
 function modCounts(m){
   const id = m.id, c = {caderno:0, flash:0, vf:0, quiz:0, pbl:0, licoes:0, okq:0, okv:0};
@@ -1125,3 +1132,12 @@ function render(){
 applyTheme(); render();
 
 </script>
+
+<script>
+window.PROGRESSO_ID = "office-visual-v1";
+window.PROGRESSO_DADOS = () => { let d=0,t=0,ac=0; const det={}; MODS.forEach(m=>{ const c=modCounts(m); d+=c.done; t+=c.total; ac+=c.okq+c.okv; det["m"+m.id]=c.done; }); return { feitas:d, total:t, pontos:d*10+ac*5, detalhe:det }; };
+</script>
+<script src="../config.js"></script>
+<script src="../progresso-turma.js"></script>
+</body>
+</html>
