@@ -429,7 +429,7 @@ const KINDS=[['resumo','Resumo'],['caderno','Caderno'],['flash','Flashcards'],['
 let tab='home', sub='resumo';
 let done=new Set();
 try{ done=new Set(JSON.parse(localStorage.getItem('subnet-done')||'[]')); }catch(e){}
-function mark(id){ done.add(id); try{ localStorage.setItem('subnet-done',JSON.stringify([...done])); }catch(e){} paintProgress(); }
+function mark(id){ done.add(id); try{ localStorage.setItem('subnet-done',JSON.stringify([...done])); }catch(e){} paintProgress();  if(window.progressoMudou) progressoMudou(); }
 function modCount(m){ let n=0; done.forEach(k=>{ if(k.startsWith('m'+m+'-')) n++; }); return n; }
 function paintProgress(){
   document.getElementById('pct').textContent=done.size;
@@ -613,5 +613,11 @@ function initLab(){
 paintNav(); paintProgress(); render();
 </script>
 
+<script>
+window.PROGRESSO_ID = "subnetting-v1";
+window.PROGRESSO_DADOS = () => { const det = {}; MODS.forEach((m,i)=>{ det["m"+(i+1)] = modCount(i); }); return { feitas: done.size, total: 160, pontos: done.size*10, detalhe: det }; };
+</script>
+<script src="../config.js"></script>
+<script src="../progresso-turma.js"></script>
 </body>
 </html>

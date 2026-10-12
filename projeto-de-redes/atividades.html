@@ -459,7 +459,7 @@ async function enviarPontos(silencioso){
   if (!RANK_URL || !PERFIL) return {ok:false, erro:"sem configuração"};
   const detalhe = {}; let feitas = 0, total = 0;
   COURSE.modulos.forEach(m => { const t = modTotals(m); detalhe[m.id] = modPoints(m); feitas += t.done; total += t.total; });
-  const corpo = {acao:"salvar", disciplina: COURSE.id, turma: PERFIL.turma, apelido: PERFIL.apelido, pin: PERFIL.pin, pontos: totalPoints(), feitas, total, detalhe};
+  const corpo = {acao:"salvar", disciplina: COURSE.id, turma: PERFIL.turma, apelido: PERFIL.apelido, nome: PERFIL.nome, email: PERFIL.email, turno: PERFIL.turno, pin: PERFIL.pin, pontos: totalPoints(), feitas, total, detalhe};
   try {
     const r = await fetch(RANK_URL, {method:"POST", body: JSON.stringify(corpo)});
     const j = await r.json();
