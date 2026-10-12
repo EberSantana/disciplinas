@@ -1,0 +1,1123 @@
+<title>Método Office Visual</title>
+<meta name="description" content="Disciplina interativa de Word, Excel e PowerPoint">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: console de estudo — trilho lateral com módulos + área de trabalho; cada programa tem sua cor (Word azul, Excel verde, PowerPoint laranja). */
+:root{
+  --bg:#F3F5F8; --surface:#FFFFFF; --sunken:#E9EDF2; --ink:#18202C; --muted:#5A6577; --line:#D6DCE4;
+  --word:#2556B0; --word-soft:#E4ECFA; --excel:#17724A; --excel-soft:#E1F2E9; --ppt:#C2461D; --ppt-soft:#FBE8E0; --all:#5A47B0; --all-soft:#ECE9FA;
+  --ok:#17724A; --ok-soft:#DFF3E7; --bad:#B42318; --bad-soft:#FDE6E3; --warn:#9A6400; --warn-soft:#FFF3D6;
+  --accent:var(--word); --accent-soft:var(--word-soft);
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --r:10px; --shadow:0 1px 2px rgba(20,30,50,.06),0 4px 14px rgba(20,30,50,.05);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11151B; --surface:#1A2029; --sunken:#232B36; --ink:#E8EDF4; --muted:#9AA6B6; --line:#2E3845;
+  --word:#7EA6F0; --word-soft:#1E2A42; --excel:#5CC892; --excel-soft:#16302A; --ppt:#F08A63; --ppt-soft:#3A2219; --all:#A898F0; --all-soft:#272240;
+  --ok:#5CC892; --ok-soft:#16302A; --bad:#F28B82; --bad-soft:#3A1D1B; --warn:#F2C060; --warn-soft:#3A2F14;
+  --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151B; --surface:#1A2029; --sunken:#232B36; --ink:#E8EDF4; --muted:#9AA6B6; --line:#2E3845;
+  --word:#7EA6F0; --word-soft:#1E2A42; --excel:#5CC892; --excel-soft:#16302A; --ppt:#F08A63; --ppt-soft:#3A2219; --all:#A898F0; --all-soft:#272240;
+  --ok:#5CC892; --ok-soft:#16302A; --bad:#F28B82; --bad-soft:#3A1D1B; --warn:#F2C060; --warn-soft:#3A2F14;
+  --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;margin:0;text-wrap:balance;letter-spacing:-.01em}
+p{margin:0}
+.app{display:grid;grid-template-columns:290px minmax(0,1fr);min-height:100%}
+/* ---------- sidebar ---------- */
+.side{background:var(--surface);border-right:1px solid var(--line);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.brand{display:flex;gap:12px;align-items:center;padding:20px 18px;border-bottom:1px solid var(--line)}
+.logo{width:42px;height:42px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3px;flex:none}
+.logo i{border-radius:4px}.logo i:nth-child(1){background:var(--word)}.logo i:nth-child(2){background:var(--excel)}.logo i:nth-child(3){background:var(--ppt)}.logo i:nth-child(4){background:var(--all)}
+.brand b{font-family:var(--f-display);font-size:18px;display:block;line-height:1.1}
+.brand small{color:var(--muted);font-size:13px}
+.nav{padding:12px 10px;display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:15px}
+.nav a:hover{background:var(--sunken)}
+.nav a.on{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.nav .lab{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding:14px 10px 6px;display:flex;justify-content:space-between}
+.nav .num{width:24px;height:24px;border-radius:6px;display:grid;place-items:center;font-family:var(--f-mono);font-size:12px;font-weight:700;flex:none;color:#fff}
+.nav .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav .pc{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.side-foot{margin-top:auto;padding:14px 16px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px}
+.switch{width:40px;height:22px;border-radius:20px;background:var(--line);border:0;position:relative;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--surface);transition:left .15s}
+.switch[aria-pressed="true"]{background:var(--accent)}.switch[aria-pressed="true"]::after{left:21px}
+.bg-word{background:var(--word)}.bg-excel{background:var(--excel)}.bg-ppt{background:var(--ppt)}.bg-all{background:var(--all)}
+:root[data-theme="dark"] .nav .num, .dk .nav .num{color:#11151B}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .nav .num{color:#11151B}}
+/* ---------- top bar ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:12px 28px}
+.crumb{font-family:var(--f-mono);font-size:13px;color:var(--muted);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crumb b{color:var(--ink)}
+.menu-btn{display:none;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 10px}
+.mini{display:flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.bar{height:8px;background:var(--sunken);border-radius:10px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--accent);border-radius:10px;transition:width .3s}
+.mini .bar{width:110px}
+main{min-width:0}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:28px;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lead{color:var(--muted);font-size:18px;max-width:64ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.btn{text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 14px;font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.meta{font-family:var(--f-mono);font-size:12px;color:var(--accent);display:flex;gap:10px;flex-wrap:wrap}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sm{padding:5px 10px;font-size:13px}
+/* ---------- home ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;align-items:end}
+.hero h1{font-size:clamp(34px,5vw,54px);font-weight:800}
+.hero h1 span{color:var(--accent)}
+.prog{padding:20px;display:flex;flex-direction:column;gap:12px}
+.prog .big{font-family:var(--f-display);font-size:40px;font-weight:800;line-height:1}
+.prog .big small{font-size:18px;color:var(--muted);font-weight:500}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.stat{padding:16px 18px}
+.stat b{font-family:var(--f-display);font-size:30px;display:block;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:14px}
+.route{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}
+.route span{padding:5px 10px;border-radius:20px;background:var(--surface);border:1px solid var(--line)}
+.route em{color:var(--muted);font-style:normal}
+.matrix{display:grid;grid-template-columns:110px repeat(3,minmax(0,1fr));gap:12px}
+.mx-h{font-family:var(--f-display);font-weight:700;font-size:17px;display:flex;align-items:center;gap:8px}
+.mx-h i{width:12px;height:12px;border-radius:3px}
+.mx-l{font-family:var(--f-mono);font-size:12px;color:var(--muted);display:flex;flex-direction:column;justify-content:center;text-transform:uppercase;letter-spacing:.06em}
+.mx-l b{font-family:var(--f-display);text-transform:none;letter-spacing:0;color:var(--ink);font-size:16px}
+.mcard{padding:16px;display:flex;flex-direction:column;gap:10px;text-align:left;cursor:pointer;color:var(--ink);text-decoration:none;transition:transform .12s,border-color .12s}
+.mcard:hover{transform:translateY(-2px);border-color:var(--c)}
+.mcard .tag{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:12px;color:var(--c)}
+.mcard h3{font-size:18px}
+.mcard p{color:var(--muted);font-size:14px}
+.mcard .bar>i{background:var(--c)}
+.mcard.wide{flex-direction:row;align-items:center;gap:20px;flex-wrap:wrap}
+.mcard.wide>div{flex:1;min-width:220px;display:flex;flex-direction:column;gap:6px}
+/* ---------- module ---------- */
+.mhead{display:flex;flex-direction:column;gap:10px}
+.mhead h1{font-size:clamp(30px,4vw,44px);font-weight:800}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:20px;font-family:var(--f-mono);font-size:12px;font-weight:700;background:var(--accent-soft);color:var(--accent)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:0}
+.tab{border:0;background:none;padding:10px 14px;border-bottom:3px solid transparent;font-weight:600;color:var(--muted);display:flex;gap:8px;align-items:center;margin-bottom:-1px}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.tab .n{font-family:var(--f-mono);font-size:11px;background:var(--sunken);padding:1px 7px;border-radius:10px;color:var(--muted)}
+.tab.on .n{background:var(--accent-soft);color:var(--accent)}
+.tab .n.full{background:var(--ok-soft);color:var(--ok)}
+.sec-intro{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;flex-wrap:wrap}
+.sec-intro p{color:var(--muted);max-width:62ch}
+.list{display:flex;flex-direction:column;gap:14px}
+.item{padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.item .meta{font-family:var(--f-mono);font-size:12px;color:var(--accent);display:flex;gap:10px;flex-wrap:wrap}
+.item .q{font-weight:700;font-size:17px}
+.lessons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.lesson{padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.lesson .pg{font-family:var(--f-mono);font-size:12px;color:var(--accent);display:flex;justify-content:space-between;align-items:center}
+.lesson h3{font-size:19px}
+.box{border-radius:8px;padding:10px 12px;font-size:14.5px;display:flex;gap:10px}
+.box b{flex:none;font-family:var(--f-display)}
+.box.tip{background:var(--warn-soft)}.box.tip b{color:var(--warn)}
+.box.do{background:var(--accent-soft)}.box.do b{color:var(--accent)}
+.read{border:1px solid var(--line);background:none;border-radius:20px;padding:3px 10px;font-size:12px;font-family:var(--f-mono)}
+.read[aria-pressed="true"]{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+/* answers */
+.ans{border-radius:8px;padding:12px 14px;background:var(--sunken);font-size:15px;display:flex;flex-direction:column;gap:4px}
+.ans.ok{background:var(--ok-soft)}.ans.bad{background:var(--bad-soft)}
+.ans h4{font-size:15px}.ans.ok h4{color:var(--ok)}.ans.bad h4{color:var(--bad)}
+.check{display:flex;gap:8px;align-items:center;font-size:14.5px;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--accent)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:10px 14px;display:flex;gap:12px;align-items:baseline}
+.opt b{font-family:var(--f-mono);color:var(--accent)}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.vf{display:flex;gap:8px}
+.vf button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 18px;font-weight:700}
+.vf button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+textarea{width:100%;min-height:70px;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:10px 12px;resize:vertical}
+.hint{font-size:13px;color:var(--muted)}
+/* flashcards */
+.deck{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;justify-items:center}
+.flip{width:min(640px,100%);aspect-ratio:16/9;perspective:1200px;border:0;background:none;padding:0}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flip.show .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:28px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;text-align:center;border:1px solid var(--line);box-shadow:var(--shadow)}
+.face.f{background:var(--surface)}
+.face.b{background:var(--accent);color:var(--surface);transform:rotateY(180deg);border-color:transparent}
+.face small{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+.face p{font-family:var(--f-display);font-size:clamp(19px,3vw,27px);font-weight:700;line-height:1.25}
+.dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.dots button{width:26px;height:26px;border-radius:6px;border:1px solid var(--line);background:var(--surface);font-family:var(--f-mono);font-size:11px}
+.dots button.cur{border-color:var(--accent);color:var(--accent);font-weight:700}
+.dots button.k-ok{background:var(--ok-soft);border-color:var(--ok)}
+.dots button.k-rev{background:var(--warn-soft);border-color:var(--warn)}
+/* pbl */
+.pbl{padding:22px;display:flex;flex-direction:column;gap:16px}
+.pbl h3{font-size:22px}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.cols h4{font-size:15px;margin-bottom:8px;color:var(--accent)}
+.cols ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.tasks{display:flex;flex-direction:column;gap:6px}
+.score{font-family:var(--f-display);font-size:22px;font-weight:800;color:var(--accent)}
+/* shortcuts */
+kbd{font-family:var(--f-mono);font-size:12.5px;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--surface);border:1px solid var(--line);border-bottom-width:3px;white-space:nowrap}
+.kgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.kitem{padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.kitem span{font-size:14.5px}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filters button{border:1px solid var(--line);background:var(--surface);border-radius:20px;padding:5px 14px;font-weight:600;font-size:14px}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.teacher-flag{background:var(--warn-soft);color:var(--warn);border-radius:8px;padding:10px 14px;font-size:14px;font-weight:600}
+.code{font-family:var(--f-mono);font-size:.92em;background:var(--sunken);padding:1px 5px;border-radius:4px}
+.danger{color:var(--bad)}
+.scrim{display:none}
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{position:fixed;left:0;top:0;bottom:0;width:290px;max-width:86vw;z-index:20;transform:translateX(-102%);transition:transform .2s;height:100%;padding-top:env(safe-area-inset-top,0px)}
+  .side.open{transform:none;box-shadow:0 0 40px rgba(0,0,0,.3)}
+  .scrim.open{display:block;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:15}
+  .menu-btn{display:inline-flex}
+  .hero,.cols,.lessons{grid-template-columns:minmax(0,1fr)}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .matrix{grid-template-columns:minmax(0,1fr)}
+  .mx-head{display:none}.mx-l{flex-direction:row;gap:8px;align-items:baseline;padding-top:8px}
+  .top{padding:10px 16px}.wrap{padding-inline:16px}
+  .mini .bar{width:60px}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.tab{white-space:nowrap;flex:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="app" id="app">
+  <aside class="side" id="side">
+    <div class="brand"><div class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div><b>Método Office Visual</b><small>Word · Excel · PowerPoint</small></div></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="side-foot">
+      <div class="toggle"><span>Modo professor<br><small class="hint">mostra todas as respostas</small></span><button class="switch" id="tMode" aria-pressed="false" aria-label="Modo professor"></button></div>
+      <div class="toggle"><span>Tema escuro</span><button class="switch" id="tTheme" aria-pressed="false" aria-label="Tema escuro"></button></div>
+      <button class="btn sm" id="reset">Zerar meu progresso</button>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <main>
+    <div class="top"><button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰ Menu</button><div class="crumb" id="crumb"></div><div class="mini"><div class="bar"><i id="topBar"></i></div><span id="topPct"></span></div></div>
+    <div class="wrap" id="view"></div>
+  </main>
+</div>
+
+<script>
+const MODS = [];
+const M = m => MODS.push(m);
+
+/* ============ MÓDULO 1 — WORD ESSENCIAL ============ */
+M({id:1, app:'word', title:'Word Essencial', sub:'Do primeiro documento ao aviso pronto para imprimir', pages:'01–10',
+L:[
+['Conheça a tela inicial do Word','Barra de acesso rápido (salvar, desfazer, refazer), Faixa de Opções com as guias, Página do documento onde você digita, Barra de status (páginas e palavras) e Zoom.','Não precisa decorar tudo agora: você aprende cada área enquanto pratica.','Abra o Word, crie um documento em branco e localize as cinco áreas.'],
+['Digite, selecione e corrija textos','Clique para posicionar o cursor e digite. Arraste do início ao fim para selecionar. Backspace apaga à esquerda do cursor; Delete apaga à direita.','Dois cliques selecionam uma palavra; três cliques selecionam o parágrafo.','Digite três frases, selecione a segunda e apague uma palavra.'],
+['Deixe o texto claro e organizado','Na guia Página Inicial: fonte muda o estilo das letras, tamanho aumenta ou reduz, negrito destaca termos importantes e cor ajuda a criar hierarquia visual.','Use os mesmos botões de fonte em todo o documento para manter o padrão.','Digite “Meu Plano de Estudos”, aplique Arial 24 e negrito.'],
+['Organize os parágrafos','Alinhamentos: à esquerda (leitura de textos longos), centralizado (títulos e convites), à direita (datas e assinaturas) e justificado (alinha as duas margens). O espaçamento entre linhas de 1,15 ou 1,5 deixa o texto respirar.','Não use a barra de espaço para alinhar texto: use os botões de alinhamento.','Escreva um parágrafo curto e teste os quatro alinhamentos.'],
+['Crie listas que facilitam a leitura','Marcadores organizam itens quando a ordem não importa. Numeração organiza etapas ou instruções em sequência.','Pressione Enter para criar o próximo item; Enter duas vezes encerra a lista.','Crie uma lista de compras com cinco itens e uma lista numerada com três tarefas.'],
+['Insira imagens no Word','Inserir > Imagens > Este Dispositivo. Use as alças dos cantos para redimensionar sem deformar. Opções de Layout > Quadrado permite mover a imagem ao lado do texto.','Redimensione pelos cantos, nunca pelas laterais, para manter a proporção.','Insira uma imagem, diminua o tamanho e posicione-a ao lado de um parágrafo.'],
+['Organize informações com tabelas','Inserir > Tabela, passe o mouse pela grade e clique (ex.: 3x4). Tab avança para a próxima célula. Títulos em negrito em cada coluna facilitam a leitura.','Tab na última célula cria uma nova linha automaticamente.','Crie uma tabela com três colunas para registrar seus gastos do dia.'],
+['Prepare a página antes de imprimir','Guia Layout: Margens (Normal na maioria dos casos), Orientação (Retrato para textos, Paisagem para tabelas largas) e Tamanho (A4 no Brasil).','Configure a página antes de terminar o documento para evitar retrabalho.','Configure um documento com margens Normais, papel A4 e orientação Retrato.'],
+['Salve sem perder seu trabalho','Salvar (Ctrl+B) atualiza o arquivo atual. Salvar Como cria uma cópia com novo nome ou local. Exportar em PDF mantém o visual para enviar ou imprimir.','Use nomes claros e inclua a data quando houver várias versões.','Salve um documento em DOCX e depois crie uma cópia em PDF.'],
+['Projeto prático: crie um aviso','Junte tudo: título centralizado, negrito nas informações principais, marcadores, imagem ou ícone, alinhamento e espaçamento revisados, salvar em DOCX e exportar em PDF.','Confira antes de finalizar: título destacado, informações fáceis de localizar, texto sem erros, arquivo salvo.','Crie um aviso de reunião de equipe com data, horário, local e assuntos.']],
+C:[
+['Desenhe no caderno a tela do Word e identifique com setas: Barra de acesso rápido, Faixa de Opções, Página, Barra de status e Zoom. Escreva para que serve cada uma.','Acesso rápido: salvar/desfazer/refazer. Faixa de Opções: guias com ferramentas. Página: área de digitação. Barra de status: nº de páginas e palavras. Zoom: aproxima ou afasta a visualização (não muda o tamanho real do texto).'],
+['Explique com suas palavras a diferença entre as teclas Backspace e Delete. Dê um exemplo de quando usar cada uma.','Backspace apaga o caractere à esquerda do cursor (corrigir o que acabou de digitar). Delete apaga o caractere à direita (remover algo que está à frente do cursor sem reposicioná-lo).'],
+['Monte uma tabela no caderno com os 4 tipos de alinhamento e indique um uso real de cada.','Esquerda: textos longos, cartas. Centralizado: títulos, convites. Direita: datas, assinaturas, valores. Justificado: textos acadêmicos e jornais, com as duas margens retas.'],
+['Quando usar marcadores e quando usar numeração? Escreva dois exemplos de cada.','Marcadores quando a ordem não importa (lista de compras, materiais). Numeração quando a ordem importa (passo a passo de instalação, etapas de uma receita).'],
+['Diferencie Salvar, Salvar Como e Exportar em PDF. Em qual situação cada um é a melhor escolha?','Salvar: atualiza o arquivo atual. Salvar Como: cria nova cópia com outro nome/local (versões). PDF: arquivo final para enviar ou imprimir, que mantém o visual e não é feito para edição.'],
+['Faça um rascunho (esboço) de um aviso de reunião indicando onde ficarão título, data, horário, local, assuntos e imagem.','Resposta esperada: título no topo, centralizado e em destaque; bloco com data/horário/local em negrito; lista com marcadores para os assuntos; imagem/ícone próximo ao título; mensagem de fechamento ao final.']],
+F:[
+['Onde fica o botão Salvar mais rápido de alcançar?','Na Barra de acesso rápido, no canto superior esquerdo (ou Ctrl+B no Word em português).'],
+['Quantos cliques selecionam uma palavra?','Dois cliques. Três cliques selecionam o parágrafo inteiro.'],
+['Qual alinhamento deixa as duas margens retas?','Justificado.'],
+['Como encerrar uma lista com marcadores?','Pressionando Enter duas vezes.'],
+['Por que redimensionar a imagem pelos cantos?','Para manter a proporção e não deformar a imagem.'],
+['Qual tecla leva à próxima célula em uma tabela?','Tab.'],
+['Qual tamanho de papel é o padrão no Brasil?','A4.'],
+['Orientação ideal para uma tabela muito larga?','Paisagem.'],
+['Formato ideal para enviar um documento sem que o visual mude?','PDF.'],
+['Espaçamento entre linhas recomendado para textos agradáveis?','1,15 ou 1,5.']],
+V:[
+['A Barra de status mostra o número de páginas e palavras do documento.',true,'Ela fica na parte inferior da janela e exibe contagem de páginas, palavras e idioma.'],
+['O Zoom altera o tamanho real da fonte impressa.',false,'O Zoom só muda a visualização na tela; o tamanho da fonte continua o mesmo.'],
+['A tecla Delete apaga o caractere à esquerda do cursor.',false,'Quem apaga à esquerda é o Backspace; Delete apaga à direita.'],
+['Usar a barra de espaço para centralizar um título é uma boa prática.',false,'Espaços quebram o alinhamento quando o texto muda; o correto é usar o botão Centralizar.'],
+['Numeração é indicada quando a ordem dos itens importa.',true,'Passo a passo e instruções precisam de sequência, por isso usamos números.'],
+['Arrastar a alça lateral de uma imagem pode deformá-la.',true,'As alças laterais esticam só uma dimensão; as dos cantos mantêm a proporção.'],
+['A opção de Layout “Quadrado” permite que o texto contorne a imagem.',true,'Com Quadrado, o texto flui ao redor da imagem e ela pode ser movida livremente.'],
+['Pressionar Tab na última célula de uma tabela cria uma nova linha.',true,'É um atalho prático para continuar preenchendo a tabela.'],
+['A guia Layout contém as opções de Margens, Orientação e Tamanho.',true,'É lá que configuramos a página antes de imprimir.'],
+['Salvar Como substitui o arquivo original sem criar cópia.',false,'Salvar Como cria um novo arquivo; quem atualiza o atual é o Salvar.'],
+['Um PDF é o formato mais indicado para continuar editando o texto.',false,'O PDF serve para compartilhar e imprimir; para editar, use o DOCX.'],
+['Negrito deve ser usado em todas as palavras para chamar atenção.',false,'Quando tudo está em destaque, nada se destaca. Use negrito só no que é importante.']],
+Q:[
+['Qual área do Word reúne as guias Página Inicial, Inserir e Layout?',['Barra de status','Faixa de Opções','Barra de acesso rápido','Régua'],1,'A Faixa de Opções organiza as ferramentas em guias.'],
+['Para selecionar um parágrafo inteiro rapidamente, você:',['Clica uma vez','Clica duas vezes','Clica três vezes','Pressiona Delete'],2,'Três cliques selecionam o parágrafo; dois, a palavra.'],
+['Qual alinhamento combina mais com a data no canto de uma carta?',['À esquerda','Centralizado','À direita','Justificado'],2,'Datas e assinaturas costumam ficar alinhadas à direita.'],
+['Uma lista com “1. Abrir o arquivo 2. Fazer alteração 3. Salvar” é uma lista:',['Com marcadores','Numerada','De tabela','De estilos'],1,'É sequência de etapas, logo numerada.'],
+['Para inserir uma foto salva no computador:',['Inserir > Imagens > Este Dispositivo','Layout > Margens','Página Inicial > Fonte','Revisão > Ortografia'],0,'O caminho correto é Inserir > Imagens > Este Dispositivo.'],
+['Qual é a melhor orientação para um texto comum de várias páginas?',['Paisagem','Retrato','Diagonal','Livre'],1,'Retrato é a orientação usada na maioria dos documentos de texto.'],
+['Você quer manter o original e criar uma versão para outro cliente. Use:',['Salvar','Salvar Como','Fechar','Desfazer'],1,'Salvar Como cria uma cópia com novo nome.'],
+['O que acontece ao pressionar Enter duas vezes em uma lista com marcadores?',['Cria dois itens','Encerra a lista','Apaga a lista','Muda para numeração'],1,'O segundo Enter num item vazio encerra a lista.'],
+['Qual destes NÃO é um item do checklist do aviso?',['Título destacado','Texto sem erros','Arquivo salvo','Usar 6 fontes diferentes'],3,'Muitas fontes poluem o documento; o checklist pede padrão visual.'],
+['A cor no texto serve principalmente para:',['Enfeitar todas as palavras','Criar hierarquia e destaque','Aumentar o tamanho do arquivo','Corrigir a ortografia'],1,'Cor bem usada ajuda o leitor a perceber o que é mais importante.']],
+P:[
+{t:'Aviso da Feira de Ciências',cen:'A coordenação do campus pediu um aviso de uma página para divulgar a Feira de Ciências. O texto atual está todo em uma só fonte, sem destaques, e ninguém consegue achar a data.',perg:['O que o leitor precisa encontrar em menos de 5 segundos?','Quais recursos do Word deixam essa informação visível?','Como garantir que o aviso imprima corretamente?'],tarefas:['Escreva no caderno as informações essenciais (o quê, quando, onde, para quem)','Crie o aviso no Word com título centralizado e em negrito','Use marcadores para as atrações','Insira uma imagem redimensionada pelos cantos','Configure A4, Retrato, margens Normais','Salve em DOCX e exporte em PDF'],entrega:'Aviso_Feira_Ciencias.pdf + resposta às perguntas no caderno',rub:['Título visível e centralizado (2 pts)','Data, horário e local em destaque (2 pts)','Lista com marcadores bem usada (2 pts)','Imagem sem deformação (2 pts)','Página configurada e PDF gerado (2 pts)']},
+{t:'Cardápio da cantina',cen:'A cantina quer um cardápio semanal impresso com pratos e preços. Hoje os preços estão misturados no texto e os alunos reclamam que não entendem.',perg:['Texto corrido ou tabela: qual organiza melhor pratos e preços? Por quê?','Qual orientação de página faz sentido para 5 dias da semana?'],tarefas:['Esboce no caderno a tabela (dias x pratos x preços)','Crie a tabela no Word com títulos em negrito','Use Tab para preencher as células','Teste Retrato e Paisagem e escolha a melhor','Exporte em PDF'],entrega:'Cardapio_Semanal.pdf + justificativa da orientação escolhida',rub:['Tabela organizada com cabeçalho (3 pts)','Preços fáceis de localizar (2 pts)','Orientação justificada (2 pts)','Padrão de fonte consistente (1 pt)','PDF gerado (2 pts)']}]
+});
+
+/* ============ MÓDULO 2 — EXCEL ESSENCIAL ============ */
+M({id:2, app:'excel', title:'Excel Essencial', sub:'Células, fórmulas, gráficos e o controle dos seus gastos', pages:'11–20',
+L:[
+['Conheça a tela inicial do Excel','Colunas são identificadas por letras, linhas por números. A célula é o encontro de linha e coluna (B3 = coluna B + linha 3). A Barra de fórmulas mostra ou edita o conteúdo. As abas da planilha organizam páginas diferentes.','A borda verde mostra qual célula está selecionada.','Abra o Excel, clique nas células A1, B3 e D5 e observe o endereço de cada uma.'],
+['Preencha a planilha com rapidez','Digite e pressione Enter para descer ou Tab para ir à direita. Arraste a alça de preenchimento (quadradinho no canto) para completar sequências como datas e meses.','Digite os dois primeiros itens da sequência antes de arrastar.','Digite Janeiro e Fevereiro, selecione os dois e arraste até Junho.'],
+['Mostre cada número do jeito certo','O formato muda a aparência do valor sem alterar o que foi digitado: Geral, Moeda (R$ 1.500,00), Porcentagem (25%), Data (15/09/2026). Aumentar/diminuir casas decimais ajusta a exibição.','Digite 0,25 e aplique Porcentagem para ver 25%.','Digite 1500, 0,25 e 15/09/2026 e aplique o formato correto em cada célula.'],
+['Faça cálculos direto nas células','Toda conta começa com o sinal de igual. Operadores: + soma, - subtração, * multiplicação, / divisão. Use endereços: =A1+B1. Se A1 ou B1 mudar, o resultado se atualiza.','Use o endereço da célula em vez de digitar o número novamente.','Digite 20 em A1 e 4 em B1 e faça as quatro operações.'],
+['Quatro fórmulas que resolvem o básico','=SOMA(B2:B5), =MÉDIA(B2:B5), =MÍNIMO(B2:B5), =MÁXIMO(B2:B5). B2:B5 significa todas as células de B2 até B5.','Fórmulas usam parênteses para indicar quais células serão calculadas.','Digite cinco valores e descubra soma, média, menor e maior.'],
+['Faça o Excel responder por você','=SE(B2>=7;"APROVADO";"REPROVADO"): teste lógico; resultado se verdadeiro; resultado se falso.','Textos dentro de fórmulas precisam ficar entre aspas.','Digite três notas e use SE para mostrar APROVADO ou REPROVADO.'],
+['Encontre qualquer informação em segundos','Classificar organiza do menor para o maior ou em ordem alfabética. Filtrar mostra apenas os dados que atendem ao critério escolhido. Ambos ficam na guia Dados.','Filtrar não exclui dados: os demais apenas ficam ocultos.','Crie uma lista com cinco produtos e filtre apenas uma categoria.'],
+['Transforme dados em uma tabela inteligente','Selecione os dados e use Formatar como Tabela. A tabela ganha filtros nos títulos, linhas alternadas e se expande automaticamente quando você adiciona novas linhas.','Use nomes únicos e claros em cada cabeçalho.','Transforme uma lista de gastos em tabela e escolha um estilo.'],
+['Transforme números em um gráfico','Selecione os dados, Inserir > Gráfico de Colunas. Colunas comparam categorias, Linhas mostram mudança no tempo, Pizza mostra partes de um total.','Um gráfico simples costuma comunicar melhor do que um gráfico cheio de efeitos.','Crie um gráfico com seus gastos de quatro semanas.'],
+['Projeto prático: controle seus gastos','Monte uma planilha com Data, Descrição, Categoria, Entrada e Saída. Use =SOMA para totais e =Entradas−Saídas para o saldo. Formate como moeda e crie um gráfico comparando entradas e saídas.','Destaque o saldo para encontrá-lo rápido.','Monte o controle do mês de setembro e crie o gráfico.']],
+C:[
+['Desenhe uma grade de 4 colunas (A–D) e 5 linhas. Marque com X as células B3 e D5. Explique como se forma o endereço de uma célula.','Endereço = letra da coluna + número da linha. B3 fica na coluna B, linha 3; D5 na coluna D, linha 5.'],
+['Escreva as fórmulas para: somar A1 e B1; subtrair B1 de A1; multiplicar; dividir A1 por B1. Calcule os resultados com A1=20 e B1=4.','=A1+B1 → 24; =A1-B1 → 16; =A1*B1 → 80; =A1/B1 → 5.'],
+['Com as notas 6, 8, 5, 9 em B2:B5, calcule à mão SOMA, MÉDIA, MÍNIMO e MÁXIMO e escreva a fórmula de cada uma.','=SOMA(B2:B5)=28; =MÉDIA(B2:B5)=7; =MÍNIMO(B2:B5)=5; =MÁXIMO(B2:B5)=9.'],
+['Escreva a fórmula SE que mostra "APROVADO" para nota maior ou igual a 7 em B2. Separe e nomeie as três partes da fórmula.','=SE(B2>=7;"APROVADO";"REPROVADO"). Parte 1: teste lógico B2>=7. Parte 2: valor se verdadeiro. Parte 3: valor se falso.'],
+['Explique a diferença entre Classificar e Filtrar com um exemplo de uma lista de alunos.','Classificar reordena todos (ex.: alunos em ordem alfabética). Filtrar exibe só quem atende ao critério (ex.: só a turma A), ocultando os demais sem excluí-los.'],
+['Para cada situação, indique o gráfico ideal: (a) vendas por produto; (b) temperatura ao longo do mês; (c) divisão do orçamento familiar.','(a) Colunas – comparar categorias; (b) Linhas – mudança no tempo; (c) Pizza – partes de um total.']],
+F:[
+['O que é uma célula?','O encontro de uma coluna com uma linha, ex.: B3.'],
+['Com que sinal toda fórmula começa?','Com o sinal de igual (=).'],
+['O que significa B2:B5?','Todas as células de B2 até B5.'],
+['Operador de multiplicação no Excel?','Asterisco (*).'],
+['Para que serve a alça de preenchimento?','Para arrastar e completar sequências ou copiar fórmulas.'],
+['Formatar 0,25 como Porcentagem mostra…','25%.'],
+['Filtrar exclui os dados que não aparecem?','Não. Eles apenas ficam ocultos.'],
+['Gráfico ideal para partes de um total?','Pizza.'],
+['Na fórmula SE, onde vão os textos?','Entre aspas: "APROVADO".'],
+['Vantagem de Formatar como Tabela?','Filtros automáticos, linhas alternadas e expansão automática.']],
+V:[
+['No Excel, as linhas são identificadas por letras.',false,'Colunas usam letras; linhas usam números.'],
+['Tab leva para a célula à direita e Enter para a célula abaixo.',true,'É o fluxo padrão de digitação.'],
+['Aplicar o formato Moeda altera o valor armazenado na célula.',false,'O formato muda só a aparência; o valor continua o mesmo.'],
+['A fórmula =A1+B1 se atualiza sozinha quando A1 muda.',true,'Por usar referências, o Excel recalcula automaticamente.'],
+['=MÉDIA(B2:B5) soma os valores e divide pela quantidade de células com números.',true,'Esse é o conceito de média aritmética.'],
+['Na fórmula SE, os textos podem ser escritos sem aspas.',false,'Sem aspas, o Excel interpreta o texto como nome e mostra erro #NOME?.'],
+['Classificar pode colocar uma lista em ordem alfabética.',true,'Classificar de A a Z ordena textos alfabeticamente.'],
+['Ao usar filtro, os dados ocultos são apagados da planilha.',false,'O filtro só oculta; ao limpar o filtro, tudo volta.'],
+['Gráfico de linhas é indicado para mostrar evolução ao longo do tempo.',true,'Linhas destacam tendências entre períodos.'],
+['Uma tabela formatada se expande ao digitar logo abaixo dela.',true,'É uma das vantagens da tabela inteligente.'],
+['Digitar 10+5 numa célula, sem o sinal de igual, mostra 15.',false,'Sem =, o Excel trata como texto e mostra “10+5”.'],
+['No controle de gastos, o saldo é calculado por Entradas − Saídas.',true,'É a diferença entre o que entrou e o que saiu.']],
+Q:[
+['O endereço da célula na coluna C e linha 7 é:',['7C','C7','C:7','L7C3'],1,'Primeiro a letra da coluna, depois o número da linha.'],
+['Qual fórmula soma de A1 até A10?',['=SOMA(A1;A10)','=SOMA(A1:A10)','SOMA A1-A10','=A1+A10'],1,'Os dois-pontos indicam o intervalo inteiro; o ponto e vírgula somaria só as duas células.'],
+['Para descobrir a menor nota de uma turma:',['=MÁXIMO()','=MÍNIMO()','=MÉDIA()','=SE()'],1,'MÍNIMO retorna o menor valor do intervalo.'],
+['=SE(B2>=7;"APROVADO";"REPROVADO") com B2 = 6,5 retorna:',['APROVADO','REPROVADO','6,5','#VALOR!'],1,'6,5 não é maior ou igual a 7, então retorna o valor falso.'],
+['Você quer ver apenas os gastos da categoria Transporte. Use:',['Classificar','Filtrar','Mesclar','Congelar'],1,'Filtrar exibe só as linhas que atendem ao critério.'],
+['Qual formato mostra 15/09/2026 corretamente?',['Moeda','Data','Porcentagem','Texto científico'],1,'O formato Data exibe dia/mês/ano.'],
+['Para comparar vendas de 4 produtos, o gráfico mais indicado é:',['Pizza','Colunas','Dispersão','Nenhum'],1,'Colunas comparam categorias lado a lado.'],
+['O que faz a alça de preenchimento com “Jan” e “Fev” selecionados?',['Apaga','Continua Mar, Abr...','Copia Jan sempre','Cria gráfico'],1,'O Excel reconhece o padrão e continua a sequência.'],
+['Qual operador faz divisão?',['\\','÷','/','%'],2,'A barra / é o operador de divisão.'],
+['No controle de gastos, a célula mais importante a destacar é:',['A data','O saldo','A categoria','O título da aba'],1,'O saldo mostra a situação final do mês.']],
+P:[
+{t:'Boletim da turma',cen:'O professor anotou as notas de 10 alunos em papel e perde tempo calculando médias e situação de cada um no fim do bimestre.',perg:['Que colunas a planilha precisa ter?','Quais fórmulas automatizam o trabalho?','Como mostrar visualmente quem está abaixo da média?'],tarefas:['Planeje no caderno as colunas (Aluno, N1, N2, Média, Situação)','Digite os dados de 10 alunos fictícios','Use =MÉDIA para cada aluno','Use =SE para APROVADO/REPROVADO','Calcule a maior e menor média da turma','Crie um gráfico de colunas das médias'],entrega:'Boletim.xlsx + explicação das fórmulas no caderno',rub:['Estrutura de colunas clara (2 pts)','MÉDIA correta (2 pts)','SE com aspas e ponto e vírgula corretos (2 pts)','MÍNIMO/MÁXIMO (2 pts)','Gráfico legível (2 pts)']},
+{t:'Orçamento do passeio da turma',cen:'A turma vai fazer um passeio e precisa controlar arrecadação (rifas, contribuições) e despesas (ônibus, lanche, ingressos).',perg:['Quanto falta arrecadar?','Qual despesa pesa mais?'],tarefas:['Monte a planilha de Entradas e Saídas','Formate valores como Moeda','Calcule totais com SOMA e o saldo','Transforme em tabela e filtre por categoria','Faça um gráfico comparando entradas e saídas'],entrega:'Orcamento_Passeio.xlsx',rub:['Valores em moeda (2 pts)','Totais e saldo corretos (3 pts)','Filtro aplicado (2 pts)','Gráfico adequado (2 pts)','Conclusão escrita sobre o saldo (1 pt)']}]
+});
+
+/* ============ MÓDULO 3 — POWERPOINT ESSENCIAL ============ */
+M({id:3, app:'ppt', title:'PowerPoint Essencial', sub:'Slides claros, bem alinhados e prontos para apresentar', pages:'21–30',
+L:[
+['Conheça a tela inicial do PowerPoint','Miniaturas mostram todos os slides; a área do slide é onde você monta o conteúdo; Faixa de Opções reúne as ferramentas; Painel de anotações guarda lembretes do apresentador; Barra de status controla visualização e zoom.','Use as miniaturas para mudar a ordem dos slides arrastando.','Abra o PowerPoint, crie uma apresentação em branco e localize as cinco áreas.'],
+['Escolha o layout certo para cada slide','Página Inicial > Novo Slide > escolha o layout: Título, Título e Conteúdo, Duas Partes, Somente Título, Em branco. O layout organiza espaços prontos para título, texto e imagens.','Escolha o layout antes de preencher o slide.','Crie quatro slides, cada um com um layout diferente.'],
+['Faça o texto ser entendido de longe','Título de 28 a 36 pt, texto com pelo menos 20 pt, contraste entre texto e fundo e no máximo poucos tópicos por slide.','Se você precisa se aproximar da tela para ler, o texto está pequeno demais.','Resuma um parágrafo em três tópicos de no máximo seis palavras.'],
+['Insira imagens sem deformar','Inserir > Imagens > Este Dispositivo. Arraste pelos cantos. Use Cortar (Formato da Imagem) para remover partes sem deformar.','Prefira uma imagem forte a várias imagens pequenas competindo.','Insira uma foto, corte parte da imagem e redimensione pelos cantos.'],
+['Use formas e ícones para explicar ideias','Inserir > Formas ou Ícones. Use o Formato da Forma para mudar cor e contorno. Processos em etapas ficam mais claros com formas e setas.','Use o mesmo estilo de ícones em toda a apresentação.','Crie um processo de três etapas usando formas e setas.'],
+['Alinhe tudo com aparência profissional','Selecione vários objetos (Shift + clique), Formato > Alinhar: alinhar ao meio, distribuir horizontalmente. Ctrl+G agrupa e Ctrl+Shift+G desagrupa.','Ative Exibir > Guias para posicionar elementos com mais precisão.','Crie três caixas, alinhe ao meio e distribua horizontalmente.'],
+['Mude de slide com suavidade','Guia Transições: escolha um efeito (Esmaecer é uma escolha segura), defina a duração e use Aplicar a Todos. Transição acontece entre slides.','Esmaecer com cerca de 1 segundo é uma escolha segura para apresentações profissionais.','Aplique Esmaecer em três slides e use Aplicar a Todos.'],
+['Faça os elementos aparecerem na hora certa','Guia Animações: Entrada (faz o objeto aparecer), Ênfase (chama atenção) e Saída (remove do slide). O Painel de Animação mostra e organiza a ordem. Início: Ao clicar, Com o anterior, Após o anterior.','Anime apenas o que ajuda a conduzir a atenção.','Faça três tópicos aparecerem um por vez, na ordem correta.'],
+['Apresente e compartilhe com segurança','F5 inicia do primeiro slide; Shift+F5 do slide atual; Esc encerra. Modo de Apresentador mostra anotações e próximo slide. Salve em PPTX e uma cópia em PDF.','Leve o arquivo PPTX e uma cópia em PDF para evitar imprevistos.','Inicie com F5, avance dois slides e encerre com Esc.'],
+['Projeto prático: crie uma apresentação','Cinco slides: Capa, Sobre, Produtos, Diferenciais e Contato. Use layouts, imagens, ícones, alinhamento, transição suave e salve PPTX e PDF.','Confira antes de finalizar: todos os slides seguem o mesmo estilo? Textos podem ser lidos de longe?','Apresente cinco slides em menos de dois minutos.']],
+C:[
+['Desenhe a tela do PowerPoint e identifique: miniaturas, área do slide, Faixa de Opções, painel de anotações e barra de status.','Miniaturas à esquerda; área do slide no centro; Faixa de Opções no topo; anotações abaixo do slide; barra de status na base com zoom e modos de exibição.'],
+['Reescreva este slide em no máximo 3 tópicos: “Neste mês, o nosso time conseguiu aumentar as vendas em 32% graças às novas estratégias de divulgação nas redes sociais e ao atendimento mais rápido.”','Exemplo: “Vendas +32% no mês” / “Divulgação nas redes” / “Atendimento mais rápido”. O título pode ser “Resultados do mês”.'],
+['Explique a diferença entre transição e animação, com um exemplo de cada.','Transição: efeito entre um slide e outro (Esmaecer ao trocar de slide). Animação: efeito em um objeto dentro do slide (um tópico que entra ao clicar).'],
+['Liste os três tipos de animação e diga quando usar cada um.','Entrada: fazer algo aparecer (tópicos um a um). Ênfase: destacar algo que já está no slide (pulsar um número). Saída: retirar um elemento (esconder uma resposta antiga).'],
+['Escreva os atalhos para: iniciar do começo, iniciar do slide atual, encerrar, agrupar e desagrupar.','F5; Shift+F5; Esc; Ctrl+G; Ctrl+Shift+G.'],
+['Faça o roteiro (storyboard) de 5 slides de uma apresentação sobre um negócio local: escreva o título e 1 ideia visual para cada.','Capa (nome + imagem forte), Sobre (história, foto), Produtos (3 imagens com rótulos), Diferenciais (ícones), Contato (endereço, redes, horário).']],
+F:[
+['Atalho para iniciar a apresentação do começo?','F5.'],
+['Atalho para iniciar do slide atual?','Shift+F5.'],
+['Tamanho mínimo recomendado para o texto?','Cerca de 20 pt (títulos de 28 a 36 pt).'],
+['Ferramenta que remove partes da imagem sem deformar?','Cortar (guia Formato da Imagem).'],
+['Atalho para agrupar objetos?','Ctrl+G.'],
+['Transição acontece onde?','Entre slides.'],
+['Animação acontece onde?','Dentro do slide, em objetos.'],
+['Onde ver e reordenar todas as animações?','No Painel de Animação.'],
+['Para que serve o painel de anotações?','Guardar lembretes que só o apresentador vê.'],
+['Efeito de transição seguro e profissional?','Esmaecer, com cerca de 1 segundo.']],
+V:[
+['As miniaturas permitem mudar a ordem dos slides arrastando.',true,'Basta arrastar a miniatura para a nova posição.'],
+['Um slide eficiente deve ter parágrafos longos para explicar tudo.',false,'Slides são apoio visual; textos longos competem com o apresentador.'],
+['O layout deve ser escolhido de preferência antes de preencher o slide.',true,'Assim os espaços já ficam organizados para o conteúdo.'],
+['Esticar a imagem pela lateral é a forma correta de ampliá-la.',false,'Isso deforma; o correto é usar os cantos ou cortar.'],
+['Usar vários estilos de ícones na mesma apresentação passa profissionalismo.',false,'A consistência de estilo é o que passa profissionalismo.'],
+['Distribuir horizontalmente cria espaços iguais entre os objetos.',true,'É a função do comando Distribuir.'],
+['Aplicar a Todos replica a transição em todos os slides.',true,'Economiza tempo e garante padrão.'],
+['A animação de Saída faz o objeto aparecer no slide.',false,'Quem faz aparecer é a Entrada; Saída remove.'],
+['Esc encerra a apresentação.',true,'Esc sai do modo de apresentação.'],
+['O público vê as anotações do apresentador projetadas.',false,'No Modo de Apresentador, só quem apresenta vê as anotações.'],
+['Ter uma cópia em PDF ajuda caso o computador não tenha o PowerPoint.',true,'O PDF abre em praticamente qualquer computador.'],
+['Mais animações sempre deixam a apresentação mais profissional.',false,'Excesso distrai; anime só o que conduz a atenção.']],
+Q:[
+['Qual área mostra todas as páginas da apresentação em tamanho reduzido?',['Painel de anotações','Miniaturas','Barra de status','Guia Design'],1,'As miniaturas ficam à esquerda.'],
+['Qual layout é ideal para comparar duas ideias lado a lado?',['Somente Título','Duas Partes','Em branco','Título do Slide'],1,'Duas Partes oferece dois espaços de conteúdo.'],
+['Qual é a melhor prática para texto em slides?',['Parágrafos completos','Tópicos curtos e grandes','Fonte 10 pt','Texto claro em fundo claro'],1,'Tópicos curtos e legíveis de longe.'],
+['Para que todos os elementos fiquem na mesma linha central:',['Alinhar ao Meio','Agrupar','Cortar','Esmaecer'],0,'Alinhar ao Meio alinha os centros verticais dos objetos.'],
+['O que o Shift+F5 faz?',['Encerra','Inicia do slide atual','Inicia do primeiro','Salva'],1,'Shift+F5 inicia a partir do slide selecionado.'],
+['Uma animação configurada como “Após o anterior” começa:',['Quando você clica','Automaticamente depois da animação anterior','Junto com a anterior','Nunca'],1,'Após o anterior encadeia automaticamente.'],
+['Qual sequência é ideal para a apresentação do projeto prático?',['Contato, Capa, Produtos...','Capa, Sobre, Produtos, Diferenciais, Contato','Diferenciais primeiro','Somente imagens'],1,'É a sequência lógica do projeto.'],
+['Onde se inserem ícones?',['Inserir > Ícones','Revisão > Ícones','Transições > Ícones','Arquivo > Ícones'],0,'Os ícones ficam na guia Inserir.'],
+['Para desfazer um agrupamento:',['Ctrl+G','Ctrl+Shift+G','Ctrl+Z+G','Alt+G'],1,'Ctrl+Shift+G desagrupa.'],
+['Qual destes aumenta o contraste?',['Texto amarelo em fundo branco','Texto escuro em fundo claro','Texto cinza em fundo cinza','Texto vermelho em fundo rosa'],1,'Contraste alto entre texto e fundo garante leitura.']],
+P:[
+{t:'Pitch de 2 minutos do negócio local',cen:'Uma padaria do bairro quer apresentar seus produtos para uma feira de empreendedores. Você tem só 2 minutos e 5 slides.',perg:['Qual mensagem principal o público deve lembrar?','Quais imagens contam a história melhor que o texto?','Onde animação ajuda e onde atrapalha?'],tarefas:['Faça o storyboard dos 5 slides no caderno','Monte os slides com layouts adequados','Use imagens recortadas sem deformar e ícones de um mesmo estilo','Alinhe e distribua os elementos','Aplique Esmaecer a todos e anime só os tópicos principais','Ensaie com F5 e salve PPTX + PDF'],entrega:'Pitch_Padaria.pptx + PDF + apresentação de 2 minutos',rub:['Sequência lógica (2 pts)','Texto legível de longe (2 pts)','Imagens e ícones consistentes (2 pts)','Alinhamento e padrão (2 pts)','Tempo respeitado (2 pts)']},
+{t:'Aula relâmpago',cen:'Você vai ensinar um colega a usar um aplicativo do celular em 3 slides, com passos que apareçam um de cada vez.',perg:['Como organizar os passos visualmente?','Qual tipo de início de animação deixa você no controle?'],tarefas:['Escreva os passos no caderno','Crie um processo com formas e setas','Use animação de Entrada “Ao clicar” em cada passo','Escreva lembretes nas anotações','Apresente usando o Modo de Apresentador'],entrega:'Aula_Relampago.pptx',rub:['Processo claro com formas (3 pts)','Animações na ordem correta (3 pts)','Anotações úteis (2 pts)','Apresentação fluida (2 pts)']}]
+});
+
+/* ============ MÓDULO 4 — WORD PRODUTIVO ============ */
+M({id:4, app:'word', title:'Word Produtivo', sub:'Edite mais rápido, revise melhor e monte um currículo', pages:'31–40',
+L:[
+['Copie, recorte e cole sem redigitar','Copiar (Ctrl+C) mantém o original e cria uma cópia. Recortar (Ctrl+X) retira o conteúdo para mover. Colar (Ctrl+V) insere no novo local.','Se algo sair errado, pressione Ctrl+Z para desfazer.','Digite uma frase, copie para outra linha e depois recorte uma palavra para mudar de lugar.'],
+['Encontre e troque palavras em segundos','Localizar (Ctrl+L) encontra palavras ou frases. Substituir (Ctrl+U) troca um termo por outro, um por um ou com Substituir Tudo.','Revise antes de usar Substituir Tudo: ele altera todas as ocorrências.','Escreva um parágrafo e substitua uma palavra repetida.'],
+['Revise o texto antes de entregar','Guia Revisão > Editor: Ortografia (palavras escritas incorretamente), Gramática (concordância e construção de frases) e Clareza (sugestões de formas mais simples). Aceite, ignore ou corrija.','O corretor ajuda, mas não entende todo o contexto. Leia o documento novamente.','Escreva um parágrafo com erros e analise as sugestões.'],
+['Adicione cabeçalho e rodapé','Inserir > Cabeçalho ou Rodapé, escolha um modelo, digite a informação e clique em Fechar Cabeçalho e Rodapé. Número de Página atualiza sozinho.','Evite textos longos nessas áreas.','Crie um cabeçalho com seu nome e adicione o número de página no rodapé.'],
+['Divida o texto em colunas','Selecione o texto, Layout > Colunas > Duas. Para continuar em outra coluna, use Layout > Quebras > Coluna.','Colunas muito estreitas dificultam a leitura de textos longos.','Digite dois parágrafos e transforme em duas colunas.'],
+['Destaque informações com bordas e cores','Selecione o texto, use Sombreamento e Bordas > Bordas Externas. Bom para títulos, avisos e resumos.','Evite combinar muitas cores e bordas grossas na mesma página.','Crie uma caixa de aviso com fundo claro e borda azul.'],
+['Imprima sem desperdiçar papel','Ctrl+P abre Imprimir: confira a visualização, escolha cópias, impressora, páginas específicas, orientação, margens e páginas por folha.','Para economizar tinta, imprima em preto e branco quando cores não forem necessárias.','Abra a tela de impressão e visualize as páginas sem imprimir.'],
+['Organize títulos com Estilos','Selecione o título > Página Inicial > Estilos > Título 1 ou Título 2. Estilos mantêm o padrão e permitem criar sumário automático.','Use Título 1 nas seções principais e Título 2 nas subseções.','Crie um título principal, duas subseções e aplique os estilos.'],
+['Atividade guiada: crie um currículo simples','Nome e contato, títulos para cada seção (Objetivo, Formação, Habilidades, Experiência), negrito nas informações principais, marcadores, revisão e exportação em PDF.','Não inclua informações que não ajudam na vaga desejada.','Crie um currículo de uma página com texto legível e sem erros.'],
+['Atalhos essenciais do Word','Edição: Ctrl+C, Ctrl+X, Ctrl+V, Ctrl+Z. Formatação: Ctrl+N (negrito), Ctrl+I (itálico), Ctrl+S (sublinhado). Documento: Ctrl+B (salvar), Ctrl+P (imprimir), Ctrl+L (localizar), Ctrl+U (substituir), Ctrl+T (selecionar tudo).','Não tente decorar todos de uma vez. Comece pelos quatro que mais usa.','Realize uma tarefa usando o teclado sem clicar nos comandos da Faixa de Opções.']],
+C:[
+['Complete a tabela: ação → atalho → efeito: Copiar, Recortar, Colar, Desfazer.','Copiar Ctrl+C (duplica, original fica); Recortar Ctrl+X (retira para mover); Colar Ctrl+V (insere); Desfazer Ctrl+Z (volta a última ação).'],
+['Descreva um caso em que “Substituir Tudo” pode causar um erro. Como evitar?','Ex.: trocar “ano” por “período” também altera “Mariano” e “humano”. Evite revisando ocorrência por ocorrência ou marcando “Palavras inteiras”.'],
+['Por que o corretor do Word não substitui a sua releitura? Dê um exemplo.','Ele não entende o contexto: “Vou concertar o carro” (deveria ser consertar) pode passar, pois ambas existem.'],
+['Explique o que são Estilos de Título e duas vantagens de usá-los.','Formatações padronizadas para títulos (Título 1, Título 2). Vantagens: padrão visual em todo o documento e geração de sumário automático/navegação.'],
+['Liste 5 itens que devem estar num currículo de uma página e 2 que devem ficar de fora.','Dentro: nome/contato, objetivo, formação, experiência, habilidades. Fora: informações irrelevantes para a vaga, excesso de detalhes pessoais, fotos inadequadas.'],
+['Escreva 3 configurações de impressão que economizam papel ou tinta.','Imprimir só as páginas necessárias; frente e verso ou várias páginas por folha; preto e branco.']],
+F:[
+['Atalho para recortar?','Ctrl+X.'],
+['Atalho para localizar no Word em português?','Ctrl+L.'],
+['Atalho para substituir?','Ctrl+U.'],
+['Atalho para negrito no Word em português?','Ctrl+N.'],
+['Atalho para salvar no Word em português?','Ctrl+B.'],
+['Onde fica o Editor (ortografia e gramática)?','Na guia Revisão.'],
+['Comando para continuar o texto na próxima coluna?','Layout > Quebras > Coluna.'],
+['O que o número de página no rodapé faz quando você adiciona páginas?','Atualiza sozinho.'],
+['Para que servem Título 1 e Título 2?','Hierarquia de títulos e base para sumário automático.'],
+['Atalho para abrir a tela de impressão?','Ctrl+P.']],
+V:[
+['Copiar remove o texto do local original.',false,'Quem remove é Recortar; Copiar mantém o original.'],
+['Ctrl+Z desfaz a última ação.',true,'É o atalho de desfazer.'],
+['Substituir Tudo pode alterar ocorrências que você não queria.',true,'Por isso é importante revisar antes.'],
+['O corretor do Word entende perfeitamente o contexto de todas as frases.',false,'Ele ajuda, mas pode deixar passar erros de sentido.'],
+['O cabeçalho repete a informação em todas as páginas.',true,'Essa é a função do cabeçalho e do rodapé.'],
+['Colunas muito estreitas facilitam a leitura de textos longos.',false,'Colunas estreitas quebram muito as linhas e cansam o leitor.'],
+['Usar muitas cores e bordas grossas deixa a página mais profissional.',false,'O excesso polui; destaque pouco e com propósito.'],
+['A visualização de impressão ajuda a evitar desperdício de papel.',true,'Você confere o resultado antes de imprimir.'],
+['Estilos de Título permitem criar sumário automático.',true,'O sumário lê os títulos formatados com estilos.'],
+['Ctrl+I aplica itálico.',true,'I de itálico.'],
+['Um currículo deve ter o maior número possível de páginas.',false,'Um currículo objetivo, de preferência em uma página, é mais eficaz.'],
+['Exportar o currículo em PDF preserva a formatação para o recrutador.',true,'O PDF mantém o visual em qualquer computador.']],
+Q:[
+['Para mover um parágrafo para o fim do documento:',['Ctrl+C e Ctrl+V','Ctrl+X e Ctrl+V','Ctrl+Z','Ctrl+P'],1,'Recortar e colar move o conteúdo.'],
+['Qual comando troca “cliente” por “aluno” em todo o texto?',['Localizar','Substituir','Colunas','Estilos'],1,'Substituir troca um termo por outro.'],
+['O sublinhado ondulado vermelho indica geralmente:',['Erro de ortografia','Hiperlink','Comentário','Estilo aplicado'],0,'Vermelho costuma indicar ortografia; azul, gramática/clareza.'],
+['O número da página deve ficar preferencialmente:',['No meio do texto','No cabeçalho ou rodapé','Em uma tabela','Em comentário'],1,'Cabeçalho/rodapé repetem em todas as páginas.'],
+['Onde ficam as opções de colunas?',['Inserir','Layout','Revisão','Exibir'],1,'Layout > Colunas.'],
+['Para destacar um aviso dentro do documento:',['Sombreamento e Bordas','Remover formatação','Excluir parágrafo','Zoom'],0,'Fundo claro + borda criam uma caixa de destaque.'],
+['Qual estilo usar em uma subseção?',['Normal','Título 1','Título 2','Citação'],2,'Título 2 marca subseções.'],
+['Ctrl+T no Word em português:',['Abre tabela','Seleciona tudo','Salva','Imprime'],1,'Ctrl+T seleciona todo o documento.'],
+['Qual item NÃO deve estar no checklist do currículo?',['Uma página','Fonte legível','Informações atualizadas','Erros de digitação'],3,'O currículo deve estar sem erros.'],
+['Qual atalho sublinha no Word em português?',['Ctrl+U','Ctrl+S','Ctrl+N','Ctrl+B'],1,'Em português, Ctrl+S é sublinhado; Ctrl+U é substituir.']],
+P:[
+{t:'Currículo para o primeiro emprego',cen:'Um colega vai concorrer a uma vaga de Auxiliar Administrativo e tem um currículo de três páginas, cheio de erros e sem padrão.',perg:['O que o recrutador precisa ver primeiro?','O que pode sair sem prejuízo?','Como garantir padrão visual nos títulos?'],tarefas:['No caderno, liste o que manter e o que cortar','Crie o currículo com Estilos de Título','Use marcadores em Habilidades e Experiência','Revise com o Editor e releia em voz alta','Use Localizar/Substituir para padronizar termos','Exporte em PDF em uma página'],entrega:'Curriculo_Nome.pdf (1 página)',rub:['Uma página e objetivo (2 pts)','Estilos de título aplicados (2 pts)','Marcadores e negrito com propósito (2 pts)','Sem erros (2 pts)','PDF entregue (2 pts)']},
+{t:'Informativo do grêmio',cen:'O grêmio estudantil quer um informativo de 2 páginas no estilo jornalzinho, com número de página e um aviso destacado.',perg:['Por que colunas ajudam num informativo?','O que vai no cabeçalho?'],tarefas:['Planeje as seções no caderno','Use duas colunas no corpo','Crie cabeçalho com nome do grêmio e rodapé numerado','Destaque um aviso com bordas e sombreamento','Visualize a impressão e ajuste'],entrega:'Informativo_Gremio.pdf',rub:['Colunas bem usadas (3 pts)','Cabeçalho e rodapé (2 pts)','Aviso destacado com equilíbrio (2 pts)','Pronto para impressão (3 pts)']}]
+});
+
+/* ============ MÓDULO 5 — EXCEL PRODUTIVO ============ */
+M({id:5, app:'excel', title:'Excel Produtivo', sub:'Listas, validação, porcentagens e funções condicionais', pages:'41–50',
+L:[
+['Mantenha os títulos sempre visíveis','Exibir > Congelar Painéis: Congelar Linha Superior (títulos), Congelar Primeira Coluna (nomes) ou Congelar Painéis (linhas e colunas escolhidas).','Para voltar ao normal, use Exibir > Congelar Painéis > Descongelar Painéis.','Crie uma lista com 20 linhas e mantenha o cabeçalho visível durante a rolagem.'],
+['Crie uma lista de opções na célula','Selecione as células, Dados > Validação de Dados > Permitir: Lista, e digite as opções separadas por ponto e vírgula (Pendente;Em andamento;Concluído).','Use opções curtas e fáceis de identificar.','Crie uma coluna Situação com as opções Pago e Pendente.'],
+['Remova dados repetidos com segurança','Faça uma cópia da planilha, selecione a tabela, Dados > Remover Duplicatas, marque as colunas que devem ser comparadas e confirme.','Se marcar apenas Nome, pessoas diferentes com o mesmo nome podem ser removidas.','Digite uma lista com dois nomes repetidos e remova as duplicatas.'],
+['Calcule porcentagens sem complicação','10% de 200: =200*10%. Preço com desconto de 10%: =200*(1-10%). Aumento de 15%: =100*(1+15%). 10% também pode ser representado por 0,10.','Formate a célula da taxa como Porcentagem.','Calcule 20% de R$ 150,00 e depois o preço com desconto.'],
+['Conte quantas vezes uma condição aparece','=CONT.SE(B2:B6;"Pago"): o intervalo analisado e a condição procurada. Retorna a quantidade encontrada.','Quando a condição é texto, use aspas.','Crie uma lista com Presente e Ausente e conte quantos estão presentes.'],
+['Some apenas os valores de uma categoria','=SOMASE(A2:A6;"Alimentação";B2:B6): onde procurar a categoria, a condição e os valores a somar.','Os dois intervalos precisam ter o mesmo número de linhas.','Crie uma lista de despesas e some somente os valores de Transporte.'],
+['Fixe uma célula com o sinal de dólar','Referência relativa muda quando você arrasta (A2, A3, A4...). Referência absoluta ($F$2) permanece igual. F4 alterna entre os tipos.','Pressione F4 após clicar na referência dentro da fórmula.','Calcule a comissão de 5% para vários valores usando uma taxa fixa.'],
+['Imprima a planilha em uma página','Layout da Página: Orientação, Área de Impressão, Dimensionar para Ajustar (Largura e Altura em 1 página). Retrato para tabelas com poucas colunas; Paisagem para muitas colunas.','Se o texto ficar pequeno demais, use 1 página de largura e deixe a altura automática.','Configure uma tabela com 8 colunas para caber em uma página no modo Paisagem.'],
+['Atividade guiada: controle de estoque','Colunas Produto, Entrada, Saída, Estoque atual (=B2-C2) e Status. Use formatação condicional para destacar estoques menores que o mínimo (ex.: REPOR).','Use uma coluna para alertas e observe o resultado na tela.','Monte o estoque com 5 produtos e destaque os itens a repor.'],
+['Guia rápido de fórmulas do Excel','=A1+B1, =A1-B1, =A1*B1, =A1/B1, =SOMA(A1:A10), =MÉDIA(A1:A10), =MÍNIMO, =MÁXIMO, =CONT.SE(A1:A10;"Pago"). Símbolos: = inicia, : intervalo, ; separa argumentos, $ fixa, " " indica texto.','Clique em uma célula e observe a fórmula na barra de fórmulas.','Em uma coluna com 10 despesas, calcule soma, média, menor e maior valor.']],
+C:[
+['Explique quando usar Congelar Linha Superior, Congelar Primeira Coluna e Congelar Painéis.','Linha Superior: manter cabeçalho visível ao rolar para baixo. Primeira Coluna: manter nomes visíveis ao rolar para a direita. Painéis: ambos, a partir da célula selecionada.'],
+['Calcule à mão e escreva a fórmula: (a) 15% de R$ 300; (b) R$ 300 com 15% de desconto; (c) R$ 300 com aumento de 15%.','(a) =300*15% = 45; (b) =300*(1-15%) = 255; (c) =300*(1+15%) = 345.'],
+['Escreva a fórmula CONT.SE que conta quantos “Pendente” existem em C2:C20 e a SOMASE que soma os valores de D2:D20 quando C for “Pago”.','=CONT.SE(C2:C20;"Pendente") e =SOMASE(C2:C20;"Pago";D2:D20).'],
+['Explique com um desenho por que a fórmula =B2*F2 dá errado ao arrastar para baixo e como corrigir.','Ao arrastar, F2 vira F3, F4... (vazias). Corrige com referência absoluta: =B2*$F$2 (F4 alterna).'],
+['Por que fazer uma cópia antes de Remover Duplicatas? Que erro pode acontecer se marcar só a coluna Nome?','A remoção é definitiva; a cópia é segurança. Marcando só Nome, pessoas diferentes com nomes iguais seriam apagadas.'],
+['Desenhe o controle de estoque com 3 produtos e escreva a fórmula do estoque atual e a regra de alerta.','Estoque = Entrada − Saída (=B2-C2). Alerta: Formatação Condicional > Realçar regras > É menor do que (estoque mínimo), ou =SE(D2<10;"REPOR";"OK").']],
+F:[
+['Onde fica Congelar Painéis?','Guia Exibir.'],
+['Caminho para criar lista suspensa?','Dados > Validação de Dados > Lista.'],
+['Fórmula para 10% de 200?','=200*10% (resultado 20).'],
+['Fórmula de preço com 10% de desconto?','=200*(1-10%).'],
+['Função que conta células com uma condição?','CONT.SE.'],
+['Função que soma por categoria?','SOMASE.'],
+['O que $F$2 significa?','Referência absoluta: não muda ao arrastar.'],
+['Tecla que alterna tipos de referência?','F4.'],
+['Para que serve o ponto e vírgula nas fórmulas em português?','Separar argumentos.'],
+['Como encaixar a planilha em uma página de largura?','Layout da Página > Dimensionar para Ajustar > Largura: 1 página.']],
+V:[
+['Congelar Linha Superior mantém os títulos visíveis ao rolar para baixo.',true,'É exatamente a função desse comando.'],
+['Validação de dados por lista evita digitações diferentes da mesma informação.',true,'A pessoa escolhe entre opções padronizadas.'],
+['Remover Duplicatas pode ser desfeito a qualquer momento depois de fechar o arquivo.',false,'Depois de salvar e fechar, não há como desfazer; por isso a cópia.'],
+['=200*(1-10%) resulta em 180.',true,'200 × 0,9 = 180.'],
+['10% e 0,10 representam o mesmo valor.',true,'Percentual é uma fração de 100.'],
+['Em CONT.SE, a condição de texto deve ficar entre aspas.',true,'Ex.: "Pago".'],
+['Em SOMASE, os intervalos de critério e de soma podem ter tamanhos diferentes.',false,'Devem ter o mesmo número de linhas para corresponder corretamente.'],
+['Uma referência relativa nunca muda quando a fórmula é arrastada.',false,'A relativa muda; a absoluta ($) não muda.'],
+['Paisagem é recomendada para tabelas com muitas colunas.',true,'A largura extra comporta mais colunas.'],
+['Estoque atual é calculado por Entrada + Saída.',false,'É Entrada − Saída.'],
+['Formatação condicional pode destacar produtos com estoque baixo.',true,'Ela muda cor conforme uma regra.'],
+['Os dois-pontos em A1:A10 indicam intervalo.',true,'De A1 até A10.']],
+Q:[
+['Qual comando mantém a coluna de nomes visível ao rolar para a direita?',['Congelar Linha Superior','Congelar Primeira Coluna','Remover Duplicatas','Filtro'],1,'A primeira coluna fica fixa.'],
+['Na Validação de Dados, as opções da lista são separadas por:',['vírgula sempre','ponto e vírgula','hífen','barra'],1,'No Excel em português usa-se ponto e vírgula.'],
+['Qual fórmula calcula um aumento de 15% sobre A2?',['=A2*15%','=A2*(1+15%)','=A2+15','=A2/15%'],1,'Multiplicar por 1,15 aplica o aumento.'],
+['=CONT.SE(B2:B6;"Pago") retorna:',['A soma dos pagos','A quantidade de “Pago”','O primeiro “Pago”','Erro'],1,'CONT.SE conta.'],
+['=SOMASE(A2:A6;"Alimentação";B2:B6) soma:',['Todos os valores','Só os valores de Alimentação','As categorias','A média'],1,'Soma B onde A = Alimentação.'],
+['Para fixar a taxa em F2 ao arrastar a fórmula:',['F2','$F$2','F$','#F2'],1,'$F$2 trava coluna e linha.'],
+['O estoque mínimo é 10 e o atual 8. A fórmula =SE(D2<10;"REPOR";"OK") mostra:',['OK','REPOR','8','#VALOR!'],1,'8 < 10 é verdadeiro.'],
+['Qual símbolo inicia uma fórmula?',['$','=',':','"'],1,'Toda fórmula começa com =.'],
+['Para imprimir uma tabela larga em uma folha:',['Retrato e 200%','Paisagem e ajustar largura a 1 página','Fonte 4 pt','Ocultar colunas'],1,'Paisagem + dimensionar para ajustar.'],
+['20% de R$ 150,00 é:',['R$ 20,00','R$ 30,00','R$ 120,00','R$ 170,00'],1,'150 × 0,2 = 30.']],
+P:[
+{t:'Estoque da cantina escolar',cen:'A cantina perde vendas porque produtos acabam sem aviso. A responsável anota entradas e saídas em um caderno.',perg:['Que informação dispara o pedido de reposição?','Como impedir que alguém escreva “refri”, “Refrigerante” e “REFRI” para o mesmo produto?','Como contar quantos itens precisam ser repostos?'],tarefas:['Defina no caderno as colunas e o estoque mínimo de cada produto','Monte a planilha com 8 produtos','Use lista suspensa para Categoria','Calcule Estoque = Entrada − Saída','Use SE e formatação condicional para REPOR','Use CONT.SE para contar itens a repor','Congele o cabeçalho e configure impressão em 1 página'],entrega:'Estoque_Cantina.xlsx + relatório curto no caderno',rub:['Estrutura e validação (2 pts)','Fórmulas corretas (3 pts)','Alerta visual (2 pts)','CONT.SE correto (1 pt)','Pronta para impressão (2 pts)']},
+{t:'Comissão dos vendedores',cen:'Uma loja paga 5% de comissão sobre as vendas, mas a taxa pode mudar no próximo mês. Hoje o cálculo é feito à mão.',perg:['Onde guardar a taxa para mudá-la em um só lugar?','Como somar as vendas por vendedor?'],tarefas:['Coloque a taxa numa célula própria (ex.: F2)','Calcule a comissão com referência absoluta','Use SOMASE para total por vendedor','Teste mudando a taxa para 7%','Remova vendas duplicadas em uma cópia'],entrega:'Comissoes.xlsx',rub:['Uso correto de $ (3 pts)','SOMASE (3 pts)','Teste de mudança de taxa documentado (2 pts)','Dados limpos (2 pts)']}]
+});
+
+/* ============ MÓDULO 6 — POWERPOINT PRODUTIVO ============ */
+M({id:6, app:'ppt', title:'PowerPoint Produtivo', sub:'Slide Mestre, diagramas, contraste e gráficos', pages:'51–60',
+L:[
+['Escolha o layout certo para cada slide','Slide de Título para abertura; Título e Conteúdo para explicação; Duas Partes para comparação; Em Branco para criação livre. Página Inicial > Layout troca o layout de um slide existente.','Escolha o layout antes de inserir os elementos para economizar tempo.','Crie quatro slides usando um layout diferente em cada um.'],
+['Use o Slide Mestre para manter o padrão','Exibir > Slide Mestre. Altere fontes, cores, rodapé e posição do logotipo no slide mestre e o ajuste vale para todos os slides. Feche com Fechar Modo de Exibição Mestre.','Faça ajustes globais antes de começar os slides.','Crie um padrão com título azul, fonte única e logotipo no canto.'],
+['Alinhe e distribua os elementos','Selecione os objetos (Shift ou Ctrl + clique), Formato da Forma > Alinhar. ALINHAR = mesma linha; DISTRIBUIR = mesmo espaço entre objetos.','Use Exibir > Guias para posicionar elementos com mais precisão.','Alinhe três imagens e distribua igualmente.'],
+['Recorte imagens no formato que quiser','Formato da Imagem > Cortar remove excessos. Cortar para Demarcar Forma transforma a foto em círculo, quadrado e outras formas. Proporção 1:1 mantém o quadrado perfeito.','Não estique a imagem pelas laterais; use as alças dos cantos.','Transforme uma foto retangular em um círculo.'],
+['Crie diagramas com formas e ícones','Inserir > Formas e Inserir > Ícones. Exemplo: processo em 3 etapas (Planejar → Criar → Apresentar). Agrupe para mover tudo junto.','Use no máximo 3 cores para manter o diagrama claro.','Crie um processo de 4 etapas com formas e ícones.'],
+['Melhore a leitura com contraste','Fundo branco + texto azul escuro: ótimo. Fundo azul escuro + texto branco: ótimo. Amarelo sobre branco ou vermelho sobre vermelho: ruim. Título 32 pt ou mais; corpo 20 pt ou mais.','Negrito ajuda nos destaques, mas não em todo o texto.','Corrija um slide de baixo contraste.'],
+['Transforme números em gráficos','Inserir > Gráfico > Colunas. Substitua os dados na planilha que abre. Colunas comparam valores; Linhas mostram evolução; Pizza mostra partes de um total.','Destaque apenas o dado mais importante com cor diferente.','Crie um gráfico de colunas com vendas de jan a jun.'],
+['Use anotações sem lotar o slide','O texto detalhado vai no painel de anotações; o slide fica com a mensagem visual. Use o Modo de Exibição do Apresentador para ler as anotações durante a fala.','As anotações ajudam a lembrar, mas não substituem o ensaio.','Escreva 3 lembretes nas anotações de um slide.'],
+['Atividade guiada: apresentação em 5 slides','Capa, Problema, Solução, Resultados, Encerramento. Um tema, uma ideia principal por slide, imagens e ícones coerentes e ensaio cronometrado.','Faça um ensaio com cronômetro antes de apresentar.','Apresente em até 5 minutos.'],
+['Checklist final antes de apresentar','Conteúdo (objetivo claro, textos curtos, ortografia), Design (fontes legíveis, contraste, alinhamento), Mídia (imagens nítidas, vídeos e áudios testados), Apresentação (ordem, anotações, tempo) e Arquivo (PPTX, PDF, cópia em pendrive ou nuvem).','Teste a apresentação no computador e no projetor que serão usados.','Marque cada item do checklist e faça um ensaio completo.']],
+C:[
+['Explique o que é o Slide Mestre e cite 3 elementos que você colocaria nele.','É o modelo que controla o visual de todos os slides. Elementos: fonte/cores dos títulos, logotipo, rodapé com data ou nome do evento.'],
+['Desenhe dois slides: um com baixo contraste e outro corrigido. Indique as cores usadas.','Ruim: texto amarelo sobre fundo branco. Corrigido: texto azul escuro sobre fundo branco (ou branco sobre azul escuro).'],
+['Qual a diferença entre Alinhar e Distribuir? Faça um esquema com 3 retângulos.','Alinhar coloca os objetos na mesma linha/borda; Distribuir iguala os espaços entre eles.'],
+['Para cada conjunto de dados, indique o gráfico: (a) vendas por mês no semestre; (b) votos por candidato da chapa; (c) percentual de cada despesa.','(a) Linhas ou colunas para evolução; (b) Colunas para comparar; (c) Pizza para partes do todo.'],
+['Escreva o roteiro (1 frase por slide) de uma apresentação Problema-Solução em 5 slides.','Capa: nome do projeto. Problema: o que precisa melhorar. Solução: a proposta. Resultados: impacto esperado com números. Encerramento: próximos passos e agradecimento.'],
+['Transforme seu checklist final em 5 perguntas que você faria a si mesmo antes de apresentar.','Ex.: A mensagem está clara? Dá para ler do fundo da sala? As mídias funcionam no computador do evento? Cabe no tempo? Tenho cópia em PDF/pendrive?']],
+F:[
+['Caminho para o Slide Mestre?','Exibir > Slide Mestre.'],
+['Alinhar x Distribuir?','Alinhar = mesma linha; Distribuir = mesmo espaço entre objetos.'],
+['Como transformar foto em círculo?','Cortar > Cortar para Demarcar Forma > Elipse (proporção 1:1).'],
+['Tamanho de título recomendado?','32 pt ou mais.'],
+['Tamanho de corpo recomendado?','20 pt ou mais.'],
+['Quantas cores no máximo em um diagrama?','Cerca de 3.'],
+['Onde colocar o texto detalhado da fala?','No painel de anotações.'],
+['Gráfico para evolução ao longo do tempo?','Linhas.'],
+['Estrutura de 5 slides da atividade guiada?','Capa, Problema, Solução, Resultados, Encerramento.'],
+['Duas cópias seguras do arquivo final?','PPTX + PDF (em pendrive ou nuvem).']],
+V:[
+['Alterações no Slide Mestre se aplicam a todos os slides que usam aquele layout.',true,'É a função do mestre.'],
+['É melhor ajustar o padrão visual só depois de terminar todos os slides.',false,'Ajustes globais no início evitam retrabalho.'],
+['Distribuir deixa espaços iguais entre os objetos.',true,'Distribuir equaliza os intervalos.'],
+['Cortar para Demarcar Forma deforma a foto.',false,'Ele recorta no formato; a foto mantém proporção se ajustada corretamente.'],
+['Amarelo sobre fundo branco é uma combinação de alto contraste.',false,'É baixo contraste, difícil de ler.'],
+['Usar negrito em todo o texto é a melhor forma de destacar.',false,'Destacar tudo é o mesmo que não destacar nada.'],
+['Gráfico de pizza é ideal para mostrar partes de um total.',true,'As fatias representam as proporções.'],
+['As anotações substituem o ensaio da apresentação.',false,'Elas ajudam a lembrar, mas o ensaio continua necessário.'],
+['O Modo de Exibição do Apresentador mostra as anotações só para quem apresenta.',true,'O público vê apenas o slide.'],
+['Uma ideia principal por slide facilita a compreensão.',true,'Foco reduz a carga para o público.'],
+['Testar vídeos e áudios no computador do evento é desnecessário.',false,'Codecs e caminhos podem falhar; teste sempre.'],
+['Agrupar formas facilita mover um diagrama inteiro.',true,'O grupo se move como um único objeto.']],
+Q:[
+['Para colocar o logotipo em todos os slides de uma vez:',['Copiar em cada slide','Slide Mestre','Transição','Painel de Animação'],1,'O mestre replica em todos.'],
+['Três ícones devem ficar com espaços iguais entre si. Use:',['Alinhar à Esquerda','Distribuir Horizontalmente','Agrupar','Cortar'],1,'Distribuir iguala os espaços.'],
+['Qual combinação tem melhor contraste?',['Cinza claro em branco','Azul escuro em branco','Vermelho em vermelho','Amarelo em branco'],1,'Escuro sobre claro.'],
+['Vendas de janeiro a junho, para mostrar tendência:',['Pizza','Linhas','Rosca','Nenhum'],1,'Linhas mostram evolução no tempo.'],
+['Onde colocar os detalhes que você vai falar?',['No título','Nas anotações','No rodapé','Em uma caixa de texto pequena'],1,'Painel de anotações.'],
+['Slide de abertura usa o layout:',['Duas Partes','Slide de Título','Em Branco','Somente Conteúdo'],1,'Slide de Título abre a apresentação.'],
+['Para recortar uma foto em formato de círculo perfeito:',['Esticar','Cortar para Demarcar Forma + proporção 1:1','Girar','Agrupar'],1,'Forma elipse + 1:1.'],
+['Qual item pertence à categoria “Arquivo” do checklist?',['Fontes legíveis','Salvar em PPTX e PDF','Objetivo claro','Imagens nítidas'],1,'Arquivo trata de formatos e cópias.'],
+['O gráfico ideal para destacar o melhor mês é:',['Todas as colunas em cores diferentes','Uma coluna em cor de destaque','Gráfico 3D com sombra','Sem rótulos'],1,'Destaque só o dado importante.'],
+['Quantos minutos tem a atividade guiada de 5 slides?',['Até 1','Até 5','Até 20','Sem limite'],1,'A proposta é apresentar em até 5 minutos.']],
+P:[
+{t:'Proposta para a direção',cen:'Sua equipe quer convencer a direção a criar um laboratório maker. Vocês terão 5 minutos na reunião e a direção recebe muitos pedidos.',perg:['Qual problema concreto o laboratório resolve?','Que número convence mais?','Que estrutura de slides conduz à decisão?'],tarefas:['Escreva no caderno o problema, a solução e 2 dados','Crie o Slide Mestre com fonte, cores e logotipo','Monte os 5 slides (Capa, Problema, Solução, Resultados, Encerramento)','Crie um diagrama em 3 etapas e um gráfico','Coloque a fala nas anotações','Passe pelo checklist final e cronometre'],entrega:'Proposta_Maker.pptx + PDF',rub:['Narrativa problema→solução (2 pts)','Slide Mestre aplicado (2 pts)','Contraste e legibilidade (2 pts)','Gráfico/diagrama claros (2 pts)','Tempo e anotações (2 pts)']},
+{t:'Conserte o slide feio',cen:'O professor entregou um slide com 12 linhas de texto, fonte 14, amarelo no branco, 3 imagens esticadas e 5 cores.',perg:['Quais regras estão sendo violadas?','Quanto do texto pode ir para as anotações?'],tarefas:['Liste no caderno todos os problemas','Reduza o texto a 3 tópicos','Ajuste contraste e tamanhos','Recorte imagens sem deformar e alinhe','Mova o detalhamento para as anotações'],entrega:'Slide antes/depois + lista de correções',rub:['Diagnóstico completo (3 pts)','Texto enxuto (2 pts)','Contraste e tamanhos corretos (2 pts)','Imagens e alinhamento (3 pts)']}]
+});
+
+/* ============ MÓDULO 7 — WORD PROFISSIONAL ============ */
+M({id:7, app:'word', title:'Word Profissional', sub:'Sumário, revisão colaborativa, mala direta e relatórios', pages:'61–70',
+L:[
+['Adicione cabeçalho e rodapé','Inserir > Cabeçalho ou Rodapé > escolha um modelo > digite > Fechar. Marque Primeira Página Diferente para que a capa não tenha cabeçalho.','Cabeçalho e rodapé ajudam a manter o documento organizado e padronizado.','Insira o nome do curso no cabeçalho e a data no rodapé.'],
+['Numere as páginas automaticamente','Inserir > Número de Página > escolha a posição (Início, Fim, Margens) e o estilo. Formatar Números de Página define o formato e o número inicial.','Para ocultar o número da capa, ative Primeira Página Diferente.','Numere um documento de quatro páginas no rodapé central.'],
+['Crie um sumário automático','1) Aplique Título 1, Título 2 e Título 3. 2) Referências > Sumário > Sumário Automático. 3) Após mudanças, Atualizar Sumário.','O Word só reconhece títulos formatados com estilos.','Crie três títulos e duas subseções e insira o sumário.'],
+['Divida o texto em colunas','Layout > Mais Colunas permite definir quantidade, largura e espaçamento e linha entre colunas. Use Quebra de Coluna para controlar onde o texto continua.','Colunas funcionam melhor com fonte legível e parágrafos curtos.','Transforme um texto de duas páginas em duas colunas.'],
+['Revise ortografia e gramática','Revisão > Editor: ortografia (sublinhado vermelho), gramática (azul duplo), clareza. Confirme o idioma Português (Brasil) em Revisão > Idioma.','Leia a frase completa antes de aceitar uma sugestão.','Corrija um texto com 3 erros intencionais.'],
+['Faça revisões com comentários','Revisão > Novo Comentário marca trechos sem alterar o texto. Controlar Alterações registra cada edição para aceitar ou rejeitar depois. Responder e Resolver encerram a conversa.','Remova os comentários e aceite ou rejeite as alterações antes da versão final.','Adicione dois comentários em um texto.'],
+['Crie documentos personalizados com Mala Direta','Prepare uma lista no Excel (Nome, Curso, Data). No Word: Correspondências > Iniciar Mala Direta > Selecionar Destinatários > Inserir Campo de Mesclagem > Visualizar > Concluir e Mesclar.','Revise a lista no Excel antes de mesclar: erros nos dados se repetem em todos os documentos.','Crie três certificados com nomes diferentes.'],
+['Monte um currículo claro e profissional','Nome e contato, resumo profissional curto, experiências (mais recentes primeiro), formação e cursos, habilidades. Evite foto sem solicitação, informações falsas, excesso de cores e erros de português.','Use no máximo duas fontes e salve uma cópia em PDF antes de enviar.','Crie seu currículo em uma página usando títulos e listas.'],
+['Atividade guiada: relatório de uma página','Configure margens, título e subtítulo, introdução, tabela de atividades, imagem com legenda, conclusão e revisão final (checklist: alinhamento, fonte, espaçamento, tabela, ortografia).','Salve em DOCX para continuar editando e exporte em PDF para enviar.','Escreva um relatório de atividades de uma página.'],
+['Guia rápido de atalhos do Word','Ctrl+N negrito, Ctrl+I itálico, Ctrl+S sublinhado, Ctrl+C copiar, Ctrl+V colar, Ctrl+X recortar, Ctrl+Z desfazer, Ctrl+Y refazer, Ctrl+T selecionar tudo, Ctrl+L localizar, Ctrl+P imprimir, Ctrl+B salvar, Ctrl+Enter quebra de página, F7 verificar ortografia, Shift+F3 alternar maiúsculas e minúsculas.','Alguns atalhos podem variar conforme o idioma do Office.','Use cinco atalhos enquanto edita um texto.']],
+C:[
+['Explique por que o sumário automático não aparece quando os títulos foram formatados só com negrito e tamanho 16.','O sumário lê estilos de título (Título 1, 2, 3). Negrito manual não é reconhecido como título.'],
+['Descreva o passo a passo para que a capa não tenha número de página, mas as demais páginas tenham.','Inserir número de página > ativar Primeira Página Diferente nas ferramentas de cabeçalho/rodapé (e ajustar Formatar Números para iniciar onde desejar).'],
+['Qual a diferença entre um comentário e uma alteração controlada? Dê um exemplo de uso em um trabalho em grupo.','Comentário: observação sem mudar o texto (“falta fonte aqui”). Alteração controlada: edição registrada que pode ser aceita/rejeitada (troca de uma palavra).'],
+['Liste as 5 etapas da Mala Direta para gerar certificados.','1) Lista no Excel; 2) Iniciar Mala Direta; 3) Selecionar Destinatários; 4) Inserir Campos de Mesclagem; 5) Visualizar Resultados e Concluir e Mesclar.'],
+['Monte o esqueleto de um relatório de uma página com as seções e o que vai em cada uma.','Título/subtítulo; introdução (objetivo); tabela de atividades (atividade, responsável, status); imagem com legenda; conclusão com próximos passos.'],
+['Escreva 6 atalhos que você mais usaria e por quê.','Resposta pessoal. Ex.: Ctrl+B (salvar sempre), Ctrl+Z (corrigir), Ctrl+C/V (reaproveitar), Ctrl+Enter (nova página limpa), F7 (revisão), Ctrl+L (achar trechos).']],
+F:[
+['Onde se insere o sumário?','Referências > Sumário.'],
+['O que fazer após mudar títulos?','Atualizar Sumário.'],
+['Opção que tira o cabeçalho da capa?','Primeira Página Diferente.'],
+['Sublinhado azul duplo indica…','Possível problema de gramática ou clareza.'],
+['Comando que registra cada edição?','Controlar Alterações.'],
+['Guia da Mala Direta?','Correspondências.'],
+['Atalho de quebra de página?','Ctrl+Enter.'],
+['Atalho para verificar ortografia?','F7.'],
+['Atalho para alternar maiúsculas e minúsculas?','Shift+F3.'],
+['Ordem das experiências no currículo?','Das mais recentes para as mais antigas.']],
+V:[
+['O sumário automático reconhece títulos formatados manualmente com negrito.',false,'Ele só reconhece estilos de título.'],
+['O sumário precisa ser atualizado depois de mudanças nos títulos ou páginas.',true,'Use Atualizar Sumário.'],
+['Primeira Página Diferente permite capa sem número.',true,'A primeira página fica com cabeçalho/rodapé próprios.'],
+['Comentários alteram o texto do documento.',false,'Comentários apenas anotam; não mudam o texto.'],
+['Com Controlar Alterações, é possível aceitar ou rejeitar cada edição.',true,'Essa é a vantagem de registrar as alterações.'],
+['Na Mala Direta, revisar a lista do Excel antes de mesclar evita levar erros para os documentos.',true,'Cada documento é gerado a partir de uma linha da lista: dado errado na lista vira documento errado.'],
+['A Mala Direta pode gerar certificados, etiquetas e cartas.',true,'Ela personaliza vários documentos a partir de uma lista.'],
+['Em um currículo, incluir foto é sempre obrigatório.',false,'Inclua foto só quando solicitado.'],
+['Ctrl+Enter insere uma quebra de página.',true,'Começa uma nova página limpa.'],
+['F7 abre a verificação de ortografia.',true,'Atalho clássico do Word.'],
+['O idioma do texto influencia a correção ortográfica.',true,'Com idioma errado, o Word marca palavras corretas como erro.'],
+['O relatório final deve ser enviado preferencialmente em PDF.',true,'O PDF preserva a formatação.']],
+Q:[
+['Antes de inserir um sumário automático, você precisa:',['Numerar manualmente','Aplicar Estilos de Título','Inserir colunas','Criar tabela'],1,'Os estilos alimentam o sumário.'],
+['Para a capa ficar sem cabeçalho:',['Apagar o cabeçalho da capa','Primeira Página Diferente','Quebra de coluna','Inserir capa em outro arquivo'],1,'É a opção correta.'],
+['Você quer sugerir uma troca de palavra que o autor decida aceitar:',['Novo Comentário','Controlar Alterações','Substituir Tudo','Mala Direta'],1,'A alteração fica registrada para aceite/rejeição.'],
+['Qual fonte de dados é mais comum para a Mala Direta?',['Imagem','Planilha do Excel','Vídeo','Apresentação'],1,'Lista com colunas = campos.'],
+['O comando final da Mala Direta é:',['Concluir e Mesclar','Atualizar Sumário','Exportar vídeo','Proteger Planilha'],0,'Gera os documentos.'],
+['No currículo, o resumo profissional deve ser:',['Longo, uma página','Curto, 3 a 4 linhas','Em letras maiúsculas','Opcional sempre'],1,'Curto e objetivo.'],
+['Ctrl+Enter faz:',['Novo parágrafo','Quebra de página','Salvar','Centralizar'],1,'Insere quebra de página.'],
+['Para controlar onde o texto passa para a coluna seguinte:',['Quebra de Coluna','Quebra de Página','Enter várias vezes','Diminuir zoom'],0,'Quebra de Coluna.'],
+['O que deve ser feito com comentários antes da versão final?',['Deixar todos','Remover/resolver','Imprimir','Converter em imagem'],1,'Versão final sem marcações.'],
+['Shift+F3 em uma palavra selecionada:',['Apaga','Alterna maiúsculas/minúsculas','Sublinha','Copia'],1,'Alterna entre minúsculas, MAIÚSCULAS e Iniciais.']],
+P:[
+{t:'Certificados da Semana de Tecnologia',cen:'A coordenação precisa de 80 certificados com nome, curso e carga horária. Fazer um a um levaria um dia inteiro e geraria erros.',perg:['Que colunas a lista precisa ter?','Como conferir os dados antes de mesclar?','Como entregar em formato que não seja editado?'],tarefas:['Crie no Excel a lista (Nome, Curso, CH) com 10 participantes fictícios','Monte o modelo de certificado no Word','Insira os campos de mesclagem','Visualize os resultados e corrija a lista se preciso','Conclua e mescle em um documento novo','Exporte em PDF'],entrega:'Lista.xlsx + Modelo.docx + Certificados.pdf',rub:['Lista limpa e padronizada (2 pts)','Campos corretos (3 pts)','Visualização conferida (2 pts)','Documento final e PDF (3 pts)']},
+{t:'Relatório colaborativo da equipe',cen:'Três colegas escrevem um relatório de 6 páginas. Cada um muda o texto do outro sem avisar e ninguém sabe qual é a versão certa.',perg:['Como registrar as mudanças de cada um?','Como garantir sumário e numeração corretos no final?'],tarefas:['Ative Controlar Alterações','Faça 3 comentários e 3 alterações em duplas','Aceite/rejeite e resolva comentários','Aplique Títulos e insira sumário','Numere páginas com capa sem número','Revise com o Editor e exporte'],entrega:'Relatorio_Final.pdf + print do painel de revisões',rub:['Revisão colaborativa (3 pts)','Sumário atualizado (2 pts)','Numeração correta (2 pts)','Sem erros (1 pt)','Entrega em PDF (2 pts)']}]
+});
+
+/* ============ MÓDULO 8 — EXCEL PROFISSIONAL ============ */
+M({id:8, app:'excel', title:'Excel Profissional', sub:'Decisões, datas, textos, proteção e diagnóstico de erros', pages:'71–80',
+L:[
+['Tome decisões com a função SE','=SE(B2>=7;"APROVADO";"REPROVADO"). Teste lógico, valor se verdadeiro, valor se falso. Arraste a fórmula para aplicar nas demais células.','Textos dentro da fórmula precisam estar entre aspas.','Crie uma coluna Status que mostre "Meta atingida" quando as vendas forem maiores ou iguais a 1000.'],
+['Encontre o menor e o maior valor','=MÍNIMO(B2:B6) encontra o menor número; =MÁXIMO(B2:B6) o maior. Células vazias e textos são ignorados nessas funções.','Combine com formatação condicional para destacar os extremos.','Encontre o menor e o maior valor de despesa de uma lista com 8 valores.'],
+['Trabalhe com datas no Excel','Digite a data com barras, formate como Data. Datas são números, então =A2+B2 soma dias a uma data. =HOJE() retorna a data atual automaticamente.','Se a data aparecer como número, aplique o formato Data.','Calcule os vencimentos de três contas somando prazos em dias.'],
+['Junte textos de várias células','=A2&" "&B2 junta nome e sobrenome com espaço. =A5&"-"&B5 cria códigos (PED-105). Alternativa: =CONCAT(A2;" ";B2).','Qualquer separador digitado entre aspas aparece no resultado.','Una Cidade e Estado no formato "Barreiras - BA".'],
+['Classifique dados por mais de um critério','Dados > Classificar > Adicionar Nível. Ex.: primeiro por Categoria (A a Z), depois por Vendas (maior para o menor). Marque “Meus dados contêm cabeçalhos”.','Selecione toda a tabela para não separar linhas.','Organize alunos por Turma e depois por Nota.'],
+['Proteja fórmulas contra alterações','Todas as células começam Bloqueadas. Selecione as células de preenchimento, Ctrl+1 > Proteção > desmarque Bloqueadas. Depois Revisão > Proteger Planilha (senha opcional).','A opção Bloqueada só tem efeito quando a planilha está protegida.','Libere B2:C5 para preenchimento e proteja D2:D5 com fórmulas.'],
+['Mostre tendências com minigráficos','Inserir > Minigráficos > Linha, Coluna ou Ganhos/Perdas. Escolha o intervalo de dados e o local. São pequenos gráficos dentro de uma célula.','Use marcadores para destacar o maior e o menor ponto.','Crie minigráficos de linha para as vendas de quatro produtos.'],
+['Entenda os erros mais comuns','#DIV/0! divisão por zero ou célula vazia; #NOME? nome de função errado; #VALOR! tipo de dado incompatível; #REF! referência excluída ou inválida; ##### coluna estreita demais.','Clique na célula com erro e confira a fórmula na barra de fórmulas.','Identifique e corrija três erros em uma planilha fictícia.'],
+['Atividade guiada: orçamento mensal','Tabela de receitas e despesas, =SOMA para totais, saldo = receitas − despesas, formatação moeda, cores para alertas e gráfico de pizza das despesas.','Atualize a planilha toda semana para acompanhar o mês.','Crie seu orçamento mensal e um gráfico das despesas.'],
+['Guia rápido de atalhos do Excel','Ctrl+C/X/V/Z, Ctrl+Y refazer, Ctrl+B salvar, Ctrl+P imprimir, Ctrl+1 formatar células, F2 editar célula, F4 repetir ação ou alternar $, Ctrl+Setas ir ao limite, Ctrl+Shift+Setas selecionar até o limite, Ctrl+Espaço seleciona coluna, Shift+Espaço seleciona linha, Alt+= AutoSoma.','Alguns atalhos podem variar conforme o idioma e a versão do Excel.','Use cinco atalhos para organizar uma tabela.']],
+C:[
+['Escreva a fórmula SE que mostra "Meta atingida" quando C2 ≥ 1000 e "Abaixo da meta" caso contrário. Teste com 950 e 1200.','=SE(C2>=1000;"Meta atingida";"Abaixo da meta"). 950 → Abaixo da meta; 1200 → Meta atingida.'],
+['Uma conta foi emitida em 01/09/2026 com prazo de 30 dias. Escreva a fórmula do vencimento e o resultado.','=A2+B2 → 01/10/2026 (setembro tem 30 dias).'],
+['Escreva a fórmula que gera o código “PED-105” a partir de A5 = PED e B5 = 105, de duas formas.','=A5&"-"&B5 e =CONCAT(A5;"-";B5).'],
+['Explique, em ordem, como proteger as fórmulas e deixar só as células de entrada liberadas.','1) Selecionar células de entrada; 2) Ctrl+1 > Proteção > desmarcar Bloqueadas; 3) Revisão > Proteger Planilha; 4) senha opcional.'],
+['Para cada erro, escreva uma causa e a correção: #DIV/0!, #NOME?, #VALOR!, #REF!, #####.','#DIV/0!: divisor zero/vazio → preencher ou usar SE. #NOME?: função digitada errada → corrigir nome. #VALOR!: texto em conta → corrigir dado. #REF!: célula referenciada apagada → refazer referência. #####: coluna estreita → alargar.'],
+['Planeje no caderno seu orçamento mensal: liste 3 receitas, 6 despesas e escreva as fórmulas de total e saldo.','Ex.: =SOMA(B3:B5) receitas; =SOMA(E3:E8) despesas; saldo =B6-E9. Resposta pessoal nos valores.']],
+F:[
+['Função que retorna a data atual?','=HOJE().'],
+['Operador para juntar textos?','& (e comercial).'],
+['O que #DIV/0! indica?','Divisão por zero ou célula vazia no divisor.'],
+['O que ##### indica?','Coluna estreita demais para mostrar o valor.'],
+['O que #NOME? indica?','Nome de função ou texto não reconhecido (ex.: faltam aspas).'],
+['Atalho para Formatar Células?','Ctrl+1.'],
+['Atalho para editar a célula?','F2.'],
+['Atalho para AutoSoma?','Alt+=.'],
+['Onde fica Proteger Planilha?','Guia Revisão.'],
+['O que é minigráfico?','Um pequeno gráfico dentro de uma célula que mostra tendência.']],
+V:[
+['Datas no Excel são armazenadas como números.',true,'Por isso é possível somar dias a uma data.'],
+['=HOJE() precisa ser atualizada manualmente todos os dias.',false,'Ela se atualiza automaticamente ao abrir/recalcular.'],
+['=A2&" "&B2 junta duas células com um espaço entre elas.',true,'O espaço entre aspas é o separador.'],
+['Classificar por vários níveis permite ordenar por Categoria e depois por Vendas.',true,'Use Adicionar Nível.'],
+['A opção Bloqueada protege a célula mesmo sem proteger a planilha.',false,'Só tem efeito após Proteger Planilha.'],
+['Minigráficos ocupam uma única célula.',true,'São gráficos em miniatura dentro da célula.'],
+['O erro #REF! aparece quando uma célula usada na fórmula foi excluída.',true,'A referência ficou inválida.'],
+['##### significa que a fórmula está errada.',false,'Normalmente indica coluna estreita.'],
+['MÍNIMO e MÁXIMO consideram células com texto como zero.',false,'Textos e vazias são ignorados.'],
+['F4 pode alternar entre referências relativas e absolutas.',true,'Durante a edição da fórmula.'],
+['O saldo do orçamento é Receitas − Despesas.',true,'Diferença entre entradas e saídas.'],
+['Ctrl+Espaço seleciona a linha inteira.',false,'Ctrl+Espaço seleciona a coluna; Shift+Espaço, a linha.']],
+Q:[
+['=SE(C2>=1000;"Meta atingida";"") com C2 = 1000 retorna:',['Vazio','Meta atingida','1000','Erro'],1,'1000 ≥ 1000 é verdadeiro.'],
+['A2 = 15/09/2026 e B2 = 7. =A2+B2 resulta:',['22/09/2026','15/09/2033','22','Erro'],0,'Soma 7 dias.'],
+['Para unir “Barreiras” e “BA” como “Barreiras - BA”:',['=A2+B2','=A2&" - "&B2','=SOMA(A2;B2)','=A2-B2'],1,'Concatenação com separador.'],
+['Uma fórmula mostra #NOME?. Causa mais provável:',['Coluna estreita','Função escrita errada','Divisão por zero','Data inválida'],1,'Ex.: =SOMMA().'],
+['Uma célula mostra #DIV/0!. Você deve:',['Alargar a coluna','Verificar o divisor','Reescrever a função SOMA','Apagar a planilha'],1,'O divisor está zero/vazio.'],
+['Qual é a sequência correta para proteger só as fórmulas?',['Proteger e depois desbloquear entradas','Desbloquear entradas e depois Proteger Planilha','Ocultar colunas','Converter em PDF'],1,'Desbloqueia primeiro, protege depois.'],
+['Minigráfico ideal para mostrar meses com lucro e prejuízo:',['Linha','Coluna','Ganhos/Perdas','Pizza'],2,'Mostra positivo/negativo.'],
+['Atalho para selecionar até o fim dos dados:',['Ctrl+Shift+Setas','Alt+F4','Ctrl+1','F7'],0,'Seleciona até o limite.'],
+['No orçamento, o gráfico das despesas por tipo é melhor em:',['Pizza','Linha','Dispersão','Minigráfico de linha'],0,'Partes de um total.'],
+['Para ordenar por Turma e, dentro dela, por Nota:',['Filtro','Classificar com dois níveis','Remover Duplicatas','Congelar'],1,'Dois níveis de classificação.']],
+P:[
+{t:'Planilha de notas à prova de erros',cen:'Professores digitam notas numa planilha compartilhada e, sem querer, apagam fórmulas. Às vezes aparece #DIV/0! e ninguém sabe por quê.',perg:['Quais células devem ser editáveis e quais protegidas?','Como evitar #DIV/0! quando faltam notas?','Como mostrar a situação automaticamente?'],tarefas:['Desenhe no caderno o mapa: células de entrada x fórmulas','Monte a planilha com nome, 3 notas, média e situação','Use SE para a situação e para evitar divisão por zero','Desbloqueie entradas e proteja a planilha','Crie minigráficos de desempenho','Teste errando de propósito e documente os erros'],entrega:'Notas_Protegidas.xlsx + relatório de testes',rub:['Proteção correta (3 pts)','Fórmulas com SE (3 pts)','Minigráficos (2 pts)','Testes documentados (2 pts)']},
+{t:'Agenda de vencimentos da família',cen:'Uma família esquece datas de pagamento e paga multa. Eles têm a data de emissão e o prazo de cada conta.',perg:['Como calcular e destacar contas próximas do vencimento?','Como saber quantos dias faltam?'],tarefas:['Liste 6 contas com emissão e prazo','Calcule vencimento (=emissão+prazo)','Calcule dias restantes com =vencimento-HOJE()','Destaque em vermelho quando faltar 3 dias ou menos','Classifique por vencimento'],entrega:'Vencimentos.xlsx',rub:['Datas corretas (3 pts)','Uso de HOJE() (2 pts)','Destaque condicional (3 pts)','Classificação (2 pts)']}]
+});
+
+/* ============ MÓDULO 9 — POWERPOINT PROFISSIONAL ============ */
+M({id:9, app:'ppt', title:'PowerPoint Profissional', sub:'Seções, mídia, navegação, vídeo e apresentação de impacto', pages:'81–90',
+L:[
+['Organize os slides em seções','Selecione o primeiro slide do grupo, Página Inicial > Seção > Adicionar Seção, renomeie. Recolha e expanda seções para navegar e mover grupos inteiros.','Use nomes curtos que representem cada etapa da apresentação.','Divida uma apresentação de nove slides em três seções.'],
+['Reutilize slides de outra apresentação','Novo Slide > Reutilizar Slides, procure o arquivo e clique na miniatura. Marque “Manter formatação original” para preservar o visual antigo; desmarcado, o slide adota o tema atual.','Revise fontes, cores e imagens depois de importar.','Importe dois slides de outro arquivo e adapte ao tema atual.'],
+['Crie links e botões de navegação','Selecione o texto ou forma, Inserir > Link (Ctrl+K) > Colocar neste Documento > escolha o slide. Botões de ação navegam entre slides; hiperlinks podem abrir sites, arquivos ou slides.','Teste todos os links no modo apresentação.','Crie um menu com três botões que levem a slides diferentes.'],
+['Insira áudio e vídeo nos slides','Inserir > Vídeo/Áudio > Este Dispositivo. Guia Reprodução: Iniciar automaticamente ou ao clicar, cortar, volume. Mídia incorporada fica no arquivo; vinculada depende do arquivo externo.','Mantenha os arquivos de mídia na mesma pasta da apresentação.','Insira um vídeo curto e configure para tocar ao clicar.'],
+['Remova o fundo de uma imagem','Formato da Imagem > Remover Plano de Fundo. Ajuste com Marcar Áreas para Manter e Marcar Áreas para Remover, depois Manter Alterações.','Funciona melhor com fundo simples e contraste entre objeto e fundo.','Remova o fundo de uma imagem e posicione-a sobre uma cor.'],
+['Reduza o tamanho da apresentação','Compactar Imagens (Formato da Imagem) reduz resolução e exclui áreas cortadas. Arquivo > Informações > Compactar Mídia reduz vídeos e áudios.','Salve uma cópia antes de compactar para não perder a qualidade original.','Compare o tamanho do arquivo antes e depois da compactação.'],
+['Ensaie e controle o tempo da apresentação','Apresentação de Slides > Testar Intervalos. Fale normalmente, avance como faria ao vivo e salve os intervalos. Use Intervalos para avanço automático.','Faça o ensaio em voz alta e registre os tempos para acompanhar.','Ensaie cinco slides em até 3 minutos.'],
+['Transforme a apresentação em vídeo','Arquivo > Exportar > Criar um Vídeo. Escolha a qualidade (Full HD é adequada), use ou não intervalos e narrações gravados e clique em Criar Vídeo (MP4).','Aguarde a barra de progresso terminar antes de fechar o PowerPoint.','Exporte três slides em MP4 e confira som, imagem e tempo.'],
+['Atividade guiada: apresente uma ideia','Seis slides: Capa, Problema, Solução, Benefícios, Plano de ação, Encerramento. Checklist: mesmo padrão visual, bom contraste, fontes legíveis, elementos alinhados, transições discretas e duração até cinco minutos.','Comece pelo problema e termine com uma ação clara.','Apresente sua ideia em até seis slides.'],
+['Guia rápido de atalhos do PowerPoint','Ctrl+M novo slide, Ctrl+D duplicar, Ctrl+G agrupar, Ctrl+Shift+G desagrupar, Ctrl+K inserir link, Ctrl+Z/Y, Ctrl+B salvar, F5 iniciar do começo, Shift+F5 slide atual, Esc encerrar, B tela preta, W tela branca, Ctrl+Enter avançar para próximo espaço reservado.','Alguns atalhos variam conforme versão, idioma e sistema.','Duplique um slide, agrupe objetos e inicie pelo slide atual usando atalhos.']],
+C:[
+['Uma apresentação tem 15 slides. Proponha 4 seções com nomes curtos e quantos slides cada uma teria.','Ex.: Abertura (2), Problema (4), Solução (6), Conclusão (3). Resposta pessoal coerente.'],
+['Explique a diferença entre mídia incorporada e vinculada e o risco de cada uma.','Incorporada: fica dentro do arquivo (mais segura, arquivo maior). Vinculada: depende do arquivo externo (arquivo menor, mas quebra se mudar de pasta/computador).'],
+['Descreva como criar um menu interativo com 3 botões e um botão “Voltar ao menu”.','Criar formas, Ctrl+K > Colocar neste Documento > slide destino; em cada slide, uma forma com link para o slide do menu. Testar em modo apresentação.'],
+['Em quais situações Remover Plano de Fundo funciona melhor? E quando falha?','Melhor: fundo liso e contraste alto. Falha: fundo cheio de detalhes, cores parecidas com o objeto, cabelos/bordas finas.'],
+['Por que exportar a apresentação em vídeo? Cite 2 usos.','Para quem não tem PowerPoint ou para aulas assíncronas: postar em plataforma de ensino, redes sociais, enviar por mensagem.'],
+['Escreva o roteiro dos 6 slides da atividade “Apresente uma ideia” com uma frase por slide.','Capa (nome da ideia); Problema; Solução; Benefícios (2–3 com ícones); Plano de ação (etapas e prazos); Encerramento (chamada para ação).']],
+F:[
+['Onde se adiciona uma seção?','Página Inicial > Seção > Adicionar Seção.'],
+['Comando para trazer slides de outro arquivo?','Novo Slide > Reutilizar Slides.'],
+['Atalho para inserir link?','Ctrl+K.'],
+['Guia com opções de início e corte do vídeo?','Reprodução.'],
+['Ferramenta para tirar o fundo da foto?','Remover Plano de Fundo.'],
+['Como reduzir o tamanho do arquivo por causa das fotos?','Compactar Imagens.'],
+['Recurso que grava o tempo de cada slide?','Testar Intervalos.'],
+['Caminho para gerar MP4?','Arquivo > Exportar > Criar um Vídeo.'],
+['Tecla que deixa a tela preta durante a apresentação?','B.'],
+['Atalho para duplicar slide/objeto?','Ctrl+D.']],
+V:[
+['Seções permitem mover vários slides de uma vez.',true,'Movendo a seção, todos os slides vão juntos.'],
+['Ao reutilizar slides, eles sempre mantêm a formatação original.',false,'Só se “Manter formatação original” estiver marcado.'],
+['Hiperlinks podem levar a outro slide da mesma apresentação.',true,'Colocar neste Documento.'],
+['Mídia vinculada continua funcionando se você levar só o PPTX para outro computador.',false,'Ela depende do arquivo externo, que ficou para trás.'],
+['Remover Plano de Fundo funciona melhor com fundos simples.',true,'O contraste facilita a detecção do objeto.'],
+['Compactar imagens pode excluir as áreas cortadas das fotos.',true,'É uma das opções da compactação.'],
+['Testar Intervalos registra quanto tempo você passa em cada slide.',true,'E permite usar esses tempos no avanço automático.'],
+['A exportação em vídeo gera um arquivo MP4.',true,'Formato compatível com quase tudo.'],
+['A tecla W deixa a tela branca durante a apresentação.',true,'B deixa preta; W, branca.'],
+['Ctrl+M exclui o slide atual.',false,'Ctrl+M cria um novo slide.'],
+['É seguro fechar o PowerPoint enquanto o vídeo está sendo exportado.',false,'Aguarde a barra de progresso terminar.'],
+['Na atividade guiada, o ideal é começar pelo problema.',true,'O problema dá sentido à solução.']],
+Q:[
+['Você quer recolher todos os slides da etapa “Resultados”. Use:',['Seções','Transições','Slide Mestre','Animações'],0,'Seções agrupam e recolhem.'],
+['Para que o slide importado siga o tema atual:',['Marcar Manter formatação original','Desmarcar Manter formatação original','Copiar como imagem','Exportar em PDF'],1,'Desmarcado, adota o tema de destino.'],
+['Ctrl+K serve para:',['Agrupar','Inserir link','Novo slide','Salvar'],1,'Inserir link.'],
+['O vídeo deve começar só quando você clicar. Configure em:',['Transições','Reprodução > Iniciar: Ao Clicar','Design','Exibir'],1,'Guia Reprodução.'],
+['Arquivo de 48 MB precisa ser enviado por e-mail. Primeiro passo:',['Compactar Imagens/Mídia','Adicionar mais vídeos','Mudar o tema','Apagar as anotações'],0,'Compactar reduz o tamanho.'],
+['Qual recurso ajuda a ensaiar o tempo de fala?',['Testar Intervalos','Reutilizar Slides','Seção','Remover Plano de Fundo'],0,'Registra o tempo de cada slide.'],
+['Qualidade adequada para exportar vídeo para projetor e internet:',['Baixa','Full HD (1080p)','Apenas áudio','GIF'],1,'Full HD equilibra qualidade e tamanho.'],
+['Durante a apresentação, para chamar atenção para você e não para o slide:',['Pressionar B','Pressionar F5','Pressionar Ctrl+M','Pressionar Ctrl+G'],0,'B escurece a tela.'],
+['Qual ordem segue a atividade guiada?',['Capa, Problema, Solução, Benefícios, Plano, Encerramento','Encerramento primeiro','Benefícios, Capa...','Só Solução'],0,'Narrativa problema → ação.'],
+['Para mover uma foto sem fundo para um slide colorido:',['Remover Plano de Fundo','Compactar Mídia','Inserir Link','Duplicar'],0,'Remove o fundo da imagem.']],
+P:[
+{t:'Apresentação interativa de quiz',cen:'Você vai criar um “jogo de perguntas” no PowerPoint para revisar conteúdo com a turma: um menu com 3 temas, cada tema leva a perguntas e há botão de voltar.',perg:['Como organizar os slides para não se perder?','Como navegar sem seguir a ordem linear?','Como deixar o arquivo leve para compartilhar?'],tarefas:['Desenhe o mapa de navegação no caderno','Crie seções: Menu, Tema 1, Tema 2, Tema 3','Crie botões com Ctrl+K para cada tema e “Voltar ao menu”','Insira imagens sem fundo e um áudio curto de acerto','Compacte imagens e mídia','Teste todos os links no modo apresentação'],entrega:'Quiz_Interativo.pptx + mapa de navegação',rub:['Mapa e seções (2 pts)','Links funcionando (3 pts)','Mídia bem configurada (2 pts)','Arquivo otimizado (1 pt)','Teste documentado (2 pts)']},
+{t:'Videoaula de 3 minutos',cen:'Um colega faltou e você vai gravar uma videoaula curta a partir de slides para ele estudar em casa.',perg:['Quanto tempo cada slide merece?','O que precisa ser testado antes de exportar?'],tarefas:['Planeje 5 slides e o tempo de cada um','Use Testar Intervalos e ensaie','Exporte em Full HD como MP4','Assista ao vídeo e anote correções','Exporte a versão final'],entrega:'Videoaula.mp4 + roteiro no caderno',rub:['Roteiro com tempos (2 pts)','Ensaio registrado (2 pts)','Vídeo com som e imagem (3 pts)','Duração até 3 min (3 pts)']}]
+});
+
+/* ============ MÓDULO 10 — INTEGRAÇÃO E PROJETO FINAL ============ */
+M({id:10, app:'all', title:'Integração e Projeto Final', sub:'Arquivos, segurança, acessibilidade e os três programas juntos', pages:'91–100',
+L:[
+['Organize arquivos e pastas sem se perder','Estrutura sugerida: uma pasta por curso com subpastas (Word, Excel, PowerPoint, Exercícios, Arquivos Finais). Nomes claros com data no padrão AAAA-MM-DD: Relatorio_Vendas_2026-09.docx.','Use o padrão AAAA-MM-DD quando quiser ordenar arquivos por data.','Organize cinco arquivos usando pastas e nomes padronizados.'],
+['Escolha o formato certo para salvar','DOCX (Word editável), XLSX (planilha editável), PPTX (apresentação editável), PDF (preserva o visual, ideal para leitura e impressão), MP4 (apresentação em vídeo), CSV (dados em texto, sem formatação avançada).','PDF não é a melhor opção quando a pessoa precisa continuar editando.','Escolha o formato para: currículo, planilha de estoque e apresentação gravada.'],
+['Compartilhe arquivos com controle','Salve na nuvem, clique em Compartilhar, escolha permissão (Pode exibir ou Pode editar), insira e-mail ou copie o link e revise acessos depois.','Para informações pessoais, prefira enviar só para pessoas específicas.','Compartilhe um arquivo com permissão somente de visualização.'],
+['Proteja seus arquivos e suas informações','Mantenha cópia de segurança; use senhas fortes e únicas; desconfie de anexos e links inesperados; ative atualizações; não habilite macros de arquivos desconhecidos; revise permissões antes de compartilhar. Regra 3-2-1: 3 cópias, 2 mídias diferentes, 1 fora do computador.','Nunca envie senhas pelo mesmo canal em que enviou o arquivo protegido.','Crie uma cópia de segurança de um arquivo importante.'],
+['Crie materiais mais fáceis de ler','Fonte legível e tamanho adequado; contraste forte entre texto e fundo; não depender apenas da cor; texto alternativo em imagens; títulos e ordem lógica; evitar blocos longos de texto. Revisão > Verificar Acessibilidade.','Leia o documento em tamanho normal e com 150% de zoom.','Encontre três problemas de acessibilidade em um material e corrija.'],
+['Leve uma tabela do Excel para Word e PowerPoint','Selecione a tabela no Excel, Ctrl+C, no destino escolha: Colar normal (edita no destino), Colar como imagem (preserva o visual, não edita) ou Colar vínculo (atualiza quando a planilha original muda).','Para envio simples e visual estável, cole como imagem; para relatórios atualizados, use vínculo com cuidado.','Cole a mesma tabela de duas formas e compare.'],
+['Desafio de revisão: comunicado no Word','Documento A4 com margens normais, título centralizado, data, saudação, marcadores, negrito nas informações principais, assinatura, revisão ortográfica e PDF final.','Releia em voz alta antes de exportar.','Crie um comunicado de reunião de equipe.'],
+['Desafio de revisão: controle de vendas no Excel','Produto, Quantidade, Preço, Total (=B2*C2), Total geral (=SOMA), Média (=MÉDIA), formato moeda, formatação condicional e gráfico de colunas.','Destaque o que importa com formatação condicional.','Monte a planilha com 6 produtos e o gráfico.'],
+['Desafio de revisão: apresentação em 4 slides','Capa, Objetivos, Resultados (com gráfico), Próximos passos. Um tema de cores, fontes legíveis, alinhamento e checklist de qualidade.','Ensaie e confira o tempo.','Crie 4 slides com uma mensagem clara.'],
+['Projeto final: Word, Excel e PowerPoint juntos','1) Excel: tabela de despesas por categoria com total e gráfico. 2) Word: relatório com título, introdução, tabela colada do Excel e conclusão, exportado em PDF. 3) PowerPoint: 4 slides com objetivo, dados, gráfico e próximos passos. Checklist: arquivos organizados, fórmulas corretas, documento legível, slides padronizados, ortografia revisada, versões salvas.','Pequenas habilidades, grandes resultados: revise antes de entregar.','Entregue o pacote completo: XLSX, PDF e PPTX.']],
+C:[
+['Crie no caderno uma árvore de pastas para o curso e renomeie 4 arquivos fictícios no padrão Nome_Assunto_AAAA-MM-DD.','Ex.: Curso_Office/Word/Relatorio_Estagio_2026-10-12.docx; Excel/Estoque_Cantina_2026-10.xlsx; PowerPoint/Pitch_Padaria_2026-10-20.pptx; Arquivos_Finais/Curriculo_Joao_2026-10.pdf.'],
+['Para cada caso indique o formato: (a) currículo para recrutador; (b) planilha que o chefe vai editar; (c) dados para importar em um sistema; (d) aula gravada.','(a) PDF; (b) XLSX; (c) CSV; (d) MP4.'],
+['Explique a regra 3-2-1 de backup e monte o seu plano pessoal.','3 cópias dos dados, em 2 mídias diferentes, com 1 fora do computador/local (nuvem). Ex.: original no notebook + HD externo + nuvem.'],
+['Liste 6 atitudes de segurança digital ao receber e compartilhar arquivos.','Desconfiar de anexos/links inesperados; não habilitar macros desconhecidas; senha forte e única; atualizações em dia; revisar permissões; não enviar senha pelo mesmo canal do arquivo.'],
+['Compare Colar normal, Colar como imagem e Colar vínculo: vantagem e cuidado de cada um.','Normal: editável no destino / pode perder formatação. Imagem: visual estável / não edita nem atualiza. Vínculo: atualiza com a origem / quebra se o arquivo mudar de lugar.'],
+['Planeje o projeto final: liste os 3 arquivos, o conteúdo de cada um e como eles se conectam.','XLSX com despesas, total e gráfico → tabela e gráfico vão para o relatório DOCX/PDF (colar) e para os slides PPTX (gráfico). Mesmo tema e dados em todos.']],
+F:[
+['Padrão de data que ordena arquivos corretamente?','AAAA-MM-DD.'],
+['Formato para dados simples em texto, sem formatação?','CSV.'],
+['Permissões comuns de compartilhamento?','Pode exibir / Pode editar.'],
+['Regra 3-2-1?','3 cópias, 2 mídias diferentes, 1 fora do computador.'],
+['Por que não habilitar macros de arquivos desconhecidos?','Macros podem executar código malicioso.'],
+['O que é texto alternativo?','Descrição da imagem para leitores de tela.'],
+['Onde verificar acessibilidade no Office?','Revisão > Verificar Acessibilidade.'],
+['Colar vínculo faz o quê?','Mantém a tabela ligada à planilha original e atualiza.'],
+['Fórmula do total de um produto (Qtd x Preço)?','=B2*C2.'],
+['Três arquivos do projeto final?','XLSX, PDF (relatório Word) e PPTX.']],
+V:[
+['Nomes como “final_final2.docx” facilitam encontrar a versão certa.',false,'Nomes claros com assunto e data são melhores.'],
+['PDF é o formato ideal quando a pessoa precisa continuar editando o documento.',false,'Para edição use DOCX/XLSX/PPTX.'],
+['CSV guarda gráficos e formatação avançada.',false,'CSV guarda só dados em texto.'],
+['“Pode exibir” impede que a pessoa altere o arquivo.',true,'Ela só visualiza.'],
+['Enviar a senha no mesmo e-mail do arquivo protegido é seguro.',false,'Use outro canal para a senha.'],
+['Atualizar o Office e o sistema ajuda a proteger contra falhas de segurança.',true,'Atualizações corrigem vulnerabilidades.'],
+['Usar somente cor para indicar informação é uma boa prática de acessibilidade.',false,'Pessoas com daltonismo podem não perceber; use também texto ou ícones.'],
+['Imagens devem ter texto alternativo.',true,'Leitores de tela leem essa descrição.'],
+['Colar como imagem permite editar os números depois no Word.',false,'Vira imagem: não é editável.'],
+['Colar vínculo pode atualizar a tabela quando a planilha original muda.',true,'É a vantagem do vínculo.'],
+['No controle de vendas, o total geral pode ser calculado com =SOMA.',true,'Soma a coluna Total.'],
+['O projeto final integra dados do Excel ao relatório do Word e aos slides.',true,'Essa é a proposta de integração.']],
+Q:[
+['Qual nome de arquivo está mais bem padronizado?',['documento novo (3).docx','Relatorio_Vendas_2026-09.docx','final_mesmo.docx','RELATÓRIO!!!.docx'],1,'Assunto + data AAAA-MM-DD.'],
+['Formato ideal para enviar um currículo:',['DOCX','PDF','CSV','MP4'],1,'Preserva o visual.'],
+['Você quer que o colega só leia o arquivo na nuvem:',['Pode editar','Pode exibir','Proprietário','Público com edição'],1,'Somente visualização.'],
+['Um anexo inesperado pede para “habilitar conteúdo”. Você:',['Habilita','Não habilita e confirma com o remetente','Encaminha a todos','Desliga o antivírus'],1,'Pode ser macro maliciosa.'],
+['Qual NÃO faz parte da regra 3-2-1?',['3 cópias','2 mídias','1 fora do computador','1 senha para tudo'],3,'Senha única para tudo é má prática.'],
+['Para quem usa leitor de tela, as imagens precisam de:',['Moldura','Texto alternativo','Sombra','Animação'],1,'Alt text descreve a imagem.'],
+['Relatório mensal que deve atualizar quando a planilha mudar. Cole como:',['Imagem','Vínculo','Texto sem formatação','PDF'],1,'Vínculo atualiza.'],
+['Na planilha de vendas, B2 = 10 e C2 = 15,00. =B2*C2 resulta:',['25','150,00','1,5','Erro'],1,'10 × 15 = 150.'],
+['A estrutura dos 4 slides do desafio é:',['Capa, Objetivos, Resultados, Próximos passos','Só gráficos','Capa e fim','Texto corrido'],0,'Narrativa curta e completa.'],
+['O que vem primeiro no projeto final?',['Slides','Planilha no Excel com os dados','Relatório','PDF'],1,'Os dados alimentam Word e PowerPoint.']],
+P:[
+{t:'Projeto final: Semana da Economia Doméstica',cen:'A escola fará uma semana de educação financeira. Sua equipe deve analisar as despesas de uma família fictícia e entregar planilha, relatório e apresentação integrados.',perg:['Quais categorias de despesas mais pesam?','Que recomendação a família deve seguir?','Como garantir que os números sejam os mesmos nos três arquivos?'],tarefas:['Organize a pasta do projeto com subpastas e nomes padronizados','Excel: despesas por categoria, totais, média, formatação condicional e gráfico','Word: relatório com introdução, tabela vinculada do Excel, conclusão; revisar e exportar PDF','PowerPoint: 4 slides (Capa, Objetivo, Dados+gráfico, Próximos passos)','Verifique acessibilidade e contraste','Compartilhe com o professor como “Pode exibir”'],entrega:'Pasta com .xlsx, .pdf e .pptx + apresentação de 4 minutos',rub:['Organização de arquivos (1 pt)','Planilha com fórmulas corretas (3 pts)','Relatório legível e integrado (2 pts)','Slides padronizados e claros (2 pts)','Acessibilidade e segurança (1 pt)','Apresentação oral (1 pt)']},
+{t:'Auditoria de segurança e acessibilidade',cen:'O setor administrativo envia documentos com senha no mesmo e-mail, arquivos chamados “final2” e PDFs sem texto alternativo.',perg:['Quais riscos existem hoje?','Que boas práticas devem virar regra?'],tarefas:['Liste no caderno 5 problemas encontrados','Proponha uma estrutura de pastas e padrão de nomes','Escreva uma política curta de compartilhamento e senhas','Corrija um documento usando Verificar Acessibilidade','Apresente as recomendações em 3 slides'],entrega:'Mini-política (Word/PDF) + 3 slides',rub:['Diagnóstico (2 pts)','Padrão de nomes e pastas (2 pts)','Política de segurança coerente (3 pts)','Documento acessível corrigido (3 pts)']}]
+});
+
+const APP = {word:{n:'Word',c:'word'},excel:{n:'Excel',c:'excel'},ppt:{n:'PowerPoint',c:'ppt'},all:{n:'Integração',c:'all'}};
+const LEVEL = {1:'Essencial',2:'Essencial',3:'Essencial',4:'Produtivo',5:'Produtivo',6:'Produtivo',7:'Profissional',8:'Profissional',9:'Profissional',10:'Projeto final'};
+const TABS = [['licoes','Lições'],['caderno','Caderno'],['flash','Flashcards'],['vf','V ou F'],['quiz','Quiz'],['pbl','PBL']];
+const L5 = 'ABCDE';
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const $ = s => document.querySelector(s);
+
+/* ---------- estado ---------- */
+let S = {p:{}, teacher:false, theme:null, fc:{}};
+try{ const raw = localStorage.getItem('mov-v1'); if(raw) S = Object.assign(S, JSON.parse(raw)); }catch(e){}
+const save = () => { try{ localStorage.setItem('mov-v1', JSON.stringify(S)); }catch(e){} };
+const get = k => S.p[k];
+const put = (k,v) => { S.p[k] = v; save(); refreshProgress(); };
+
+function modCounts(m){
+  const id = m.id, c = {caderno:0, flash:0, vf:0, quiz:0, pbl:0, licoes:0, okq:0, okv:0};
+  m.C.forEach((_,i)=>{ if(get(`${id}:c:${i}`)) c.caderno++; });
+  m.F.forEach((_,i)=>{ if(get(`${id}:f:${i}`)) c.flash++; });
+  m.V.forEach((_,i)=>{ const v=get(`${id}:v:${i}`); if(v&&v.done){c.vf++; if(v.ok)c.okv++;} });
+  m.Q.forEach((_,i)=>{ const v=get(`${id}:q:${i}`); if(v!=null){c.quiz++; if(v===m.Q[i][2])c.okq++;} });
+  m.P.forEach((_,i)=>{ const v=get(`${id}:p:${i}`); if(v&&v.done) c.pbl++; });
+  m.L.forEach((_,i)=>{ if(get(`${id}:l:${i}`)) c.licoes++; });
+  c.total = m.C.length+m.F.length+m.V.length+m.Q.length+m.P.length;
+  c.done = c.caderno+c.flash+c.vf+c.quiz+c.pbl;
+  return c;
+}
+const totals = () => MODS.reduce((a,m)=>{const c=modCounts(m); a.d+=c.done; a.t+=c.total; return a;},{d:0,t:0});
+const pct = (a,b) => b? Math.round(a*100/b):0;
+
+/* ---------- tema e modos ---------- */
+function applyTheme(){
+  const dark = S.theme ? S.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  if(S.theme) document.documentElement.setAttribute('data-theme', S.theme);
+  $('#tTheme').setAttribute('aria-pressed', dark);
+}
+$('#tTheme').onclick = () => { const dark = $('#tTheme').getAttribute('aria-pressed')==='true'; S.theme = dark?'light':'dark'; save(); applyTheme(); };
+$('#tMode').onclick = () => { S.teacher = !S.teacher; save(); $('#tMode').setAttribute('aria-pressed', S.teacher); render(); };
+let resetArm = false;
+$('#reset').onclick = e => {
+  if(!resetArm){ resetArm = true; e.target.textContent = 'Clique de novo para confirmar'; e.target.classList.add('danger'); setTimeout(()=>{resetArm=false; e.target.textContent='Zerar meu progresso'; e.target.classList.remove('danger');},4000); return; }
+  S.p = {}; S.fc = {}; save(); resetArm=false; e.target.textContent='Progresso zerado'; e.target.classList.remove('danger'); render();
+};
+const closeMenu = () => { $('#side').classList.remove('open'); $('#scrim').classList.remove('open'); };
+$('#menuBtn').onclick = () => { $('#side').classList.add('open'); $('#scrim').classList.add('open'); };
+$('#scrim').onclick = closeMenu;
+
+/* ---------- rotas (#inicio, #m3-quiz, #atalhos) ---------- */
+function route(){
+  const h = location.hash.slice(1) || 'inicio';
+  const m = h.match(/^m(\d+)(?:-(\w+))?$/);
+  if(m){ const mod = MODS.find(x=>x.id==+m[1]); if(mod) return {v:'mod', mod, tab: TABS.some(t=>t[0]===m[2])? m[2] : 'licoes'}; }
+  if(h==='atalhos') return {v:'atalhos'};
+  return {v:'inicio'};
+}
+const go = h => { if(location.hash === '#'+h) render(); else location.hash = h; };
+addEventListener('hashchange', ()=>{ render(); window.scrollTo(0,0); closeMenu(); });
+
+function setAccent(app){
+  const r = document.documentElement.style;
+  r.setProperty('--accent', `var(--${app})`); r.setProperty('--accent-soft', `var(--${app}-soft)`);
+}
+
+function nav(r){
+  let h = `<a href="#inicio" class="${r.v==='inicio'?'on':''}"><span class="num bg-all">◎</span><span class="t">Painel da disciplina</span></a>
+  <a href="#atalhos" class="${r.v==='atalhos'?'on':''}"><span class="num bg-all">⌘</span><span class="t">Guia de atalhos</span></a>`;
+  const t = totals();
+  h += `<div class="lab"><span>Módulos</span><span>${t.d}/${t.t}</span></div>`;
+  MODS.forEach(m=>{ const c = modCounts(m);
+    h += `<a href="#m${m.id}" class="${r.mod&&r.mod.id===m.id?'on':''}"><span class="num bg-${APP[m.app].c}">${m.id}</span><span class="t">${esc(m.title)}</span><span class="pc">${pct(c.done,c.total)}%</span></a>`; });
+  $('#nav').innerHTML = h;
+}
+function refreshProgress(){
+  const t = totals(); $('#topBar').style.width = pct(t.d,t.t)+'%'; $('#topPct').textContent = `${t.d}/${t.t}`;
+  const r = route(); nav(r);
+  if(r.v==='mod') updateTabCounts(r.mod);
+}
+
+/* ---------- PAINEL ---------- */
+function viewHome(){
+  setAccent('word');
+  const t = totals();
+  const next = MODS.find(m=>{const c=modCounts(m); return c.done<c.total;}) || MODS[0];
+  const card = m => { const c = modCounts(m), a=APP[m.app];
+    return `<a class="card mcard" href="#m${m.id}" style="--c:var(--${a.c})"><div class="tag"><span>MÓDULO ${String(m.id).padStart(2,'0')}</span><span>p. ${m.pages}</span></div><h3>${esc(m.title)}</h3><p>${esc(m.sub)}</p><div class="bar"><i style="width:${pct(c.done,c.total)}%"></i></div><div class="hint">${c.done}/${c.total} atividades · ${c.licoes}/10 lições</div></a>`; };
+  const byLevel = lv => MODS.filter(m=>m.id<=9 && LEVEL[m.id]===lv);
+  const m10 = MODS[9], c10 = modCounts(m10);
+  return `
+  <section class="hero">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="eyebrow">Disciplina interativa · 100 lições visuais</div>
+      <h1>Aprenda Office <span>fazendo</span>, módulo a módulo.</h1>
+      <p class="lead">Cada módulo cobre 10 lições do Método Office Visual e traz cerca de 40 atividades: exercícios para o caderno, flashcards, verdadeiro ou falso com justificativa, quiz e um projeto PBL. As respostas aparecem depois que você tenta.</p>
+    </div>
+    <div class="card prog">
+      <div class="eyebrow">Seu progresso</div>
+      <div class="big">${pct(t.d,t.t)}% <small>${t.d} de ${t.t} atividades</small></div>
+      <div class="bar"><i style="width:${pct(t.d,t.t)}%"></i></div>
+      <div class="row"><a class="btn pri" href="#m${next.id}">Continuar no módulo ${next.id} →</a></div>
+    </div>
+  </section>
+  <section class="stats">
+    <div class="card stat"><b>10</b><span>módulos</span></div>
+    <div class="card stat"><b>100</b><span>lições do PDF</span></div>
+    <div class="card stat"><b>${t.t}</b><span>atividades com resposta</span></div>
+    <div class="card stat"><b>20</b><span>projetos PBL</span></div>
+  </section>
+  <section style="display:flex;flex-direction:column;gap:10px">
+    <div class="eyebrow">Como estudar cada módulo</div>
+    <div class="route"><span>1 · Lições</span><em>→</em><span>2 · Caderno</span><em>→</em><span>3 · Flashcards</span><em>→</em><span>4 · V ou F + justificativa</span><em>→</em><span>5 · Quiz</span><em>→</em><span>6 · PBL</span></div>
+  </section>
+  <section style="display:flex;flex-direction:column;gap:14px">
+    <div class="eyebrow">Trilha: três programas em três níveis</div>
+    <div class="matrix">
+      <div class="mx-head"></div>
+      ${['word','excel','ppt'].map(k=>`<div class="mx-h mx-head"><i class="bg-${k}"></i>${APP[k].n}</div>`).join('')}
+      ${['Essencial','Produtivo','Profissional'].map((lv,i)=>`<div class="mx-l">Nível ${i+1}<b>${lv}</b></div>${byLevel(lv).map(card).join('')}`).join('')}
+    </div>
+    <a class="card mcard wide" href="#m10" style="--c:var(--all)"><div><div class="tag"><span>MÓDULO 10 · PROJETO FINAL</span><span>p. ${m10.pages}</span></div><h3>${esc(m10.title)}</h3><p>${esc(m10.sub)}</p></div><div style="flex:0 1 260px"><div class="bar"><i style="width:${pct(c10.done,c10.total)}%"></i></div><div class="hint">${c10.done}/${c10.total} atividades</div></div></a>
+  </section>`;
+}
+
+/* ---------- MÓDULO ---------- */
+function updateTabCounts(m){
+  const c = modCounts(m);
+  const n = {licoes:[c.licoes,10], caderno:[c.caderno,m.C.length], flash:[c.flash,m.F.length], vf:[c.vf,m.V.length], quiz:[c.quiz,m.Q.length], pbl:[c.pbl,m.P.length]};
+  document.querySelectorAll('.tab').forEach(b=>{ const [a,t]=n[b.dataset.t]; const s=b.querySelector('.n'); s.textContent=`${a}/${t}`; s.classList.toggle('full', a===t); });
+  const mp = $('#modPct'); if(mp){ mp.style.width = pct(c.done,c.total)+'%'; $('#modTxt').textContent = `${c.done}/${c.total} atividades · acertos no quiz ${c.okq}/${m.Q.length} · V ou F ${c.okv}/${m.V.length}`; }
+}
+function viewMod(m, tab){
+  setAccent(APP[m.app].c);
+  const a = APP[m.app];
+  let body = {licoes:tLicoes, caderno:tCaderno, flash:tFlash, vf:tVF, quiz:tQuiz, pbl:tPBL}[tab](m);
+  return `
+  <section class="mhead">
+    <div class="row"><span class="chip">${a.n} · ${LEVEL[m.id]}</span><span class="eyebrow">Módulo ${String(m.id).padStart(2,'0')} · lições ${m.pages}</span></div>
+    <h1>${esc(m.title)}</h1>
+    <p class="lead">${esc(m.sub)}</p>
+    <div class="bar" style="max-width:520px"><i id="modPct"></i></div><div class="hint" id="modTxt"></div>
+  </section>
+  ${S.teacher?'<div class="teacher-flag">Modo professor ativo: todas as respostas estão visíveis e nada conta no progresso.</div>':''}
+  <nav class="tabs" role="tablist">${TABS.map(([k,l])=>`<button class="tab ${k===tab?'on':''}" data-t="${k}" role="tab" aria-selected="${k===tab}" onclick="go('m${m.id}-${k}')">${l} <span class="n"></span></button>`).join('')}</nav>
+  ${body}
+  <div class="row" style="justify-content:space-between">
+    ${navBtn(m,tab,-1)}${navBtn(m,tab,1)}
+  </div>`;
+}
+function navBtn(m,tab,d){
+  const i = TABS.findIndex(t=>t[0]===tab)+d;
+  if(i<0){ return m.id>1? `<a class="btn" href="#m${m.id-1}-pbl">← Módulo ${m.id-1}</a>`:'<span></span>'; }
+  if(i>=TABS.length){ return m.id<10? `<a class="btn pri" href="#m${m.id+1}">Módulo ${m.id+1} →</a>`:`<a class="btn pri" href="#inicio">Voltar ao painel</a>`; }
+  return `<a class="btn ${d>0?'pri':''}" href="#m${m.id}-${TABS[i][0]}">${d<0?'← ':''}${TABS[i][1]}${d>0?' →':''}</a>`;
+}
+
+/* Lições */
+function tLicoes(m){
+  const start = parseInt(m.pages);
+  return `<div class="sec-intro"><p>Resumo das 10 lições do PDF. Leia, faça o “Pratique” no computador e marque como estudada.</p></div>
+  <div class="lessons">${m.L.map((l,i)=>{ const on=!!get(`${m.id}:l:${i}`);
+    return `<article class="card lesson"><div class="pg"><span>Lição ${String(start+i).padStart(2,'0')}</span><button class="read" aria-pressed="${on}" onclick="toggleRead(${m.id},${i},this)">${on?'✓ estudada':'marcar estudada'}</button></div>
+    <h3>${esc(l[0])}</h3><p>${fmt(l[1])}</p>
+    <div class="box tip"><b>Dica</b><span>${fmt(l[2])}</span></div>
+    <div class="box do"><b>Pratique</b><span>${fmt(l[3])}</span></div></article>`;}).join('')}</div>`;
+}
+function toggleRead(id,i,b){ const on=!get(`${id}:l:${i}`); put(`${id}:l:${i}`, on||undefined); b.setAttribute('aria-pressed',on); b.textContent = on?'✓ estudada':'marcar estudada'; }
+/* realça atalhos e fórmulas */
+function fmt(s){
+  let t = esc(s);
+  t = t.replace(/\b((?:Ctrl|Shift|Alt)(?:\+(?:Shift|Alt|Enter|Espaço|Setas|[A-Z]|F\d+|=))+)/g, m=>m.split('+').map(k=>`<kbd>${k}</kbd>`).join('+'));
+  t = t.replace(/(^|[\s(:])(=[^\s,]+(?:\([^)]*\))?)/g, (m,p,f)=>`${p}<span class="code">${f}</span>`);
+  return t;
+}
+
+/* Caderno */
+function tCaderno(m){
+  return `<div class="sec-intro"><p>Responda no seu caderno. Marque que respondeu para liberar a resposta modelo e compare com o que você escreveu.</p></div>
+  <div class="list">${m.C.map((c,i)=>{ const k=`${m.id}:c:${i}`, seen=!!get(k)||S.teacher;
+    return `<article class="card item"><div class="meta"><span>Atividade ${i+1} de ${m.C.length}</span><span>✎ caderno</span></div>
+    <div class="q">${fmt(c[0])}</div>
+    ${seen?`<div class="ans ok"><h4>Resposta modelo</h4><div>${fmt(c[1])}</div></div>`:
+    `<div class="row"><label class="check"><input type="checkbox" id="cb${m.id}_${i}" onchange="document.getElementById('cbtn${m.id}_${i}').disabled=!this.checked"> Já respondi no meu caderno</label>
+    <button class="btn sm pri" id="cbtn${m.id}_${i}" disabled onclick="put('${k}',1);render()">Ver resposta modelo</button></div>`}
+    </article>`;}).join('')}</div>`;
+}
+
+/* Flashcards */
+let fcShow = false;
+function tFlash(m){
+  const order = S.fc[m.id] && S.fc[m.id].length===m.F.length ? S.fc[m.id] : m.F.map((_,i)=>i);
+  const pos = Math.min(S['fcpos'+m.id]||0, m.F.length-1);
+  const idx = order[pos], f = m.F[idx], st = get(`${m.id}:f:${idx}`);
+  const show = fcShow || S.teacher;
+  return `<div class="sec-intro"><p>Tente lembrar a resposta antes de virar o cartão. Depois diga se acertou ou se precisa revisar.</p>
+  <div class="row"><button class="btn sm" onclick="shuffleFc(${m.id})">Embaralhar</button><button class="btn sm" onclick="onlyRev(${m.id})">Só os de revisar</button></div></div>
+  <div class="deck">
+    <div class="hint">Cartão ${pos+1} de ${m.F.length}${st?` · marcado como <b>${st==='ok'?'acertei':'revisar'}</b>`:''}</div>
+    <button class="flip ${show?'show':''}" onclick="flipCard(this)" aria-label="Virar cartão">
+      <div class="in"><div class="face f"><small>Pergunta · clique para virar</small><p>${esc(f[0])}</p></div><div class="face b"><small>Resposta</small><p>${esc(f[1])}</p></div></div>
+    </button>
+    <div class="row" style="justify-content:center" id="fcCtl">${fcControls(m.id,idx)}</div>
+    <div class="dots">${order.map((o,p)=>{const s=get(`${m.id}:f:${o}`); return `<button class="${p===pos?'cur':''} ${s?'k-'+s:''}" onclick="S['fcpos${m.id}']=${p};fcShow=false;save();render()">${p+1}</button>`;}).join('')}</div>
+  </div>`;
+}
+let curFc={};
+function fcControls(id,idx){ curFc={id,idx}; const show=fcShow||S.teacher;
+  return `<button class="btn" onclick="fcMove(${id},-1)">←</button>`+(show&&!S.teacher?`<button class="btn" onclick="fcRate(${id},${idx},'rev')">↻ Preciso revisar</button><button class="btn pri" onclick="fcRate(${id},${idx},'ok')">✓ Acertei</button>`:`<button class="btn pri" onclick="flipCard(document.querySelector('.flip'))">Virar cartão</button>`)+`<button class="btn" onclick="fcMove(${id},1)">→</button>`; }
+function flipCard(el){ fcShow=!fcShow; el.classList.toggle('show',fcShow||S.teacher); document.getElementById('fcCtl').innerHTML=fcControls(curFc.id,curFc.idx); }
+function fcMove(id,d){ const n=MODS[id-1].F.length; S['fcpos'+id]=((S['fcpos'+id]||0)+d+n)%n; fcShow=false; save(); render(); }
+function fcRate(id,idx,v){ put(`${id}:f:${idx}`,v); fcMove(id,1); }
+function shuffleFc(id){ const a=MODS[id-1].F.map((_,i)=>i); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} S.fc[id]=a; S['fcpos'+id]=0; fcShow=false; save(); render(); }
+function onlyRev(id){ const m=MODS[id-1]; const r=m.F.map((_,i)=>i).filter(i=>get(`${id}:f:${i}`)!=='ok'); if(!r.length){ alertMsg('Você marcou todos como acertados. Ótimo!'); return; } const rest=m.F.map((_,i)=>i).filter(i=>!r.includes(i)); S.fc[id]=r.concat(rest); S['fcpos'+id]=0; fcShow=false; save(); render(); }
+function alertMsg(t){ const d=$('.deck .hint'); if(d) d.textContent=t; }
+
+/* Verdadeiro ou Falso */
+function tVF(m){
+  return `<div class="sec-intro"><p>Escolha V ou F e escreva sua justificativa (pelo menos uma frase). Só então confira o gabarito. Copie as afirmações falsas corrigidas no caderno.</p>
+  <button class="btn sm" onclick="resetPart(${m.id},'v')">Refazer V ou F</button></div>
+  <div class="list">${m.V.map((v,i)=>{ const k=`${m.id}:v:${i}`, st=get(k)||{}, done=st.done||S.teacher;
+    const right = st.pick===(v[1]?'V':'F');
+    return `<article class="card item"><div class="meta"><span>Afirmação ${i+1} de ${m.V.length}</span></div>
+    <div class="q">${fmt(v[0])}</div>
+    ${done?`${S.teacher?'':`<div class="hint">Sua resposta: <b>${st.pick}</b> — “${esc(st.why||'')}”</div>`}
+      <div class="ans ${S.teacher||right?'ok':'bad'}"><h4>${S.teacher?'':right?'Você acertou! ':'Não foi dessa vez. '}Gabarito: ${v[1]?'VERDADEIRO':'FALSO'}</h4><div>${fmt(v[2])}</div></div>`:
+    `<div class="vf"><button aria-pressed="${st.pick==='V'}" onclick="vfPick('${k}','V')">V</button><button aria-pressed="${st.pick==='F'}" onclick="vfPick('${k}','F')">F</button></div>
+     <textarea id="vt${m.id}_${i}" placeholder="Justifique: por que é verdadeira ou falsa?" oninput="vfWhy('${k}',this.value,${m.id},${i})">${esc(st.why||'')}</textarea>
+     <div class="row"><button class="btn sm pri" id="vb${m.id}_${i}" ${st.pick&&(st.why||'').trim().length>=12?'':'disabled'} onclick="vfCheck('${k}',${m.id},${i})">Conferir</button><span class="hint">Escolha V ou F e escreva a justificativa para liberar.</span></div>`}
+    </article>`;}).join('')}</div>`;
+}
+function vfPick(k,p){ const s=Object.assign({},get(k)||{}); s.pick=p; S.p[k]=s; save(); render(); }
+function vfWhy(k,t,id,i){ const s=Object.assign({},get(k)||{}); s.why=t; S.p[k]=s; save(); const b=document.getElementById(`vb${id}_${i}`); if(b) b.disabled=!(s.pick&&t.trim().length>=12); }
+function vfCheck(k,id,i){ const s=Object.assign({},get(k)); s.done=true; s.ok = s.pick===(MODS[id-1].V[i][1]?'V':'F'); put(k,s); render(); }
+
+/* Quiz */
+function tQuiz(m){
+  const c = modCounts(m);
+  return `<div class="sec-intro"><p>Clique em uma alternativa: a correção e a explicação aparecem na hora.</p>
+  <div class="row"><span class="chip">Acertos ${c.okq}/${m.Q.length}</span><button class="btn sm" onclick="resetPart(${m.id},'q')">Refazer quiz</button></div></div>
+  <div class="list">${m.Q.map((q,i)=>{ const k=`${m.id}:q:${i}`, p=get(k), done=p!=null||S.teacher;
+    return `<article class="card item"><div class="meta"><span>Questão ${i+1} de ${m.Q.length}</span></div>
+    <div class="q">${fmt(q[0])}</div>
+    <div class="opts">${perm(m.id*100+i,q[1].length).map((j,pos)=>{ let cl=''; if(done){ if(j===q[2]) cl='right'; else if(j===p) cl='wrong'; }
+      return `<button class="opt ${cl}" ${done?'disabled':''} onclick="put('${k}',${j});render()"><b>${L5[pos]}</b><span>${fmt(q[1][j])}</span></button>`;}).join('')}</div>
+    ${done?(()=>{const L=L5[perm(m.id*100+i,q[1].length).indexOf(q[2])]; return `<div class="ans ${S.teacher||p===q[2]?'ok':'bad'}"><h4>${S.teacher?'Resposta: '+L:p===q[2]?'Correto — '+L:'Resposta correta: '+L}</h4><div>${fmt(q[3])}</div></div>`;})():''}
+    </article>`;}).join('')}</div>`;
+}
+function perm(seed,n){ let x=seed*9301+49297; const a=[...Array(n).keys()]; for(let i=n-1;i>0;i--){ x=(x*9301+49297)%233280; const j=Math.floor(x/233280*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function resetPart(id,t){ Object.keys(S.p).forEach(k=>{ if(k.startsWith(`${id}:${t}:`)) delete S.p[k]; }); save(); refreshProgress(); render(); }
+
+/* PBL */
+function tPBL(m){
+  return `<div class="sec-intro"><p>Aprendizagem Baseada em Problemas: leia o cenário, discuta as perguntas norteadoras com a equipe, cumpra as tarefas e, ao final, faça a autoavaliação pela rubrica.</p></div>
+  <div class="list">${m.P.map((p,i)=>{ const k=`${m.id}:p:${i}`, st=get(k)||{t:[],r:[]}; const tdone=(st.t||[]).filter(Boolean).length; const allT = tdone===p.tarefas.length;
+    const pts = p.rub.map(r=>+((r.match(/\((\d+)\s*pts?\)/)||[])[1]||0)); const got=(st.r||[]).reduce((a,v,j)=>a+(v?pts[j]:0),0); const max=pts.reduce((a,b)=>a+b,0);
+    return `<article class="card pbl"><div class="meta"><span>Problema ${i+1} de ${m.P.length}</span><span>PBL</span></div>
+    <h3>${esc(p.t)}</h3><p>${fmt(p.cen)}</p>
+    <div class="cols"><div><h4>Perguntas norteadoras</h4><ul>${p.perg.map(x=>`<li>${fmt(x)}</li>`).join('')}</ul></div>
+    <div><h4>Tarefas (${tdone}/${p.tarefas.length})</h4><div class="tasks">${p.tarefas.map((x,j)=>`<label class="check"><input type="checkbox" ${(st.t||[])[j]||S.teacher?'checked':''} onchange="pblT('${k}',${j},this.checked)"> ${fmt(x)}</label>`).join('')}</div></div></div>
+    <div class="box do"><b>Entrega</b><span>${fmt(p.entrega)}</span></div>
+    ${allT||S.teacher?`<div><h4 style="margin-bottom:8px">Autoavaliação pela rubrica</h4><div class="tasks">${p.rub.map((x,j)=>`<label class="check"><input type="checkbox" ${(st.r||[])[j]?'checked':''} onchange="pblR('${k}',${j},this.checked)"> ${fmt(x)}</label>`).join('')}</div></div>
+      <div class="row"><span class="score">${got}/${max} pts</span>${st.done?'<span class="chip">✓ PBL concluído</span>':`<button class="btn pri sm" onclick="pblDone('${k}')">Concluir PBL</button>`}</div>`
+    :`<div class="hint">Marque todas as tarefas para liberar a rubrica de autoavaliação.</div>`}
+    </article>`;}).join('')}</div>`;
+}
+function pblT(k,j,v){ const s=JSON.parse(JSON.stringify(get(k)||{t:[],r:[]})); s.t=s.t||[]; s.t[j]=v; S.p[k]=s; save(); render(); }
+function pblR(k,j,v){ const s=JSON.parse(JSON.stringify(get(k)||{t:[],r:[]})); s.r=s.r||[]; s.r[j]=v; S.p[k]=s; save(); render(); }
+function pblDone(k){ const s=JSON.parse(JSON.stringify(get(k))); s.done=true; put(k,s); render(); }
+
+/* ---------- ATALHOS ---------- */
+const KEYS = [
+ ['word','Negrito','Ctrl+N'],['word','Itálico','Ctrl+I'],['word','Sublinhado','Ctrl+S'],['word','Salvar','Ctrl+B'],['word','Imprimir','Ctrl+P'],['word','Localizar','Ctrl+L'],['word','Substituir','Ctrl+U'],['word','Selecionar tudo','Ctrl+T'],['word','Quebra de página','Ctrl+Enter'],['word','Verificar ortografia','F7'],['word','Alternar maiúsculas','Shift+F3'],
+ ['all','Copiar','Ctrl+C'],['all','Recortar','Ctrl+X'],['all','Colar','Ctrl+V'],['all','Desfazer','Ctrl+Z'],['all','Refazer','Ctrl+Y'],
+ ['excel','Formatar células','Ctrl+1'],['excel','Editar célula','F2'],['excel','Fixar referência ($)','F4'],['excel','AutoSoma','Alt+='],['excel','Ir ao limite dos dados','Ctrl+Setas'],['excel','Selecionar até o limite','Ctrl+Shift+Setas'],['excel','Selecionar coluna','Ctrl+Espaço'],['excel','Selecionar linha','Shift+Espaço'],['excel','Próxima célula à direita','Tab'],['excel','Célula abaixo','Enter'],
+ ['ppt','Novo slide','Ctrl+M'],['ppt','Duplicar','Ctrl+D'],['ppt','Agrupar','Ctrl+G'],['ppt','Desagrupar','Ctrl+Shift+G'],['ppt','Inserir link','Ctrl+K'],['ppt','Apresentar do início','F5'],['ppt','Apresentar do slide atual','Shift+F5'],['ppt','Encerrar apresentação','Esc'],['ppt','Tela preta','B'],['ppt','Tela branca','W']];
+let kf = 'todos';
+function viewKeys(){
+  setAccent('all');
+  const list = KEYS.filter(k=>kf==='todos'||k[0]===kf||k[0]==='all');
+  return `<section class="mhead"><span class="eyebrow">Referência rápida</span><h1>Guia de atalhos</h1><p class="lead">Atalhos do Office em português usados nas lições. Alguns podem variar conforme a versão e o idioma instalado.</p></section>
+  <div class="filters">${[['todos','Todos'],['word','Word'],['excel','Excel'],['ppt','PowerPoint']].map(([k,l])=>`<button aria-pressed="${kf===k}" onclick="kf='${k}';render()">${l}</button>`).join('')}</div>
+  <div class="kgrid">${list.map(k=>`<div class="card kitem"><span><span class="num bg-${APP[k[0]].c}" style="display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:8px"></span>${k[1]}</span><span>${k[2].split('+').map(x=>`<kbd>${x}</kbd>`).join('+')}</span></div>`).join('')}</div>
+  <div class="card item"><div class="q">Desafio do teclado</div><p>Escolha uma tarefa (formatar um parágrafo, montar uma tabela ou duplicar slides) e realize-a sem clicar na Faixa de Opções. Anote no caderno quais atalhos usou.</p></div>`;
+}
+
+/* ---------- render ---------- */
+function render(){
+  const r = route();
+  $('#tMode').setAttribute('aria-pressed', S.teacher);
+  let h, crumb;
+  if(r.v==='mod'){ h = viewMod(r.mod, r.tab); crumb = `módulo ${r.mod.id} / <b>${esc(r.mod.title)}</b> / ${TABS.find(t=>t[0]===r.tab)[1]}`; }
+  else if(r.v==='atalhos'){ h = viewKeys(); crumb = `disciplina / <b>Guia de atalhos</b>`; }
+  else { h = viewHome(); crumb = `disciplina / <b>Painel</b>`; }
+  const y = window.scrollY;
+  $('#view').innerHTML = h; $('#crumb').innerHTML = crumb;
+  refreshProgress();
+  window.scrollTo(0,y);
+}
+applyTheme(); render();
+
+</script>
