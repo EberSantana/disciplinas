@@ -51,6 +51,7 @@ p{margin:0}
 .nav .pc{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
 .side-foot{margin-top:auto;padding:14px 16px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
 .toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px}
+.toggle[hidden]{display:none}
 .switch{width:40px;height:22px;border-radius:20px;background:var(--line);border:0;position:relative;flex:none}
 .switch::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--surface);transition:left .15s}
 .switch[aria-pressed="true"]{background:var(--accent)}.switch[aria-pressed="true"]::after{left:21px}
@@ -207,7 +208,7 @@ kbd{font-family:var(--f-mono);font-size:12.5px;font-weight:700;padding:2px 7px;b
     <div class="brand"><div class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div><b>Método Office Visual</b><small>Word · Excel · PowerPoint</small></div></div>
     <nav class="nav" id="nav"></nav>
     <div class="side-foot">
-      <div class="toggle"><span>Modo professor<br><small class="hint">mostra todas as respostas</small></span><button class="switch" id="tMode" aria-pressed="false" aria-label="Modo professor"></button></div>
+      <div class="toggle" id="tModeRow" hidden><span>Modo professor<br><small class="hint">mostra todas as respostas</small></span><button class="switch" id="tMode" aria-pressed="false" aria-label="Modo professor"></button></div>
       <div class="toggle"><span>Tema escuro</span><button class="switch" id="tTheme" aria-pressed="false" aria-label="Tema escuro"></button></div>
       <button class="btn sm" id="reset">Zerar meu progresso</button>
     </div>
@@ -833,6 +834,9 @@ const $ = s => document.querySelector(s);
 /* ---------- estado ---------- */
 let S = {p:{}, teacher:false, theme:null, fc:{}};
 try{ const raw = localStorage.getItem('mov-v1'); if(raw) S = Object.assign(S, JSON.parse(raw)); }catch(e){}
+const PROF = /[?&]professor\b/.test(location.search);
+if(!PROF) S.teacher = false;
+if(PROF) document.getElementById('tModeRow').hidden = false;
 const save = () => { try{ localStorage.setItem('mov-v1', JSON.stringify(S)); }catch(e){} };
 const get = k => S.p[k];
 const put = (k,v) => { S.p[k] = v; save(); refreshProgress(); };
