@@ -301,7 +301,16 @@
   // Para a p\u00e1gina inicial organizar as disciplinas pelo curso do aluno
   window.PORTAL_ALUNO = { perfil: function () { return perfil; }, cursos: CURSOS, entrar: mostrarEntrada };
 
-  if (perfil) { paintFab(); esconderEntrada(); }
+  // Quem entrou quando o envio ainda n\u00e3o estava ligado \u00e9 cadastrado na planilha agora (uma vez por visita).
+  function sincronizar() {
+    if (!URL_ || !perfil) return;
+    try { if (sessionStorage.getItem("pt-sync") === perfil.email) return; } catch (e) {}
+    enviar(DADOS ? dados() : { feitas: 0, total: 0, pontos: 0 }).then(function (r) {
+      if (r && r.ok) { try { sessionStorage.setItem("pt-sync", perfil.email); } catch (e) {} }
+    });
+  }
+
+  if (perfil) { paintFab(); esconderEntrada(); sincronizar(); }
   else if (LIVRE) { root.classList.remove("pt-gate"); }
   else { mostrarEntrada(); }
   avisar();
