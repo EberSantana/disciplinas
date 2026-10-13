@@ -1230,8 +1230,7 @@ all:{t:'Mapa da integração',z:{
    COMPONENTES VISUAIS: linha do tempo, caminho de cliques, zoom de imagem,
    telas exploráveis, jogos de arrastar e laboratórios por módulo
    ===================================================================== */
-const imgSrc = n => `office-visual-img/p${String(n).padStart(3,'0')}.webp`;
-
+const imgSrc = n => `../office-visual-img/p${String(n).padStart(3,'0')}.webp`;
 /* ---------- Zoom de imagem (lightbox) ---------- */
 const LB = {s:1,x:0,y:0};
 function openLightbox(n, title){
