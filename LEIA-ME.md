@@ -23,7 +23,8 @@ disciplinas/
 │   ├── index.html
 │   ├── ambiente-interativo.html
 │   ├── apostila.html
-│   └── metodo-office-visual.html   ← envia progresso
+│   ├── metodo-office-visual.html   ← envia progresso
+│   └── trilha-windows-11.html      ← envia progresso
 ├── engenharia-de-software/
 │   ├── index.html
 │   ├── apostila-engenharia-de-software.html
@@ -79,7 +80,7 @@ Depois do login:
 
 A lista fica no começo do arquivo `progresso-turma.js`, na parte `CURSOS`. Para incluir uma disciplina num curso, acrescente uma linha `["Nome que aparece", "nome-da-pasta"]` dentro do curso. Uma disciplina pode estar em mais de um curso.
 
-Enviam o progresso para a planilha: Subnetting na Prática, Método Office Visual e as atividades com ranking de Redes e de Projeto de Redes.
+Enviam o progresso para a planilha: Subnetting na Prática, Método Office Visual, Trilha Windows 11 e as atividades com ranking de Redes e de Projeto de Redes.
 
 Na planilha aparecem duas abas:
 - **Alunos**: um aluno por linha, com nome, e-mail, curso, turno, turma, data do cadastro e do último acesso.
