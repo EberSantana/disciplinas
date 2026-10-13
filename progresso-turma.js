@@ -86,12 +86,14 @@
     "@media (max-width:380px){.pt-two{grid-template-columns:1fr}}" +
     /* bot\u00e3o e menu depois do login */
     ".pt-fab{position:fixed;right:16px;bottom:16px;z-index:9998;border:0;border-radius:999px;padding:12px 18px;font:600 15px/1.2 " + F + ";background:#D96C14;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer;max-width:calc(100vw - 32px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}" +
+    ".pt-fab,.pt-box button,.pt-box a,.pt-go{-webkit-tap-highlight-color:transparent}" +
     ".pt-fab[hidden]{display:none}" +
     ".pt-fab:focus-visible{outline:3px solid #15212B;outline-offset:2px}" +
     ".pt-fab .pt-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;background:#7CF0B0;vertical-align:middle}" +
     ".pt-box{position:fixed;right:16px;bottom:72px;z-index:9999;width:min(380px,calc(100vw - 32px));max-height:calc(100vh - 100px);overflow:auto;border-radius:14px;padding:18px;font:15px/1.5 " + F + ";background:#fff;color:#15212B;border:1px solid #D5DDDA;box-shadow:0 10px 30px rgba(0,0,0,.25);text-align:left}" +
     ".pt-box[hidden]{display:none}" +
-    ".pt-box h3{margin:0 0 4px;font:700 24px/1.1 " + FD + ";color:inherit}" +
+    ".pt-close{position:absolute;top:8px;right:8px;width:40px;height:40px;border:0;border-radius:10px;background:transparent;color:inherit;font:400 28px/1 " + F + ";cursor:pointer;opacity:.7}.pt-close:hover,.pt-close:focus-visible{opacity:1;background:rgba(127,127,127,.15);outline:none}" +
+    ".pt-box h3{margin:0 0 4px;padding-right:40px;font:700 24px/1.1 " + FD + ";color:inherit}" +
     ".pt-box h4{margin:14px 0 6px;font:700 12px/1.2 " + FM + ";letter-spacing:.08em;text-transform:uppercase;color:#B4560B}" +
     ".pt-box p{margin:0 0 10px;color:#3F4F5B;font-size:14px}" +
     ".pt-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}" +
@@ -243,6 +245,7 @@
   function painel() {
     var d = dados(), c = cursoDe(perfil.curso), atual = pastaAtual();
     box.innerHTML =
+      '<button class="pt-close" id="pt-x" type="button" aria-label="Fechar">\u00d7</button>' +
       "<h3>Ol\u00e1, " + esc(primeiroNome()) + "</h3>" +
       '<p class="pt-stat">' + esc(perfil.curso) + "<br>" + esc(perfil.turma) + " \u00b7 " + esc(perfil.turno) + "</p>" +
       "<h4>Suas disciplinas</h4>" +
@@ -253,7 +256,7 @@
         (URL_ ? "<p>O progresso \u00e9 enviado sozinho enquanto voc\u00ea estuda.</p>" : "<p>O envio para o professor ainda n\u00e3o foi ativado. Seu progresso fica salvo neste aparelho.</p>") : "") +
       '<div class="pt-row">' + (d && URL_ ? '<button class="pt-btn" id="pt-s" type="button">Enviar agora</button>' : "") +
       '<a class="pt-btn sec" href="' + esc(BASE) + '">P\u00e1gina inicial</a>' +
-      '<button class="pt-btn sec" id="pt-out" type="button">Sair</button><button class="pt-btn sec" id="pt-x" type="button">Fechar</button></div>' +
+      '<button class="pt-btn sec" id="pt-out" type="button">Sair</button></div>' +
       '<div class="pt-msg" role="status"></div>' + (d && URL_ ? '<ol class="pt-rank" aria-label="Ranking da turma"></ol>' : "");
     box.querySelector("#pt-x").onclick = fechar;
     var s = box.querySelector("#pt-s");
@@ -281,9 +284,10 @@
       .catch(function () {});
   }
 
-  function abrir() { box.hidden = false; fab.setAttribute("aria-expanded", "true"); painel(); var f = box.querySelector("a,button"); if (f) f.focus(); }
-  function fechar() { box.hidden = true; fab.setAttribute("aria-expanded", "false"); }
-  fab.onclick = function () { box.hidden ? abrir() : fechar(); };
+  function abrir() { box.hidden = false; box.style.display = ""; fab.setAttribute("aria-expanded", "true"); painel(); var f = box.querySelector("a,button"); if (f) f.focus(); }
+  function fechar() { box.hidden = true; box.style.display = "none"; fab.setAttribute("aria-expanded", "false"); }
+  fab.onclick = function (ev) { ev.stopPropagation(); box.hidden ? abrir() : fechar(); };
+  document.addEventListener("click", function (ev) { if (!box.hidden && !box.contains(ev.target) && ev.target !== fab && !fab.contains(ev.target)) fechar(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !box.hidden) { fechar(); fab.focus(); } });
 
   /* ---------- envio autom\u00e1tico do progresso ---------- */
