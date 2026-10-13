@@ -522,7 +522,12 @@
             padding: 20px;
             font-size: 1.1em;
         }
-    </style>
+            @media (max-width: 600px) {
+            .container { padding: 18px !important; }
+            .timer-display { font-size: clamp(2.6em, 15vw, 5em); }
+            .timer-controls button { padding: 12px 18px; }
+        }
+</style>
 </head>
 <body>
     <div class="team-modal" id="teamModal">
