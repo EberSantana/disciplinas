@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <script>try{var pa=JSON.parse(localStorage.getItem("perfil:aluno")||"null");if(!(pa&&pa.email&&pa.curso)&&!/[?&]professor\b/.test(location.search))document.documentElement.classList.add("pt-gate")}catch(e){}</script><style>html.pt-gate body>*:not(.pt-screen){visibility:hidden}</style>
+</head>
+<body>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Método Office Visual</title>
 <meta name="description" content="Disciplina interativa de Word, Excel e PowerPoint">
@@ -206,10 +208,234 @@ kbd{font-family:var(--f-mono);font-size:12.5px;font-weight:700;padding:2px 7px;b
   .mini .bar{width:60px}
   .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.tab{white-space:nowrap;flex:none}
 }
+/* ---------- linha do tempo ---------- */
+.tl{display:flex;gap:0;overflow-x:auto;padding:6px 2px 10px;position:relative;scrollbar-width:thin}
+.tl-n{flex:1 0 96px;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;padding:0 4px;color:var(--muted)}
+.tl-n::before{content:"";position:absolute;top:19px;left:0;right:0;height:3px;background:var(--line);z-index:0}
+.tl-n:first-child::before{left:50%}.tl-n:last-child::before{right:50%}
+.tl-n.done::before{background:var(--accent)}
+.tl-n i{position:relative;z-index:1;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-family:var(--f-mono);font-weight:700;font-size:13px;background:var(--surface);border:2px solid var(--line);transition:transform .15s}
+.tl-n.done i{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.tl-n.cur i{background:var(--accent);border-color:var(--accent);color:var(--surface);transform:scale(1.12)}
+.tl-n span{font-size:12px;line-height:1.25;text-align:center;max-width:110px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tl-n.cur span{color:var(--ink);font-weight:700}
+.lesson-x{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:24px;align-items:start}
+.pg-fig{margin:0;display:flex;flex-direction:column;gap:6px;position:sticky;top:70px}
+.pg-btn{border:1px solid var(--line);padding:0;border-radius:12px;overflow:hidden;background:var(--surface);position:relative;box-shadow:var(--shadow);cursor:zoom-in}
+.pg-btn img{display:block;width:100%;height:auto;aspect-ratio:910/1287;object-fit:cover;background:var(--sunken)}
+.zoom-tag{position:absolute;right:10px;bottom:10px;background:var(--ink);color:var(--bg);font-size:13px;font-weight:700;padding:5px 10px;border-radius:20px;opacity:.9}
+.pg-fig figcaption{font-size:13px;color:var(--muted);text-align:center}
+.lx-body{display:flex;flex-direction:column;gap:14px;min-width:0}
+.lx-body h2{font-size:clamp(24px,3vw,32px)}
+.lx-body .pg{display:flex;justify-content:space-between;align-items:center;gap:10px}
+/* ---------- caminho de cliques ---------- */
+.sim{border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.sim-bar{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line);font-size:14px}
+.sim-bar i{width:12px;height:12px;border-radius:3px}
+.sim-tabs{display:flex;gap:2px;overflow-x:auto;padding:6px 8px;background:var(--sunken);font-size:12.5px;scrollbar-width:none}
+.sim-tabs span{padding:4px 9px;border-radius:6px;white-space:nowrap;color:var(--muted);transition:all .25s}
+.sim-tabs span.ctx{color:var(--accent);font-weight:600}
+.sim-tabs span.hot{background:var(--accent);color:var(--surface);box-shadow:0 0 0 4px var(--accent-soft)}
+.sim-chain{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:14px 12px;min-height:64px}
+.sp-st{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;border:1px dashed var(--line);font-size:14px;opacity:.28;transition:opacity .3s,transform .3s}
+.sp-st em{font-style:normal;font-family:var(--f-mono);font-size:11px;width:18px;height:18px;display:grid;place-items:center;border-radius:50%;background:var(--sunken)}
+.sp-st.is-tab{font-weight:600}
+.sp-st.show{opacity:1;border-style:solid;border-color:var(--accent)}
+.sp-st.now{transform:translateY(-2px);background:var(--accent-soft);box-shadow:0 4px 12px color-mix(in srgb,var(--accent) 25%,transparent)}
+.sp-st.now em{background:var(--accent);color:var(--surface)}
+.sp-ar{color:var(--muted);opacity:.25;transition:opacity .3s}.sp-ar.show{opacity:1}
+.sp-res{flex-basis:100%;opacity:0;max-height:0;transition:all .4s;background:var(--ok-soft);color:var(--ok);font-weight:700;border-radius:8px;padding:0 12px;overflow:hidden}
+.sp-res.show{opacity:1;max-height:60px;padding:8px 12px;margin-top:4px}
+.sim-ctl{padding:0 12px 12px}
+/* ---------- lightbox ---------- */
+.lb{position:fixed;inset:0;z-index:50;background:color-mix(in srgb,var(--bg) 94%,black);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
+.lb-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--line);font-family:var(--f-mono);font-size:13px}
+.lb-stage{flex:1;overflow:hidden;display:grid;place-items:center;touch-action:none;cursor:grab}
+.lb-stage img{max-height:calc(100vh - 110px);max-width:100%;transform-origin:center;transition:transform .08s;user-select:none;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.lb-hint{text-align:center;font-size:12px;color:var(--muted);padding:6px 16px calc(8px + env(safe-area-inset-bottom,0px))}
+/* ---------- explorar ---------- */
+.xsec{display:flex;flex-direction:column;gap:10px;padding-block:6px}
+.xs-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.xs-h h3{font-size:22px}
+.xp-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;align-items:start}
+.xp-side{display:flex;flex-direction:column;gap:10px}
+.xp-info{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.xp-ch{background:var(--accent-soft);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.xp-ch b{font-family:var(--f-display);font-size:18px;color:var(--accent)}
+.layers{display:flex;flex-direction:column;gap:4px}
+.layers button{display:flex;align-items:center;gap:10px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 10px;font-size:14px}
+.layers button em{font-style:normal;font-family:var(--f-mono);font-size:11px;width:20px;height:20px;border-radius:5px;display:grid;place-items:center;background:var(--sunken)}
+.layers button.seen em{background:var(--accent-soft);color:var(--accent)}
+.layers button.hl{border-color:var(--accent);background:var(--accent-soft)}
+/* mock de tela */
+.mk{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--sunken);font-size:12px;user-select:none;box-shadow:var(--shadow)}
+.zn{cursor:pointer;outline:2px solid transparent;outline-offset:-2px;transition:outline-color .15s,background .15s;border-radius:4px}
+.zn:hover,.zn.hl{outline-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.zn.flash-ok{outline-color:var(--ok);background:var(--ok-soft)}.zn.flash-bad{outline-color:var(--bad);background:var(--bad-soft)}
+.mk-title{display:flex;gap:10px;align-items:center;padding:6px 10px;background:var(--accent);color:var(--surface)}
+.mk-title .zn{padding:2px 6px}.mk-title .zn:hover,.mk-title .zn.hl{background:color-mix(in srgb,var(--surface) 25%,transparent);outline-color:var(--surface)}
+.grow{flex:1;text-align:center}
+.mk-tabs{display:flex;gap:10px;padding:5px 10px;background:var(--surface);overflow:hidden;white-space:nowrap}
+.mk-tabs span.on{color:var(--accent);font-weight:700;border-bottom:2px solid var(--accent)}
+.mk-rib{display:flex;gap:0;background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px 4px;overflow:hidden}
+.mk-rib span{flex:1;text-align:center;border-right:1px solid var(--line);padding:4px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+.mk-ruler{height:12px;margin:6px 14%;background:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 12px);border-radius:2px}
+.mk-desk{padding:8px 14% 14px}
+.mk-page{background:var(--surface);aspect-ratio:1/0.75;padding:16px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px}
+.mk-page b{font-family:var(--f-display);font-size:16px}.mk-page .ln{height:7px;background:var(--line);border-radius:4px}.mk-page .ln.s{width:70%}
+.mk-status{display:flex;justify-content:space-between;gap:8px;padding:5px 10px;background:var(--surface);border-top:1px solid var(--line);color:var(--muted)}
+.mk-status .zn{padding:1px 6px}
+.mk-fbar{display:flex;gap:6px;align-items:center;padding:5px 8px;background:var(--surface)}
+.mk-fbar .nb{border:1px solid var(--line);padding:2px 8px;font-family:var(--f-mono);width:56px}
+.mk-fbar .fx{font-style:italic;color:var(--muted)}.mk-fbar .grow{text-align:left;border:1px solid var(--line);padding:2px 8px;font-family:var(--f-mono)}
+.mk-grid{display:grid;grid-template-columns:28px repeat(5,minmax(0,1fr));background:var(--surface);border-top:1px solid var(--line)}
+.mk-grid span{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:4px 6px;min-height:24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-radius:0}
+.mk-grid .ch,.mk-grid .rh,.mk-grid .corner{background:var(--sunken);text-align:center;color:var(--muted);font-family:var(--f-mono)}
+.mk-grid .act{outline:2px solid var(--excel);outline-offset:-2px}
+.mk-sheets{padding:5px 10px;background:var(--surface);border-top:1px solid var(--line)}
+.mk-pp{display:grid;grid-template-columns:70px minmax(0,1fr);gap:8px;padding:8px}
+.thumbs{display:flex;flex-direction:column;gap:6px;padding:4px}
+.thumbs span{aspect-ratio:16/9;background:var(--surface);border:1px solid var(--line);font-size:10px;padding:2px 4px;border-radius:3px}
+.thumbs span.on{border:2px solid var(--ppt)}
+.mk-stage{display:flex;flex-direction:column;gap:8px}
+.mk-slide{aspect-ratio:16/9;background:var(--surface);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;box-shadow:var(--shadow);text-align:center;padding:10px}
+.mk-slide b{font-family:var(--f-display);font-size:16px;border:1px dashed var(--line);padding:6px 10px}
+.mk-slide small{border:1px dashed var(--line);padding:4px 10px;color:var(--muted)}
+.mk-notes{background:var(--surface);padding:8px;color:var(--muted);border:1px solid var(--line)}
+.mk-all{padding:14px;display:flex;flex-direction:column;gap:14px;background:var(--surface)}
+.mk-all .zn{border:1px solid var(--line);padding:10px;border-radius:10px;text-align:center;background:var(--bg)}
+.n-pasta{align-self:flex-start;font-weight:700}
+.flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center}
+.mk-all .n-app{width:96px;height:96px;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#fff;font-family:var(--f-display);font-size:30px;font-weight:800;border:0}
+.mk-all .n-app small{font-family:var(--f-body);font-size:11px;font-weight:600}
+.n-colar{font-weight:700}.arr{font-size:22px;color:var(--muted)}
+.base{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+/* jogo */
+.pool{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border:2px dashed var(--line);border-radius:10px}
+.gchip{padding:7px 12px;border-radius:8px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);cursor:grab;font-size:14px;touch-action:manipulation}
+.gchip.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.gchip.ok{border-color:var(--ok);background:var(--ok-soft)}.gchip.bad{border-color:var(--bad);background:var(--bad-soft)}
+.bins{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:10px}
+.bin{border:2px solid var(--line);border-radius:10px;padding:10px;min-height:120px;display:flex;flex-direction:column;gap:8px;background:var(--surface);cursor:pointer}
+.bin b{font-family:var(--f-display);font-size:15px;color:var(--accent)}
+.bin.over{border-color:var(--accent);background:var(--accent-soft)}
+.bin-in{display:flex;flex-wrap:wrap;gap:6px}
+/* laboratórios */
+.xc{display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:14.5px}
+.xc>span{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--sunken);font-weight:700;font-size:12px}
+.xc.ok>span{background:var(--ok);color:var(--surface)}
+.xc details{font-size:13px;color:var(--muted)}.xc summary{cursor:pointer;color:var(--accent)}
+.xl-ch{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.xl{display:flex;flex-direction:column;gap:10px}
+.xl-bar{display:flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:6px;background:var(--surface)}
+.xl-bar .nb{font-family:var(--f-mono);font-weight:700;width:48px;text-align:center;border-right:1px solid var(--line)}
+.xl-bar .fx{font-style:italic;color:var(--muted)}
+.xl-bar input{flex:1;min-width:0;border:0;background:transparent;font-family:var(--f-mono);font-size:14px;padding:6px}
+.xl-bar input:focus{outline:none}
+.xl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+.xl-t{border-collapse:collapse;width:100%;min-width:520px;font-size:14px;background:var(--surface)}
+.xl-t th{background:var(--sunken);font-family:var(--f-mono);font-weight:500;font-size:12px;color:var(--muted);padding:4px 6px;border:1px solid var(--line);width:34px}
+.xl-t th.on{background:var(--excel-soft);color:var(--excel);font-weight:700}
+.xl-t td{border:1px solid var(--line);padding:5px 8px;height:30px;cursor:cell;white-space:nowrap;max-width:160px;overflow:hidden;text-overflow:ellipsis}
+.xl-t td.num{text-align:right;font-variant-numeric:tabular-nums}
+.xl-t td.fx{background:color-mix(in srgb,var(--excel-soft) 45%,transparent)}
+.xl-t td.sel{outline:2px solid var(--excel);outline-offset:-2px}
+.xl-t td.err{background:var(--bad-soft);color:var(--bad);font-weight:700}
+.xl-err{background:var(--bad-soft);border-radius:8px;padding:10px 12px;font-size:14.5px}.xl-err b{color:var(--bad);font-family:var(--f-mono)}
+.wl{display:flex;flex-direction:column;gap:10px}
+.wl-rib{display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.wl-rib button,.wl-rib select{border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:4px 9px;min-width:32px;font-size:14px}
+.wl-rib button[aria-pressed="true"]{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+.sw{width:24px;height:24px;border-radius:6px!important;background:var(--sw)!important;border:2px solid var(--line)!important;padding:0!important;min-width:0!important}
+.sw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--accent)}
+.sw.big{width:34px;height:34px}
+.sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+.wl-page{background:#fff;color:#1B2230;border:1px solid var(--line);border-radius:6px;padding:28px 34px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow);max-width:620px;width:100%;align-self:center}
+.wl-page [data-el]{cursor:pointer;border-radius:4px;padding:4px;outline:1px dashed transparent}
+.wl-page [data-el].cur{outline-color:#2556B0}
+.wl-list span{display:block}
+.wl-list.ul span::before{content:"•  "}
+.wl-list.ol{counter-reset:it}.wl-list.ol span::before{counter-increment:it;content:counter(it) ".  "}
+.pl{display:flex;flex-direction:column;gap:10px}
+.pl-slide{position:relative;aspect-ratio:16/9;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden;background-image:linear-gradient(var(--sunken) 1px,transparent 1px),linear-gradient(90deg,var(--sunken) 1px,transparent 1px);background-size:10% 10%;touch-action:none}
+.shp{position:absolute;width:20%;aspect-ratio:1.6;display:grid;place-items:center;color:#fff;font-weight:700;font-size:clamp(11px,1.6vw,15px);border-radius:10px;cursor:grab;transition:left .45s cubic-bezier(.3,.7,.3,1),top .45s cubic-bezier(.3,.7,.3,1)}
+.shp.drag{transition:none;cursor:grabbing;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.s1{background:var(--word)}.s2{background:var(--excel);border-radius:50%}.s3{background:var(--ppt)}
+:root[data-theme="dark"] .shp{color:#11151B}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .shp{color:#11151B}}
+.an-rows{display:flex;flex-direction:column;gap:6px}
+.an-row{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--surface)}
+.an-row select,.nv-cfg select,.tc select{border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:4px 6px}
+.an-stage{aspect-ratio:16/6;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:16px 22px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.an-it{font-family:var(--f-display);font-size:20px;font-weight:700;opacity:0;transform:translateX(-24px);transition:all .45s}
+.an-it.in{opacity:1;transform:none}
+.fr{display:flex;flex-direction:column;gap:10px}
+.fr-in{display:flex;gap:10px;flex-wrap:wrap}
+.fr-in label{display:flex;flex-direction:column;font-size:13px;color:var(--muted);flex:1;min-width:160px}
+.fr-in input{border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:7px 10px;font-size:15px;color:var(--ink)}
+.fr-doc{background:#fff;color:#1B2230;border:1px solid var(--line);border-radius:6px;padding:20px 24px;line-height:1.8;font-size:16px}
+.fr-doc mark{background:#FFE45C;color:#1B2230;border-radius:3px;padding:0 2px}
+.cl-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:18px}
+.sws{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.cl-room{height:230px;border-radius:10px;background:linear-gradient(var(--sunken),var(--bg));display:grid;place-items:center;overflow:hidden;border:1px solid var(--line);margin-bottom:10px}
+.cl-slide{width:300px;aspect-ratio:16/9;padding:18px;display:flex;flex-direction:column;gap:4px;box-shadow:0 6px 20px rgba(0,0,0,.2);transition:transform .2s;border-radius:4px}
+.cl-slide b{font-family:var(--f-display);font-size:24px}
+.ch-svg{width:100%;max-width:420px;height:auto;display:block;margin:6px 0}
+.chq{display:flex;flex-direction:column;gap:10px}
+.tc{display:flex;flex-direction:column;gap:10px}
+.tc-grid,.md-grid,.ps-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+.tc-doc{background:#fff;color:#1B2230;border:1px solid var(--line);border-radius:6px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.tc-l{display:flex;gap:8px;align-items:center}
+.tc-l .t1{font-size:19px;font-weight:700;color:#2556B0}.tc-l .t2{font-size:16px;font-weight:700;color:#2556B0;padding-left:14px}.tc-l .bold{font-weight:700}
+.tc-p{font-size:13px;color:#5A6577;padding-left:4px}
+.tc-toc{border:1px solid var(--line);border-radius:8px;padding:12px;margin:10px 0;background:var(--surface);display:flex;flex-direction:column;gap:4px}
+.tc-toc div{display:flex;justify-content:space-between;gap:6px;border-bottom:1px dotted var(--line)}
+.tc-toc .t2{padding-left:18px;font-size:14px}
+.md-t{border-collapse:collapse;width:100%;font-size:14px;background:var(--surface)}
+.md-t th,.md-t td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+.md-t th{background:var(--sunken);font-size:12px}
+.md-t input{width:100%;border:0;background:transparent;font:inherit;color:var(--ink)}
+.md-c{background:#fff;color:#1B2230;border:3px double #C9A227;border-radius:6px;padding:16px;text-align:center;display:flex;flex-direction:column;gap:6px}
+.md-c small{letter-spacing:.15em;font-size:11px;color:#7A6418}
+.md-c .fld{font-family:var(--f-mono);font-size:11px;color:#2556B0}
+.md-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.nv{display:flex;flex-direction:column;gap:10px}
+.nv-cfg{display:flex;flex-direction:column;gap:6px}
+.nv-cfg label{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--surface);flex-wrap:wrap}
+.nv-player{position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--line);outline:none}
+.nv-player:focus-visible{box-shadow:0 0 0 3px var(--accent)}
+.nv-screen{aspect-ratio:16/9;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;padding:20px;text-align:center}
+.nv-screen b{font-family:var(--f-display);font-size:clamp(20px,3vw,30px)}
+.bg-soft-all{background:var(--all-soft)}.bg-soft-word{background:var(--word-soft)}.bg-soft-excel{background:var(--excel-soft)}.bg-soft-ppt{background:var(--ppt-soft)}
+.nv-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.nv-btns button,.nv-back{border:0;border-radius:10px;padding:12px 18px;font-weight:700;background:var(--accent);color:var(--surface)}
+.nv-ov{position:absolute;inset:0;bottom:40px}.nv-ov.blk{background:#000}.nv-ov.wht{background:#fff}
+.nv-bar{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--surface);font-family:var(--f-mono);font-size:12px;height:40px}
+.nv-times{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.ps-docs{display:flex;flex-direction:column;gap:10px}
+.ps-d{border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--surface);display:flex;flex-direction:column;gap:6px}
+.ps-d small{color:var(--muted)}
+.ps-img{filter:saturate(.85);pointer-events:none;position:relative}
+.ps-d.img{cursor:not-allowed}
+.bk{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px}
+.bk-i{border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--surface)}
+.shake{animation:shk .4s}
+@keyframes shk{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+@media (max-width:900px){
+  .lesson-x,.xp-grid,.cl-grid,.tc-grid,.md-grid,.ps-grid{grid-template-columns:minmax(0,1fr)}
+  .pg-fig{position:static;max-width:420px;margin-inline:auto;width:100%}
+  .bins{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mk{font-size:10.5px}
+  .mk-desk{padding-inline:6%}
+}
+
+[hidden]{display:none!important}
+.mk-all .n-app.bg-excel{background:var(--excel)}.mk-all .n-app.bg-word{background:var(--word)}.mk-all .n-app.bg-ppt{background:var(--ppt)}
+:root[data-theme="dark"] .mk-all .n-app{color:#11151B}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .mk-all .n-app{color:#11151B}}
+.pl-slide,.an-stage{max-width:760px;width:100%;align-self:center}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
-</head>
-<body>
 
 <div class="app" id="app">
   <aside class="side" id="side">
@@ -832,9 +1058,759 @@ P:[
 {t:'Auditoria de segurança e acessibilidade',cen:'O setor administrativo envia documentos com senha no mesmo e-mail, arquivos chamados “final2” e PDFs sem texto alternativo.',perg:['Quais riscos existem hoje?','Que boas práticas devem virar regra?'],tarefas:['Liste no caderno 5 problemas encontrados','Proponha uma estrutura de pastas e padrão de nomes','Escreva uma política curta de compartilhamento e senhas','Corrija um documento usando Verificar Acessibilidade','Apresente as recomendações em 3 slides'],entrega:'Mini-política (Word/PDF) + 3 slides',rub:['Diagnóstico (2 pts)','Padrão de nomes e pastas (2 pts)','Política de segurança coerente (3 pts)','Documento acessível corrigido (3 pts)']}]
 });
 
+/* ===== Caminhos (linha do tempo de cliques) e jogos de arrastar, por módulo ===== */
+const TABSET = {
+  word:['Arquivo','Página Inicial','Inserir','Design','Layout','Referências','Correspondências','Revisão','Exibir'],
+  excel:['Arquivo','Página Inicial','Inserir','Layout da Página','Fórmulas','Dados','Revisão','Exibir'],
+  ppt:['Arquivo','Página Inicial','Inserir','Design','Transições','Animações','Apresentação de Slides','Revisão','Exibir'],
+  all:['Arquivo','Página Inicial','Inserir','Revisão','Exibir']
+};
+const CONTEXT_TABS = ['Formato da Imagem','Formato da Forma'];
+
+const PATHS = {
+1:[['Arquivo','Novo','Documento em branco','res:Tela pronta: localize as 5 áreas'],
+   ['Clique no texto','Arraste para selecionar','key:Backspace','key:Delete','res:Texto corrigido'],
+   ['Selecione o texto','Página Inicial','Fonte: Arial','Tamanho: 24','key:Ctrl+N','res:Título destacado'],
+   ['Selecione o parágrafo','Página Inicial','Centralizar','Espaçamento 1,15','res:Parágrafo organizado'],
+   ['Página Inicial','Marcadores','Digite o item','key:Enter','key:Enter','res:Lista criada e encerrada'],
+   ['Inserir','Imagens','Este Dispositivo','Arraste pelos cantos','Layout: Quadrado','res:Imagem ao lado do texto'],
+   ['Inserir','Tabela','Grade 3x4','key:Tab','res:Tabela preenchida'],
+   ['Layout','Margens: Normal','Orientação: Retrato','Tamanho: A4','res:Página pronta para imprimir'],
+   ['key:Ctrl+B','Arquivo','Salvar Como','Exportar PDF','res:DOCX + PDF'],
+   ['Título centralizado','Negrito nas informações','Marcadores','Inserir ícone','Exportar PDF','res:Aviso pronto']],
+2:[['Clique em B3','Caixa de Nome mostra B3','Barra de fórmulas','res:B3 = coluna B + linha 3'],
+   ['Digite Janeiro','Digite Fevereiro','Selecione as duas','Arraste a alça','res:Janeiro → Junho'],
+   ['Selecione as células','Página Inicial','Formato de Número','Moeda · Porcentagem · Data','res:R$ 1.500,00 · 25% · 15/09/2026'],
+   ['Clique em C1','=A1+B1','key:Enter','res:Resultado se atualiza sozinho'],
+   ['Clique na célula','=SOMA(','Selecione B2:B5','key:Enter','res:Soma calculada'],
+   ['Clique em C2','=SE(B2>=7;"APROVADO";"REPROVADO")','key:Enter','Arraste para baixo','res:Situação de cada aluno'],
+   ['Clique na lista','Dados','Classificar ou Filtro','Escolha o critério','res:Só os dados que interessam'],
+   ['Selecione os dados','Página Inicial','Formatar como Tabela','Escolha um estilo','res:Tabela com filtros e linhas alternadas'],
+   ['Selecione os dados','Inserir','Gráfico de Colunas','Título do gráfico','res:Gráfico pronto'],
+   ['Títulos','Receitas e despesas','=SOMA nos totais','Saldo = Entradas − Saídas','Inserir','res:Controle de gastos']],
+3:[['Arquivo','Novo','Apresentação em Branco','res:Localize miniaturas, slide e anotações'],
+   ['Página Inicial','Novo Slide','Escolha um layout','res:Espaços prontos para preencher'],
+   ['Selecione o título','Página Inicial','Tamanho 32','Reduza a 3 tópicos','res:Lido do fundo da sala'],
+   ['Inserir','Imagens','Este Dispositivo','Formato da Imagem','Cortar','res:Imagem sem deformar'],
+   ['Inserir','Formas','Ícones','Formato da Forma','res:Processo visual em 3 etapas'],
+   ['key:Shift','Clique nos objetos','Formato da Forma','Alinhar','Distribuir Horizontalmente','res:Elementos alinhados'],
+   ['Transições','Esmaecer','Duração 01,00','Aplicar a Todos','res:Troca de slides suave'],
+   ['Selecione o objeto','Animações','Entrada','Painel de Animação','res:Tópicos na hora certa'],
+   ['key:F5','key:Shift+F5','Modo de Apresentador','key:Esc','res:Apresentação conduzida'],
+   ['Capa','Sobre','Produtos','Diferenciais','Contato','res:5 slides prontos']],
+4:[['Selecione','key:Ctrl+C','Clique no destino','key:Ctrl+V','res:Texto duplicado'],
+   ['key:Ctrl+U','Localizar: cliente','Substituir por: aluno','Substituir','res:Termos trocados com segurança'],
+   ['Revisão','Editor','Ortografia · Gramática','Aceitar ou Ignorar','res:Texto revisado'],
+   ['Inserir','Cabeçalho','Escolha um modelo','Número de Página','Fechar Cabeçalho e Rodapé','res:Informação em todas as páginas'],
+   ['Selecione o texto','Layout','Colunas','Duas','res:Texto em colunas'],
+   ['Selecione o texto','Página Inicial','Sombreamento','Bordas Externas','res:Aviso em destaque'],
+   ['key:Ctrl+P','Confira a visualização','Páginas e cópias','Imprimir','res:Sem desperdício'],
+   ['Selecione o título','Página Inicial','Estilos','Título 1 · Título 2','res:Hierarquia padronizada'],
+   ['Nome e contato','Títulos com Estilos','Marcadores','Revisão','Exportar PDF','res:Currículo de uma página'],
+   ['key:Ctrl+N','key:Ctrl+I','key:Ctrl+S','key:Ctrl+B','res:Edição sem mouse']],
+5:[['Exibir','Congelar Painéis','Congelar Linha Superior','Role a planilha','res:Títulos sempre visíveis'],
+   ['Selecione as células','Dados','Validação de Dados','Permitir: Lista','Pago;Pendente','res:Lista suspensa na célula'],
+   ['Faça uma cópia','Dados','Remover Duplicatas','Marque as colunas','res:Registros únicos'],
+   ['Clique na célula','=200*(1-10%)','key:Enter','res:R$ 180,00'],
+   ['=CONT.SE(','Intervalo B2:B6','Condição "Pago"','key:Enter','res:Quantidade encontrada'],
+   ['=SOMASE(','Onde procurar','Condição','Valores a somar','res:Total da categoria'],
+   ['=B2*F2','key:F4','Vira $F$2','Arraste para baixo','res:Taxa fixa em todas as linhas'],
+   ['Layout da Página','Orientação: Paisagem','Dimensionar para Ajustar','Largura: 1 página','res:Planilha em uma folha'],
+   ['Estoque = Entrada − Saída','Página Inicial','Formatação Condicional','É Menor do que','res:Itens a repor em destaque'],
+   ['Clique na célula','Barra de fórmulas','= : ; $ " "','res:Fórmulas sob controle']],
+6:[['Página Inicial','Layout','Duas Partes','res:Layout trocado sem refazer'],
+   ['Exibir','Slide Mestre','Fonte e cores','Logotipo','Fechar Modo de Exibição Mestre','res:Padrão em todos os slides'],
+   ['key:Shift','Selecione os objetos','Formato da Forma','Alinhar','Distribuir','res:Espaços iguais'],
+   ['Formato da Imagem','Cortar','Cortar para Demarcar Forma','Elipse','Proporção 1:1','res:Foto em círculo'],
+   ['Inserir','Formas','Ícones','key:Ctrl+G','res:Diagrama em etapas'],
+   ['Design','Fundo escuro','Texto claro','Título 32 pt','res:Alto contraste'],
+   ['Inserir','Gráfico','Colunas','Edite os dados','res:Números que se entendem'],
+   ['Exibir','Anotações','Escreva lembretes','Modo de Apresentador','res:Slide limpo, fala guiada'],
+   ['Capa','Problema','Solução','Resultados','Encerramento','res:Ideia em 5 slides'],
+   ['Conteúdo','Design','Mídia','Apresentação','Arquivo','res:Pronto para apresentar']],
+7:[['Inserir','Cabeçalho','Primeira Página Diferente','Fechar Cabeçalho e Rodapé','res:Capa limpa'],
+   ['Inserir','Número de Página','Fim da Página','Formatar Números de Página','res:Numeração automática'],
+   ['Página Inicial','Estilos: Título 1','Referências','Sumário','Atualizar Sumário','res:Sumário automático'],
+   ['Layout','Colunas','Mais Colunas','Quebras: Coluna','res:Colunas sob controle'],
+   ['Revisão','Idioma: Português (Brasil)','Editor','key:F7','res:Texto sem erros'],
+   ['Revisão','Novo Comentário','Controlar Alterações','Aceitar · Rejeitar','res:Revisão colaborativa'],
+   ['Correspondências','Iniciar Mala Direta','Selecionar Destinatários','Inserir Campo de Mesclagem','Concluir e Mesclar','res:Certificados personalizados'],
+   ['Nome e contato','Resumo','Experiências','Formação','Habilidades','res:Currículo profissional'],
+   ['Layout','Título e introdução','Inserir','Tabela e imagem','Exportar PDF','res:Relatório de uma página'],
+   ['key:Ctrl+Enter','key:F7','key:Shift+F3','key:Ctrl+L','res:Mais agilidade']],
+8:[['Clique em D2','=SE(C2>=1000;"Meta atingida";"")','key:Enter','Arraste para baixo','res:Status automático'],
+   ['=MÍNIMO(B2:B9)','=MÁXIMO(B2:B9)','Formatação Condicional','res:Extremos destacados'],
+   ['Digite a data','Formato: Data','=A2+B2','=HOJE()','res:Vencimentos calculados'],
+   ['=A2&" "&B2','key:Enter','=CONCAT(A2;" ";B2)','res:Textos unidos'],
+   ['Selecione a tabela','Dados','Classificar','Adicionar Nível','res:Ordem por dois critérios'],
+   ['Selecione as entradas','key:Ctrl+1','Proteção: desmarcar Bloqueadas','Revisão','Proteger Planilha','res:Fórmulas protegidas'],
+   ['Inserir','Minigráficos','Linha','Intervalo de dados','res:Tendência dentro da célula'],
+   ['Clique no erro','Barra de fórmulas','Identifique o código','Corrija','res:Planilha sem erros'],
+   ['Receitas','Despesas','=SOMA','Saldo','Gráfico de pizza','res:Orçamento mensal'],
+   ['key:Ctrl+1','key:F2','key:Alt+=','key:Ctrl+Shift+Setas','res:Mais velocidade']],
+9:[['Selecione o slide','Página Inicial','Seção','Adicionar Seção','Renomear','res:Slides em grupos'],
+   ['Página Inicial','Novo Slide','Reutilizar Slides','Escolha o arquivo','res:Slides importados'],
+   ['Selecione a forma','key:Ctrl+K','Colocar neste Documento','Escolha o slide','res:Botão de navegação'],
+   ['Inserir','Vídeo','Este Dispositivo','Reprodução','Iniciar: Ao Clicar','res:Mídia no slide'],
+   ['Formato da Imagem','Remover Plano de Fundo','Marcar Áreas','Manter Alterações','res:Imagem sem fundo'],
+   ['Formato da Imagem','Compactar Imagens','Arquivo','Compactar Mídia','res:Arquivo mais leve'],
+   ['Apresentação de Slides','Testar Intervalos','Fale e avance','Salvar intervalos','res:Tempo ensaiado'],
+   ['Arquivo','Exportar','Criar um Vídeo','Full HD','res:MP4 pronto'],
+   ['Capa','Problema','Solução','Benefícios','Plano de ação','Encerramento','res:Ideia apresentada'],
+   ['key:Ctrl+M','key:Ctrl+D','key:Ctrl+G','key:Shift+F5','key:B','res:Apresentação ágil']],
+10:[['Pasta do curso','Subpastas por programa','Assunto_AAAA-MM-DD','res:Tudo fácil de achar'],
+   ['Arquivo','Salvar Como','Escolha o formato','DOCX · XLSX · PPTX · PDF','res:Formato certo'],
+   ['Salve na nuvem','Compartilhar','Pode exibir','Envie o link','res:Acesso controlado'],
+   ['Cópia de segurança','Senha forte','Desconfie de anexos','Atualize o sistema','res:Arquivos protegidos'],
+   ['Revisão','Verificar Acessibilidade','Texto alternativo','Contraste','res:Material para todos'],
+   ['Selecione no Excel','key:Ctrl+C','Colar Especial','Vínculo','res:Tabela integrada'],
+   ['A4 e margens','Título centralizado','Marcadores','Revisão','Exportar PDF','res:Comunicado pronto'],
+   ['Produto · Qtd · Preço','=B2*C2','=SOMA','Formatação Condicional','Gráfico','res:Controle de vendas'],
+   ['Capa','Objetivos','Resultados','Próximos passos','res:4 slides claros'],
+   ['Excel: dados','Word: relatório','PowerPoint: slides','Checklist final','res:Projeto entregue']]
+};
+
+/* Jogos de classificação: [título, categorias, itens [texto, índice da categoria]] */
+const GAMES = {
+1:{t:'Em qual guia fica cada comando?',c:['Página Inicial','Inserir','Layout'],i:[['Negrito',0],['Alinhamento',0],['Marcadores',0],['Fonte',0],['Imagens',1],['Tabela',1],['Ícones',1],['Margens',2],['Orientação',2],['Tamanho A4',2]]},
+2:{t:'O que cada recurso faz?',c:['Calcula','Muda a aparência do número','Organiza os dados'],i:[['=SOMA()',0],['=MÉDIA()',0],['=SE()',0],['=A1*B1',0],['Moeda',1],['Porcentagem',1],['Data',1],['Classificar',2],['Filtro',2],['Formatar como Tabela',2]]},
+3:{t:'Transição, animação ou organização?',c:['Transição','Animação','Organizar objetos'],i:[['Esmaecer entre slides',0],['Aplicar a Todos',0],['Entrada',1],['Ênfase',1],['Saída',1],['Painel de Animação',1],['Alinhar ao Meio',2],['Distribuir',2],['Agrupar (Ctrl+G)',2]]},
+4:{t:'Que tipo de atalho é este?',c:['Edição','Formatação','Documento'],i:[['Ctrl+C',0],['Ctrl+X',0],['Ctrl+V',0],['Ctrl+Z',0],['Ctrl+N',1],['Ctrl+I',1],['Ctrl+S',1],['Ctrl+B',2],['Ctrl+P',2],['Ctrl+L',2]]},
+5:{t:'Qual cálculo resolve a pergunta?',c:['CONT.SE','SOMASE','Porcentagem'],i:[['Quantos pagaram?',0],['Quantos faltaram?',0],['Quantas vezes aparece “Pendente”?',0],['Total gasto com Transporte',1],['Vendas somadas do João',1],['Total de Alimentação',1],['Preço com 10% de desconto',2],['Aumento de 15% no salário',2],['20% de R$ 150,00',2]]},
+6:{t:'Qual gráfico mostra melhor?',c:['Colunas','Linhas','Pizza'],i:[['Vendas por produto',0],['Votos por chapa do grêmio',0],['Notas de 4 turmas',0],['Temperatura ao longo do mês',1],['Seguidores mês a mês',1],['Vendas de jan a jun',1],['Divisão do orçamento',2],['Partes de um total',2],['% de cada despesa',2]]},
+7:{t:'Em qual guia está cada recurso?',c:['Inserir','Referências','Correspondências','Revisão'],i:[['Cabeçalho',0],['Número de Página',0],['Sumário',1],['Atualizar Sumário',1],['Iniciar Mala Direta',2],['Campo de Mesclagem',2],['Novo Comentário',3],['Controlar Alterações',3],['Editor',3]]},
+8:{t:'Qual erro aparece em cada situação?',c:['#DIV/0!','#NOME?','#VALOR!','#REF!','#####'],i:[['=A1/0',0],['Dividir por célula vazia',0],['=SOMMA(A1:A5)',1],['=SE(A1>7;Sim;Não) sem aspas',1],['="Ana"+10',2],['Somar texto com número',2],['Apagou a coluna usada na fórmula',3],['Coluna estreita para o valor',4]]},
+9:{t:'Onde fica cada recurso?',c:['Página Inicial','Inserir','Apresentação de Slides','Arquivo'],i:[['Seção',0],['Reutilizar Slides',0],['Link (Ctrl+K)',1],['Vídeo',1],['Áudio',1],['Testar Intervalos',2],['Compactar Mídia',3],['Criar um Vídeo',3]]},
+10:{t:'Qual formato usar?',c:['DOCX','XLSX','PPTX','PDF','CSV','MP4'],i:[['Texto que ainda será editado',0],['Planilha que o chefe vai alterar',1],['Slides editáveis',2],['Currículo para o recrutador',3],['Comunicado para imprimir',3],['Dados para importar em um sistema',4],['Aula gravada a partir dos slides',5]]}
+};
+
+/* Telas para explorar (camadas clicáveis) */
+const EXPLORE = {
+word:{t:'Tela do Word',z:{
+  acesso:['Barra de acesso rápido','Salvar, Desfazer e Refazer sempre à mão, em qualquer guia.','Ctrl+B salva sem procurar o botão.'],
+  titulo:['Barra de título','Mostra o nome do arquivo. “Documento1” significa que ele ainda não foi salvo.','Dê um nome claro logo no início.'],
+  guias:['Guias','Arquivo, Página Inicial, Inserir, Layout, Referências, Revisão… cada guia abre um conjunto de ferramentas.','Página Inicial é a mais usada no dia a dia.'],
+  faixa:['Faixa de Opções','Botões organizados em grupos: Área de Transferência, Fonte, Parágrafo, Estilos e Edição.','Passe o mouse sobre um botão para ver o nome e o atalho.'],
+  regua:['Régua','Mostra margens e recuos do parágrafo.','Ative em Exibir > Régua se ela não aparecer.'],
+  pagina:['Página do documento','Área onde você digita. O cursor piscando indica onde o texto vai entrar.','Clique para posicionar o cursor antes de digitar.'],
+  status:['Barra de status','Número de páginas, contagem de palavras e idioma.','Clique na contagem de palavras para ver detalhes.'],
+  zoom:['Zoom','Aproxima ou afasta a visualização sem mudar o tamanho real do texto.','100% é o tamanho real de leitura.']}},
+excel:{t:'Tela do Excel',z:{
+  acesso:['Barra de acesso rápido','Salvar, Desfazer e Refazer.','Ctrl+B salva.'],
+  guias:['Guias','Página Inicial, Inserir, Fórmulas, Dados, Revisão, Exibir…','Dados guarda Classificar, Filtro e Validação.'],
+  faixa:['Faixa de Opções','Grupos de botões da guia ativa: Fonte, Alinhamento, Número, Estilos.','O grupo Número muda Moeda, Porcentagem e Data.'],
+  nome:['Caixa de Nome','Mostra o endereço da célula selecionada, como B3.','Digite um endereço nela e pressione Enter para ir até a célula.'],
+  formula:['Barra de fórmulas','Mostra o conteúdo real da célula: o valor ou a fórmula.','A célula mostra o resultado; a barra mostra a fórmula.'],
+  colunas:['Cabeçalho das colunas','Letras A, B, C… identificam as colunas.','Clique na letra para selecionar a coluna inteira.'],
+  linhas:['Cabeçalho das linhas','Números 1, 2, 3… identificam as linhas.','Clique no número para selecionar a linha inteira.'],
+  celula:['Célula ativa','Encontro de coluna e linha. A borda verde mostra onde você está.','Enter desce, Tab vai para a direita.'],
+  abas:['Abas da planilha','Cada aba é uma página diferente da pasta de trabalho.','Clique duas vezes para renomear a aba.'],
+  status:['Barra de status','Ao selecionar números, mostra Média, Contagem e Soma.','Útil para conferir um total sem fórmula.']}},
+ppt:{t:'Tela do PowerPoint',z:{
+  acesso:['Barra de acesso rápido','Salvar, Desfazer, Refazer e iniciar a apresentação.','F5 começa do primeiro slide.'],
+  guias:['Guias','Página Inicial, Inserir, Design, Transições, Animações, Apresentação de Slides…','Transições ficam entre slides; Animações, dentro do slide.'],
+  faixa:['Faixa de Opções','Botões da guia ativa, como Novo Slide, Layout e Fonte.','Novo Slide tem uma seta para escolher o layout.'],
+  miniaturas:['Miniaturas','Todos os slides em tamanho reduzido.','Arraste uma miniatura para mudar a ordem.'],
+  slide:['Área do slide','Onde você monta título, texto, imagens e formas.','Use as caixas do layout em vez de criar caixas soltas.'],
+  anotacoes:['Painel de anotações','Lembretes que só o apresentador vê no Modo de Apresentador.','Coloque aqui o texto longo que não cabe no slide.'],
+  status:['Barra de status','Número do slide atual e idioma.','Mostra “Slide 2 de 8”.'],
+  modos:['Modos de exibição e zoom','Normal, Classificação de Slides, Leitura e Apresentação, além do zoom.','Classificação de Slides ajuda a reorganizar muitos slides.']}},
+all:{t:'Mapa da integração',z:{
+  pasta:['Pasta do projeto','Uma pasta por projeto, com subpastas e nomes no padrão Assunto_AAAA-MM-DD.','Evite “final_final2”.'],
+  excel:['Excel: os dados','Planilha com despesas, fórmulas e gráfico. É a fonte dos números.','Comece sempre pelos dados.'],
+  colar:['Colar: normal, imagem ou vínculo','Normal edita no destino, imagem congela o visual, vínculo atualiza quando a planilha muda.','Para relatório mensal, vínculo.'],
+  word:['Word: o relatório','Texto com introdução, tabela colada do Excel e conclusão, exportado em PDF.','Revise antes de exportar.'],
+  ppt:['PowerPoint: a apresentação','4 slides com objetivo, dados, gráfico e próximos passos.','Um dado importante por slide.'],
+  nuvem:['Nuvem e compartilhamento','Compartilhe com “Pode exibir” ou “Pode editar” e revise os acessos.','Dados pessoais só para pessoas específicas.'],
+  seguranca:['Segurança','Backup 3-2-1, senhas fortes, desconfiar de anexos e macros desconhecidas.','Senha nunca no mesmo canal do arquivo.'],
+  acess:['Acessibilidade','Contraste, texto alternativo, títulos com estilos e fonte legível.','Revisão > Verificar Acessibilidade.']}}
+};
+
+/* =====================================================================
+   COMPONENTES VISUAIS: linha do tempo, caminho de cliques, zoom de imagem,
+   telas exploráveis, jogos de arrastar e laboratórios por módulo
+   ===================================================================== */
+const imgSrc = n => `office-visual-img/p${String(n).padStart(3,'0')}.webp`;
+
+/* ---------- Zoom de imagem (lightbox) ---------- */
+const LB = {s:1,x:0,y:0};
+function openLightbox(n, title){
+  let lb = document.getElementById('lb');
+  if(!lb){
+    lb = document.createElement('div'); lb.id='lb'; lb.className='lb'; lb.hidden=true;
+    lb.innerHTML = `<div class="lb-top"><span id="lbT"></span><div class="row"><button class="btn sm" data-a="out" aria-label="Diminuir zoom">−</button><button class="btn sm" data-a="fit">Ajustar</button><button class="btn sm" data-a="in" aria-label="Aumentar zoom">+</button><button class="btn sm" data-a="prev" aria-label="Página anterior">←</button><button class="btn sm" data-a="next" aria-label="Próxima página">→</button><button class="btn sm pri" data-a="close">Fechar</button></div></div>
+      <div class="lb-stage" id="lbS"><img id="lbI" alt="" draggable="false"></div><div class="lb-hint">Arraste para mover · roda do mouse ou botões para zoom · toque duplo para ampliar</div>`;
+    document.body.appendChild(lb);
+    const st = lb.querySelector('#lbS'), im = lb.querySelector('#lbI');
+    const apply = () => im.style.transform = `translate(${LB.x}px,${LB.y}px) scale(${LB.s})`;
+    LB.apply = apply;
+    lb.querySelector('.lb-top').onclick = e => { const a = e.target.dataset.a; if(!a) return;
+      if(a==='close'){ lb.hidden=true; document.body.style.overflow=''; }
+      if(a==='in'){ LB.s=Math.min(4,LB.s*1.35); apply(); }
+      if(a==='out'){ LB.s=Math.max(1,LB.s/1.35); if(LB.s===1){LB.x=LB.y=0;} apply(); }
+      if(a==='fit'){ LB.s=1; LB.x=LB.y=0; apply(); }
+      if(a==='prev'&&LB.n>1) openLightbox(LB.n-1); if(a==='next'&&LB.n<100) openLightbox(LB.n+1); };
+    st.addEventListener('wheel', e=>{ e.preventDefault(); LB.s=Math.min(4,Math.max(1,LB.s*(e.deltaY<0?1.15:0.87))); if(LB.s===1){LB.x=LB.y=0;} apply(); }, {passive:false});
+    let drag=null;
+    st.addEventListener('pointerdown', e=>{ drag={x:e.clientX-LB.x,y:e.clientY-LB.y}; st.setPointerCapture(e.pointerId); });
+    st.addEventListener('pointermove', e=>{ if(!drag) return; LB.x=e.clientX-drag.x; LB.y=e.clientY-drag.y; apply(); });
+    st.addEventListener('pointerup', ()=>drag=null);
+    st.addEventListener('dblclick', ()=>{ LB.s = LB.s>1?1:2.2; if(LB.s===1){LB.x=LB.y=0;} apply(); });
+    document.addEventListener('keydown', e=>{ if(lb.hidden) return; if(e.key==='Escape') lb.querySelector('[data-a=close]').click(); if(e.key==='ArrowRight') lb.querySelector('[data-a=next]').click(); if(e.key==='ArrowLeft') lb.querySelector('[data-a=prev]').click(); });
+  }
+  LB.n=n; LB.s=1; LB.x=LB.y=0;
+  const im = lb.querySelector('#lbI'); im.src = imgSrc(n); im.alt = `Página ${n} do Método Office Visual`;
+  lb.querySelector('#lbT').textContent = `Página ${String(n).padStart(2,'0')} de 100`;
+  LB.apply(); lb.hidden=false; document.body.style.overflow='hidden';
+}
+
+/* ---------- Linha do tempo das lições ---------- */
+function tTimeline(m){
+  const start = parseInt(m.pages), sel = Math.min(S['les'+m.id]||0, 9), l = m.L[sel], on = !!get(`${m.id}:l:${sel}`);
+  const page = start+sel;
+  return `<div class="sec-intro"><p>Percorra a linha do tempo: cada ponto é uma lição. Amplie a página do método, assista ao caminho de cliques e depois faça o “Pratique” no computador.</p></div>
+  <div class="tl" role="tablist" aria-label="Lições do módulo">${m.L.map((x,i)=>{ const d=!!get(`${m.id}:l:${i}`);
+    return `<button class="tl-n ${i===sel?'cur':''} ${d?'done':''}" onclick="S['les${m.id}']=${i};save();render()" role="tab" aria-selected="${i===sel}"><i>${d?'✓':String(start+i).padStart(2,'0')}</i><span>${esc(x[0])}</span></button>`;}).join('')}</div>
+  <div class="lesson-x">
+    <figure class="pg-fig">
+      <button class="pg-btn" onclick="openLightbox(${page})" aria-label="Ampliar página ${page}"><img src="${imgSrc(page)}" alt="Página ${page}: ${esc(l[0])}" loading="lazy"><span class="zoom-tag">⤢ Ampliar</span></button>
+      <figcaption>Página ${String(page).padStart(2,'0')} do Método Office Visual · toque para ampliar e mover</figcaption>
+    </figure>
+    <div class="lx-body">
+      <div class="pg"><span class="eyebrow">Lição ${String(page).padStart(2,'0')} · ${sel+1} de 10</span><button class="read" aria-pressed="${on}" onclick="toggleRead(${m.id},${sel},this);refreshProgress();render()">${on?'✓ estudada':'marcar estudada'}</button></div>
+      <h2>${esc(l[0])}</h2>
+      <p>${fmt(l[1])}</p>
+      ${simPath(m, sel)}
+      <div class="box tip"><b>Dica</b><span>${fmt(l[2])}</span></div>
+      <div class="box do"><b>Pratique</b><span>${fmt(l[3])}</span></div>
+      <div class="row" style="justify-content:space-between">
+        <button class="btn sm" ${sel===0?'disabled':''} onclick="S['les${m.id}']=${sel-1};save();render()">← Lição anterior</button>
+        <button class="btn sm pri" ${sel===9?'disabled':''} onclick="${on?'':`put('${m.id}:l:${sel}',true);`}S['les${m.id}']=${sel+1};save();render()">Estudei, próxima →</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------- Caminho de cliques animado ---------- */
+function simPath(m, li){
+  const steps = (PATHS[m.id]||[])[li]; if(!steps) return '';
+  const tabs = TABSET[m.app].slice(); CONTEXT_TABS.forEach(c=>{ if(steps.includes(c)) tabs.push(c); });
+  const id = `sp${m.id}_${li}`;
+  const chips = steps.map((s,i)=>{
+    if(s.startsWith('res:')) return `<div class="sp-res" data-i="${i}">✓ ${esc(s.slice(4))}</div>`;
+    if(s.startsWith('key:')) return `<span class="sp-st" data-i="${i}"><em>${i+1}</em>${s.slice(4).split('+').map(k=>`<kbd>${esc(k)}</kbd>`).join('+')}</span>`;
+    const isTab = tabs.includes(s);
+    return `<span class="sp-st ${isTab?'is-tab':''}" data-i="${i}"><em>${i+1}</em>${isTab?'Guia ':''}${esc(s)}</span>`;
+  }).join('<span class="sp-ar" aria-hidden="true">›</span>');
+  return `<div class="sim" id="${id}" data-steps='${esc(JSON.stringify(steps))}' data-cur="-1">
+    <div class="sim-bar"><i class="bg-${APP[m.app].c}"></i><b>Caminho de cliques</b><span class="hint">passo a passo da lição</span></div>
+    <div class="sim-tabs">${tabs.map(t=>`<span data-tab="${esc(t)}" class="${CONTEXT_TABS.includes(t)?'ctx':''}">${esc(t)}</span>`).join('')}</div>
+    <div class="sim-chain">${chips}</div>
+    <div class="row sim-ctl"><button class="btn sm pri" onclick="spPlay('${id}')">▶ Reproduzir</button><button class="btn sm" onclick="spStep('${id}',1)">Próximo passo</button><button class="btn sm" onclick="spStep('${id}',-99)">↺ Recomeçar</button></div>
+  </div>`;
+}
+const spTimers = {};
+function spStep(id, d){
+  const el = document.getElementById(id); if(!el) return;
+  const steps = JSON.parse(el.dataset.steps); let cur = +el.dataset.cur;
+  cur = d===-99 ? -1 : Math.max(-1, Math.min(steps.length-1, cur+d));
+  if(d===-99){ clearInterval(spTimers[id]); }
+  el.dataset.cur = cur;
+  el.querySelectorAll('[data-i]').forEach(c=>{ const i=+c.dataset.i; c.classList.toggle('show', i<=cur); c.classList.toggle('now', i===cur); });
+  el.querySelectorAll('.sp-ar').forEach((a,i)=>a.classList.toggle('show', i<cur));
+  const s = steps[cur]||''; el.querySelectorAll('.sim-tabs span').forEach(t=>t.classList.toggle('hot', t.dataset.tab===s));
+  return cur>=steps.length-1;
+}
+function spPlay(id){
+  clearInterval(spTimers[id]); spStep(id,-99);
+  spTimers[id] = setInterval(()=>{ if(spStep(id,1)) clearInterval(spTimers[id]); }, matchMedia('(prefers-reduced-motion: reduce)').matches?300:1100);
+}
+
+/* ---------- Tela para explorar (camadas clicáveis) ---------- */
+function mockUI(app){
+  const W = EXPLORE[app];
+  const z = k => `data-z="${k}" tabindex="0" role="button" aria-label="${esc(W.z[k][0])}"`;
+  if(app==='word') return `<div class="mk mk-word">
+    <div class="mk-title"><span ${z('acesso')} class="zn">💾 ↶ ↷</span><span ${z('titulo')} class="zn grow">Documento1 - Word</span></div>
+    <div ${z('guias')} class="zn mk-tabs">${TABSET.word.map((t,i)=>`<span class="${i===1?'on':''}">${t}</span>`).join('')}</div>
+    <div ${z('faixa')} class="zn mk-rib"><span>Área de Transf.</span><span><b>N</b> <i>I</i> <u>S</u> · Calibri 11</span><span>≡ ≣ ☰ · Parágrafo</span><span>AaBbCc Estilos</span><span>Edição</span></div>
+    <div ${z('regua')} class="zn mk-ruler"></div>
+    <div class="mk-desk"><div ${z('pagina')} class="zn mk-page"><b>Meu primeiro documento</b><p>Digite aqui o seu texto|</p><p class="ln"></p><p class="ln s"></p><p class="ln"></p></div></div>
+    <div class="mk-status"><span ${z('status')} class="zn">Página 1 de 1 · 120 palavras · Português (Brasil)</span><span ${z('zoom')} class="zn">— ● — 100%</span></div></div>`;
+  if(app==='excel'){
+    const data=[['Aluno','Nota','Situação'],['Ana','6','REPROVADO'],['Bruno','8','APROVADO'],['Carla','5','REPROVADO']];
+    let g=`<div class="mk-grid"><span class="corner"></span>`;
+    'ABCDE'.split('').forEach(c=>g+=`<span ${z('colunas')} class="zn ch">${c}</span>`);
+    for(let r=1;r<=6;r++){ g+=`<span ${z('linhas')} class="zn rh">${r}</span>`; for(let c=0;c<5;c++){ const v=(data[r-1]||[])[c]||''; const act = r===3&&c===1; g+= act?`<span ${z('celula')} class="zn cell act">${v}</span>`:`<span class="cell">${v}</span>`; } }
+    g+='</div>';
+    return `<div class="mk mk-excel">
+    <div class="mk-title"><span ${z('acesso')} class="zn">💾 ↶ ↷</span><span class="grow">Notas - Excel</span></div>
+    <div ${z('guias')} class="zn mk-tabs">${TABSET.excel.map((t,i)=>`<span class="${i===1?'on':''}">${t}</span>`).join('')}</div>
+    <div ${z('faixa')} class="zn mk-rib"><span><b>N</b> <i>I</i> · Calibri</span><span>Alinhamento</span><span>Número: Geral · R$ · %</span><span>Estilos</span></div>
+    <div class="mk-fbar"><span ${z('nome')} class="zn nb">B3</span><span class="fx">fx</span><span ${z('formula')} class="zn grow">8</span></div>
+    ${g}
+    <div class="mk-sheets"><span ${z('abas')} class="zn"><b>Planilha1</b> · Planilha2 · ＋</span></div>
+    <div class="mk-status"><span ${z('status')} class="zn">Média: 6,33 · Contagem: 3 · Soma: 19</span><span>100%</span></div></div>`;
+  }
+  if(app==='ppt') return `<div class="mk mk-ppt">
+    <div class="mk-title"><span ${z('acesso')} class="zn">💾 ↶ ↷ ▶</span><span class="grow">Apresentação1 - PowerPoint</span></div>
+    <div ${z('guias')} class="zn mk-tabs">${TABSET.ppt.map((t,i)=>`<span class="${i===1?'on':''}">${t}</span>`).join('')}</div>
+    <div ${z('faixa')} class="zn mk-rib"><span>Novo Slide ▾</span><span>Layout · Seção</span><span><b>N</b> <i>I</i> · Fonte</span><span>Desenho</span></div>
+    <div class="mk-pp"><div ${z('miniaturas')} class="zn thumbs"><span class="on">1</span><span>2</span><span>3</span></div>
+      <div class="mk-stage"><div ${z('slide')} class="zn mk-slide"><b>Clique para adicionar um título</b><small>Clique para adicionar um subtítulo</small></div>
+      <div ${z('anotacoes')} class="zn mk-notes">Clique para adicionar anotações</div></div></div>
+    <div class="mk-status"><span ${z('status')} class="zn">Slide 1 de 3 · Português (Brasil)</span><span ${z('modos')} class="zn">▭ ▦ ▤ ▶ · 72%</span></div></div>`;
+  return `<div class="mk mk-all">
+    <div ${z('pasta')} class="zn n-pasta">📁 Projeto_Economia_2026-10</div>
+    <div class="flow"><div ${z('excel')} class="zn n-app bg-excel">X<small>Excel · dados</small></div><span class="arr">→</span>
+      <div ${z('colar')} class="zn n-colar">Colar<br><small>normal · imagem · vínculo</small></div><span class="arr">→</span>
+      <div ${z('word')} class="zn n-app bg-word">W<small>Word · relatório</small></div><span class="arr">→</span>
+      <div ${z('ppt')} class="zn n-app bg-ppt">P<small>PowerPoint · slides</small></div></div>
+    <div class="base"><div ${z('nuvem')} class="zn">☁ Compartilhar</div><div ${z('seguranca')} class="zn">🛡 Segurança</div><div ${z('acess')} class="zn">👁 Acessibilidade</div></div></div>`;
+}
+function exploreBlock(m){
+  const W = EXPLORE[m.app];
+  return `<section class="xsec" id="xp${m.id}"><div class="xs-h"><h3>${esc(W.t)}: explore as camadas</h3>
+    <div class="filters"><button aria-pressed="true" data-mode="ex">Explorar</button><button aria-pressed="false" data-mode="ch">Desafio: encontre!</button></div></div>
+    <p class="hint">Clique em cada parte da tela (ou na lista de camadas) para ver o que ela faz. No desafio, encontre a parte pedida.</p>
+    <div class="xp-grid"><div class="xp-mock">${mockUI(m.app)}</div>
+    <aside class="xp-side"><div class="xp-ch" hidden></div><div class="xp-info card"><b>Escolha uma camada</b><p class="hint">Passe o mouse ou toque nas áreas da tela.</p></div>
+    <div class="layers">${Object.entries(W.z).map(([k,v],i)=>`<button data-lz="${k}"><em>${i+1}</em>${esc(v[0])}</button>`).join('')}</div></aside></div></section>`;
+}
+function mountExplore(m){
+  const root = document.getElementById('xp'+m.id); if(!root) return;
+  const W = EXPLORE[m.app]; let mode='ex', target=null, score=0, round=0, seen=new Set(); const keys=Object.keys(W.z);
+  const info = root.querySelector('.xp-info'), ch = root.querySelector('.xp-ch');
+  const hi = k => root.querySelectorAll('[data-z],[data-lz]').forEach(e=>e.classList.toggle('hl', e.dataset.z===k||e.dataset.lz===k));
+  const show = k => { const v=W.z[k]; seen.add(k); hi(k); info.innerHTML=`<b>${esc(v[0])}</b><p>${fmt(v[1])}</p><div class="box tip"><b>Dica</b><span>${fmt(v[2])}</span></div><div class="hint">Camadas exploradas: ${seen.size}/${keys.length}</div>`; root.querySelectorAll('[data-lz]').forEach(b=>b.classList.toggle('seen', seen.has(b.dataset.lz))); };
+  const next = () => { round++; if(round>8){ ch.innerHTML=`<b>Fim do desafio: ${score}/8</b><p class="hint">${score>=7?'Excelente! Você domina esta tela.':'Explore as camadas e tente de novo.'}</p><button class="btn sm pri" data-again>Jogar de novo</button>`; target=null; return; }
+    let k; do{ k=keys[Math.floor(Math.random()*keys.length)]; }while(k===target && keys.length>1); target=k;
+    ch.innerHTML=`<span class="eyebrow">Rodada ${round}/8 · acertos ${score}</span><b>Clique em: ${esc(W.z[k][0])}</b>`; };
+  const pick = k => {
+    if(mode==='ex'){ show(k); return; }
+    if(!target) return;
+    const ok = k===target; if(ok) score++;
+    root.querySelectorAll(`[data-z="${k}"]`).forEach(e=>{ e.classList.add(ok?'flash-ok':'flash-bad'); setTimeout(()=>e.classList.remove('flash-ok','flash-bad'),700); });
+    if(!ok) root.querySelectorAll(`[data-z="${target}"]`).forEach(e=>{ e.classList.add('flash-ok'); setTimeout(()=>e.classList.remove('flash-ok'),900); });
+    setTimeout(next, 750);
+  };
+  root.addEventListener('click', e=>{
+    const md = e.target.closest('[data-mode]'); if(md){ mode=md.dataset.mode; root.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed', b===md)); ch.hidden = mode!=='ch'; hi(null); if(mode==='ch'){score=0;round=0;next();} return; }
+    if(e.target.closest('[data-again]')){ score=0; round=0; next(); return; }
+    const z = e.target.closest('[data-z]'); if(z){ pick(z.dataset.z); return; }
+    const l = e.target.closest('[data-lz]'); if(l && mode==='ex') show(l.dataset.lz);
+  });
+  root.addEventListener('keydown', e=>{ if((e.key==='Enter'||e.key===' ') && e.target.dataset.z){ e.preventDefault(); pick(e.target.dataset.z); } });
+  root.addEventListener('mouseover', e=>{ const z=e.target.closest('[data-z]'); if(z && mode==='ex') hi(z.dataset.z); });
+}
+
+/* ---------- Jogo de arrastar e soltar ---------- */
+function gameBlock(m){
+  const g = GAMES[m.id]; if(!g) return '';
+  const items = perm(m.id*7+3, g.i.length).map(j=>g.i[j]);
+  return `<section class="xsec" id="gm${m.id}"><div class="xs-h"><h3>Arraste e classifique: ${esc(g.t)}</h3><div class="row"><button class="btn sm" data-g="reset">Recomeçar</button><button class="btn sm pri" data-g="check">Conferir</button></div></div>
+  <p class="hint">Arraste cada cartão para a caixa certa. No celular, toque no cartão e depois toque na caixa.</p>
+  <div class="pool" data-bin="-1">${items.map(([t,c])=>`<span class="gchip" draggable="true" data-c="${c}" tabindex="0">${fmt(t)}</span>`).join('')}</div>
+  <div class="bins" style="--n:${g.c.length}">${g.c.map((c,i)=>`<div class="bin" data-bin="${i}"><b>${esc(c)}</b><div class="bin-in"></div></div>`).join('')}</div>
+  <div class="gres hint"></div></section>`;
+}
+function mountGame(m){
+  const root = document.getElementById('gm'+m.id); if(!root) return;
+  let sel=null, dragEl=null;
+  const place = (chip, bin) => { (bin.dataset.bin==='-1'?bin:bin.querySelector('.bin-in')).appendChild(chip); chip.classList.remove('sel','ok','bad'); sel=null; };
+  root.addEventListener('click', e=>{
+    const a = e.target.closest('[data-g]');
+    if(a){ if(a.dataset.g==='reset'){ render(); return; }
+      const chips=[...root.querySelectorAll('.gchip')]; let ok=0, placed=0;
+      chips.forEach(c=>{ const b=c.closest('[data-bin]').dataset.bin; c.classList.remove('ok','bad'); if(b!=='-1'){ placed++; const r=b===c.dataset.c; c.classList.add(r?'ok':'bad'); if(r) ok++; } });
+      root.querySelector('.gres').innerHTML = placed<chips.length?`Você classificou ${placed} de ${chips.length}. Continue!`:`<b>${ok}/${chips.length} corretos.</b> ${ok===chips.length?'Perfeito!':'Os vermelhos estão na caixa errada: arraste e confira de novo.'}`; return; }
+    const c = e.target.closest('.gchip'); if(c){ if(sel) sel.classList.remove('sel'); sel = sel===c?null:c; if(sel) sel.classList.add('sel'); return; }
+    const b = e.target.closest('[data-bin]'); if(b && sel) place(sel,b);
+  });
+  root.addEventListener('dragstart', e=>{ const c=e.target.closest('.gchip'); if(!c) return; dragEl=c; e.dataTransfer.setData('text/plain','x'); });
+  root.addEventListener('dragover', e=>{ const b=e.target.closest('[data-bin]'); if(b){ e.preventDefault(); b.classList.add('over'); } });
+  root.addEventListener('dragleave', e=>{ const b=e.target.closest('[data-bin]'); if(b) b.classList.remove('over'); });
+  root.addEventListener('drop', e=>{ const b=e.target.closest('[data-bin]'); if(b&&dragEl){ e.preventDefault(); b.classList.remove('over'); place(dragEl,b); dragEl=null; } });
+}
+
+/* =====================================================================
+   MOTOR DE FÓRMULAS (laboratórios de Excel)
+   ===================================================================== */
+const XL = (()=>{
+  const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g,'').toUpperCase();
+  function tok(src){
+    const t=[]; let i=0;
+    while(i<src.length){
+      const c=src[i];
+      if(/\s/.test(c)){i++;continue;}
+      if(c==='"'){ let j=i+1, s=''; while(j<src.length && src[j]!=='"'){s+=src[j];j++;} if(j>=src.length) throw '#VALOR!'; t.push({k:'s',v:s}); i=j+1; continue; }
+      let m;
+      if((m=src.slice(i).match(/^\d+(,\d+)?/))){ t.push({k:'n',v:parseFloat(m[0].replace(',','.'))}); i+=m[0].length; continue; }
+      if((m=src.slice(i).match(/^\$?[A-Z]\$?\d+(?![A-Z0-9(])/i))){ t.push({k:'r',v:m[0].toUpperCase()}); i+=m[0].length; continue; }
+      if((m=src.slice(i).match(/^[A-Za-zÀ-ú][A-Za-zÀ-ú0-9.]*/))){ const w=m[0]; i+=w.length; if(src[i]==='('){ t.push({k:'f',v:norm(w)}); } else t.push({k:'id',v:w}); continue; }
+      if((m=src.slice(i).match(/^(<=|>=|<>)/))){ t.push({k:'o',v:m[0]}); i+=2; continue; }
+      if('+-*/&%();:=<>'.includes(c)){ t.push({k:'o',v:c}); i++; continue; }
+      throw '#NOME?';
+    }
+    return t;
+  }
+  function parse(src){
+    const t=tok(src); let p=0;
+    const peek=()=>t[p], eat=v=>{ if(t[p]&&t[p].v===v){p++;return true;} return false; };
+    const cmp=()=>{ let l=cat(); const o=peek(); if(o&&o.k==='o'&&['=','<','>','<=','>=','<>'].includes(o.v)){p++; return {t:'b',op:o.v,l,r:cat()};} return l; };
+    const cat=()=>{ let l=add(); while(eat('&')) l={t:'b',op:'&',l,r:add()}; return l; };
+    const add=()=>{ let l=mul(); for(;;){ if(eat('+')) l={t:'b',op:'+',l,r:mul()}; else if(eat('-')) l={t:'b',op:'-',l,r:mul()}; else return l; } };
+    const mul=()=>{ let l=pct(); for(;;){ if(eat('*')) l={t:'b',op:'*',l,r:pct()}; else if(eat('/')) l={t:'b',op:'/',l,r:pct()}; else return l; } };
+    const pct=()=>{ let e=una(); while(eat('%')) e={t:'p',e}; return e; };
+    const una=()=> eat('-')?{t:'u',e:una()}:eat('+')?una():pri();
+    const pri=()=>{ const x=t[p++]; if(!x) throw '#VALOR!';
+      if(x.k==='n') return {t:'n',v:x.v}; if(x.k==='s') return {t:'s',v:x.v};
+      if(x.k==='r'){ if(eat(':')){ const y=t[p++]; if(!y||y.k!=='r') throw '#REF!'; return {t:'rg',a:x.v,b:y.v}; } return {t:'r',v:x.v}; }
+      if(x.k==='f'){ p++; const args=[]; if(!eat(')')){ do{ args.push(cmp()); }while(eat(';')); if(!eat(')')) throw '#VALOR!'; } return {t:'f',n:x.v,a:args}; }
+      if(x.k==='id'){ const u=norm(x.v); if(u==='VERDADEIRO') return {t:'n',v:true}; if(u==='FALSO') return {t:'n',v:false}; throw '#NOME?'; }
+      if(x.v==='('){ const e=cmp(); if(!eat(')')) throw '#VALOR!'; return e; }
+      throw '#VALOR!'; };
+    const e=cmp(); if(p<t.length) throw '#VALOR!'; return e;
+  }
+  const isErr = v => typeof v==='string' && v[0]==='#';
+  const clean = r => r.replace(/\$/g,'');
+  function Sheet(cells){ this.c=Object.assign({},cells); }
+  Sheet.prototype.raw = function(r){ return this.c[clean(r)]??''; };
+  Sheet.prototype.val = function(r, seen=new Set()){
+    r=clean(r); const raw=this.raw(r);
+    if(typeof raw!=='string' || raw[0]!=='=') { if(raw==='') return ''; const n=String(raw).replace(/\./g,'').replace(',','.'); return (/^-?\d+(\.\d+)?$/.test(n))? parseFloat(n) : raw; }
+    if(seen.has(r)) return '#REF!'; seen.add(r);
+    try{ const v=this.ev(parse(raw.slice(1)), seen); seen.delete(r); return Array.isArray(v)?'#VALOR!':(v===''?0:v); }catch(e){ seen.delete(r); return typeof e==='string'?e:'#VALOR!'; }
+  };
+  Sheet.prototype.range = function(a,b,seen){ a=clean(a); b=clean(b); const c1=a.charCodeAt(0),c2=b.charCodeAt(0),r1=+a.slice(1),r2=+b.slice(1), out=[];
+    for(let c=Math.min(c1,c2);c<=Math.max(c1,c2);c++) for(let r=Math.min(r1,r2);r<=Math.max(r1,r2);r++) out.push(this.val(String.fromCharCode(c)+r, seen)); return out; };
+  const num = v => { if(isErr(v)) throw v; if(v===''||v==null) return 0; if(typeof v==='boolean') return v?1:0; if(typeof v==='number') return v; throw '#VALOR!'; };
+  const crit = (c) => { const m=String(c).match(/^(<=|>=|<>|<|>|=)?(.*)$/); const op=m[1]||'=', rhs=m[2]; const rn=parseFloat(rhs.replace(',','.')); const isN=rhs!==''&&!isNaN(rn);
+    return v => { if(isN && typeof v==='number'){ return {'=':v===rn,'<>':v!==rn,'<':v<rn,'>':v>rn,'<=':v<=rn,'>=':v>=rn}[op]; } const a=String(v).toLowerCase(), b=rhs.toLowerCase(); return op==='='?a===b:op==='<>'?a!==b:false; }; };
+  Sheet.prototype.ev = function(n, seen){
+    const E = x => this.ev(x, seen);
+    switch(n.t){
+      case 'n': case 's': return n.v;
+      case 'r': return this.val(n.v, seen);
+      case 'rg': return this.range(n.a,n.b,seen);
+      case 'u': return -num(E(n.e));
+      case 'p': return num(E(n.e))/100;
+      case 'b': { const l=E(n.l), r=E(n.r); if(Array.isArray(l)||Array.isArray(r)) throw '#VALOR!'; if(isErr(l)) throw l; if(isErr(r)) throw r;
+        if(n.op==='&') return String(l===''?'':fmtV(l))+String(r===''?'':fmtV(r));
+        if(['=','<','>','<=','>=','<>'].includes(n.op)){ let a=l,b=r; if(typeof a==='string'&&typeof b==='string'){a=a.toLowerCase();b=b.toLowerCase();} else if(typeof a==='string'||typeof b==='string'){ if(a==='') a=typeof b==='number'?0:''; if(b==='') b=typeof a==='number'?0:''; }
+          return {'=':a===b,'<>':a!==b,'<':a<b,'>':a>b,'<=':a<=b,'>=':a>=b}[n.op]; }
+        const a=num(l), b=num(r); if(n.op==='/' && b===0) throw '#DIV/0!'; return {'+':a+b,'-':a-b,'*':a*b,'/':a/b}[n.op]; }
+      case 'f': {
+        const flat = () => n.a.map(E).flat();
+        const nums = () => flat().filter(v=>{ if(isErr(v)) throw v; return typeof v==='number'; });
+        switch(n.n){
+          case 'SOMA': return nums().reduce((a,b)=>a+b,0);
+          case 'MEDIA': { const v=nums(); if(!v.length) throw '#DIV/0!'; return v.reduce((a,b)=>a+b,0)/v.length; }
+          case 'MINIMO': { const v=nums(); return v.length?Math.min(...v):0; }
+          case 'MAXIMO': { const v=nums(); return v.length?Math.max(...v):0; }
+          case 'SE': { if(n.a.length<2) throw '#VALOR!'; const c=E(n.a[0]); if(isErr(c)) throw c; const t = typeof c==='boolean'?c:num(c)!==0; return t?E(n.a[1]):(n.a[2]?E(n.a[2]):false); }
+          case 'CONT.SE': { const rg=E(n.a[0]), f=crit(E(n.a[1])); if(!Array.isArray(rg)) throw '#VALOR!'; return rg.filter(f).length; }
+          case 'SOMASE': { const rg=E(n.a[0]), f=crit(E(n.a[1])), sr=n.a[2]?E(n.a[2]):rg; if(!Array.isArray(rg)||!Array.isArray(sr)) throw '#VALOR!'; return rg.reduce((a,v,i)=>a+(f(v)&&typeof sr[i]==='number'?sr[i]:0),0); }
+          case 'CONCAT': case 'CONCATENAR': return flat().map(v=>{ if(isErr(v)) throw v; return fmtV(v); }).join('');
+          case 'HOJE': return new Date().toLocaleDateString('pt-BR');
+          default: throw '#NOME?';
+        }
+      }
+    }
+    throw '#VALOR!';
+  };
+  function fmtV(v){ if(typeof v==='number') return v.toLocaleString('pt-BR',{maximumFractionDigits:2}); if(typeof v==='boolean') return v?'VERDADEIRO':'FALSO'; return String(v); }
+  function shift(f, dr){ return f.split('"').map((part,i)=> i%2? part : part.replace(/(\$?)([A-Z])(\$?)(\d+)(?![A-Z0-9(])/g,(m,a,c,b,r)=>a+c+b+(b?r:(+r+dr)))).join('"'); }
+  return {Sheet, fmtV, isErr, shift};
+})();
+const ERR_HELP = {
+  '#DIV/0!':'Divisão por zero: o divisor está vazio ou vale 0. Preencha a célula ou use SE para testar antes de dividir.',
+  '#NOME?':'O Excel não reconheceu um nome: função digitada errada (SOMMA) ou texto sem aspas.',
+  '#VALOR!':'Tipo de dado incompatível: a fórmula tentou fazer conta com texto.',
+  '#REF!':'Referência inválida: a célula usada foi excluída ou a fórmula aponta para ela mesma.'
+};
+
+/* ---------- Laboratório de planilha ---------- */
+function xlLab(cfg){
+  return { html: id => `<div class="xl" id="${id}">
+      <div class="xl-bar"><span class="nb" data-nb>A1</span><span class="fx">fx</span><input data-in aria-label="Barra de fórmulas" placeholder="Digite um valor ou uma fórmula começando com =" autocomplete="off" spellcheck="false"><button class="btn sm pri" data-ok>✓ Enter</button></div>
+      <div class="xl-wrap"><table class="xl-t"></table></div>
+      <div class="row"><button class="btn sm" data-fill>⬇ Arrastar alça até a linha ${cfg.fillTo}</button><button class="btn sm" data-reset>Recomeçar planilha</button><span class="hint">Clique numa célula, escreva na barra e pressione Enter.</span></div>
+      <div class="xl-err" hidden></div>
+      <div class="xl-ch"></div></div>`,
+    mount(id){
+      const root=document.getElementById(id); let sh=new XL.Sheet(cfg.cells), sel='A1';
+      const cols=cfg.cols.split(''), inp=root.querySelector('[data-in]');
+      const draw=()=>{
+        let h='<tr><th></th>'+cols.map(c=>`<th class="${sel[0]===c?'on':''}">${c}</th>`).join('')+'</tr>';
+        for(let r=1;r<=cfg.rows;r++){ h+=`<tr><th class="${+sel.slice(1)===r?'on':''}">${r}</th>`; cols.forEach(c=>{ const ref=c+r, v=sh.val(ref), raw=sh.raw(ref); const err=XL.isErr(v);
+            h+=`<td data-r="${ref}" class="${ref===sel?'sel':''} ${err?'err':''} ${typeof v==='number'?'num':''} ${String(raw)[0]==='='?'fx':''}">${esc(v===''?'':XL.fmtV(v))}</td>`; }); h+='</tr>'; }
+        root.querySelector('.xl-t').innerHTML=h; root.querySelector('[data-nb]').textContent=sel;
+        const v=sh.val(sel), eb=root.querySelector('.xl-err');
+        if(XL.isErr(v)){ eb.hidden=false; eb.innerHTML=`<b>${v}</b> ${ERR_HELP[v]||''}<br><span class="hint">Fórmula: <span class="code">${esc(sh.raw(sel))}</span></span>`; } else eb.hidden=true;
+        const done = cfg.ch.map(c=>{ try{ return c.test(r=>sh.val(r), r=>String(sh.raw(r)).toUpperCase()); }catch(e){ return false; } });
+        root.querySelector('.xl-ch').innerHTML=`<div class="eyebrow">Desafios · ${done.filter(Boolean).length}/${cfg.ch.length}</div>`+cfg.ch.map((c,i)=>`<div class="xc ${done[i]?'ok':''}"><span>${done[i]?'✓':'○'}</span><div>${fmt(c.t)}${c.h&&!done[i]?`<details><summary>Dica</summary>${fmt(c.h)}</details>`:''}</div></div>`).join('');
+      };
+      const commit=()=>{ sh.c[sel]=inp.value.trim(); const r=+sel.slice(1); if(r<cfg.rows) sel=sel[0]+(r+1); inp.value=sh.raw(sel); draw(); };
+      root.addEventListener('click', e=>{
+        const td=e.target.closest('td[data-r]'); if(td){ sel=td.dataset.r; inp.value=sh.raw(sel); draw(); if(matchMedia('(pointer:fine)').matches) inp.focus(); return; }
+        if(e.target.closest('[data-ok]')) commit();
+        if(e.target.closest('[data-reset]')){ sh=new XL.Sheet(cfg.cells); sel='A1'; inp.value=sh.raw(sel); draw(); }
+        if(e.target.closest('[data-fill]')){ const raw=sh.raw(sel); const r0=+sel.slice(1); for(let r=r0+1;r<=cfg.fillTo;r++){ sh.c[sel[0]+r]= String(raw)[0]==='='?XL.shift(raw,r-r0):raw; } draw(); }
+      });
+      inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); commit(); } });
+      inp.value=sh.raw(sel); draw();
+    }};
+}
+
+/* ---------- Lab Word: formatação (M1) ---------- */
+const LAB_WORD = { html: id => `<div class="wl" id="${id}">
+  <div class="wl-target filters" role="group" aria-label="Elemento a formatar"><button data-t="tit" aria-pressed="true">Título</button><button data-t="par" aria-pressed="false">Parágrafo</button><button data-t="lst" aria-pressed="false">Lista</button></div>
+  <div class="wl-rib">
+    <select data-k="font" aria-label="Fonte"><option>Calibri</option><option>Arial</option><option>Times New Roman</option><option>Georgia</option></select>
+    <select data-k="size" aria-label="Tamanho">${[11,12,14,16,20,24,28,36].map(s=>`<option>${s}</option>`).join('')}</select>
+    <button data-k="b" title="Negrito (Ctrl+N)"><b>N</b></button><button data-k="i" title="Itálico (Ctrl+I)"><i>I</i></button><button data-k="u" title="Sublinhado (Ctrl+S)"><u>S</u></button>
+    <span class="sep"></span>${['#1B2230','#2556B0','#B42318','#17724A'].map(c=>`<button data-k="color" data-v="${c}" title="Cor" class="sw" style="--sw:${c}"></button>`).join('')}
+    <span class="sep"></span><button data-k="align" data-v="left" title="Alinhar à esquerda">⇤</button><button data-k="align" data-v="center" title="Centralizar">↔</button><button data-k="align" data-v="right" title="Alinhar à direita">⇥</button><button data-k="align" data-v="justify" title="Justificar">☰</button>
+    <span class="sep"></span><button data-k="list" data-v="ul" title="Marcadores">• ≡</button><button data-k="list" data-v="ol" title="Numeração">1. ≡</button>
+    <select data-k="lh" aria-label="Espaçamento entre linhas"><option value="1">1,0</option><option value="1.15">1,15</option><option value="1.5">1,5</option><option value="2">2,0</option></select>
+  </div>
+  <div class="wl-page"><div data-el="tit">Aviso: Reunião de Equipe</div><div data-el="par">Convidamos todos para a reunião de planejamento do semestre. Vamos alinhar as atividades, definir responsáveis e organizar o calendário de entregas. Traga suas sugestões.</div><div data-el="lst"><span>Planejamento da semana</span><span>Divisão de tarefas</span><span>Prazos de entrega</span></div></div>
+  <div class="xl-ch"></div></div>`,
+  mount(id){
+    const root=document.getElementById(id); let cur='tit';
+    const st={tit:{font:'Calibri',size:11,b:0,i:0,u:0,color:'#1B2230',align:'left',lh:1},par:{font:'Calibri',size:11,b:0,i:0,u:0,color:'#1B2230',align:'left',lh:1},lst:{font:'Calibri',size:11,b:0,i:0,u:0,color:'#1B2230',align:'left',lh:1,list:''}};
+    const draw=()=>{ Object.entries(st).forEach(([k,s])=>{ const el=root.querySelector(`[data-el=${k}]`); Object.assign(el.style,{fontFamily:s.font,fontSize:(s.size*1.15)+'px',fontWeight:s.b?700:400,fontStyle:s.i?'italic':'normal',textDecoration:s.u?'underline':'none',color:s.color,textAlign:s.align,lineHeight:s.lh});
+        if(k==='lst'){ el.className='wl-list '+(s.list||''); } });
+      const s=st[cur]; root.querySelector('[data-k=font]').value=s.font; root.querySelector('[data-k=size]').value=s.size; root.querySelector('[data-k=lh]').value=String(s.lh);
+      root.querySelectorAll('.wl-rib button').forEach(b=>{ const k=b.dataset.k, v=b.dataset.v; b.setAttribute('aria-pressed', v? String(s[k]===v) : String(!!s[k])); });
+      root.querySelectorAll('[data-el]').forEach(e=>e.classList.toggle('cur', e.dataset.el===cur));
+      const ch=[['Título centralizado, em negrito e com tamanho 24 ou mais', st.tit.align==='center'&&st.tit.b&&st.tit.size>=24],['Título em uma cor de destaque (azul ou verde)', ['#2556B0','#17724A'].includes(st.tit.color)],['Parágrafo justificado com espaçamento 1,15 ou 1,5', st.par.align==='justify'&&(st.par.lh==1.15||st.par.lh==1.5)],['Assuntos em lista com marcadores', st.lst.list==='ul'],['Mesma fonte em todo o aviso', st.tit.font===st.par.font&&st.par.font===st.lst.font]];
+      root.querySelector('.xl-ch').innerHTML=`<div class="eyebrow">Missão: deixe o aviso profissional · ${ch.filter(c=>c[1]).length}/${ch.length}</div>`+ch.map(c=>`<div class="xc ${c[1]?'ok':''}"><span>${c[1]?'✓':'○'}</span><div>${c[0]}</div></div>`).join('');
+    };
+    root.addEventListener('click', e=>{
+      const t=e.target.closest('[data-t]'); if(t){ cur=t.dataset.t; root.querySelectorAll('[data-t]').forEach(b=>b.setAttribute('aria-pressed',b===t)); draw(); return; }
+      const el=e.target.closest('[data-el]'); if(el){ cur=el.dataset.el; root.querySelectorAll('[data-t]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===cur)); draw(); return; }
+      const b=e.target.closest('.wl-rib button'); if(!b) return; const k=b.dataset.k, v=b.dataset.v, s=st[cur];
+      if(k==='list'){ if(cur!=='lst'){ cur='lst'; } st.lst.list = st.lst.list===v?'':v; } else if(v) s[k]=v; else s[k]=s[k]?0:1; draw(); });
+    root.addEventListener('change', e=>{ const k=e.target.dataset.k; if(!k) return; const s=st[cur]; s[k]= k==='size'? +e.target.value : k==='lh'? +e.target.value : e.target.value; draw(); });
+    draw();
+  }};
+
+/* ---------- Lab PowerPoint: alinhar, distribuir e animar (M3) ---------- */
+const LAB_ALIGN = { html: id => `<div class="pl" id="${id}">
+  <div class="row"><button class="btn sm" data-a="left">⇤ Alinhar à Esquerda</button><button class="btn sm" data-a="middle">≡ Alinhar ao Meio</button><button class="btn sm" data-a="dist">↔ Distribuir Horizontalmente</button><button class="btn sm" data-a="mess">🎲 Bagunçar</button></div>
+  <div class="pl-slide" data-slide><div class="shp s1" data-s="0">Planejar</div><div class="shp s2" data-s="1">Criar</div><div class="shp s3" data-s="2">Apresentar</div></div>
+  <div class="xl-ch" data-st></div>
+  <h4 style="margin-top:6px">Ordem das animações</h4>
+  <p class="hint">Defina quando cada tópico entra e clique em “Apresentar”. Depois use “Clique” como se fosse o mouse na apresentação.</p>
+  <div class="an-rows">${['Problema','Solução','Resultado'].map((t,i)=>`<label class="an-row"><span>${i+1}. ${t}</span><select data-an="${i}"><option value="click">Ao clicar</option><option value="with">Com o anterior</option><option value="after">Após o anterior</option></select></label>`).join('')}</div>
+  <div class="row"><button class="btn sm pri" data-play>▶ Apresentar</button><button class="btn sm" data-click disabled>🖱 Clique</button><span class="hint" data-cnt></span></div>
+  <div class="an-stage">${['Problema','Solução','Resultado'].map((t,i)=>`<div class="an-it" data-it="${i}">${i+1}. ${t}</div>`).join('')}</div></div>`,
+  mount(id){
+    const root=document.getElementById(id), slide=root.querySelector('[data-slide]'), shp=[...root.querySelectorAll('.shp')];
+    let pos=[[8,12],[44,58],[72,26]];
+    const W=()=>slide.clientWidth, H=()=>slide.clientHeight;
+    const apply=()=>{ shp.forEach((s,i)=>{ s.style.left=pos[i][0]+'%'; s.style.top=pos[i][1]+'%'; });
+      const tops=pos.map(p=>p[1]), xs=pos.map(p=>p[0]).sort((a,b)=>a-b); const aligned=Math.max(...tops)-Math.min(...tops)<1.5; const gaps=[xs[1]-xs[0],xs[2]-xs[1]]; const even=Math.abs(gaps[0]-gaps[1])<1.5;
+      root.querySelector('[data-st]').innerHTML=`<div class="xc ${aligned?'ok':''}"><span>${aligned?'✓':'○'}</span><div>Formas na mesma linha (Alinhar ao Meio)</div></div><div class="xc ${even?'ok':''}"><span>${even?'✓':'○'}</span><div>Espaços iguais entre as formas (Distribuir)</div></div>`; };
+    root.addEventListener('click', e=>{ const a=e.target.closest('[data-a]'); if(!a) return; const k=a.dataset.a;
+      if(k==='left'){ const mn=Math.min(...pos.map(p=>p[0])); pos=pos.map(p=>[mn,p[1]]); }
+      if(k==='middle'){ const av=pos.reduce((s,p)=>s+p[1],0)/3; pos=pos.map(p=>[p[0],av]); }
+      if(k==='dist'){ const order=pos.map((p,i)=>i).sort((a,b)=>pos[a][0]-pos[b][0]); const L=pos[order[0]][0], R=pos[order[2]][0]; const mid=Math.abs(R-L)<5?[6,40,74]:[L,(L+R)/2,R]; order.forEach((ix,j)=>pos[ix]=[mid[j],pos[ix][1]]); }
+      if(k==='mess'){ pos=pos.map(()=>[Math.random()*70+2, Math.random()*60+5]); }
+      apply(); });
+    let drag=null;
+    slide.addEventListener('pointerdown', e=>{ const s=e.target.closest('.shp'); if(!s) return; const i=+s.dataset.s; drag={i,x:e.clientX,y:e.clientY,p:pos[i].slice()}; s.setPointerCapture(e.pointerId); s.classList.add('drag'); });
+    slide.addEventListener('pointermove', e=>{ if(!drag) return; pos[drag.i]=[Math.max(0,Math.min(78,drag.p[0]+(e.clientX-drag.x)/W()*100)), Math.max(0,Math.min(72,drag.p[1]+(e.clientY-drag.y)/H()*100))]; apply(); });
+    slide.addEventListener('pointerup', ()=>{ if(drag) shp[drag.i].classList.remove('drag'); drag=null; });
+    apply();
+    /* animação */
+    const its=[...root.querySelectorAll('.an-it')], btnC=root.querySelector('[data-click]'), cnt=root.querySelector('[data-cnt]'); let idx=0, clicks=0, timers=[];
+    const reveal=i=>its[i].classList.add('in');
+    const runFrom = i => { /* revela i e encadeia "com" e "após" */
+      let delay=0; reveal(i); idx=i+1;
+      while(idx<3){ const mode=root.querySelector(`[data-an="${idx}"]`).value; if(mode==='click') break; if(mode==='after') delay+=700; const j=idx; timers.push(setTimeout(()=>reveal(j),delay)); idx++; }
+      btnC.disabled = idx>=3; cnt.textContent = idx>=3?`Fim: ${clicks} clique(s) usados.`:`Cliques até agora: ${clicks}`; };
+    root.querySelector('[data-play]').onclick=()=>{ timers.forEach(clearTimeout); timers=[]; its.forEach(x=>x.classList.remove('in')); idx=0; clicks=0;
+      const first=root.querySelector('[data-an="0"]').value; if(first==='click'){ btnC.disabled=false; cnt.textContent='Slide aberto. Clique para começar.'; } else runFrom(0); };
+    btnC.onclick=()=>{ clicks++; if(idx<3) runFrom(idx); };
+  }};
+
+/* ---------- Lab Word: Localizar e Substituir (M4) ---------- */
+const FR_TEXT = 'No ano passado, o atendimento humano melhorou muito. O Mariano, cliente antigo, elogiou a equipe. Neste ano, todo cliente novo recebe um guia. O cliente também pode avaliar o atendimento ao fim de cada ano.';
+const LAB_FIND = { html: id => `<div class="fr" id="${id}">
+  <div class="fr-in"><label>Localizar <input data-f value="ano" autocomplete="off"></label><label>Substituir por <input data-r value="período" autocomplete="off"></label></div>
+  <div class="row"><label class="check"><input type="checkbox" data-w> Somente palavras inteiras</label><label class="check"><input type="checkbox" data-c> Diferenciar maiúsculas</label></div>
+  <div class="row"><button class="btn sm pri" data-all>Substituir Tudo</button><button class="btn sm" data-undo>↶ Desfazer (Ctrl+Z)</button><span class="hint" data-n></span></div>
+  <div class="fr-doc" data-doc></div><div class="xl-ch" data-st></div></div>`,
+  mount(id){
+    const root=document.getElementById(id); let text=FR_TEXT, hist=[];
+    const re=()=>{ const f=root.querySelector('[data-f]').value; if(!f) return null; const e=f.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); const w=root.querySelector('[data-w]').checked; return new RegExp(w?`(?<![\\p{L}])${e}(?![\\p{L}])`:e, 'gu'+(root.querySelector('[data-c]').checked?'':'i')); };
+    const draw=()=>{ const r=re(); let n=0; const html = r? esc(text).replace(new RegExp(r.source, r.flags), m=>{n++; return `<mark>${m}</mark>`;}) : esc(text);
+      root.querySelector('[data-doc]').innerHTML=html; root.querySelector('[data-n]').textContent = r?`${n} ocorrência(s) encontradas`:'';
+      const ok1 = !/\bano\b/i.test(text.replace(/Mariano|humano/g,'')) && /período passado/i.test(text), ok2 = /Mariano/.test(text) && /humano/.test(text);
+      root.querySelector('[data-st]').innerHTML=`<div class="eyebrow">Missão: trocar “ano” por “período”</div><div class="xc ${ok1?'ok':''}"><span>${ok1?'✓':'○'}</span><div>Todas as palavras “ano” viraram “período”</div></div><div class="xc ${ok2?'ok':''}"><span>${ok2?'✓':'○'}</span><div>“Mariano” e “humano” continuam intactos</div></div>${!ok2?'<div class="box tip"><b>Ops!</b><span>Substituir Tudo trocou “ano” dentro de outras palavras. Desfaça e marque “Somente palavras inteiras”.</span></div>':''}`; };
+    root.addEventListener('input', draw); root.addEventListener('change', draw);
+    root.querySelector('[data-all]').onclick=()=>{ const r=re(); if(!r) return; hist.push(text); text=text.replace(r, root.querySelector('[data-r]').value); draw(); };
+    root.querySelector('[data-undo]').onclick=()=>{ if(hist.length) text=hist.pop(); draw(); };
+    draw();
+  }};
+
+/* ---------- Lab PowerPoint: contraste e gráfico (M6) ---------- */
+const SW = ['#FFFFFF','#F4E9C8','#FFE45C','#9FB7D9','#1F3A68','#0F172A','#C2461D','#17724A'];
+function lum(h){ const c=[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255).map(v=>v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)); return .2126*c[0]+.7152*c[1]+.0722*c[2]; }
+const ratio=(a,b)=>{ const x=lum(a),y=lum(b); return (Math.max(x,y)+.05)/(Math.min(x,y)+.05); };
+const CHART_Q = [
+  {q:'Vendas de cada produto da cantina no mês',d:[['Salgado',42],['Suco',30],['Bolo',18],['Água',25]],a:'col'},
+  {q:'Número de seguidores do grêmio de janeiro a junho',d:[['Jan',120],['Fev',150],['Mar',148],['Abr',190],['Mai',230],['Jun',260]],a:'line'},
+  {q:'Como se divide o orçamento da família',d:[['Moradia',45],['Alimentação',30],['Transporte',15],['Lazer',10]],a:'pie'}];
+function chartSVG(type, d){
+  const W=320,H=170,P=26, mx=Math.max(...d.map(x=>x[1])); const cols=['var(--ppt)','var(--word)','var(--excel)','var(--all)','var(--warn)','var(--muted)'];
+  if(type==='pie'){ const tot=d.reduce((a,b)=>a+b[1],0); let a0=-Math.PI/2; return `<svg viewBox="0 0 ${W} ${H}" class="ch-svg" role="img" aria-label="Gráfico de pizza">${d.map((x,i)=>{ const a1=a0+x[1]/tot*2*Math.PI, cx=95,cy=85,r=70; const p=`M${cx},${cy} L${cx+r*Math.cos(a0)},${cy+r*Math.sin(a0)} A${r},${r} 0 ${a1-a0>Math.PI?1:0} 1 ${cx+r*Math.cos(a1)},${cy+r*Math.sin(a1)} Z`; a0=a1; return `<path d="${p}" fill="${cols[i]}" stroke="var(--surface)" stroke-width="2"/><rect x="190" y="${30+i*22}" width="12" height="12" fill="${cols[i]}"/><text x="208" y="${40+i*22}" fill="var(--ink)" font-size="12">${x[0]} ${Math.round(x[1]/tot*100)}%</text>`; }).join('')}</svg>`; }
+  const bw=(W-P*2)/d.length, y=v=>H-P-(v/mx)*(H-P*2);
+  const axis=`<line x1="${P}" y1="${H-P}" x2="${W-6}" y2="${H-P}" stroke="var(--line)"/>`+d.map((x,i)=>`<text x="${P+bw*i+bw/2}" y="${H-8}" text-anchor="middle" font-size="11" fill="var(--muted)">${x[0]}</text>`).join('');
+  if(type==='col') return `<svg viewBox="0 0 ${W} ${H}" class="ch-svg" role="img" aria-label="Gráfico de colunas">${axis}${d.map((x,i)=>`<rect x="${P+bw*i+bw*.2}" y="${y(x[1])}" width="${bw*.6}" height="${H-P-y(x[1])}" rx="3" fill="var(--ppt)"/><text x="${P+bw*i+bw/2}" y="${y(x[1])-4}" text-anchor="middle" font-size="11" fill="var(--ink)">${x[1]}</text>`).join('')}</svg>`;
+  return `<svg viewBox="0 0 ${W} ${H}" class="ch-svg" role="img" aria-label="Gráfico de linhas">${axis}<polyline fill="none" stroke="var(--ppt)" stroke-width="3" points="${d.map((x,i)=>`${P+bw*i+bw/2},${y(x[1])}`).join(' ')}"/>${d.map((x,i)=>`<circle cx="${P+bw*i+bw/2}" cy="${y(x[1])}" r="4" fill="var(--ppt)"/>`).join('')}</svg>`;
+}
+const LAB_CONTRAST = { html: id => `<div class="cl" id="${id}">
+  <div class="cl-grid"><div><div class="eyebrow">Cor de fundo</div><div class="sws" data-g="bg">${SW.map(c=>`<button class="sw big" style="--sw:${c}" data-c="${c}" aria-label="Fundo ${c}"></button>`).join('')}</div>
+  <div class="eyebrow" style="margin-top:10px">Cor do texto</div><div class="sws" data-g="fg">${SW.map(c=>`<button class="sw big" style="--sw:${c}" data-c="${c}" aria-label="Texto ${c}"></button>`).join('')}</div>
+  <label class="eyebrow" style="display:block;margin-top:10px">Tamanho do corpo do texto <select data-size>${[14,18,20,24,28].map(s=>`<option ${s===14?'selected':''}>${s}</option>`).join('')}</select> pt</label>
+  <label class="eyebrow" style="display:block;margin-top:10px">Distância da plateia: <span data-dl></span><input type="range" min="1" max="10" value="2" data-dist style="width:100%"></label></div>
+  <div><div class="cl-room"><div class="cl-slide" data-sl><b>Resultados do mês</b><p>Vendas cresceram 32%</p><p>Novos clientes: 18</p></div></div><div class="xl-ch" data-st></div></div></div>
+  <h4 style="margin-top:14px">Escolha o gráfico certo</h4><div class="chq"></div></div>`,
+  mount(id){
+    const root=document.getElementById(id); let bg='#FFFFFF', fg='#FFE45C', q=0;
+    const draw=()=>{ const sl=root.querySelector('[data-sl]'), size=+root.querySelector('[data-size]').value, dist=+root.querySelector('[data-dist]').value;
+      sl.style.background=bg; sl.style.color=fg; const sc=Math.max(.3,1.1-dist*.08); sl.style.transform=`scale(${sc})`; sl.querySelectorAll('p').forEach(p=>p.style.fontSize=(size*.8)+'px');
+      root.querySelector('[data-dl]').textContent = dist+' m';
+      root.querySelectorAll('[data-g=bg] .sw').forEach(b=>b.setAttribute('aria-pressed',b.dataset.c===bg)); root.querySelectorAll('[data-g=fg] .sw').forEach(b=>b.setAttribute('aria-pressed',b.dataset.c===fg));
+      const r=ratio(bg,fg), ok=r>=4.5, mid=r>=3, eff=size*sc;
+      root.querySelector('[data-st]').innerHTML=`<div class="xc ${ok?'ok':''}"><span>${ok?'✓':mid?'~':'✗'}</span><div>Contraste ${r.toFixed(1)}:1 · ${ok?'ótimo para leitura':mid?'aceitável só para títulos grandes':'ruim: difícil de ler'}</div></div><div class="xc ${size>=20?'ok':''}"><span>${size>=20?'✓':'○'}</span><div>Corpo do texto com 20 pt ou mais</div></div><div class="xc ${ok&&eff>=14?'ok':''}"><span>${ok&&eff>=14?'✓':'○'}</span><div>Legível a ${dist} m de distância</div></div>`; };
+    const drawQ=()=>{ const c=CHART_Q[q]; root.querySelector('.chq').innerHTML=`<p><b>Situação ${q+1}/3:</b> ${c.q}</p><div class="row">${[['col','Colunas'],['line','Linhas'],['pie','Pizza']].map(([k,l])=>`<button class="btn sm" data-ch="${k}">${l}</button>`).join('')}</div><div data-cv></div>`; };
+    root.addEventListener('click', e=>{ const s=e.target.closest('.sw.big'); if(s){ if(s.closest('[data-g=bg]')) bg=s.dataset.c; else fg=s.dataset.c; draw(); return; }
+      const c=e.target.closest('[data-ch]'); if(c){ const Q=CHART_Q[q], ok=c.dataset.ch===Q.a; root.querySelector('[data-cv]').innerHTML=chartSVG(c.dataset.ch,Q.d)+`<div class="ans ${ok?'ok':'bad'}"><h4>${ok?'Boa escolha!':'Funciona mal aqui'}</h4><div>${{col:'Colunas comparam categorias lado a lado.',line:'Linhas mostram evolução ao longo do tempo.',pie:'Pizza mostra partes de um total.'}[Q.a]}</div></div>${ok&&q<2?'<button class="btn sm pri" data-nq>Próxima situação →</button>':ok?'<p class="hint">Você concluiu as 3 situações!</p>':''}`; return; }
+      if(e.target.closest('[data-nq]')){ q++; drawQ(); } });
+    root.addEventListener('input', draw); draw(); drawQ();
+  }};
+
+/* ---------- Lab Word: Sumário + Mala Direta (M7) ---------- */
+const TOC_LINES = [['Introdução','t1'],['Este relatório apresenta as atividades do projeto.','p'],['Objetivos','bold'],['Metodologia','t1'],['Coleta de dados','n'],['Os dados foram coletados com questionários.','p'],['Resultados','t1'],['Análise dos gráficos','n'],['Conclusão','bold']];
+const LAB_TOC = { html: id => `<div class="tc" id="${id}">
+  <p class="hint">Alguns títulos estão só em negrito “na mão”. Aplique o estilo correto em cada linha e clique em Atualizar Sumário. Meta: 5 títulos principais e 2 subtítulos.</p>
+  <div class="tc-grid"><div class="tc-doc">${TOC_LINES.map(([t,s],i)=> s==='p'?`<div class="tc-p">${t}</div>`:`<div class="tc-l"><select data-i="${i}" aria-label="Estilo de ${t}"><option value="n" ${s==='n'||s==='bold'?'selected':''}>Normal</option><option value="t1" ${s==='t1'?'selected':''}>Título 1</option><option value="t2">Título 2</option></select><span data-txt="${i}" class="${s}">${t}</span></div>`).join('')}</div>
+  <div><button class="btn sm pri" data-up>Referências › Atualizar Sumário</button><div class="tc-toc" data-toc><i class="hint">O sumário aparece aqui.</i></div><div class="xl-ch" data-st></div></div></div>
+  <h4 style="margin-top:14px">Mala Direta: certificados</h4>
+  <div class="md-grid"><table class="md-t"><tr><th>Nome</th><th>Curso</th><th>CH</th></tr>${[['Ana Souza','Excel Produtivo','20h'],['Bruno Lima','Word Profissional','16h'],['Carla Dias','PowerPoint Essencial','12h']].map(r=>`<tr>${r.map(c=>`<td contenteditable="true">${c}</td>`).join('')}</tr>`).join('')}</table>
+  <div><div class="md-cert" data-cert></div><div class="row"><button class="btn sm" data-p>◀</button><span class="hint" data-rc></span><button class="btn sm" data-n>▶</button><button class="btn sm pri" data-merge>Concluir e Mesclar</button></div></div></div>
+  <div class="md-out" data-out></div></div>`,
+  mount(id){
+    const root=document.getElementById(id); let rec=0;
+    const sty=()=>[...root.querySelectorAll('select[data-i]')].map(s=>[+s.dataset.i,s.value]);
+    const upd=()=>{ let pg=1, n1=0,n2=0; const out=sty().filter(([i,v])=>v!=='n').map(([i,v],k)=>{ pg=1+Math.floor(i/2); v==='t1'?n1++:n2++; return `<div class="${v}"><span>${TOC_LINES[i][0]}</span><span>${pg}</span></div>`; });
+      root.querySelector('[data-toc]').innerHTML=`<b>Sumário</b>`+(out.join('')||'<i class="hint">Nenhum título com estilo: o sumário fica vazio.</i>');
+      const s=Object.fromEntries(sty()); const ok = s[0]==='t1'&&s[2]==='t1'&&s[3]==='t1'&&s[6]==='t1'&&s[8]==='t1'&&s[4]==='t2'&&s[7]==='t2';
+      root.querySelector('[data-st]').innerHTML=`<div class="xc ${n1===5?'ok':''}"><span>${n1===5?'✓':'○'}</span><div>5 títulos principais (Título 1): ${n1}</div></div><div class="xc ${n2===2?'ok':''}"><span>${n2===2?'✓':'○'}</span><div>2 subtítulos (Título 2): ${n2}</div></div>${ok?'<div class="ans ok"><h4>Sumário perfeito!</h4><div>O Word só lista o que tem estilo de título. Negrito “na mão” não entra.</div></div>':''}`; };
+    root.querySelectorAll('select[data-i]').forEach(s=>s.addEventListener('change',()=>{ root.querySelector(`[data-txt="${s.dataset.i}"]`).className=s.value; }));
+    root.querySelector('[data-up]').onclick=upd;
+    const rows=()=>[...root.querySelectorAll('.md-t tr')].slice(1).map(tr=>[...tr.children].map(td=>td.textContent.trim()));
+    const cert=r=>`<div class="md-c"><small>CERTIFICADO</small><p>Certificamos que <b>${esc(r[0])}</b> concluiu o curso <b>${esc(r[1])}</b>, com carga horária de <b>${esc(r[2])}</b>.</p><small>IFS · Campus Tobias Barreto</small></div>`;
+    const show=()=>{ const R=rows(); rec=(rec+R.length)%R.length; root.querySelector('[data-cert]').innerHTML=cert(R[rec]).replace('<div class="md-c">','<div class="md-c prev"><span class="fld">«Nome» «Curso» «CH»</span>'); root.querySelector('[data-rc]').textContent=`Registro ${rec+1} de ${R.length}`; };
+    root.querySelector('[data-p]').onclick=()=>{rec--;show();}; root.querySelector('[data-n]').onclick=()=>{rec++;show();};
+    root.querySelector('.md-t').addEventListener('input', show);
+    root.querySelector('[data-merge]').onclick=()=>{ root.querySelector('[data-out]').innerHTML=`<div class="eyebrow">Documento mesclado · ${rows().length} certificados</div><div class="md-list">${rows().map(cert).join('')}</div>`; };
+    show();
+  }};
+
+/* ---------- Lab PowerPoint: navegação e apresentação (M9) ---------- */
+const LAB_NAV = { html: id => `<div class="nv" id="${id}">
+  <p class="hint">1) Configure para qual slide cada botão do menu leva (Ctrl+K › Colocar neste Documento). 2) Clique em Apresentar e teste. Durante a apresentação: <kbd>B</kbd> tela preta, <kbd>W</kbd> tela branca, <kbd>Esc</kbd> encerra.</p>
+  <div class="nv-cfg">${['Word','Excel','PowerPoint'].map((t,i)=>`<label>Botão “${t}” leva ao <select data-l="${i}"><option value="">(sem link)</option><option value="1">Slide 2: Word</option><option value="2">Slide 3: Excel</option><option value="3">Slide 4: PowerPoint</option></select></label>`).join('')}</div>
+  <div class="row"><button class="btn sm pri" data-go>▶ Apresentar (F5)</button><span class="hint" data-msg></span></div>
+  <div class="nv-player" tabindex="0" data-pl hidden><div class="nv-screen" data-sc></div><div class="nv-ov" data-ov hidden></div><div class="nv-bar"><span data-tm></span><button class="btn sm" data-esc>Encerrar (Esc)</button></div></div>
+  <div class="nv-times" data-times></div></div>`,
+  mount(id){
+    const root=document.getElementById(id), pl=root.querySelector('[data-pl]'), sc=root.querySelector('[data-sc]'), ov=root.querySelector('[data-ov]');
+    const names=['Menu','Word','Excel','PowerPoint'], cls=['all','word','excel','ppt']; let cur=0, t0=0, times={}, tick;
+    const links=()=>[...root.querySelectorAll('[data-l]')].map(s=>s.value);
+    const draw=()=>{ const L=links();
+      sc.className='nv-screen bg-soft-'+cls[cur];
+      sc.innerHTML = cur===0? `<b>Escolha um tema</b><div class="nv-btns">${['Word','Excel','PowerPoint'].map((t,i)=>`<button data-nav="${L[i]}">${t}</button>`).join('')}</div>` : `<b>${names[cur]}</b><p>Conteúdo do slide sobre ${names[cur]}.</p><button data-nav="0" class="nv-back">⌂ Voltar ao menu</button>`; };
+    const stamp=()=>{ times[names[cur]]=(times[names[cur]]||0)+(Date.now()-t0)/1000; t0=Date.now(); };
+    const go=n=>{ stamp(); cur=n; draw(); };
+    const end=()=>{ stamp(); clearInterval(tick); pl.hidden=true; root.querySelector('[data-times]').innerHTML=`<div class="eyebrow">Testar Intervalos: tempo em cada slide</div>`+Object.entries(times).map(([k,v])=>`<div class="kitem card"><span>${k}</span><b>${v.toFixed(1)} s</b></div>`).join(''); };
+    root.querySelector('[data-go]').onclick=()=>{ const L=links(); const ok=L[0]==='1'&&L[1]==='2'&&L[2]==='3'; root.querySelector('[data-msg]').innerHTML= ok?'✓ Todos os links certos. Teste a navegação!':'Alguns botões estão sem link ou apontam para o slide errado. Teste para descobrir.'; times={}; cur=0; t0=Date.now(); ov.hidden=true; pl.hidden=false; draw(); pl.focus();
+      clearInterval(tick); tick=setInterval(()=>{ root.querySelector('[data-tm]').textContent=`Slide ${cur+1} de 4 · ${((Date.now()-t0)/1000).toFixed(0)} s neste slide`; },300); };
+    pl.addEventListener('click', e=>{ const b=e.target.closest('[data-nav]'); if(b){ if(b.dataset.nav==='') { b.classList.add('shake'); setTimeout(()=>b.classList.remove('shake'),500); return; } go(+b.dataset.nav); } if(e.target.closest('[data-esc]')) end(); if(e.target===ov){ ov.hidden=true; } });
+    pl.addEventListener('keydown', e=>{ const k=e.key.toLowerCase();
+      if(k==='escape'){ e.preventDefault(); if(!ov.hidden) ov.hidden=true; else end(); return; }
+      if(k==='b'||k==='w'){ if(!ov.hidden && ov.dataset.k===k){ ov.hidden=true; } else { ov.dataset.k=k; ov.className='nv-ov '+(k==='b'?'blk':'wht'); ov.hidden=false; } } });
+  }};
+
+/* ---------- Lab integração: colar e backup (M10) ---------- */
+const LAB_PASTE = { html: id => `<div class="ps" id="${id}">
+  <div class="ps-grid"><div class="ps-x"><div class="eyebrow">Excel · despesas (edite os valores)</div><table class="md-t" data-x><tr><th>Categoria</th><th>Valor (R$)</th></tr>${[['Moradia',900],['Alimentação',650],['Transporte',220]].map(r=>`<tr><td>${r[0]}</td><td><input type="number" value="${r[1]}" aria-label="Valor de ${r[0]}"></td></tr>`).join('')}</table>
+  <button class="btn sm pri" data-paste>Ctrl+C e colar nas 3 formas</button></div>
+  <div class="ps-w"><div class="eyebrow">Word · relatório</div><div data-w class="ps-docs"><i class="hint">Clique em “colar” para levar a tabela ao Word.</i></div></div></div>
+  <div class="ans" data-why hidden></div>
+  <h4 style="margin-top:14px">Monte sua regra 3-2-1 de backup</h4>
+  <p class="hint">Marque onde ficarão as cópias do seu projeto final.</p>
+  <div class="bk">${[['note','💻 Notebook (original)','local','A'],['pasta','📁 Outra pasta no mesmo notebook','local','A'],['hd','💽 HD externo','externo','B'],['pen','🔌 Pendrive','externo','C'],['nuvem','☁ Nuvem (Drive/OneDrive)','fora','D']].map(([k,l,t,dev])=>`<label class="check bk-i"><input type="checkbox" data-bk="${k}" data-t="${t}" data-dev="${dev}" ${k==='note'?'checked':''}> ${l}</label>`).join('')}</div>
+  <div class="xl-ch" data-bs></div></div>`,
+  mount(id){
+    const root=document.getElementById(id); let pasted=null;
+    const vals=()=>[...root.querySelectorAll('[data-x] tr')].slice(1).map(tr=>[tr.children[0].textContent, +tr.querySelector('input').value||0]);
+    const tbl=(v,edit)=>`<table class="md-t">${v.map(r=>`<tr><td>${r[0]}</td><td ${edit?'contenteditable="true"':''}>${r[1].toLocaleString('pt-BR')}</td></tr>`).join('')}<tr><th>Total</th><th>${v.reduce((a,b)=>a+b[1],0).toLocaleString('pt-BR')}</th></tr></table>`;
+    const drawW=()=>{ if(!pasted) return; root.querySelector('[data-w]').innerHTML=`<div class="ps-d"><b>Colar normal</b>${tbl(pasted,true)}<small>Editável no Word, não acompanha o Excel.</small></div><div class="ps-d img" data-img><b>Colar como imagem</b><div class="ps-img">${tbl(pasted,false)}</div><small>Visual congelado: não edita nem atualiza.</small></div><div class="ps-d"><b>Colar vínculo</b>${tbl(vals(),false)}<small>Atualiza quando a planilha muda. 🔗</small></div>`; };
+    root.querySelector('[data-paste]').onclick=()=>{ pasted=vals(); drawW(); const w=root.querySelector('[data-why]'); w.hidden=false; w.innerHTML='<h4>Agora mude um valor no Excel</h4><div>Observe: só a versão com vínculo acompanha a mudança. Tente clicar na versão imagem para editar.</div>'; };
+    root.querySelector('[data-x]').addEventListener('input', drawW);
+    root.addEventListener('click', e=>{ if(e.target.closest('[data-img]')){ const d=e.target.closest('[data-img]'); d.classList.add('shake'); setTimeout(()=>d.classList.remove('shake'),500); } });
+    const bk=()=>{ const on=[...root.querySelectorAll('[data-bk]:checked')]; const devs=new Set(on.map(i=>i.dataset.dev)), media=new Set(on.map(i=>i.dataset.t==='fora'?'nuvem':i.dataset.t==='externo'?'externo':'local')), off=on.some(i=>i.dataset.t==='fora');
+      const c3=on.length>=3, c2=media.size>=2, c1=off; root.querySelector('[data-bs]').innerHTML=`<div class="xc ${c3?'ok':''}"><span>${c3?'✓':'○'}</span><div>3 cópias: ${on.length}</div></div><div class="xc ${c2?'ok':''}"><span>${c2?'✓':'○'}</span><div>2 tipos de mídia diferentes: ${media.size}</div></div><div class="xc ${c1?'ok':''}"><span>${c1?'✓':'○'}</span><div>1 cópia fora do computador</div></div>${c3&&c2&&c1?(devs.size<3?'<div class="box tip"><b>Atenção</b><span>Duas cópias no mesmo aparelho contam pouco: se o notebook quebrar, as duas se perdem.</span></div>':'<div class="ans ok"><h4>Regra 3-2-1 cumprida!</h4></div>'):''}`; };
+    root.addEventListener('change', e=>{ if(e.target.dataset.bk) bk(); }); bk();
+  }};
+
+/* ---------- Registro de laboratórios por módulo ---------- */
+const LABS = {
+  1:{t:'Laboratório: formate um aviso',d:'Escolha o elemento (título, parágrafo ou lista) e use a faixa de opções. As missões ficam verdes quando cumpridas.',lab:LAB_WORD},
+  2:{t:'Laboratório: sua primeira planilha',d:'Uma planilha de verdade: clique numa célula, digite na barra de fórmulas e pressione Enter.',lab:xlLab({cols:'ABCD',rows:9,fillTo:5,cells:{A1:'Aluno',B1:'Nota',C1:'Situação',A2:'Ana',B2:'6',A3:'Bruno',B3:'8',A4:'Carla',B4:'5',A5:'Diego',B5:'9',A6:'Soma',A7:'Média',A8:'Maior'},
+    ch:[{t:'Em B6, some as notas com =SOMA(B2:B5)',test:(v,r)=>v('B6')===28&&r('B6').includes('SOMA'),h:'Clique em B6 e digite =SOMA(B2:B5).'},
+        {t:'Em B7, calcule a média das notas',test:(v,r)=>v('B7')===7&&/M[EÉ]DIA/.test(r('B7')),h:'=MÉDIA(B2:B5)'},
+        {t:'Em B8, mostre a maior nota',test:(v,r)=>v('B8')===9&&/M[AÁ]XIMO/.test(r('B8')),h:'=MÁXIMO(B2:B5)'},
+        {t:'Em C2, use SE para mostrar APROVADO (nota ≥ 7) ou REPROVADO e arraste a alça até C5',test:(v,r)=>v('C2')==='REPROVADO'&&v('C3')==='APROVADO'&&v('C5')==='APROVADO'&&r('C5').includes('SE('),h:'=SE(B2>=7;"APROVADO";"REPROVADO") e depois o botão Arrastar alça.'}]})},
+  3:{t:'Laboratório: alinhe e anime',d:'Arraste as formas, use os botões de alinhamento e depois teste a ordem das animações.',lab:LAB_ALIGN},
+  4:{t:'Laboratório: Localizar e Substituir',d:'Descubra por que “Substituir Tudo” pode estragar um texto e como evitar.',lab:LAB_FIND},
+  5:{t:'Laboratório: comissões e condições',d:'Use $ para fixar a taxa, CONT.SE, SOMASE e porcentagem. Experimente arrastar =B2*F2 sem $ para ver o erro acontecer.',lab:xlLab({cols:'ABCDEF',rows:10,fillTo:6,cells:{A1:'Produto',B1:'Venda',C1:'Situação',D1:'Comissão',F1:'Taxa',F2:'0,05',A2:'Caneta',B2:'100',C2:'Pago',A3:'Caderno',B3:'250',C3:'Pendente',A4:'Mochila',B4:'400',C4:'Pago',A5:'Estojo',B5:'80',C5:'Pago',A6:'Lápis',B6:'50',C6:'Pendente',A8:'Qtd pagos',A9:'Total pago',A10:'Mochila -10%'},
+    ch:[{t:'Em D2, calcule =B2*$F$2 e arraste a alça até D6',test:(v,r)=>v('D6')===2.5&&r('D2').includes('$F$2'),h:'Sem $, a fórmula vira B3*F3, B4*F4… e F3 está vazia.'},
+        {t:'Em B8, conte quantas vendas estão “Pago”',test:(v,r)=>v('B8')===3&&r('B8').includes('CONT.SE'),h:'=CONT.SE(C2:C6;"Pago")'},
+        {t:'Em B9, some só as vendas pagas',test:(v,r)=>v('B9')===580&&r('B9').includes('SOMASE'),h:'=SOMASE(C2:C6;"Pago";B2:B6)'},
+        {t:'Em B10, calcule o preço da Mochila com 10% de desconto',test:v=>Math.abs(v('B10')-360)<0.001,h:'=B4*(1-10%)'}]})},
+  6:{t:'Laboratório: contraste e gráficos',d:'Combine cores de fundo e texto, afaste a plateia e veja se o slide continua legível. Depois escolha o gráfico certo para cada situação.',lab:LAB_CONTRAST},
+  7:{t:'Laboratório: sumário automático e mala direta',d:'Veja na prática por que estilos são necessários para o sumário e como uma lista vira vários certificados.',lab:LAB_TOC},
+  8:{t:'Laboratório: detetive de erros',d:'A planilha tem erros. Clique nas células vermelhas para ler o diagnóstico e corrija. Depois cumpra os desafios.',lab:xlLab({cols:'ABCDE',rows:10,fillTo:5,cells:{A1:'Nome',B1:'Sobrenome',C1:'Vendas',D1:'Status',E1:'Nome completo',A2:'Ana',B2:'Souza',C2:'1200',A3:'Bruno',B3:'Lima',C3:'950',A4:'Carla',B4:'Dias',C4:'1500',A5:'Diego',B5:'Melo',C5:'800',A7:'Menor',A8:'Total',C8:'=SOMMA(C2:C5)',A9:'Por vendedor',C9:'=C8/B10',A10:'Teste',C10:'=A2+C2'},
+    ch:[{t:'Corrija C8 para mostrar o total das vendas (4.450)',test:(v,r)=>v('C8')===4450,h:'O erro #NOME? vem de SOMMA. O certo é =SOMA(C2:C5).'},
+        {t:'Corrija C9 para dividir o total por 4 vendedores',test:v=>v('C9')===1112.5,h:'B10 está vazia: #DIV/0!. Use =C8/4.'},
+        {t:'Em D2, mostre “Meta atingida” quando C2 ≥ 1000, senão “Abaixo”, e arraste até D5',test:(v,r)=>v('D2')==='Meta atingida'&&v('D3')==='Abaixo'&&v('D4')==='Meta atingida'&&v('D5')==='Abaixo',h:'=SE(C2>=1000;"Meta atingida";"Abaixo")'},
+        {t:'Em E2, junte Nome e Sobrenome com espaço e arraste até E5',test:v=>v('E2')==='Ana Souza'&&v('E5')==='Diego Melo',h:'=A2&" "&B2'},
+        {t:'Em C7, encontre a menor venda',test:(v,r)=>v('C7')===800&&/M[IÍ]NIMO/.test(r('C7')),h:'=MÍNIMO(C2:C5)'}]})},
+  9:{t:'Laboratório: menu interativo e ensaio',d:'Monte os links do menu, apresente, navegue e veja quanto tempo ficou em cada slide.',lab:LAB_NAV},
+  10:{t:'Laboratório: integração e segurança',d:'Compare as três formas de colar uma tabela do Excel no Word e monte seu plano de backup.',lab:LAB_PASTE}
+};
+
+/* ---------- Aba Explorar ---------- */
+function tExplorar(m){
+  const L = LABS[m.id];
+  return `<div class="sec-intro"><p>Aprenda mexendo: explore a tela em camadas, faça o laboratório prático e classifique os recursos no jogo de arrastar.</p></div>
+  ${exploreBlock(m)}
+  <section class="xsec"><div class="xs-h"><h3>${esc(L.t)}</h3></div><p class="hint">${fmt(L.d)}</p>${L.lab.html('lab'+m.id)}</section>
+  ${gameBlock(m)}`;
+}
+function mountExplorar(m){ mountExplore(m); LABS[m.id].lab.mount('lab'+m.id); mountGame(m); }
+
 const APP = {word:{n:'Word',c:'word'},excel:{n:'Excel',c:'excel'},ppt:{n:'PowerPoint',c:'ppt'},all:{n:'Integração',c:'all'}};
 const LEVEL = {1:'Essencial',2:'Essencial',3:'Essencial',4:'Produtivo',5:'Produtivo',6:'Produtivo',7:'Profissional',8:'Profissional',9:'Profissional',10:'Projeto final'};
-const TABS = [['licoes','Lições'],['caderno','Caderno'],['flash','Flashcards'],['vf','V ou F'],['quiz','Quiz'],['pbl','PBL']];
+const TABS = [['licoes','Lições'],['explorar','Explorar'],['caderno','Caderno'],['flash','Flashcards'],['vf','V ou F'],['quiz','Quiz'],['pbl','PBL']];
 const L5 = 'ABCDE';
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const $ = s => document.querySelector(s);
@@ -926,7 +1902,7 @@ function viewHome(){
     <div style="display:flex;flex-direction:column;gap:14px">
       <div class="eyebrow">Disciplina interativa · 100 lições visuais</div>
       <h1>Aprenda Office <span>fazendo</span>, módulo a módulo.</h1>
-      <p class="lead">Cada módulo cobre 10 lições do Método Office Visual e traz cerca de 40 atividades: exercícios para o caderno, flashcards, verdadeiro ou falso com justificativa, quiz e um projeto PBL. As respostas aparecem depois que você tenta.</p>
+      <p class="lead">Cada módulo cobre 10 lições do Método Office Visual em uma linha do tempo com as páginas ilustradas, caminho de cliques animado, telas para explorar, laboratórios práticos e cerca de 40 atividades: caderno, flashcards, V ou F com justificativa, quiz e PBL. As respostas aparecem depois que você tenta.</p>
     </div>
     <div class="card prog">
       <div class="eyebrow">Seu progresso</div>
@@ -939,11 +1915,11 @@ function viewHome(){
     <div class="card stat"><b>10</b><span>módulos</span></div>
     <div class="card stat"><b>100</b><span>lições do PDF</span></div>
     <div class="card stat"><b>${t.t}</b><span>atividades com resposta</span></div>
-    <div class="card stat"><b>20</b><span>projetos PBL</span></div>
+    <div class="card stat"><b>10</b><span>laboratórios interativos</span></div>
   </section>
   <section style="display:flex;flex-direction:column;gap:10px">
     <div class="eyebrow">Como estudar cada módulo</div>
-    <div class="route"><span>1 · Lições</span><em>→</em><span>2 · Caderno</span><em>→</em><span>3 · Flashcards</span><em>→</em><span>4 · V ou F + justificativa</span><em>→</em><span>5 · Quiz</span><em>→</em><span>6 · PBL</span></div>
+    <div class="route"><span>1 · Lições (linha do tempo)</span><em>→</em><span>2 · Explorar e laboratório</span><em>→</em><span>3 · Caderno</span><em>→</em><span>4 · Flashcards</span><em>→</em><span>5 · V ou F + justificativa</span><em>→</em><span>6 · Quiz</span><em>→</em><span>7 · PBL</span></div>
   </section>
   <section style="display:flex;flex-direction:column;gap:14px">
     <div class="eyebrow">Trilha: três programas em três níveis</div>
@@ -959,14 +1935,14 @@ function viewHome(){
 /* ---------- MÓDULO ---------- */
 function updateTabCounts(m){
   const c = modCounts(m);
-  const n = {licoes:[c.licoes,10], caderno:[c.caderno,m.C.length], flash:[c.flash,m.F.length], vf:[c.vf,m.V.length], quiz:[c.quiz,m.Q.length], pbl:[c.pbl,m.P.length]};
-  document.querySelectorAll('.tab').forEach(b=>{ const [a,t]=n[b.dataset.t]; const s=b.querySelector('.n'); s.textContent=`${a}/${t}`; s.classList.toggle('full', a===t); });
+  const n = {explorar:null, licoes:[c.licoes,10], caderno:[c.caderno,m.C.length], flash:[c.flash,m.F.length], vf:[c.vf,m.V.length], quiz:[c.quiz,m.Q.length], pbl:[c.pbl,m.P.length]};
+  document.querySelectorAll('.tab').forEach(b=>{ if(!n[b.dataset.t]){ b.querySelector('.n').textContent='★'; return; } const [a,t]=n[b.dataset.t]; const s=b.querySelector('.n'); s.textContent=`${a}/${t}`; s.classList.toggle('full', a===t); });
   const mp = $('#modPct'); if(mp){ mp.style.width = pct(c.done,c.total)+'%'; $('#modTxt').textContent = `${c.done}/${c.total} atividades · acertos no quiz ${c.okq}/${m.Q.length} · V ou F ${c.okv}/${m.V.length}`; }
 }
 function viewMod(m, tab){
   setAccent(APP[m.app].c);
   const a = APP[m.app];
-  let body = {licoes:tLicoes, caderno:tCaderno, flash:tFlash, vf:tVF, quiz:tQuiz, pbl:tPBL}[tab](m);
+  let body = {licoes:tTimeline, explorar:tExplorar, caderno:tCaderno, flash:tFlash, vf:tVF, quiz:tQuiz, pbl:tPBL}[tab](m);
   return `
   <section class="mhead">
     <div class="row"><span class="chip">${a.n} · ${LEVEL[m.id]}</span><span class="eyebrow">Módulo ${String(m.id).padStart(2,'0')} · lições ${m.pages}</span></div>
@@ -1128,6 +2104,7 @@ function render(){
   const y = window.scrollY;
   $('#view').innerHTML = h; $('#crumb').innerHTML = crumb;
   refreshProgress();
+  if(r.v==='mod' && r.tab==='explorar') mountExplorar(r.mod);
   window.scrollTo(0,y);
 }
 applyTheme(); render();

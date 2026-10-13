@@ -97,6 +97,8 @@ O ranking que os alunos veem mostra só o primeiro nome e a inicial do sobrenome
 3. **Implantar** › **Nova implantação** › engrenagem › **App da Web**. *Executar como*: **Eu**. *Quem pode acessar*: **Qualquer pessoa**. **Implantar** e autorize.
 4. Copie o endereço que termina em `/exec` e cole entre as aspas no `config.js` do repositório.
 
+**Atenção:** depois de configurado, não substitua o `config.js` ao subir pacotes novos. Se ele voltar vazio, os alunos continuam entrando, mas nada chega à planilha. Quem entrar nesse período é enviado automaticamente para a planilha quando o endereço for colado de novo.
+
 Se depois você alterar o código, use **Implantar** › **Gerenciar implantações** › lápis › *Versão*: **Nova versão**, para manter o mesmo endereço.
 
 ## Cuidados
