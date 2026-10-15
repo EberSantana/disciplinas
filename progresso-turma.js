@@ -1,6 +1,7 @@
 /* Login, menu de disciplinas e progresso da turma \u2014 Prof. Eber Santana
  * Quem n\u00e3o fez login v\u00ea a tela de entrada, que ocupa a p\u00e1gina inteira. O site aparece depois do login.
- * O login (nome completo, e-mail, curso, turno, turma e PIN) vale em todos os materiais.
+ * O aluno escolhe a turma, toca no pr\u00f3prio nome e digita o PIN. O login vale em todos os materiais.
+ * A lista de alunos fica na aba Turmas da planilha do professor (nunca neste reposit\u00f3rio).
  * Depois de entrar, o bot\u00e3o no canto vira o menu com as disciplinas do curso do aluno.
  * O progresso vai para a planilha do professor (App da Web definido em config.js).
  *
@@ -13,19 +14,22 @@
  * e chame window.progressoMudou() sempre que o aluno avan\u00e7ar.
  */
 (function () {
+  // O nome do curso aqui precisa ser igual \u00e0 coluna "curso" da aba Turmas da planilha.
   var CURSOS = [
-    { nome: "T\u00e9cnico em Inform\u00e1tica", disciplinas: [
-      ["Redes de Computadores", "redes-de-computadores"],
-      ["Projeto de Redes", "projeto-de-redes"],
-      ["Seguran\u00e7a da Informa\u00e7\u00e3o", "seguranca-da-informacao"] ] },
     { nome: "Subsequente em Inform\u00e1tica", disciplinas: [
       ["Inform\u00e1tica B\u00e1sica", "informatica-basica"],
       ["Engenharia de Software", "engenharia-de-software"] ] },
-    { nome: "Integrado em Desenvolvimento de Sistemas", disciplinas: [
-      ["Constru\u00e7\u00e3o de Sites 1 (1\u00ba ano)", "construcao-de-sites-1"],
-      ["Banco de Dados (2\u00ba ano)", "banco-de-dados"] ] }
+    { nome: "Integrado em Desenvolvimento de Sistemas \u00b7 1\u00ba ano", disciplinas: [
+      ["Constru\u00e7\u00e3o de Sites 1", "construcao-de-sites-1"] ] },
+    { nome: "Integrado em Desenvolvimento de Sistemas \u00b7 2\u00ba ano", disciplinas: [
+      ["Banco de Dados", "banco-de-dados"],
+      ["Engenharia de Software", "engenharia-de-software"] ] },
+    { nome: "T\u00e9cnico em Inform\u00e1tica", disciplinas: [
+      ["Redes de Computadores", "redes-de-computadores"],
+      ["Projeto de Redes", "projeto-de-redes"],
+      ["Seguran\u00e7a da Informa\u00e7\u00e3o", "seguranca-da-informacao"] ] }
   ];
-  var TURNOS = ["Matutino", "Vespertino", "Noturno", "Integral"];
+  var TKEY = "pt-ultima-turma";
 
   var URL_ = String(window.RANKING_URL || "").trim();
   var ID = window.PROGRESSO_ID || "";
@@ -38,11 +42,7 @@
 
   function cursoDe(nome) { for (var i = 0; i < CURSOS.length; i++) if (CURSOS[i].nome === nome) return CURSOS[i]; return null; }
   function lerPerfil() {
-    try { var p = JSON.parse(localStorage.getItem(PKEY) || "null"); return p && p.email && p.nome && cursoDe(p.curso) ? p : null; } catch (e) { return null; }
-  }
-  function apelidoDe(nome) {
-    var w = nome.trim().split(/\s+/);
-    return w.length > 1 ? w[0] + " " + w[w.length - 1].charAt(0).toUpperCase() + "." : w[0];
+    try { var p = JSON.parse(localStorage.getItem(PKEY) || "null"); return p && p.id && p.pin && p.nome ? p : null; } catch (e) { return null; }
   }
   var perfil = lerPerfil();
 
@@ -75,7 +75,15 @@
     ".pt-card .pt-sub{margin:0 0 14px;color:#3F4F5B;font-size:15px}" +
     ".pt-card label{display:block;font-size:14px;font-weight:600;margin:12px 0 4px}" +
     ".pt-card input,.pt-card select{width:100%;box-sizing:border-box;min-height:46px;padding:10px 12px;border-radius:10px;border:1px solid #B8C6CD;background:#fff;color:#15212B;font:16px " + F + "}" +
-    ".pt-card input:focus,.pt-card select:focus{outline:2px solid #D96C14;outline-offset:1px;border-color:#D96C14}" +
+    ".pt-card input,.pt-card select{margin-top:2px}.pt-card input:focus,.pt-card select:focus{outline:2px solid #D96C14;outline-offset:1px;border-color:#D96C14}" +
+    ".pt-step[hidden]{display:none}" +
+    ".pt-list{display:grid;gap:8px;margin-top:6px;max-height:min(52vh,460px);overflow:auto;padding:2px}" +
+    ".pt-nomes{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}" +
+    ".pt-opt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;min-height:52px;padding:10px 14px;border:1px solid #D5DDDA;border-radius:12px;background:#fff;color:#15212B;font:600 16px/1.25 " + F + ";text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}" +
+    ".pt-opt[hidden]{display:none}.pt-opt:hover,.pt-opt:focus-visible{border-color:#D96C14;outline:none;background:rgba(217,108,20,.06)}" +
+    ".pt-opt small{font:400 13px/1.3 " + F + ";color:#6B7A84}" +
+    ".pt-back{border:0;background:none;padding:6px 0;margin:0 0 6px;color:#B4560B;font:600 15px/1 " + F + ";cursor:pointer}" +
+    ".pt-busca{margin-bottom:4px}" +
     ".pt-two{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}" +
     ".pt-go{width:100%;min-height:50px;margin-top:20px;border:0;border-radius:10px;background:#D96C14;color:#fff;font:700 17px/1 " + F + ";cursor:pointer}" +
     ".pt-go:hover{background:#C25E0F}.pt-go:focus-visible{outline:3px solid #15212B;outline-offset:2px}.pt-go[disabled]{opacity:.7;cursor:wait}" +
@@ -112,6 +120,7 @@
       ".pt-screen{background:#0F171D;color:#E4ECEF}.pt-hero{background:#0B1116}" +
       ".pt-card{background:#16222B;border-color:#2A3A45;box-shadow:none}.pt-card .pt-sub{color:#B8C6CD}.pt-note{color:#8699A4}" +
       ".pt-card input,.pt-card select{background:#0F171D;color:#E4ECEF;border-color:#3A4C58}" +
+      ".pt-opt{background:#0F171D;color:#E4ECEF;border-color:#2A3A45}.pt-opt small{color:#8699A4}.pt-back{color:#F08A36}" +
       ".pt-box{background:#16222B;color:#E4ECEF;border-color:#2A3A45}.pt-box p{color:#B8C6CD}.pt-box h4{color:#F08A36}" +
       ".pt-btn.sec{color:#F08A36;border-color:#F08A36}.pt-menu a{border-color:#2A3A45}.pt-menu a span{color:#F08A36}.pt-rank li{border-color:#2A3A45}" +
       ".pt-msg.bad{color:#FF8174}.pt-msg.good{color:#4FD899}}" +
@@ -122,8 +131,8 @@
   function primeiroNome() { return perfil ? perfil.nome.trim().split(/\s+/)[0] : ""; }
   function dados() { return DADOS ? DADOS() : null; }
   function corpo(d) {
-    return { disciplina: ID || "portal", nome: perfil.nome, email: perfil.email, curso: perfil.curso, turno: perfil.turno, turma: perfil.turma,
-      pin: perfil.pin, apelido: perfil.apelido, pontos: d.pontos, feitas: d.feitas, total: d.total, detalhe: d.detalhe || {} };
+    return { disciplina: ID || "portal", turma: perfil.turma, id: perfil.id, pin: perfil.pin, nome: perfil.nome, apelido: perfil.apelido,
+      curso: perfil.curso, turno: perfil.turno, pontos: d.pontos, feitas: d.feitas, total: d.total, detalhe: d.detalhe || {} };
   }
   function avisar() { try { window.dispatchEvent(new CustomEvent("perfil:mudou", { detail: perfil })); } catch (e) {} }
   function pastaAtual() {
@@ -155,24 +164,111 @@
         "<li><b>03</b><span>Seu progresso fica salvo e conta pontos no ranking da turma.</span></li>" +
       "</ul>" +
     "</section>" +
-    '<section class="pt-side"><form class="pt-card" novalidate>' +
-      '<h2 id="pt-title">Entrar</h2>' +
-      '<p class="pt-sub">Primeiro acesso ou outro aparelho? Preencha os mesmos dados e o mesmo PIN.</p>' +
-      '<label for="pt-n">Nome completo</label><input id="pt-n" maxlength="80" autocomplete="name" required>' +
-      '<label for="pt-e">E-mail</label><input id="pt-e" type="email" maxlength="80" autocomplete="email" inputmode="email" required>' +
-      '<label for="pt-c">Curso</label><select id="pt-c" required><option value="">Escolha o seu curso</option>' +
-        CURSOS.map(function (c) { return "<option>" + esc(c.nome) + "</option>"; }).join("") + "</select>" +
-      '<div class="pt-two"><div><label for="pt-tu">Turno</label><select id="pt-tu" required><option value="">Escolha</option>' +
-        TURNOS.map(function (t) { return "<option>" + t + "</option>"; }).join("") + "</select></div>" +
-        '<div><label for="pt-t">Turma</label><input id="pt-t" maxlength="30" placeholder="Ex.: 2026.1" required></div></div>' +
-      '<label for="pt-p">PIN de 4 n\u00fameros</label><input id="pt-p" type="password" inputmode="numeric" maxlength="4" autocomplete="off" required>' +
-      '<button class="pt-go" type="submit">Entrar</button>' +
-      '<div class="pt-msg" role="status" aria-live="polite"></div>' +
-      '<p class="pt-note">Crie um PIN e guarde: ele protege o seu progresso. Seus dados ficam s\u00f3 com o professor.</p>' +
-    "</form></section>";
+    '<section class="pt-side"><div class="pt-card">' +
+      '<div class="pt-step" data-step="1">' +
+        '<h2 id="pt-title">Entrar</h2>' +
+        '<p class="pt-sub">Escolha a sua turma.</p>' +
+        '<div class="pt-list pt-turmas"></div>' +
+        '<div class="pt-msg" role="status" aria-live="polite"></div>' +
+      "</div>" +
+      '<div class="pt-step" data-step="2" hidden>' +
+        '<button class="pt-back" type="button" data-volta="1">\u2190 Trocar turma</button>' +
+        "<h2>Quem \u00e9 voc\u00ea?</h2>" +
+        '<p class="pt-sub pt-turma-nome"></p>' +
+        '<input class="pt-busca" type="search" placeholder="Procurar o seu nome" aria-label="Procurar o seu nome" autocomplete="off" hidden>' +
+        '<div class="pt-list pt-nomes"></div>' +
+        '<div class="pt-msg" role="status" aria-live="polite"></div>' +
+        '<p class="pt-note">N\u00e3o achou o seu nome? Fale com o professor.</p>' +
+      "</div>" +
+      '<form class="pt-step" data-step="3" novalidate hidden>' +
+        '<button class="pt-back" type="button" data-volta="2">\u2190 N\u00e3o sou eu</button>' +
+        '<h2 class="pt-ola"></h2>' +
+        '<p class="pt-sub pt-pin-dica"></p>' +
+        '<label for="pt-p">PIN de 4 n\u00fameros</label><input id="pt-p" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off">' +
+        '<div class="pt-p2" hidden><label for="pt-p2">Repita o PIN</label><input id="pt-p2" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off"></div>' +
+        '<button class="pt-go" type="submit">Entrar</button>' +
+        '<div class="pt-msg" role="status" aria-live="polite"></div>' +
+        '<p class="pt-note pt-pin-nota"></p>' +
+      "</form>" +
+    "</div></section>";
   document.body.appendChild(screen);
-  var formEl = screen.querySelector("form");
-  function gmsg(t, cl) { var m = screen.querySelector(".pt-msg"); m.textContent = t; m.className = "pt-msg " + (cl || ""); }
+  var passo = 1, turmaSel = null, alunoSel = null, turmasCache = null;
+  function q(sel) { return screen.querySelector(sel); }
+  function gmsg(t, cl) { var m = screen.querySelector('.pt-step[data-step="' + passo + '"] .pt-msg'); if (m) { m.textContent = t || ""; m.className = "pt-msg " + (cl || ""); } }
+  function irPara(n) {
+    passo = n;
+    Array.prototype.forEach.call(screen.querySelectorAll(".pt-step"), function (el) { el.hidden = +el.getAttribute("data-step") !== n; });
+    screen.scrollTop = 0;
+    gmsg("");
+  }
+  function getJSON(params) {
+    return fetch(URL_ + (URL_.indexOf("?") >= 0 ? "&" : "?") + params).then(function (r) { return r.json(); });
+  }
+  function opcao(html, onClick) {
+    var b = document.createElement("button"); b.type = "button"; b.className = "pt-opt"; b.innerHTML = html; b.onclick = onClick; return b;
+  }
+  function carregarTurmas() {
+    var box1 = q(".pt-turmas");
+    if (!URL_) { box1.innerHTML = ""; gmsg("O portal ainda n\u00e3o est\u00e1 ligado \u00e0 planilha da turma. Avise o professor.", "bad"); return; }
+    box1.innerHTML = '<p class="pt-note">Carregando turmas\u2026</p>';
+    (turmasCache ? Promise.resolve({ ok: true, turmas: turmasCache }) : getJSON("acao=turmas")).then(function (r) {
+      if (!r.ok || !r.turmas) throw 0;
+      turmasCache = r.turmas;
+      box1.innerHTML = "";
+      if (!r.turmas.length) { gmsg("Nenhuma turma cadastrada ainda. Avise o professor.", "bad"); return; }
+      r.turmas.forEach(function (t) {
+        box1.appendChild(opcao("<b>" + esc(t.turma) + "</b><small>" + esc(t.curso) + (t.turno ? " \u00b7 " + esc(t.turno) : "") + "</small>", function () { escolherTurma(t); }));
+      });
+      var ult = null; try { ult = localStorage.getItem(TKEY); } catch (e) {}
+      var achou = r.turmas.filter(function (t) { return t.turma === ult; })[0];
+      if (achou && passo === 1 && !turmaSel) escolherTurma(achou);
+    }).catch(function () {
+      box1.innerHTML = "";
+      var b = opcao("<b>Tentar de novo</b><small>N\u00e3o foi poss\u00edvel carregar as turmas. Confira a internet.</small>", carregarTurmas);
+      box1.appendChild(b);
+    });
+  }
+  function escolherTurma(t) {
+    turmaSel = t;
+    try { localStorage.setItem(TKEY, t.turma); } catch (e) {}
+    irPara(2);
+    q(".pt-turma-nome").textContent = t.turma;
+    var lista = q(".pt-nomes"), busca = q(".pt-busca");
+    busca.value = ""; busca.hidden = true;
+    lista.innerHTML = '<p class="pt-note">Carregando nomes\u2026</p>';
+    getJSON("acao=alunos&turma=" + encodeURIComponent(t.turma)).then(function (r) {
+      if (!r.ok || !r.alunos) throw 0;
+      lista.innerHTML = "";
+      r.alunos.forEach(function (a) {
+        var b = opcao("<b>" + esc(a.nome) + "</b>", function () { escolherAluno(a); });
+        b.setAttribute("data-nome", a.nome.toLowerCase());
+        lista.appendChild(b);
+      });
+      if (r.alunos.length > 12) busca.hidden = false;
+    }).catch(function () {
+      lista.innerHTML = "";
+      lista.appendChild(opcao("<b>Tentar de novo</b><small>N\u00e3o foi poss\u00edvel carregar os nomes. Confira a internet.</small>", function () { escolherTurma(t); }));
+    });
+  }
+  function semAcento(s) { return s.normalize ? s.normalize("NFD").replace(/[\u0300-\u036f]/g, "") : s; }
+  q(".pt-busca").addEventListener("input", function () {
+    var v = semAcento(this.value.trim().toLowerCase());
+    Array.prototype.forEach.call(q(".pt-nomes").children, function (b) { b.hidden = v && semAcento(b.getAttribute("data-nome") || "").indexOf(v) < 0; });
+  });
+  function escolherAluno(a) {
+    alunoSel = a;
+    irPara(3);
+    q(".pt-ola").textContent = "Ol\u00e1, " + a.nome.split(" ")[0] + "!";
+    q("#pt-p").value = ""; q("#pt-p2").value = "";
+    q(".pt-p2").hidden = a.temPin;
+    q(".pt-pin-dica").textContent = a.temPin ? "Digite o seu PIN para entrar." : "\u00c9 o seu primeiro acesso. Crie um PIN de 4 n\u00fameros e guarde: voc\u00ea vai usar sempre para entrar.";
+    q(".pt-go").textContent = a.temPin ? "Entrar" : "Criar PIN e entrar";
+    q(".pt-pin-nota").textContent = a.temPin ? "Esqueceu o PIN? Pe\u00e7a ao professor para liberar um novo." : "N\u00e3o use datas f\u00e1ceis, como o seu anivers\u00e1rio.";
+    if (matchMedia("(pointer: fine)").matches) setTimeout(function () { q("#pt-p").focus({ preventScroll: true }); }, 30);
+  }
+  Array.prototype.forEach.call(screen.querySelectorAll(".pt-back"), function (b) {
+    b.onclick = function () { var n = +b.getAttribute("data-volta"); if (n === 1) { turmaSel = null; irPara(1); carregarTurmas(); } else irPara(n); };
+  });
 
   function setInert(on) {
     Array.prototype.forEach.call(document.body.children, function (el) {
@@ -185,8 +281,9 @@
     screen.hidden = false;
     fab.hidden = true; box.hidden = true;
     setInert(true);
-    screen.scrollTop = 0;
-    if (matchMedia("(pointer: fine)").matches) setTimeout(function () { var f = screen.querySelector("#pt-n"); if (f) f.focus({ preventScroll: true }); }, 30);
+    turmaSel = null; alunoSel = null;
+    irPara(1);
+    carregarTurmas();
   }
   function esconderEntrada() {
     root.classList.remove("pt-gate");
@@ -195,29 +292,25 @@
     fab.hidden = false;
   }
 
-  formEl.addEventListener("submit", function (ev) {
+  q('form.pt-step').addEventListener("submit", function (ev) {
     ev.preventDefault();
-    var v = function (id) { return screen.querySelector(id).value.trim().replace(/\s+/g, " "); };
-    var n = v("#pt-n"), e = v("#pt-e").toLowerCase(), c = screen.querySelector("#pt-c").value, tu = screen.querySelector("#pt-tu").value, t = v("#pt-t"), p = v("#pt-p");
-    var erro = n.split(" ").length < 2 ? ["#pt-n", "Escreva o nome completo (nome e sobrenome)."]
-      : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e) ? ["#pt-e", "Confira o e-mail."]
-      : !c ? ["#pt-c", "Escolha o seu curso."]
-      : !tu ? ["#pt-tu", "Escolha o turno."]
-      : !t ? ["#pt-t", "Escreva a turma."]
-      : !/^\d{4}$/.test(p) ? ["#pt-p", "O PIN precisa ter 4 n\u00fameros."] : null;
-    if (erro) { gmsg(erro[1], "bad"); screen.querySelector(erro[0]).focus(); return; }
-    var btn = screen.querySelector(".pt-go");
+    var p = q("#pt-p").value.trim(), p2 = q("#pt-p2").value.trim();
+    if (!/^\d{4}$/.test(p)) { gmsg("O PIN precisa ter 4 n\u00fameros.", "bad"); q("#pt-p").focus(); return; }
+    if (!alunoSel.temPin && p !== p2) { gmsg("Os dois PINs n\u00e3o s\u00e3o iguais. Digite de novo.", "bad"); q("#pt-p2").focus(); return; }
+    var btn = q(".pt-go"), txt = btn.textContent;
     btn.disabled = true; btn.textContent = "Entrando\u2026"; gmsg("");
-    var anterior = perfil;
-    perfil = { nome: n, email: e, curso: c, turno: tu, turma: t, pin: p, apelido: apelidoDe(n) };
-    var envio = URL_ ? enviar(ID ? dados() : { feitas: 0, total: 0, pontos: 0 }) : Promise.resolve({ ok: true });
-    envio.then(function (r) {
-      btn.disabled = false; btn.textContent = "Entrar";
-      if (!r.ok) { perfil = anterior; return gmsg(r.erro || "N\u00e3o foi poss\u00edvel entrar.", "bad"); }
-      try { localStorage.setItem(PKEY, JSON.stringify(perfil)); } catch (err) {}
-      formEl.reset();
-      paintFab(); esconderEntrada(); avisar();
-    });
+    fetch(URL_, { method: "POST", body: JSON.stringify({ acao: "entrar", turma: turmaSel.turma, id: alunoSel.id, pin: p, criarPin: !alunoSel.temPin }) })
+      .then(function (r) { return r.json(); })
+      .catch(function () { return { ok: false, erro: "Sem conex\u00e3o com a internet. Tente de novo." }; })
+      .then(function (r) {
+        btn.disabled = false; btn.textContent = txt;
+        if (!r.ok || !r.perfil) { q("#pt-p").value = ""; q("#pt-p2").value = ""; return gmsg(r.erro || "N\u00e3o foi poss\u00edvel entrar.", "bad"); }
+        perfil = r.perfil; perfil.pin = p;
+        try { localStorage.setItem(PKEY, JSON.stringify(perfil)); } catch (err) {}
+        try { sessionStorage.setItem("pt-sync", perfil.id); } catch (err) {}
+        if (DADOS) enviar(dados());
+        paintFab(); esconderEntrada(); avisar();
+      });
   });
 
   /* ---------- bot\u00e3o e menu depois do login ---------- */
@@ -243,7 +336,7 @@
   function bmsg(t, cl) { var m = box.querySelector(".pt-msg"); if (m) { m.textContent = t; m.className = "pt-msg " + (cl || ""); } }
 
   function painel() {
-    var d = dados(), c = cursoDe(perfil.curso), atual = pastaAtual();
+    var d = dados(), c = cursoDe(perfil.curso) || { disciplinas: [].concat.apply([], CURSOS.map(function (x) { return x.disciplinas; })).filter(function (x, i, a) { return a.map(function (y) { return y[1]; }).indexOf(x[1]) === i; }) }, atual = pastaAtual();
     box.innerHTML =
       '<button class="pt-close" id="pt-x" type="button" aria-label="Fechar">\u00d7</button>' +
       "<h3>Ol\u00e1, " + esc(primeiroNome()) + "</h3>" +
@@ -308,9 +401,9 @@
   // Quem entrou quando o envio ainda n\u00e3o estava ligado \u00e9 cadastrado na planilha agora (uma vez por visita).
   function sincronizar() {
     if (!URL_ || !perfil) return;
-    try { if (sessionStorage.getItem("pt-sync") === perfil.email) return; } catch (e) {}
+    try { if (sessionStorage.getItem("pt-sync") === perfil.id) return; } catch (e) {}
     enviar(DADOS ? dados() : { feitas: 0, total: 0, pontos: 0 }).then(function (r) {
-      if (r && r.ok) { try { sessionStorage.setItem("pt-sync", perfil.email); } catch (e) {} }
+      if (r && r.ok) { try { sessionStorage.setItem("pt-sync", perfil.id); } catch (e) {} }
     });
   }
 

@@ -2,9 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<script>try{var pa=JSON.parse(localStorage.getItem("perfil:aluno")||"null");if(!(pa&&pa.email&&pa.curso)&&!/[?&]professor\b/.test(location.search))document.documentElement.classList.add("pt-gate")}catch(e){}</script><style>html.pt-gate body>*:not(.pt-screen){visibility:hidden}</style>
-</head>
-<body>
+<script>try{var pa=JSON.parse(localStorage.getItem("perfil:aluno")||"null");if(!(pa&&pa.id&&pa.pin)&&!/[?&]professor\b/.test(location.search))document.documentElement.classList.add("pt-gate")}catch(e){}</script><style>html.pt-gate body>*:not(.pt-screen){visibility:hidden}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Método Office Visual</title>
 <meta name="description" content="Disciplina interativa de Word, Excel e PowerPoint">
@@ -436,6 +434,8 @@ kbd{font-family:var(--f-mono);font-size:12.5px;font-weight:700;padding:2px 7px;b
 .pl-slide,.an-stage{max-width:760px;width:100%;align-self:center}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
+</head>
+<body>
 
 <div class="app" id="app">
   <aside class="side" id="side">
@@ -1231,6 +1231,7 @@ all:{t:'Mapa da integração',z:{
    telas exploráveis, jogos de arrastar e laboratórios por módulo
    ===================================================================== */
 const imgSrc = n => `../office-visual-img/p${String(n).padStart(3,'0')}.webp`;
+
 /* ---------- Zoom de imagem (lightbox) ---------- */
 const LB = {s:1,x:0,y:0};
 function openLightbox(n, title){

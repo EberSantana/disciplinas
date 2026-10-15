@@ -352,6 +352,7 @@ const RANK_URL = (window.RANKING_URL || "").trim();
 const PKEY = "perfil:aluno";
 let PERFIL = null;
 try { PERFIL = JSON.parse(localStorage.getItem(PKEY) || "null"); } catch(e) { PERFIL = null; }
+if (!(PERFIL && PERFIL.id && PERFIL.pin)) PERFIL = null;
 let autoT = null;
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e) {} if (RANK_URL && PERFIL) { clearTimeout(autoT); autoT = setTimeout(() => enviarPontos(true), 15000); } }
 function st(mid){ return S[mid] || (S[mid] = {cad:{}, fc:{}, vf:{}, vfj:{}, pbl:{}}); }
@@ -459,7 +460,7 @@ async function enviarPontos(silencioso){
   if (!RANK_URL || !PERFIL) return {ok:false, erro:"sem configuração"};
   const detalhe = {}; let feitas = 0, total = 0;
   COURSE.modulos.forEach(m => { const t = modTotals(m); detalhe[m.id] = modPoints(m); feitas += t.done; total += t.total; });
-  const corpo = {acao:"salvar", disciplina: COURSE.id, turma: PERFIL.turma, apelido: PERFIL.apelido, nome: PERFIL.nome, email: PERFIL.email, turno: PERFIL.turno, pin: PERFIL.pin, pontos: totalPoints(), feitas, total, detalhe};
+  const corpo = {acao:"salvar", disciplina: COURSE.id, turma: PERFIL.turma, id: PERFIL.id, apelido: PERFIL.apelido, nome: PERFIL.nome, curso: PERFIL.curso, turno: PERFIL.turno, pin: PERFIL.pin, pontos: totalPoints(), feitas, total, detalhe};
   try {
     const r = await fetch(RANK_URL, {method:"POST", body: JSON.stringify(corpo)});
     const j = await r.json();
@@ -480,17 +481,8 @@ function renderRanking(v){
   const box = h("div", {class:"panel stack"}); v.append(box);
   if (!RANK_URL) { box.innerHTML = `<h3 style="font-size:22px">Ranking da turma</h3><p style="margin:0">O ranking funciona na versão publicada pelo professor no GitHub, ligada à planilha da turma. Aqui seus pontos continuam sendo contados neste aparelho.</p>`; return; }
   if (!PERFIL) {
-    box.innerHTML = `<h3 style="font-size:22px">Entre no ranking</h3><p class="muted" style="margin:0">Use um apelido (não precisa ser seu nome completo) e crie um PIN de 4 números para que ninguém use o seu apelido.</p>`;
-    const f = h("form", {class:"perfil"});
-    f.innerHTML = `<label for="pf-a">Apelido</label><input id="pf-a" maxlength="30" required placeholder="ex.: Ana T.">
-      <label for="pf-t">Turma</label><input id="pf-t" maxlength="30" required placeholder="ex.: Informática 2026">
-      <label for="pf-p">PIN (4 números)</label><input id="pf-p" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" required placeholder="0000">
-      <button class="btn primary" type="submit">Salvar e entrar</button><span class="msgf muted"></span>`;
-    f.addEventListener("submit", ev => { ev.preventDefault();
-      const a = f.querySelector("#pf-a").value.trim(), t = f.querySelector("#pf-t").value.trim(), pn = f.querySelector("#pf-p").value.trim();
-      if (!a || !t || !/^\d{4}$/.test(pn)) { f.querySelector(".msgf").textContent = "Preencha apelido, turma e um PIN de 4 números."; return; }
-      PERFIL = {apelido:a, turma:t, pin:pn}; try { localStorage.setItem(PKEY, JSON.stringify(PERFIL)); } catch(e) {} render(); });
-    box.append(f); return;
+    box.innerHTML = `<h3 style="font-size:22px">Entre no ranking</h3><p class="muted" style="margin:0">Para aparecer no ranking da turma, entre no portal: escolha a sua turma, toque no seu nome e digite o seu PIN.</p><div class="btnrow"><a class="btn primary" href="../">Entrar no portal</a></div>`;
+    return;
   }
   box.innerHTML = `<div class="btnrow"><h3 style="font-size:22px;margin-right:auto">Ranking · ${esc(PERFIL.turma)}</h3><button class="btn primary" id="rk-send">Enviar minha pontuação</button><button class="btn small" id="rk-out">Trocar de aluno</button></div><p class="muted" style="margin:0">Você é <strong>${esc(PERFIL.apelido)}</strong>. Sua pontuação também é enviada sozinha alguns segundos depois de cada atividade.</p><div id="rk-msg" class="hint" hidden></div><div id="rk-list" class="tablewrap"><p class="muted">Carregando ranking…</p></div>`;
   const msg = box.querySelector("#rk-msg"), list = box.querySelector("#rk-list");
