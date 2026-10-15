@@ -29,7 +29,7 @@
       ["Projeto de Redes", "projeto-de-redes"],
       ["Seguran\u00e7a da Informa\u00e7\u00e3o", "seguranca-da-informacao"] ] }
   ];
-  var TKEY = "pt-ultima-turma";
+  var TKEY = "pt-ultima-turma", LKEY = "pt-turmas-v2";
 
   var URL_ = String(window.RANKING_URL || "").trim();
   var ID = window.PROGRESSO_ID || "";
@@ -210,10 +210,29 @@
   function carregarTurmas() {
     var box1 = q(".pt-turmas");
     if (!URL_) { box1.innerHTML = ""; gmsg("O portal ainda n\u00e3o est\u00e1 ligado \u00e0 planilha da turma. Avise o professor.", "bad"); return; }
-    box1.innerHTML = '<p class="pt-note">Carregando turmas\u2026</p>';
-    (turmasCache ? Promise.resolve({ ok: true, turmas: turmasCache }) : getJSON("acao=turmas")).then(function (r) {
+    var guardadas = null;
+    if (!turmasCache) { try { guardadas = JSON.parse(localStorage.getItem(LKEY) || "null"); } catch (e) {} }
+    if (turmasCache || (guardadas && guardadas.length)) desenharTurmas({ ok: true, turmas: turmasCache || guardadas });
+    else box1.innerHTML = '<p class="pt-note">Carregando turmas\u2026</p>';
+    if (turmasCache) return;
+    getJSON("acao=turmas").then(function (r) {
       if (!r.ok || !r.turmas) throw 0;
+      try { localStorage.setItem(LKEY, JSON.stringify(r.turmas)); } catch (e) {}
+      var mudou = JSON.stringify(r.turmas) !== JSON.stringify(guardadas);
       turmasCache = r.turmas;
+      if (turmaSel) r.turmas.forEach(function (t) { if (t.turma === turmaSel.turma) turmaSel.lista = t.lista; });
+      if (passo === 1 && (mudou || !guardadas)) desenharTurmas(r);
+      else if (passo === 2 && mudou && turmaSel) desenharNomes(turmaSel);
+    }).catch(function () {
+      if (guardadas && guardadas.length) return;
+      box1.innerHTML = "";
+      var b = opcao("<b>Tentar de novo</b><small>N\u00e3o foi poss\u00edvel carregar as turmas. Confira a internet.</small>", carregarTurmas);
+      box1.appendChild(b);
+    });
+  }
+  function desenharTurmas(r) {
+    var box1 = q(".pt-turmas");
+    (function () {
       box1.innerHTML = "";
       if (!r.turmas.length) { gmsg("Nenhuma turma cadastrada ainda. Avise o professor.", "bad"); return; }
       r.turmas.forEach(function (t) {
@@ -223,11 +242,7 @@
       var achou = r.turmas.filter(function (t) { return t.turma === ult; })[0];
       if (achou && passo === 1 && !turmaSel && !autoFeito) { autoFeito = true; escolherTurma(achou); }
       autoFeito = true;
-    }).catch(function () {
-      box1.innerHTML = "";
-      var b = opcao("<b>Tentar de novo</b><small>N\u00e3o foi poss\u00edvel carregar as turmas. Confira a internet.</small>", carregarTurmas);
-      box1.appendChild(b);
-    });
+    })();
   }
   function escolherTurma(t) {
     turmaSel = t;
@@ -236,20 +251,26 @@
     q(".pt-turma-nome").textContent = t.turma;
     var lista = q(".pt-nomes"), busca = q(".pt-busca");
     busca.value = ""; busca.hidden = true;
+    if (t.lista) return desenharNomes(t);
     lista.innerHTML = '<p class="pt-note">Carregando nomes\u2026</p>';
     getJSON("acao=alunos&turma=" + encodeURIComponent(t.turma)).then(function (r) {
       if (!r.ok || !r.alunos) throw 0;
-      lista.innerHTML = "";
-      r.alunos.forEach(function (a) {
-        var b = opcao("<b>" + esc(a.nome) + "</b>", function () { escolherAluno(a); });
-        b.setAttribute("data-nome", a.nome.toLowerCase());
-        lista.appendChild(b);
-      });
-      if (r.alunos.length > 12) busca.hidden = false;
+      t.lista = r.alunos; desenharNomes(t);
     }).catch(function () {
       lista.innerHTML = "";
       lista.appendChild(opcao("<b>Tentar de novo</b><small>N\u00e3o foi poss\u00edvel carregar os nomes. Confira a internet.</small>", function () { escolherTurma(t); }));
     });
+  }
+  function desenharNomes(t) {
+    var lista = q(".pt-nomes"), busca = q(".pt-busca");
+    lista.innerHTML = "";
+    t.lista.forEach(function (a) {
+      var b = opcao("<b>" + esc(a.nome) + "</b>", function () { escolherAluno(a); });
+      b.setAttribute("data-nome", a.nome.toLowerCase());
+      lista.appendChild(b);
+    });
+    busca.hidden = t.lista.length <= 12;
+    if (busca.value) busca.dispatchEvent(new Event("input"));
   }
   function semAcento(s) { return s.normalize ? s.normalize("NFD").replace(/[\u0300-\u036f]/g, "") : s; }
   q(".pt-busca").addEventListener("input", function () {
@@ -305,7 +326,12 @@
       .catch(function () { return { ok: false, erro: "Sem conex\u00e3o com a internet. Tente de novo." }; })
       .then(function (r) {
         btn.disabled = false; btn.textContent = txt;
-        if (!r.ok || !r.perfil) { q("#pt-p").value = ""; q("#pt-p2").value = ""; return gmsg(r.erro || "N\u00e3o foi poss\u00edvel entrar.", "bad"); }
+        if (!r.ok || !r.perfil) {
+          q("#pt-p").value = ""; q("#pt-p2").value = "";
+          turmasCache = null; try { localStorage.removeItem(LKEY); } catch (e) {}
+          if (/n\u00e3o tem PIN/.test(r.erro || "") && alunoSel.temPin) { alunoSel.temPin = false; escolherAluno(alunoSel); return gmsg("Crie um PIN novo: digite duas vezes.", "bad"); }
+          return gmsg(r.erro || "N\u00e3o foi poss\u00edvel entrar.", "bad");
+        }
         perfil = r.perfil; perfil.pin = p;
         try { localStorage.setItem(PKEY, JSON.stringify(perfil)); } catch (err) {}
         try { sessionStorage.setItem("pt-sync", perfil.id); } catch (err) {}
