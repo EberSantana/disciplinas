@@ -70,7 +70,7 @@ Peça ao Claude para incluir o material: ele devolve o arquivo com nome certo e 
 
 ## Login dos alunos e progresso
 
-O aluno entra uma vez no portal com **nome completo, e-mail, curso, turno, turma e um PIN de 4 números**. O login fica guardado no navegador e vale para todos os materiais.
+O aluno escolhe a **turma**, toca no **próprio nome** e digita um **PIN de 4 números** (no primeiro acesso ele cria o PIN). O login fica guardado no navegador e vale para todos os materiais. Em outro aparelho, é só repetir: turma, nome e PIN.
 
 Depois do login:
 - A página inicial mostra primeiro **Suas disciplinas** (as do curso do aluno) e, abaixo, as outras.
@@ -82,13 +82,15 @@ A lista fica no começo do arquivo `progresso-turma.js`, na parte `CURSOS`. Para
 
 Enviam o progresso para a planilha: Subnetting na Prática, Método Office Visual, Trilha Windows 11 e as atividades com ranking de Redes e de Projeto de Redes.
 
-Na planilha aparecem duas abas:
-- **Alunos**: um aluno por linha, com nome, e-mail, curso, turno, turma, data do cadastro e do último acesso.
-- **Progresso**: uma linha por aluno e por material, com atividades feitas, total, pontos e data da última atualização.
+Na planilha ficam duas abas:
+- **Turmas**: você importa o `Turmas.csv` (uma linha por aluno: turma, curso, turno, matrícula, nome). A coluna `pin` começa vazia e é preenchida quando o aluno cria o PIN (aparece como `p1234`).
+- **Progresso**: criada sozinha; uma linha por aluno e por material, com atividades feitas, total, pontos e data.
 
-O PIN impede que outra pessoa use o e-mail de um colega. Se um aluno esquecer o PIN, apague a linha dele na aba **Alunos** e ele cria outro no próximo acesso.
+**Aluno esqueceu o PIN?** Apague a célula do PIN dele na aba **Turmas**; no próximo acesso ele cria outro. **Conta bloqueada** (5 erros)? Apague as células `tentativas` e `bloqueado ate` dele.
 
-O ranking que os alunos veem mostra só o primeiro nome e a inicial do sobrenome. E-mail e nome completo ficam apenas na planilha.
+**Aluno novo ou outra turma?** Acrescente linhas na aba **Turmas** com o mesmo texto de turma/curso das outras. O nome do curso precisa ser exatamente um destes: Subsequente em Informática · Integrado em Desenvolvimento de Sistemas · 1º ano · Integrado em Desenvolvimento de Sistemas · 2º ano · Técnico em Informática.
+
+A lista que os alunos veem mostra só o primeiro nome e a inicial do sobrenome (nomes repetidos ganham mais uma parte). Nome completo e matrícula ficam apenas na planilha.
 
 ### Para ligar (uma vez só)
 
@@ -104,5 +106,5 @@ Se depois você alterar o código, use **Implantar** › **Gerenciar implantaç�
 ## Cuidados
 
 - O repositório é público: não coloque dados pessoais de alunos nos arquivos. Os dados dos alunos ficam só na planilha.
-- Não compartilhe a planilha: ela tem nome completo e e-mail dos alunos.
+- Não compartilhe a planilha: ela tem nome completo e matrícula dos alunos.
 - Os pontos são calculados no navegador do aluno. Servem para acompanhar e motivar, não como nota oficial.

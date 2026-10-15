@@ -26,7 +26,7 @@ Também estão disponíveis [recursos de aula](https://ebersantana.github.io/dis
 
 ## Como o estudante usa
 
-1. Abre o portal e faz o login uma vez, com nome completo, e-mail, curso, turno, turma e um PIN de 4 números.
+1. Abre o portal, escolhe a turma, toca no próprio nome e digita um PIN de 4 números (no primeiro acesso, cria o PIN). Nada de digitar nome, e-mail ou turno.
 2. O portal mostra primeiro as disciplinas do curso dele. O botão **Minhas disciplinas**, no canto da tela, leva a elas a partir de qualquer página.
 3. Estuda os módulos. O progresso fica salvo no aparelho e é enviado ao professor.
 4. Acompanha a própria pontuação no ranking da turma.
@@ -60,9 +60,9 @@ As instruções de manutenção (incluir materiais, ligar a planilha, atualizar 
 
 ## Privacidade
 
-- Nome completo e e-mail dos estudantes ficam somente na planilha do professor, que não é pública. Nenhum dado pessoal é gravado neste repositório.
+- A lista de alunos (nome completo e matrícula) fica somente na planilha do professor, que não é pública. Nenhum dado pessoal é gravado neste repositório.
 - O ranking mostra apenas o primeiro nome e a inicial do sobrenome.
-- O PIN impede que outra pessoa use o e-mail de um colega.
+- A lista pública mostra só o primeiro nome e a inicial do sobrenome. O PIN impede que um colega entre no lugar do outro, e 5 erros bloqueiam a conta por 15 minutos.
 - Os dados servem apenas para acompanhar a aprendizagem na disciplina, em linha com a LGPD (Lei nº 13.709/2018).
 
 ---
