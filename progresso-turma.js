@@ -192,7 +192,7 @@
       "</form>" +
     "</div></section>";
   document.body.appendChild(screen);
-  var passo = 1, turmaSel = null, alunoSel = null, turmasCache = null;
+  var passo = 1, turmaSel = null, alunoSel = null, turmasCache = null, autoFeito = false;
   function q(sel) { return screen.querySelector(sel); }
   function gmsg(t, cl) { var m = screen.querySelector('.pt-step[data-step="' + passo + '"] .pt-msg'); if (m) { m.textContent = t || ""; m.className = "pt-msg " + (cl || ""); } }
   function irPara(n) {
@@ -221,7 +221,8 @@
       });
       var ult = null; try { ult = localStorage.getItem(TKEY); } catch (e) {}
       var achou = r.turmas.filter(function (t) { return t.turma === ult; })[0];
-      if (achou && passo === 1 && !turmaSel) escolherTurma(achou);
+      if (achou && passo === 1 && !turmaSel && !autoFeito) { autoFeito = true; escolherTurma(achou); }
+      autoFeito = true;
     }).catch(function () {
       box1.innerHTML = "";
       var b = opcao("<b>Tentar de novo</b><small>N\u00e3o foi poss\u00edvel carregar as turmas. Confira a internet.</small>", carregarTurmas);
