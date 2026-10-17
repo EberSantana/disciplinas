@@ -26,9 +26,9 @@
   --panel-line:rgba(255,255,255,.10);
   --panel-text:#f2f2f2;
   --panel-muted:#a9a9b0;
-  --grad:linear-gradient(to right,#9357cc 0%,#2989d8 50%,#2cc99d 100%);
-  --c1:#9357cc; --c2:#2989d8; --c3:#2cc99d;
-  --ok:#2cc99d; --warn:#e0a33a; --bad:#e2685f;
+  --grad:linear-gradient(to right,#163D28 0%,#1F5135 50%,#2E8B57 100%);
+  --c1:#163D28; --c2:#1F5135; --c3:#2E8B57;
+  --ok:#2E8B57; --warn:#e0a33a; --bad:#e2685f;
   --font-display:'Poppins',system-ui,sans-serif;
   --font-body:'Open Sans','Poppins',system-ui,sans-serif;
   --font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -485,20 +485,20 @@ svg.uml text{fill:#e9e9ef;font-size:12px}
 svg.uml text.sm{font-size:10.5px;fill:#a9a9b0}
 svg.uml text.mono{font-family:var(--font-mono);font-size:10.5px;fill:#a9a9b0}
 svg.uml .box{fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.28)}
-svg.uml .box.on{fill:rgba(41,137,216,.18);stroke:#2989d8}
+svg.uml .box.on{fill:rgba(41,137,216,.18);stroke:#1F5135}
 svg.uml .uc{fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.3);cursor:pointer;transition:all .25s ease}
 svg.uml .uc:hover{fill:rgba(255,255,255,.12)}
-svg.uml .uc.linked{fill:rgba(44,201,157,.16);stroke:#2cc99d}
+svg.uml .uc.linked{fill:rgba(44,201,157,.16);stroke:#2E8B57}
 svg.uml .actor{stroke:#e9e9ef;stroke-width:1.6;fill:none;cursor:pointer}
-svg.uml .actor.sel{stroke:#2cc99d}
-svg.uml .link{stroke:#2cc99d;stroke-width:1.4}
+svg.uml .actor.sel{stroke:#2E8B57}
+svg.uml .link{stroke:#2E8B57;stroke-width:1.4}
 svg.uml .rel{stroke:rgba(255,255,255,.35);stroke-width:1.2}
 svg.uml .lifeline{stroke:rgba(255,255,255,.25);stroke-dasharray:4 4}
-svg.uml .msg{stroke:#2989d8;stroke-width:1.6;opacity:0;transition:opacity .35s ease}
+svg.uml .msg{stroke:#1F5135;stroke-width:1.6;opacity:0;transition:opacity .35s ease}
 svg.uml .msg.on{opacity:1}
 svg.uml .msg-lbl{opacity:0;transition:opacity .35s ease}
 svg.uml .msg-lbl.on{opacity:1}
-svg.uml .msg.ret{stroke:#2cc99d;stroke-dasharray:5 4}
+svg.uml .msg.ret{stroke:#2E8B57;stroke-dasharray:5 4}
 </style>
 
 
@@ -1681,7 +1681,7 @@ function done(id){ if(window.__apostila) window.__apostila.markDone(id); }
      ["Defeitos", defeitos / 22 * 100, defeitos.toFixed(1) + "/KLOC"]
     ].forEach(function(x){
       var row = el("div","bar-row");
-      var color = x[1] > 55 ? "#e2685f" : (x[1] > 30 ? "#e0a33a" : "#2cc99d");
+      var color = x[1] > 55 ? "#e2685f" : (x[1] > 30 ? "#e0a33a" : "#2E8B57");
       row.innerHTML = '<span class="bar-name">' + x[0] + "</span>" +
         '<span class="bar-track"><span class="bar-fill" style="width:' + Math.min(100, x[1]) + "%;background:" + color + '"></span></span>' +
         '<span class="bar-val">' + x[2] + "</span>";
@@ -1881,7 +1881,7 @@ function done(id){ if(window.__apostila) window.__apostila.markDone(id); }
     verdict.appendChild(g);
     var b = el("div","bar-row");
     b.innerHTML = '<span class="bar-name">Aderência</span><span class="bar-track"><span class="bar-fill" style="width:' +
-      fit + "%;background:" + (fit > 75 ? "#2cc99d" : (fit > 50 ? "#e0a33a" : "#e2685f")) + '"></span></span><span class="bar-val">' + fit + "%</span>";
+      fit + "%;background:" + (fit > 75 ? "#2E8B57" : (fit > 50 ? "#e0a33a" : "#e2685f")) + '"></span></span><span class="bar-val">' + fit + "%</span>";
     verdict.appendChild(b);
 
     var msg = "<b>" + s.t + ":</b> " + s.why + ".<br>Referência: " +
@@ -2315,7 +2315,7 @@ function done(id){ if(window.__apostila) window.__apostila.markDone(id); }
     metrics.appendChild(g);
 
     bars.innerHTML = "";
-    [["Corretiva", corretiva, "#e2685f"], ["Adaptativa", adaptativa, "#e0a33a"], ["Evolutiva", evolutiva, "#2cc99d"]].forEach(function(x){
+    [["Corretiva", corretiva, "#e2685f"], ["Adaptativa", adaptativa, "#e0a33a"], ["Evolutiva", evolutiva, "#2E8B57"]].forEach(function(x){
       var row = el("div","bar-row");
       row.innerHTML = '<span class="bar-name">' + x[0] + "</span>" +
         '<span class="bar-track"><span class="bar-fill" style="width:' + x[1] + "%;background:" + x[2] + '"></span></span>' +
@@ -3193,7 +3193,7 @@ function montar(host, cfg){
     var barra = el("div","bar-row");
     barra.innerHTML = '<span class="bar-name">Aproveitamento</span>' +
       '<span class="bar-track"><span class="bar-fill" style="width:' + pct + "%;background:" +
-      (pct >= 70 ? "#2cc99d" : (pct >= 50 ? "#e0a33a" : "#e2685f")) + '"></span></span>' +
+      (pct >= 70 ? "#2E8B57" : (pct >= 50 ? "#e0a33a" : "#e2685f")) + '"></span></span>' +
       '<span class="bar-val">' + acertos + "/" + ordem.length + "</span>";
     box.appendChild(barra);
 
@@ -3545,7 +3545,7 @@ function montarLinha(cfg, aoEscolher, gid){
 
   var defs = sv("defs");
   var lg = sv("linearGradient", { id:gid, x1:"0", x2:"1" });
-  [["0","#9357cc"],["0.5","#2989d8"],["1","#2cc99d"]].forEach(function(s){
+  [["0","#163D28"],["0.5","#1F5135"],["1","#2E8B57"]].forEach(function(s){
     lg.appendChild(sv("stop", { offset:s[0], "stop-color":s[1] }));
   });
   defs.appendChild(lg);
@@ -3597,7 +3597,7 @@ function montarLinha(cfg, aoEscolher, gid){
       m.ponto.setAttribute("r", on ? 7 : 5);
       m.ponto.setAttribute("fill", on ? "#fff" : "rgba(255,255,255,.45)");
       m.anel.setAttribute("r", on ? 13 : 10);
-      m.anel.setAttribute("stroke", on ? "#2cc99d" : "rgba(255,255,255,.3)");
+      m.anel.setAttribute("stroke", on ? "#2E8B57" : "rgba(255,255,255,.3)");
       m.ano.setAttribute("class", on ? "ano" : "ano off");
       m.rots.forEach(function(r){ r.setAttribute("class", on ? "rot on" : "rot"); });
       m.g.setAttribute("aria-pressed", on ? "true" : "false");

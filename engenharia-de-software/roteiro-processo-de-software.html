@@ -26,9 +26,9 @@
   --panel-line:rgba(255,255,255,.10);
   --panel-text:#f2f2f2;
   --panel-muted:#a9a9b0;
-  --grad:linear-gradient(to right,#9357cc 0%,#2989d8 50%,#2cc99d 100%);
-  --c1:#9357cc; --c2:#2989d8; --c3:#2cc99d;
-  --ok:#2cc99d; --warn:#e0a33a; --bad:#e2685f;
+  --grad:linear-gradient(to right,#163D28 0%,#1F5135 50%,#2E8B57 100%);
+  --c1:#163D28; --c2:#1F5135; --c3:#2E8B57;
+  --ok:#2E8B57; --warn:#e0a33a; --bad:#e2685f;
   --font-display:'Poppins',system-ui,sans-serif;
   --font-body:'Open Sans','Poppins',system-ui,sans-serif;
   --font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -485,20 +485,20 @@ svg.uml text{fill:#e9e9ef;font-size:12px}
 svg.uml text.sm{font-size:10.5px;fill:#a9a9b0}
 svg.uml text.mono{font-family:var(--font-mono);font-size:10.5px;fill:#a9a9b0}
 svg.uml .box{fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.28)}
-svg.uml .box.on{fill:rgba(41,137,216,.18);stroke:#2989d8}
+svg.uml .box.on{fill:rgba(41,137,216,.18);stroke:#1F5135}
 svg.uml .uc{fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.3);cursor:pointer;transition:all .25s ease}
 svg.uml .uc:hover{fill:rgba(255,255,255,.12)}
-svg.uml .uc.linked{fill:rgba(44,201,157,.16);stroke:#2cc99d}
+svg.uml .uc.linked{fill:rgba(44,201,157,.16);stroke:#2E8B57}
 svg.uml .actor{stroke:#e9e9ef;stroke-width:1.6;fill:none;cursor:pointer}
-svg.uml .actor.sel{stroke:#2cc99d}
-svg.uml .link{stroke:#2cc99d;stroke-width:1.4}
+svg.uml .actor.sel{stroke:#2E8B57}
+svg.uml .link{stroke:#2E8B57;stroke-width:1.4}
 svg.uml .rel{stroke:rgba(255,255,255,.35);stroke-width:1.2}
 svg.uml .lifeline{stroke:rgba(255,255,255,.25);stroke-dasharray:4 4}
-svg.uml .msg{stroke:#2989d8;stroke-width:1.6;opacity:0;transition:opacity .35s ease}
+svg.uml .msg{stroke:#1F5135;stroke-width:1.6;opacity:0;transition:opacity .35s ease}
 svg.uml .msg.on{opacity:1}
 svg.uml .msg-lbl{opacity:0;transition:opacity .35s ease}
 svg.uml .msg-lbl.on{opacity:1}
-svg.uml .msg.ret{stroke:#2cc99d;stroke-dasharray:5 4}
+svg.uml .msg.ret{stroke:#2E8B57;stroke-dasharray:5 4}
 </style>
 
 
@@ -1858,7 +1858,7 @@ var RF_HINT = /^(o |a |os |as )?(sistema|usu[áa]rio|cliente|entregador|restaura
     var row = el("div","bar-row");
     var pct = n / ITEMS.length * 100;
     row.innerHTML = '<span class="bar-name">Cobertura</span><span class="bar-track"><span class="bar-fill" style="width:' + pct +
-      "%;background:" + (pct === 100 ? "#2cc99d" : (pct >= 60 ? "#e0a33a" : "#e2685f")) + '"></span></span><span class="bar-val">' + n + " / " + ITEMS.length + "</span>";
+      "%;background:" + (pct === 100 ? "#2E8B57" : (pct >= 60 ? "#e0a33a" : "#e2685f")) + '"></span></span><span class="bar-val">' + n + " / " + ITEMS.length + "</span>";
     meter.appendChild(row);
     var hasLink = (R.get("mapaLink", "") || "").trim().length > 8;
     out.innerHTML = "<b>Conceitos cobertos: " + n + " / " + ITEMS.length + (hasLink ? " · link informado" : " · link do mapa ainda não informado") + ".</b><br>" +
@@ -2361,7 +2361,7 @@ function montarLinha(cfg, aoEscolher, gid){
 
   var defs = sv("defs");
   var lg = sv("linearGradient", { id:gid, x1:"0", x2:"1" });
-  [["0","#9357cc"],["0.5","#2989d8"],["1","#2cc99d"]].forEach(function(s){
+  [["0","#163D28"],["0.5","#1F5135"],["1","#2E8B57"]].forEach(function(s){
     lg.appendChild(sv("stop", { offset:s[0], "stop-color":s[1] }));
   });
   defs.appendChild(lg);
@@ -2413,7 +2413,7 @@ function montarLinha(cfg, aoEscolher, gid){
       m.ponto.setAttribute("r", on ? 7 : 5);
       m.ponto.setAttribute("fill", on ? "#fff" : "rgba(255,255,255,.45)");
       m.anel.setAttribute("r", on ? 13 : 10);
-      m.anel.setAttribute("stroke", on ? "#2cc99d" : "rgba(255,255,255,.3)");
+      m.anel.setAttribute("stroke", on ? "#2E8B57" : "rgba(255,255,255,.3)");
       m.ano.setAttribute("class", on ? "ano" : "ano off");
       m.rots.forEach(function(r){ r.setAttribute("class", on ? "rot on" : "rot"); });
       m.g.setAttribute("aria-pressed", on ? "true" : "false");

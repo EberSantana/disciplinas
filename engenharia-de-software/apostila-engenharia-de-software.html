@@ -26,9 +26,9 @@
   --panel-line:rgba(255,255,255,.10);
   --panel-text:#f2f2f2;
   --panel-muted:#a9a9b0;
-  --grad:linear-gradient(to right,#9357cc 0%,#2989d8 50%,#2cc99d 100%);
-  --c1:#9357cc; --c2:#2989d8; --c3:#2cc99d;
-  --ok:#2cc99d; --warn:#e0a33a; --bad:#e2685f;
+  --grad:linear-gradient(to right,#163D28 0%,#1F5135 50%,#2E8B57 100%);
+  --c1:#163D28; --c2:#1F5135; --c3:#2E8B57;
+  --ok:#2E8B57; --warn:#e0a33a; --bad:#e2685f;
   --font-display:'Poppins',system-ui,sans-serif;
   --font-body:'Open Sans','Poppins',system-ui,sans-serif;
   --font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -465,20 +465,20 @@ svg.uml text{fill:#e9e9ef;font-size:12px}
 svg.uml text.sm{font-size:10.5px;fill:#a9a9b0}
 svg.uml text.mono{font-family:var(--font-mono);font-size:10.5px;fill:#a9a9b0}
 svg.uml .box{fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.28)}
-svg.uml .box.on{fill:rgba(41,137,216,.18);stroke:#2989d8}
+svg.uml .box.on{fill:rgba(41,137,216,.18);stroke:#1F5135}
 svg.uml .uc{fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.3);cursor:pointer;transition:all .25s ease}
 svg.uml .uc:hover{fill:rgba(255,255,255,.12)}
-svg.uml .uc.linked{fill:rgba(44,201,157,.16);stroke:#2cc99d}
+svg.uml .uc.linked{fill:rgba(44,201,157,.16);stroke:#2E8B57}
 svg.uml .actor{stroke:#e9e9ef;stroke-width:1.6;fill:none;cursor:pointer}
-svg.uml .actor.sel{stroke:#2cc99d}
-svg.uml .link{stroke:#2cc99d;stroke-width:1.4}
+svg.uml .actor.sel{stroke:#2E8B57}
+svg.uml .link{stroke:#2E8B57;stroke-width:1.4}
 svg.uml .rel{stroke:rgba(255,255,255,.35);stroke-width:1.2}
 svg.uml .lifeline{stroke:rgba(255,255,255,.25);stroke-dasharray:4 4}
-svg.uml .msg{stroke:#2989d8;stroke-width:1.6;opacity:0;transition:opacity .35s ease}
+svg.uml .msg{stroke:#1F5135;stroke-width:1.6;opacity:0;transition:opacity .35s ease}
 svg.uml .msg.on{opacity:1}
 svg.uml .msg-lbl{opacity:0;transition:opacity .35s ease}
 svg.uml .msg-lbl.on{opacity:1}
-svg.uml .msg.ret{stroke:#2cc99d;stroke-dasharray:5 4}
+svg.uml .msg.ret{stroke:#2E8B57;stroke-dasharray:5 4}
 </style>
 
 <style>
@@ -1640,7 +1640,7 @@ function el(tag, cls, html){
       var pct = (Math.log10(ph.c) + 0.25) / 2.25 * 100;
       row.innerHTML = '<span class="bar-name">' + ph.n + '</span>' +
         '<span class="bar-track"><span class="bar-fill" style="width:' + pct + '%;background:' +
-        (k === i ? "linear-gradient(to right,#9357cc,#2989d8,#2cc99d)" : "rgba(255,255,255,.18)") + '"></span></span>' +
+        (k === i ? "linear-gradient(to right,#163D28,#1F5135,#2E8B57)" : "rgba(255,255,255,.18)") + '"></span></span>' +
         '<span class="bar-val">' + ph.c + '×</span>';
       costBox.appendChild(row);
     });
@@ -1700,9 +1700,9 @@ function el(tag, cls, html){
         else if(w <= 8){ color = "rgba(147,87,204,.4)"; h = 52; }
         else if(w <= 18){ color = "rgba(41,137,216,.55)"; h = 66; }
         else if(w <= 22){ color = "rgba(224,163,58,.6)"; h = 58; }
-        else { color = "#2cc99d"; h = 92; }
+        else { color = "#2E8B57"; h = 92; }
       }else{
-        if(w % 3 === 0){ color = "#2cc99d"; h = 92; }
+        if(w % 3 === 0){ color = "#2E8B57"; h = 92; }
         else { color = "rgba(41,137,216,.5)"; h = 58; }
       }
       b.style.height = h + "%";
@@ -1715,8 +1715,8 @@ function el(tag, cls, html){
     track.appendChild(axis);
     var lg = el("div","legend",
       model === "wf"
-        ? '<span><i style="background:rgba(147,87,204,.65)"></i>requisitos e projeto</span><span><i style="background:rgba(41,137,216,.55)"></i>desenvolvimento</span><span><i style="background:rgba(224,163,58,.6)"></i>testes</span><span><i style="background:#2cc99d"></i>entrega ao cliente</span>'
-        : '<span><i style="background:rgba(41,137,216,.5)"></i>iteração em andamento</span><span><i style="background:#2cc99d"></i>entrega funcional a cada 3 semanas</span>');
+        ? '<span><i style="background:rgba(147,87,204,.65)"></i>requisitos e projeto</span><span><i style="background:rgba(41,137,216,.55)"></i>desenvolvimento</span><span><i style="background:rgba(224,163,58,.6)"></i>testes</span><span><i style="background:#2E8B57"></i>entrega ao cliente</span>'
+        : '<span><i style="background:rgba(41,137,216,.5)"></i>iteração em andamento</span><span><i style="background:#2E8B57"></i>entrega funcional a cada 3 semanas</span>');
     track.appendChild(lg);
 
     metrics.innerHTML = "";
@@ -2119,7 +2119,7 @@ function el(tag, cls, html){
      hides:"toda a estrutura interna",
      html:'<div class="metric-grid">' +
        '<div class="panel-card"><h4>Cliente</h4><p>navega, compra e acompanha o pedido</p></div>' +
-       '<div class="panel-card" style="border-color:#2989d8"><h4>Loja Online</h4><p>o sistema em construção</p></div>' +
+       '<div class="panel-card" style="border-color:#1F5135"><h4>Loja Online</h4><p>o sistema em construção</p></div>' +
        '<div class="panel-card"><h4>Gateway de pagamento</h4><p>autoriza a cobrança</p></div>' +
        '<div class="panel-card"><h4>Transportadora</h4><p>recebe a ordem de envio</p></div></div>'},
     {n:"Casos de uso", who:"Analistas e cliente",
@@ -2285,7 +2285,7 @@ function svgText(x, y, txt, cls, anchor){
     var row = el("div","bar-row");
     row.innerHTML = '<span class="bar-name">Onboarding</span>' +
       '<span class="bar-track"><span class="bar-fill" style="width:' + pct + '%;background:' +
-      (days > 14 ? "#e2685f" : (days > 8 ? "#e0a33a" : "#2cc99d")) + '"></span></span>' +
+      (days > 14 ? "#e2685f" : (days > 8 ? "#e0a33a" : "#2E8B57")) + '"></span></span>' +
       '<span class="bar-val">' + days + " dias</span>";
     meter.appendChild(row);
     out.innerHTML = "<b>" + have + " de 6 artefatos presentes · primeira entrega segura da pessoa nova em ~" + days + " dias.</b><br>" +
@@ -2538,7 +2538,7 @@ function svgText(x, y, txt, cls, anchor){
     var svg = svgEl("svg", {viewBox:"0 0 640 340", "class":"uml", role:"img",
       "aria-label":"Diagrama de sequência da finalização de compra"});
     var defs = svgEl("defs");
-    ["#2989d8", "#2cc99d"].forEach(function(color, i){
+    ["#1F5135", "#2E8B57"].forEach(function(color, i){
       var m = svgEl("marker", {id:"arw" + i, markerWidth:"9", markerHeight:"9", refX:"8", refY:"3",
         orient:"auto", markerUnits:"strokeWidth"});
       m.appendChild(svgEl("path", {d:"M0,0 L0,6 L8,3 z", fill:color}));
@@ -2953,7 +2953,7 @@ function montar(host, cfg){
     var barra = el("div","bar-row");
     barra.innerHTML = '<span class="bar-name">Aproveitamento</span>' +
       '<span class="bar-track"><span class="bar-fill" style="width:' + pct + "%;background:" +
-      (pct >= 70 ? "#2cc99d" : (pct >= 50 ? "#e0a33a" : "#e2685f")) + '"></span></span>' +
+      (pct >= 70 ? "#2E8B57" : (pct >= 50 ? "#e0a33a" : "#e2685f")) + '"></span></span>' +
       '<span class="bar-val">' + acertos + "/" + ordem.length + "</span>";
     box.appendChild(barra);
 
@@ -3259,7 +3259,7 @@ function montarLinha(cfg, aoEscolher, gid){
 
   var defs = sv("defs");
   var lg = sv("linearGradient", { id:gid, x1:"0", x2:"1" });
-  [["0","#9357cc"],["0.5","#2989d8"],["1","#2cc99d"]].forEach(function(s){
+  [["0","#163D28"],["0.5","#1F5135"],["1","#2E8B57"]].forEach(function(s){
     lg.appendChild(sv("stop", { offset:s[0], "stop-color":s[1] }));
   });
   defs.appendChild(lg);
@@ -3311,7 +3311,7 @@ function montarLinha(cfg, aoEscolher, gid){
       m.ponto.setAttribute("r", on ? 7 : 5);
       m.ponto.setAttribute("fill", on ? "#fff" : "rgba(255,255,255,.45)");
       m.anel.setAttribute("r", on ? 13 : 10);
-      m.anel.setAttribute("stroke", on ? "#2cc99d" : "rgba(255,255,255,.3)");
+      m.anel.setAttribute("stroke", on ? "#2E8B57" : "rgba(255,255,255,.3)");
       m.ano.setAttribute("class", on ? "ano" : "ano off");
       m.rots.forEach(function(r){ r.setAttribute("class", on ? "rot on" : "rot"); });
       m.g.setAttribute("aria-pressed", on ? "true" : "false");
