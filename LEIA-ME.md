@@ -80,7 +80,7 @@ Depois do login:
 
 A lista fica no começo do arquivo `progresso-turma.js`, na parte `CURSOS`. Para incluir uma disciplina num curso, acrescente uma linha `["Nome que aparece", "nome-da-pasta"]` dentro do curso. Uma disciplina pode estar em mais de um curso.
 
-Enviam o progresso para a planilha: Subnetting na Prática, Método Office Visual, Trilha Windows 11 e as atividades com ranking de Redes e de Projeto de Redes.
+Enviam o progresso para a planilha: Subnetting na Prática, Mapa do Chamado, Método Office Visual, Trilha Windows 11, Detetives Digitais e as atividades com ranking de Redes e de Projeto de Redes.
 
 Na planilha ficam duas abas:
 - **Turmas**: você importa o `Turmas.csv` (uma linha por aluno: turma, curso, turno, matrícula, nome). A coluna `pin` começa vazia e é preenchida quando o aluno cria o PIN (aparece como `p1234`).
