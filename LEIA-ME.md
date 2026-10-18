@@ -46,7 +46,8 @@ disciplinas/
 ├── recursos-de-aula/
 │   ├── index.html
 │   ├── cronometro-de-equipes.html
-│   └── linha-do-tempo-tecnologica.html
+│   ├── linha-do-tempo-tecnologica.html
+│   └── codigos-para-aprender-com-ia.html
 └── apps-script/Codigo.gs           ← código da planilha (login, progresso e ranking)
 ```
 
