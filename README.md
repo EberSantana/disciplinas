@@ -20,7 +20,7 @@ Cada disciplina reúne laboratórios visuais, atividades de caderno, flashcards,
 | Integrado em Desenvolvimento de Sistemas · 1º ano | [Construção de Sites 1](https://ebersantana.github.io/disciplinas/construcao-de-sites-1/) | Apostila de HTML e CSS |
 | Integrado em Desenvolvimento de Sistemas · 2º ano | [Banco de Dados](https://ebersantana.github.io/disciplinas/banco-de-dados/) | Console de estudo, apostila de SQL |
 
-Também estão disponíveis [recursos de aula](https://ebersantana.github.io/disciplinas/recursos-de-aula/) para qualquer disciplina: cronômetro com ranking de equipes e a Linha do Tempo Tecnológica.
+Também estão disponíveis [recursos de aula](https://ebersantana.github.io/disciplinas/recursos-de-aula/) para qualquer disciplina: cronômetro com ranking de equipes, a Linha do Tempo Tecnológica e o guia 14 Códigos para Aprender com IA.
 
 ---
 
