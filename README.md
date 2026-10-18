@@ -14,7 +14,7 @@ Cada disciplina reúne laboratórios visuais, atividades de caderno, flashcards,
 |---|---|---|
 | Técnico em Informática | [Redes de Computadores](https://ebersantana.github.io/disciplinas/redes-de-computadores/) | Console de estudo, atividades com ranking, Subnetting na Prática |
 | Técnico em Informática | [Projeto de Redes](https://ebersantana.github.io/disciplinas/projeto-de-redes/) | Atividades com ranking (metodologia Top-Down) |
-| Técnico em Informática | [Segurança da Informação](https://ebersantana.github.io/disciplinas/seguranca-da-informacao/) | Console de estudo |
+| Técnico em Informática | [Segurança da Informação](https://ebersantana.github.io/disciplinas/seguranca-da-informacao/) | Console de estudo, Detetives Digitais (desinformação, checagem de fatos, deepfakes e algoritmos) |
 | Subsequente em Informática | [Informática Básica](https://ebersantana.github.io/disciplinas/informatica-basica/) | Ambiente interativo, apostila, Método Office Visual, Trilha Windows 11 |
 | Subsequente em Informática | [Engenharia de Software](https://ebersantana.github.io/disciplinas/engenharia-de-software/) | Apostilas, roteiro de processo, dicionário de dados, estante |
 | Integrado em Desenvolvimento de Sistemas · 1º ano | [Construção de Sites 1](https://ebersantana.github.io/disciplinas/construcao-de-sites-1/) | Apostila de HTML e CSS |
