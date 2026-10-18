@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<script>try{var pa=JSON.parse(localStorage.getItem("perfil:aluno")||"null");if(!(pa&&pa.id&&pa.pin)&&!/[?&]professor\b/.test(location.search))document.documentElement.classList.add("pt-gate")}catch(e){}</script><style>html.pt-gate body>*:not(.pt-screen){visibility:hidden}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <title>Mapa do Chamado · Redes de Computadores</title>
@@ -260,7 +261,10 @@ try{
   if(saved) progress = JSON.parse(saved);
   if(!progress.vf) progress.vf = {};
 }catch(e){}
-function saveProgress(){ try{ localStorage.setItem("mdc_progress_v1", JSON.stringify(progress)); }catch(e){} }
+function saveProgress(){
+  try{ localStorage.setItem("mdc_progress_v1", JSON.stringify(progress)); }catch(e){}
+  if(window.progressoMudou) window.progressoMudou();
+}
 
 function renderTabs(){
   var nav = document.getElementById("mainTabs");
@@ -425,7 +429,18 @@ if(window.claude && window.claude.hot){
 }else{
   render();
 }
+
+window.PROGRESSO_ID = "mapa-do-chamado-v1";
+window.PROGRESSO_DADOS = function(){
+  var respondidas = Object.keys(progress.vf).length;
+  var acertos = 0;
+  Object.keys(progress.vf).forEach(function(k){ if(progress.vf[k].correct) acertos++; });
+  var pontos = respondidas*10 + acertos*5;
+  return { feitas: respondidas, total: vf.length, pontos: pontos, detalhe: { vf: respondidas + "/" + vf.length + " (" + acertos + " certas)" } };
+};
 })();
 </script>
+<script src="../config.js"></script>
+<script src="../progresso-turma.js"></script>
 </body>
 </html>

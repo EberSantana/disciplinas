@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<script>try{var pa=JSON.parse(localStorage.getItem("perfil:aluno")||"null");if(!(pa&&pa.id&&pa.pin)&&!/[?&]professor\b/.test(location.search))document.documentElement.classList.add("pt-gate")}catch(e){}</script><style>html.pt-gate body>*:not(.pt-screen){visibility:hidden}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <title>Detetives Digitais · Segurança da Informação</title>
@@ -462,6 +463,7 @@ try{
 }catch(e){}
 function saveProgress(){
   try{ localStorage.setItem("dd_progress_v1", JSON.stringify(progress)); }catch(e){}
+  if(window.progressoMudou) window.progressoMudou();
 }
 function getModProg(id){
   if(!progress[id]) progress[id] = {vf:{}};
@@ -710,7 +712,24 @@ if(window.claude && window.claude.hot){
 }else{
   render();
 }
+
+window.PROGRESSO_ID = "detetives-digitais-v1";
+window.PROGRESSO_DADOS = function(){
+  var feitas=0, total=0, pontos=0, correctas=0, detalhe={};
+  modules.forEach(function(m){
+    var mp = getModProg(m.id);
+    var respondidas = Object.keys(mp.vf).length;
+    var acertos = 0;
+    Object.keys(mp.vf).forEach(function(k){ if(mp.vf[k].correct) acertos++; });
+    feitas += respondidas; total += m.vf.length; correctas += acertos;
+    detalhe[m.id] = respondidas + "/" + m.vf.length + " (" + acertos + " certas)";
+  });
+  pontos = feitas*10 + correctas*5;
+  return { feitas: feitas, total: total, pontos: pontos, detalhe: detalhe };
+};
 })();
 </script>
+<script src="../config.js"></script>
+<script src="../progresso-turma.js"></script>
 </body>
 </html>
