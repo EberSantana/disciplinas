@@ -15,12 +15,14 @@ Cada disciplina reúne laboratórios visuais, atividades de caderno, flashcards,
 | Técnico em Informática | [Redes de Computadores](https://ebersantana.github.io/disciplinas/redes-de-computadores/) | Console de estudo, atividades com ranking, Subnetting na Prática, Mapa do Chamado (TCP/IP na prática) |
 | Técnico em Informática | [Projeto de Redes](https://ebersantana.github.io/disciplinas/projeto-de-redes/) | Atividades com ranking (metodologia Top-Down) |
 | Técnico em Informática | [Segurança da Informação](https://ebersantana.github.io/disciplinas/seguranca-da-informacao/) | Console de estudo, Detetives Digitais (desinformação, checagem de fatos, deepfakes e algoritmos) |
-| Subsequente em Informática | [Informática Básica](https://ebersantana.github.io/disciplinas/informatica-basica/) | Ambiente interativo, apostila, Método Office Visual, Trilha Windows 11 |
+| Subsequente em Informática | [Informática Básica](https://ebersantana.github.io/disciplinas/informatica-basica/) | Ambiente interativo, apostila, Método Office Visual, Trilha Windows 11 (12 aulas, com laboratório visual em cada uma, caderno, flashcards, V ou F e PBL) |
 | Subsequente em Informática | [Engenharia de Software](https://ebersantana.github.io/disciplinas/engenharia-de-software/) | Apostilas, roteiro de processo, dicionário de dados, estante |
 | Integrado em Desenvolvimento de Sistemas · 1º ano | [Construção de Sites 1](https://ebersantana.github.io/disciplinas/construcao-de-sites-1/) | Apostila de HTML e CSS |
 | Integrado em Desenvolvimento de Sistemas · 2º ano | [Banco de Dados](https://ebersantana.github.io/disciplinas/banco-de-dados/) | Console de estudo, apostila de SQL |
 
 Também estão disponíveis [recursos de aula](https://ebersantana.github.io/disciplinas/recursos-de-aula/) para qualquer disciplina: cronômetro com ranking de equipes, a Linha do Tempo Tecnológica e o guia 14 Códigos para Aprender com IA.
+
+Há ainda o [Laboratório 3D](https://ebersantana.github.io/disciplinas/laboratorio-3d/) (Vamos praticar?): ESP32, micro:bit e Arduino em 3D, com montagem de circuitos e programação direto no navegador.
 
 ---
 
