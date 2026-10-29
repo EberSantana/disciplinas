@@ -31,6 +31,12 @@
     terracota: { nome: "Terracota Editorial", desc: "Tons quentes e acolhedores, com cara de revista.",
       claro: junta(["#FAF7F2", "#FFFFFF", "#1C1917", "#44403C", "#625B52", "#E7DFD3", "#B23A0B", "#FFFFFF", "#FBE9DC", "#1C1917", "#F5E6DA"], OKL),
       escuro: junta(["#171310", "#211B17", "#F3EBE3", "#D2C6BA", "#A89B8E", "#3A312A", "#F0955F", "#1C1108", "#3A2418", "#0E0B09", "#F5E6DA"], OKD) },
+    rosa: { nome: "Rosa Aurora", desc: "Rosa vibrante com fundo suave e acolhedor.",
+      claro: junta(["#FDF5F8", "#FFFFFF", "#2A1220", "#5A3347", "#6B4A5C", "#F0D5E0", "#B0246B", "#FFFFFF", "#FBE3EE", "#2A1220", "#FBE3EE"], OKL),
+      escuro: junta(["#1C0F16", "#2A1822", "#FBEAF2", "#E3C3D3", "#BE97AC", "#4A2C3B", "#F58DB8", "#2A0A18", "#3D1D2E", "#12080E", "#FBE3EE"], OKD) },
+    lilas: { nome: "Lilás Sonho", desc: "Lilás e violeta, calmo e criativo.",
+      claro: junta(["#F8F5FD", "#FFFFFF", "#1E1433", "#4A3F6B", "#5F5680", "#DDD5F0", "#6D3FC4", "#FFFFFF", "#EAE0FB", "#1E1433", "#EAE0FB"], OKL),
+      escuro: junta(["#140F22", "#1E1833", "#EEE8FB", "#CBC1EA", "#A89CD0", "#342B54", "#B79BFF", "#1A0F36", "#2E2350", "#0C0816", "#EAE0FB"], OKD) },
     creme: { nome: "Creme Leitura", desc: "Fundo creme, sem o branco forte da tela, para cansar menos a vista.",
       claro: junta(["#F6F0E3", "#FFFBF2", "#2B2A26", "#46433C", "#5E5A50", "#E0D6C0", "#2F6B57", "#FFFFFF", "#E3EDDD", "#2B2A26", "#F1E9D6"], OKL),
       escuro: junta(["#1A1914", "#23221B", "#EFE8D8", "#CFC8B6", "#A7A08E", "#3A382D", "#8CC6A8", "#10201A", "#28392F", "#100F0B", "#EFE8D8"], OKD) },
@@ -38,7 +44,7 @@
       claro: ["#FFFFFF", "#FFFFFF", "#000000", "#000000", "#1F1F1F", "#000000", "#0033CC", "#FFFFFF", "#E6ECFF", "#000000", "#FFFFFF", "#005A2B", "#E3F5EA", "#8F0000", "#FBE3E3", "#6B4600", "#FFF3D1", "#00338F", "#0000FF"],
       escuro: ["#000000", "#000000", "#FFFFFF", "#FFFFFF", "#E0E0E0", "#FFFFFF", "#FFD400", "#000000", "#1A1A00", "#000000", "#FFFFFF", "#4DFF9A", "#002B14", "#FF8A80", "#330000", "#FFD400", "#332B00", "#8FC1FF", "#FFD400"] }
   };
-  var ORDEM = ["padrao", "verde", "azul", "terracota", "creme", "contraste"];
+  var ORDEM = ["padrao", "verde", "azul", "terracota", "rosa", "lilas", "creme", "contraste"];
   var PADRAO = { tema: "padrao", modo: "auto", tam: 100, esp: "normal", fonte: "padrao", mov: "auto", links: "nao" };
   var TAMANHOS = [[100, "Normal"], [115, "Grande"], [130, "Maior"], [150, "Máximo"]];
 
