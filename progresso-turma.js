@@ -89,6 +89,7 @@
     ".pt-go{width:100%;min-height:50px;margin-top:20px;border:0;border-radius:10px;background:#1F5135;color:#fff;font:700 17px/1 " + F + ";cursor:pointer}" +
     ".pt-go:hover{background:#163D28}.pt-go:focus-visible{outline:3px solid #16261C;outline-offset:2px}.pt-go[disabled]{opacity:.7;cursor:wait}" +
     ".pt-note{margin:12px 0 0;font-size:13px;color:#5B6871}" +
+    ".pt-priv{margin:12px 0 0;font-size:14px}.pt-priv summary{cursor:pointer;font-weight:600;color:#163D28;min-height:24px}.pt-priv p{margin:8px 0 0;color:#3F4F5B;font-size:14px}" +
     ".pt-msg{margin-top:10px;font-size:14px}.pt-msg:empty{margin:0}" +
     ".pt-msg.bad{color:#B3261E}.pt-msg.good{color:#0B7A49}" +
     "@media (max-width:820px){.pt-screen{grid-template-columns:1fr;grid-template-rows:auto auto;align-content:start}.pt-hero{padding:28px 20px 26px;gap:10px;overflow:visible;flex-shrink:0}.pt-hero::after{display:none}.pt-hero h1{font-size:40px}.pt-hero p{font-size:15.5px}.pt-feats{display:none}.pt-side{padding:18px 16px 32px;align-items:flex-start}}" +
@@ -122,7 +123,7 @@
     ".pt-rank li{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-top:1px solid #E3E9E6}" +
     ".pt-rank li.me{font-weight:700}" +
     "@media (prefers-color-scheme:dark){" +
-      ".pt-screen{background:#0F171D;color:#E4ECEF}.pt-hero{background:#0B140E}" +
+      ".pt-priv summary{color:#7FBF7A}.pt-priv p{color:#B8C6CD}.pt-screen{background:#0F171D;color:#E4ECEF}.pt-hero{background:#0B140E}" +
       ".pt-card{background:#16222B;border-color:#2A3A45;box-shadow:none}.pt-card .pt-sub{color:#B8C6CD}.pt-note{color:#8699A4}" +
       ".pt-card input,.pt-card select{background:#0F171D;color:#E4ECEF;border-color:#3A4C58}" +
       ".pt-opt{background:#0F171D;color:#E4ECEF;border-color:#2A3A45}.pt-opt small{color:#8699A4}.pt-back{color:#7FBF7A}" +
@@ -276,6 +277,8 @@
         '<p class="pt-sub">Escolha a sua turma.</p>' +
         '<div class="pt-list pt-turmas"></div>' +
         '<div class="pt-msg" role="status" aria-live="polite"></div>' +
+        '<p class="pt-note">Primeira vez? Veja o <a href="' + esc(BASE + "como-usar.html") + '">Como usar o portal</a>.</p>' +
+        '<details class="pt-priv"><summary>Como seus dados s\u00e3o usados</summary><p>Guardamos o seu nome, a sua turma, o seu PIN, o seu progresso e pontos, o dia do \u00faltimo acesso e o tipo de aparelho (por exemplo, \u201cAndroid \u00b7 Chrome\u201d). Isso serve s\u00f3 para o professor acompanhar a sua aprendizagem e montar o ranking, que mostra apenas o primeiro nome e a inicial do sobrenome.</p><p>Nada \u00e9 vendido ou compartilhado, e n\u00e3o usamos an\u00fancios nem rastreadores. Voc\u00ea pode pedir ao professor para ver, corrigir ou apagar os seus dados (LGPD, Lei n\u00ba 13.709/2018).</p></details>' +
       "</div>" +
       '<div class="pt-step" data-step="2" hidden>' +
         '<button class="pt-back" type="button" data-volta="1">\u2190 Trocar turma</button>' +
@@ -284,7 +287,7 @@
         '<input class="pt-busca" type="search" placeholder="Procurar o seu nome" aria-label="Procurar o seu nome" autocomplete="off" hidden>' +
         '<div class="pt-list pt-nomes"></div>' +
         '<div class="pt-msg" role="status" aria-live="polite"></div>' +
-        '<p class="pt-note">N\u00e3o achou o seu nome? Fale com o professor.</p>' +
+        '<p class="pt-note">N\u00e3o achou o seu nome? Fale com o professor. <a href="' + esc(BASE + "como-usar.html") + '">Como usar o portal</a></p>' +
       "</div>" +
       '<form class="pt-step" data-step="3" novalidate hidden>' +
         '<button class="pt-back" type="button" data-volta="2">\u2190 N\u00e3o sou eu</button>' +

@@ -47,6 +47,8 @@ O portal mostra só as disciplinas do seu curso e da sua turma, além dos **Recu
 - Os **laboratórios visuais** (como a Trilha Windows 11 e o Subnetting na Prática) mostram o conceito funcionando. Mexa à vontade.
 
 ### 5. Acompanhar o progresso e o ranking
+Na página inicial, **Continuar de onde parou** abre a última atividade, a **sequência** mostra quantos dias seguidos você estudou e **Buscar no portal** acha um assunto. No botão do canto da tela há um campo de **anotações** para cada página (salvas só no seu aparelho). O passo a passo completo está em `como-usar.html`.
+
 O progresso fica salvo no seu aparelho e é enviado ao professor. Abra o botão do canto da tela para ver a sua pontuação e o **ranking da turma** (aparece só o primeiro nome e a inicial do sobrenome). Se sair do aparelho ou trocar de computador, entre de novo com o mesmo PIN.
 
 ### 6. Deixar o portal do seu jeito
@@ -141,6 +143,7 @@ As instruções de manutenção (incluir materiais, ligar a planilha, atualizar 
 - A lista de alunos (nome completo e matrícula) fica somente na planilha do professor, que não é pública. Nenhum dado pessoal é gravado neste repositório.
 - O ranking mostra apenas o primeiro nome e a inicial do sobrenome.
 - A lista pública mostra só o primeiro nome e a inicial do sobrenome. O PIN impede que um colega entre no lugar do outro, e 5 erros bloqueiam a conta por 15 minutos.
+- Para o professor saber onde o aluno estuda, o portal também guarda o dia do último acesso e o tipo de aparelho em linhas gerais (por exemplo, "Android · Chrome"), sem identificar a pessoa além do cadastro da turma. Isso aparece no aviso "Como seus dados são usados", na tela de entrada.
 - Os dados servem apenas para acompanhar a aprendizagem na disciplina, em linha com a LGPD (Lei nº 13.709/2018).
 
 ---

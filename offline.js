@@ -145,6 +145,15 @@
     }).catch(function () { /* fonte externa indisponível: o portal usa a fonte do sistema */ });
   }
 
+  function permitidos() { var PA = window.PORTAL_ALUNO; return (M ? M.grupos : []).filter(function (g) { return !PA || !PA.permitida || PA.permitida(g.id); }); }
+  /* Baixa, uma a uma, todas as disciplinas da turma que ainda n\u00e3o est\u00e3o prontas ou t\u00eam atualiza\u00e7\u00e3o. */
+  function baixarTudo() {
+    var b = baixados(), fila = permitidos().filter(function (g) { return !b[g.id] || b[g.id].versao !== g.versao; });
+    var i = 0;
+    function prox() { if (i >= fila.length) { estado.msg = fila.length ? "Tudo da sua turma est\u00e1 pronto para uso offline." : "Tudo da sua turma j\u00e1 est\u00e1 baixado."; atualiza(); return Promise.resolve(); } return baixar(fila[i++].id).then(function () { return estado.msg.indexOf("pronta") >= 0 ? prox() : null; }); }
+    return prox();
+  }
+
   function baixar(id) {
     var g = M.grupos.filter(function (x) { return x.id === id; })[0];
     if (!g || estado.ocupado) return Promise.resolve();
@@ -206,7 +215,9 @@
     if (!M) return h + "<p>Carregando a lista de materiais…</p>";
     h += statusPainel();
     h += "<p>Baixe a disciplina para estudar sem internet. Prefira o Wi-Fi para não gastar seus dados. O login precisa de internet na primeira vez.</p><ul>";
-    M.grupos.filter(function (g) { var PA = window.PORTAL_ALUNO; return !PA || !PA.permitida || PA.permitida(g.id); }).forEach(function (g) {
+    var pend = permitidos().filter(function (g) { return !b[g.id] || b[g.id].versao !== g.versao; });
+    if (pend.length > 1) h += '<button type="button" data-off="tudo"' + (estado.ocupado ? " disabled" : "") + ' style="margin:0 0 10px">Baixar tudo da minha turma (' + tam(pend.reduce(function (s, g) { return s + g.bytes; }, 0)) + ")</button>";
+    permitidos().forEach(function (g) {
       var r = b[g.id], tem = !!r, velho = tem && r.versao !== g.versao;
       var st = tem ? (velho ? "Baixada · há atualização" : "Pronta para uso offline") : "Não baixada";
       var ocup = estado.ocupado === g.id;
@@ -259,6 +270,7 @@
       if (!b || b.disabled) return;
       var a = b.getAttribute("data-off"), id = b.getAttribute("data-id");
       if (a === "baixar") baixar(id);
+      else if (a === "tudo") baixarTudo();
       else if (a === "apagar") apagar(id);
       else if (a === "enviar" && window.PT_FILA) {
         estado.enviando = true; estado.msg = "Enviando seu progresso…"; atualiza();

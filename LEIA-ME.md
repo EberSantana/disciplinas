@@ -118,6 +118,34 @@ Se depois você alterar o código, use **Implantar** › **Gerenciar implantaç�
 - **Nunca envie o `Turmas.csv` (nem outra lista de alunos) para o repositório**, nem pelo "Add files via upload": o GitHub ignora o `.gitignore` nesse envio. Guarde o arquivo só no seu computador e na planilha. Se subir por engano, apague e avise para limpar o histórico.
 - Os pontos são calculados no navegador do aluno. Servem para acompanhar e motivar, não como nota oficial.
 
+## Painel do professor
+
+Abra `professor.html` no endereço do portal (por exemplo, `.../disciplinas/professor.html`). Ele não aparece em nenhum menu. Mostra, para cada aluno: último acesso, aparelho (ex.: "Android · Chrome"), progresso e pontos; destaca quem está **online agora**, quem **estudou hoje**, quem está **sem acessar há mais de 7 dias** e quem **nunca entrou**. Tem filtro por turma e por situação, **Baixar planilha (CSV)** e **Imprimir / salvar em PDF**.
+
+**Para ligar (uma vez):**
+1. Na planilha, abra **Extensões > Apps Script** e cole o novo `apps-script/Codigo.gs` (substitui o anterior).
+2. Em **Configurações do projeto > Propriedades do script**, crie `PROFESSOR_CHAVE` com a senha que você quiser (use algo longo e diferente do PIN de qualquer aluno).
+3. **Implantar > Gerenciar implantações > Editar > Nova versão > Implantar** (o endereço `/exec` continua o mesmo).
+4. Na aba **Turmas**, o script cria sozinho a coluna `aparelho` (coluna J).
+
+A senha fica só na aba do navegador. Depois de 5 erros o painel trava por 15 minutos. O painel mostra nomes e matrículas: não deixe aberto em tela compartilhada e guarde o CSV fora do repositório.
+
+## Liberar material por data e disciplinas por turma
+
+No `config.js`:
+- `window.LIBERACAO`: coloque `"banco-de-dados/apostila.html": "2026-11-10"` (ou só a pasta) e o material só abre nessa data; antes disso o aluno vê "Ainda não está disponível". Com `?professor` você abre sempre.
+- `window.DISCIPLINAS_POR_TURMA`: coloque `"2º A": ["banco-de-dados"]` para uma turma ver só essas disciplinas, mesmo que o curso tenha mais. Turmas que não aparecem seguem a lista do curso. O texto da turma precisa ser igual ao da planilha.
+
+Atenção: são travas de organização feitas no navegador; os arquivos continuam públicos no GitHub Pages.
+
+## Verificação automática
+
+A cada envio ao GitHub, o arquivo `.github/workflows/verificar.yml`:
+1. refaz sozinho `offline-manifest.json` e `busca-index.json` (você não precisa mais rodar `gerar-offline.py`);
+2. testa as páginas principais no tema claro e escuro, no computador e no celular: erros de JavaScript, rolagem horizontal e acessibilidade (axe, WCAG 2.2 AA).
+
+Se algo falhar, aparece um X vermelho em **Actions** no GitHub. Para rodar no seu computador: `npm i playwright axe-core`, `python3 -m http.server 8765` e `node tools/verificar.js`.
+
 ## Ajustes (cores, leitura e acessibilidade)
 
 O `aparencia.js` entra no `<head>` de toda página nova: `<script src="../aparencia.js"></script>` (sem `../` na raiz). Para a página aceitar a troca de cores, acrescente `data-a11y-cores` na tag `<html>` e use as variáveis de cor padrão (`--bg`, `--panel`, `--ink`, `--muted`, `--accent` etc.). Páginas com cores fixas ficam sem o atributo e ainda recebem tamanho de letra, espaçamento, fonte e movimento. As paletas ficam no começo do `aparencia.js`; ao alterar uma, confira o contraste (mínimo 4,5:1).

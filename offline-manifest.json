@@ -13,7 +13,9 @@
   "icons/icon-512.png",
   "icons/favicon-32.png",
   "favicon.ico",
-  "busca-index.json"
+  "busca-index.json",
+  "como-usar.html",
+  "icons/apple-touch-icon.png"
  ],
  "externosCore": [
   "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap"
