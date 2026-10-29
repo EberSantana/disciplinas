@@ -27,7 +27,7 @@
   --line-soft:#ECECE6;
   --ink:#17181B;
   --ink-2:#4A4D55;
-  --ink-3:#7A7E88;
+  --ink-3:#6a6e76;
   --brand:#1F5135;
   --brand-soft:#E3EEE7;
   --brand-ink:#163D28;
@@ -57,8 +57,8 @@
     --line-soft:#23272E;
     --ink:#EAEBEE;
     --ink-2:#B0B5BF;
-    --ink-3:#828892;
-    --brand:#4C8C4A;
+    --ink-3:#868c95;
+    --brand:#6BAA68;
     --brand-soft:#1A2D20;
     --brand-ink:#A8D4B0;
     --coral:#FF7A76;
@@ -82,8 +82,8 @@
   --line-soft:#23272E;
   --ink:#EAEBEE;
   --ink-2:#B0B5BF;
-  --ink-3:#828892;
-  --brand:#4C8C4A;
+  --ink-3:#868c95;
+  --brand:#6BAA68;
   --brand-soft:#1A2D20;
   --brand-ink:#A8D4B0;
   --coral:#FF7A76;
@@ -163,7 +163,10 @@ a{color:var(--brand);text-decoration-thickness:1px;text-underline-offset:2px;}
   padding:9px 11px;border-radius:var(--r-s);
   background:var(--surface-2);border:1px solid var(--line-soft);
 }
-.credit .sym{font-size:16px;color:var(--coral);flex:0 0 16px;}
+.credit .sym{font-size:16px;color:#c93733;flex:0 0 16px;}
+.hero-by .sym{color:#c93733}
+@media (prefers-color-scheme:dark){.credit .sym,.hero-by .sym{color:var(--coral)}}
+:root[data-theme=dark] .credit .sym,:root[data-theme=dark] .hero-by .sym{color:var(--coral)}
 .credit>span{display:flex;flex-direction:column;line-height:1.25;min-width:0;}
 .credit small{font-size:9.5px;font-family:var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);}
 .credit b{font-size:12px;font-weight:600;color:var(--ink-2);}
@@ -545,7 +548,9 @@ body.rail-open .scrim{opacity:1;pointer-events:auto;}
   background:var(--surface-2);border:1px solid var(--line-soft);
   font-size:.92rem;color:var(--ink-2);
 }
-.hero-by .sym{font-size:18px;color:var(--coral);}
+.hero-by .sym{font-size:18px;color:#c93733;}
+@media (prefers-color-scheme:dark){.hero-by .sym{color:var(--coral)}}
+:root[data-theme=dark] .hero-by .sym{color:var(--coral)}
 .hero-by b{color:var(--ink);font-weight:600;}
 .hero-lede{font-size:1.09rem;line-height:1.6;color:var(--ink-2);max-width:56ch;}
 .hero-lede b{color:var(--ink);font-weight:700;}
@@ -1216,7 +1221,7 @@ ol.steps li b{color:var(--ink);}
 .term-out .err{color:#FF8B87;}
 .term-out .dim{color:#7C838F;}
 .term-in{display:flex;gap:8px;align-items:center;border-top:1px solid #262A33;padding-top:9px;margin-top:9px;}
-.term-prompt{color:#4C8C4A;white-space:nowrap;}
+.term-prompt{color:#6BAA68;white-space:nowrap;}
 .term-in input{flex:1;background:transparent;border:0;outline:none;color:#D5D8DE;font-family:var(--mono);font-size:12.5px;}
 
 /* ---------- compactação ---------- */
@@ -10018,5 +10023,6 @@ $$('.ilu').forEach(function(box){
 })();
 </script>
 
+<script src="../acessibilidade.js" defer></script>
 </body>
 </html>

@@ -19,7 +19,7 @@ porta). Terminal-styled command blocks tie it to real tooling (ipconfig,
 ping, nslookup, Test-NetConnection).
 */
 :root{
-  --bg:#ECF0EE; --panel:#FFFFFF; --sunk:#E1E8E4; --ink:#16261C; --ink-2:#3F4F5B; --muted:#6B7A84;
+  --bg:#ECF0EE; --panel:#FFFFFF; --sunk:#E1E8E4; --ink:#16261C; --ink-2:#3F4F5B; --muted:#5B6871;
   --line:#D5DDDA; --accent:#1F5135; --accent-ink:#FFFFFF; --accent-soft:#DCEAE1;
   --ok:#1F5135; --ok-soft:#DCEAE1; --bad:#9B3B2E; --bad-soft:#F6DEDA;
   --term-bg:#101915; --term-ink:#CFE8D8; --term-accent:#6FCF97;
@@ -32,8 +32,8 @@ ping, nslookup, Test-NetConnection).
   :root:not([data-theme="light"]){
     color-scheme:dark;
     --bg:#0F1513; --panel:#16201B; --sunk:#1C2822; --ink:#E4ECE7; --ink-2:#B8C6C0; --muted:#8699A4;
-    --line:#2A3A33; --accent:#4C8C4A; --accent-ink:#0A140D; --accent-soft:#1E3327;
-    --ok:#4C8C4A; --ok-soft:#1E3327; --bad:#D98A7E; --bad-soft:#3A201C;
+    --line:#2A3A33; --accent:#6BAA68; --accent-ink:#0A140D; --accent-soft:#1E3327;
+    --ok:#6BAA68; --ok-soft:#1E3327; --bad:#D98A7E; --bad-soft:#3A201C;
     --term-bg:#0A120D; --term-ink:#BEE8CC; --term-accent:#6FCF97;
     --shadow:0 2px 14px rgba(0,0,0,.4);
   }
@@ -41,8 +41,8 @@ ping, nslookup, Test-NetConnection).
 :root[data-theme="dark"]{
   color-scheme:dark;
   --bg:#0F1513; --panel:#16201B; --sunk:#1C2822; --ink:#E4ECE7; --ink-2:#B8C6C0; --muted:#8699A4;
-  --line:#2A3A33; --accent:#4C8C4A; --accent-ink:#0A140D; --accent-soft:#1E3327;
-  --ok:#4C8C4A; --ok-soft:#1E3327; --bad:#D98A7E; --bad-soft:#3A201C;
+  --line:#2A3A33; --accent:#6BAA68; --accent-ink:#0A140D; --accent-soft:#1E3327;
+  --ok:#6BAA68; --ok-soft:#1E3327; --bad:#D98A7E; --bad-soft:#3A201C;
   --term-bg:#0A120D; --term-ink:#BEE8CC; --term-accent:#6FCF97;
   --shadow:0 2px 14px rgba(0,0,0,.4);
 }
@@ -89,7 +89,7 @@ main{padding-block:18px 48px; max-width:760px; margin-inline:auto}
 /* ---- Mapa (hero route) ---- */
 .route{display:flex; flex-direction:column; gap:10px; margin-top:14px}
 .hop{
-  display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start;
+  display:grid; grid-template-columns:auto minmax(0,1fr); gap:12px; align-items:start;
   background:var(--panel); border:1px solid var(--line); border-radius:var(--r); padding:14px; box-shadow:var(--shadow);
 }
 .hop .n{
@@ -182,7 +182,7 @@ ol.activities li::marker{font-family:var(--mono); color:var(--accent); font-weig
 
 <main id="main"></main>
 
-<p class="credit">Prof. Eber Santana · IFS Campus Tobias Barreto — inspirado no conteúdo de <span class="mono">@tininjaconsult</span>. Fontes: documentação oficial da Microsoft e RFC&nbsp;1122.</p>
+<p class="credit" role="contentinfo">Prof. Eber Santana · IFS Campus Tobias Barreto — inspirado no conteúdo de <span class="mono">@tininjaconsult</span>. Fontes: documentação oficial da Microsoft e RFC&nbsp;1122.</p>
 
 <script>
 (function(){
@@ -442,5 +442,6 @@ window.PROGRESSO_DADOS = function(){
 </script>
 <script src="../config.js"></script>
 <script src="../progresso-turma.js"></script>
+<script src="../acessibilidade.js" defer></script>
 </body>
 </html>

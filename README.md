@@ -40,6 +40,21 @@ Há ainda o [Laboratório 3D](https://ebersantana.github.io/disciplinas/laborato
 - **Laboratórios visuais:** simuladores que mostram o conceito funcionando (como cálculo de sub-redes e camadas de rede).
 - **Gamificação:** pontos por atividade e ranking por turma, para motivar e acompanhar, sem substituir a avaliação formal.
 
+## Acessibilidade
+
+O portal segue as diretrizes WCAG 2.1 nível AA (base do e-MAG) e foi verificado com o axe-core nos temas claro e escuro, sem falhas automáticas nas 36 páginas.
+
+- **VLibras** em todas as páginas (tradutor para Libras do governo federal; exige internet).
+- Link **"Pular para o conteúdo"** (aparece ao apertar Tab) e foco de teclado visível.
+- Navegação completa por **teclado**; elementos que só respondiam ao mouse passaram a aceitar Tab, Enter e Espaço.
+- **Contraste** de cores de pelo menos 4,5:1 nos textos, em ambos os temas.
+- Respeita **"reduzir movimento"** do sistema e o **zoom** do navegador (sem rolagem lateral em 320 px).
+- Páginas com idioma (`pt-BR`), região principal e títulos em ordem.
+
+O `acessibilidade.js` é carregado em todas as páginas. Em uma página nova, acrescente `<script src="../acessibilidade.js" defer></script>` antes de `</body>`. Para conferir, use WAVE, ASES (e-MAG) e AccessMonitor sobre o endereço publicado, e teste com um leitor de tela (NVDA).
+
+---
+
 ## Como é feito
 
 | Parte | Tecnologia |
@@ -54,6 +69,7 @@ disciplinas/
 ├── index.html              página inicial do portal
 ├── config.js               endereço do serviço de progresso
 ├── progresso-turma.js      login, menu de disciplinas e envio do progresso
+├── acessibilidade.js       VLibras, pular conteúdo, foco e teclado (todas as páginas)
 ├── apps-script/Codigo.gs   código da planilha (login, progresso e ranking)
 └── <disciplina>/           uma pasta por disciplina, com index.html e os materiais
 ```

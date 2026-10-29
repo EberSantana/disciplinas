@@ -11,6 +11,7 @@ disciplinas/
 ├── index.html                      ← página inicial (todas as disciplinas)
 ├── config.js                       ← endereço da planilha (vale para todas)
 ├── progresso-turma.js              ← login do aluno e envio do progresso
+├── acessibilidade.js               ← VLibras, pular conteúdo, foco e teclado (vale para todas as páginas)
 ├── redes-de-computadores/
 │   ├── index.html                  ← entrada da disciplina
 │   ├── console-de-estudo.html
@@ -64,6 +65,10 @@ Regras dos nomes: letras minúsculas, sem acento, sem espaço, palavras separada
 2. **Add file** › **Upload files** e arraste **tudo o que está dentro** desta pasta.
 3. **Commit changes**.
 4. **Settings** › **Pages** › Branch **main** › **/ (root)** › **Save**.
+
+## Acessibilidade em páginas novas
+
+Todo material novo precisa carregar o `acessibilidade.js` (VLibras, link de pular conteúdo, foco de teclado). Coloque antes do `</body>`: `<script src="../acessibilidade.js" defer></script>` (em páginas dentro de uma pasta de disciplina). Textos com contraste mínimo de 4,5:1 e uma região `<main>` na página completam o básico.
 
 ## Para acrescentar um material a uma disciplina
 

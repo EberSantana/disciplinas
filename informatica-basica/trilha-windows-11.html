@@ -1002,7 +1002,7 @@ M.forEach(m=>{if(!m.n)m.n="";});
 const LABS=[];let labClean=[];
 function onClean(f){labClean.push(f);}
 function runClean(){labClean.forEach(f=>{try{f()}catch(e){}});labClean=[];}
-const APPS={calc:["Calculadora","#3b6fd8"],store:["Microsoft Store","#6d4fd8"],clock:["Relógio","#0e7490"],edge:["Edge","#0f8a5f"],notes:["Bloco de notas","#2f7fc1"],paint:["Paint","#c2410c"],files:["Explorador","#b7791f"],todo:["To Do","#2563eb"]};
+const APPS={calc:["Calculadora","#3b6fd8"],store:["Microsoft Store","#6d4fd8"],clock:["Relógio","#0e7490"],edge:["Edge","#0f8a5f"],notes:["Bloco de notas","#2f7fc1"],paint:["Paint","#c2410c"],files:["Explorador","#9f691b"],todo:["To Do","#2563eb"]};
 function ico(id,c){return `<span class="ico ${c||""}" style="--c:${APPS[id][1]}">${APPS[id][0].replace(/^Microsoft /,"").slice(0,2)}</span>`;}
 const ICON={
  power:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.3 7.3a8 8 0 1 0 11.4 0"/></svg>',
@@ -1120,9 +1120,10 @@ init(r){
   <div class="rsel">Selecionado: <b>${{title:"Título",para:"Parágrafo",list:"Pauta"}[sel]}</b></div>`;
   const items=["Resultados do bimestre","Calendário de provas","Espaço para dúvidas"];const L=st.list;
   const listH=L.ls==="bul"?`<ul style="${styl(L)}">${items.map(x=>`<li>${x}</li>`).join("")}</ul>`:L.ls==="num"?`<ol style="${styl(L)}">${items.map(x=>`<li>${x}</li>`).join("")}</ol>`:`<div style="${styl(L)}">${items.map(x=>`<div>${x}</div>`).join("")}</div>`;
-  ed.innerHTML=`<div class="blk ${sel==="title"?"sel":""}" data-blk="title"><div style="${styl(st.title)}">Reunião de Pais</div></div><div class="blk ${sel==="para"?"sel":""}" data-blk="para"><p style="${styl(st.para)};margin:0">Convidamos as famílias para a reunião do 2º bimestre, na quinta-feira às 19h, no auditório. Vamos apresentar o desempenho das turmas e o calendário de avaliações.</p></div><div class="blk ${sel==="list"?"sel":""}" data-blk="list">${listH}</div>`;
+  ed.innerHTML=`<div class="blk ${sel==="title"?"sel":""}" data-blk="title" tabindex="0" role="button" aria-pressed="${sel==="title"}"><div style="${styl(st.title)}">Reunião de Pais</div></div><div class="blk ${sel==="para"?"sel":""}" data-blk="para" tabindex="0" role="button" aria-pressed="${sel==="para"}"><p style="${styl(st.para)};margin:0">Convidamos as famílias para a reunião do 2º bimestre, na quinta-feira às 19h, no auditório. Vamos apresentar o desempenho das turmas e o calendário de avaliações.</p></div><div class="blk ${sel==="list"?"sel":""}" data-blk="list" tabindex="0" role="button" aria-pressed="${sel==="list"}">${listH}</div>`;
   const t=st.title;if(t.b&&!t.i&&!t.u&&!t.s&&t.al==="center"&&t.sz===18&&t.c==="#d9640f")labDone("tit");if(st.para.al==="justify")labDone("just");if(st.list.ls==="bul")labDone("list");}
  function alIco(k){const w={left:[14,10,14,8],center:[14,10,14,8],right:[14,10,14,8],justify:[14,14,14,14]}[k];return `<svg viewBox="0 0 16 14" width="16" height="14">${w.map((ww,i)=>{const x=k==="center"?(16-ww)/2:k==="right"?16-ww:1;return `<rect x="${k==="justify"?1:x}" y="${1+i*3.4}" width="${k==="justify"?14:ww}" height="1.8" fill="currentColor"/>`}).join("")}</svg>`;}
+ r.querySelector(".l2").addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches("[data-blk]")){e.preventDefault();const k=e.target.dataset.blk;e.target.click();const n=r.querySelector(`[data-blk="${k}"]`);if(n)n.focus();}});
  r.querySelector(".l2").addEventListener("click",e=>{const blk=e.target.closest("[data-blk]");if(blk){sel=blk.dataset.blk;draw();return;}const b=e.target.closest("button");if(!b)return;const D=b.dataset,o=st[sel];
   if(D.fx){o[D.fx]=o[D.fx]?0:1;}else if(D.col){o.c=D.col;}else if(D.al){o.al=D.al;}else if(D.ls){o.ls=o.ls===D.ls?"none":D.ls;}else return;draw();});
  rib.addEventListener("change",e=>{if(e.target.dataset.sz!==undefined){st[sel].sz=+e.target.value;draw();}});
@@ -1480,7 +1481,7 @@ init(r){
 LABS[8]={t:"Ateliê 3D",
 d:"Gire um objeto 3D arrastando com o mouse ou o dedo (no Paint 3D real: Alt + arrastar), troque materiais e iluminação, aplique um adesivo e veja como o pincel tubular muda com a opção Cônico.",
 m:[["rot","Gire a visão 3D arrastando"],["mat","Teste 3 materiais"],["stk","Aplique um adesivo no objeto"],["light","Mude a iluminação"],["cone","Teste as 5 opções de Cônico"]],
-html(){return `<div class="two"><div class="pane"><div class="stage3"><div class="cube"><div class="f3 fr"></div><div class="f3 bk"></div><div class="f3 rt"></div><div class="f3 lt"></div><div class="f3 tp"></div><div class="f3 bt"></div></div><span class="hint3">Arraste para girar</span></div></div>
+html(){return `<div class="two"><div class="pane"><div class="stage3" tabindex="0" role="group" aria-label="Cubo 3D. Use as setas do teclado para girar."><div class="cube"><div class="f3 fr"></div><div class="f3 bk"></div><div class="f3 rt"></div><div class="f3 lt"></div><div class="f3 tp"></div><div class="f3 bt"></div></div><span class="hint3">Arraste para girar (ou use as setas do teclado)</span></div></div>
 <div class="pane c3"></div></div>
 <div class="pane"><h3 class="lsub">Pincel tubular e a opção Cônico</h3><div class="tube"></div></div>`;},
 init(r){
@@ -1505,6 +1506,7 @@ init(r){
  ctl.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const D=b.dataset;
   if(D.mat){mat=D.mat;mt.add(mat);if(mt.size>=3)labDone("mat");}if(D.bc)base=D.bc;if(D.stk!==undefined){stk=!stk;if(stk)labDone("stk");}if(D.light){light=D.light;if(light!=="std")labDone("light");}
   if(D.rot!==undefined){if(D.rot==="0"){rx=-22;ry=32;}else{ry+=+D.rot;tot+=90;if(tot>=90)labDone("rot");}}paint();dC();});
+ st.addEventListener("keydown",e=>{const m={ArrowLeft:[0,-12],ArrowRight:[0,12],ArrowUp:[-12,0],ArrowDown:[12,0]}[e.key];if(!m)return;e.preventDefault();rx+=m[0];ry+=m[1];tot+=12;if(tot>120)labDone("rot");paint();});
  let drag=null;st.addEventListener("pointerdown",e=>{drag=[e.clientX,e.clientY];st.setPointerCapture(e.pointerId);});
  st.addEventListener("pointermove",e=>{if(!drag)return;const dx=e.clientX-drag[0],dy=e.clientY-drag[1];drag=[e.clientX,e.clientY];ry+=dx*.6;rx-=dy*.6;tot+=Math.abs(dx)+Math.abs(dy);if(tot>120)labDone("rot");paint();});
  st.addEventListener("pointerup",()=>drag=null);
@@ -1595,7 +1597,7 @@ d:"Clique no relógio para ver o calendário, mude a data e veja o que acontece 
 m:[["cal","Abra o calendário clicando no relógio"],["cert","Provoque o erro de certificado mudando a data"],["fixdate","Corrija a data e acesse o banco com segurança"],["wid","Mude o tamanho de um widget e desafixe outro"],["focus","Complete uma sessão de foco"],["world","Adicione uma cidade ao Relógio mundial"]],
 html(){return `<div class="scr l11"><div class="wbank"><div class="wt"><span class="wn">${ico("edge")} Banco Seguro</span></div><div class="wbody bankb"></div></div><div class="wpanel" hidden></div><div class="calpop" hidden></div><div class="dtset" hidden></div>
 <div class="tb"><button class="wbtn" data-wid><span class="sun"></span><span><b>29 °C</b><br>Ensolarado</span></button><div class="tbc"><button class="tbi" aria-label="Iniciar"><span class="sglyph"><i></i><i></i><i></i><i></i></span></button>${["files","edge","clock"].map(i=>`<button class="tbi" aria-label="${APPS[i][0]}">${ico(i)}</button>`).join("")}</div><button class="clk" data-clk aria-label="Data e hora"></button></div></div>
-<div class="pane"><h3 class="lsub">App Relógio</h3><div class="rtabs"></div><div class="rbody"></div></div>`;},
+<div class="pane"><h3 class="lsub">App Relógio</h3><div class="rtabs" role="tablist" aria-label="Recursos do Relógio"></div><div class="rbody"></div></div>`;},
 init(r){
  const s=r.querySelector(".l11"),bank=s.querySelector(".bankb"),wp=s.querySelector(".wpanel"),cp=s.querySelector(".calpop"),ds=s.querySelector(".dtset"),clk=s.querySelector("[data-clk]");
  let auto=true,off=0,certErr=false,calM=null;const now=()=>new Date(Date.now()+off);
@@ -1626,7 +1628,7 @@ init(r){
  const tz=(z)=>new Date().toLocaleTimeString("pt-BR",{timeZone:z,hour:"2-digit",minute:"2-digit"});
  const offH=z=>{const d=new Date();const a=new Date(d.toLocaleString("en-US",{timeZone:z})),b=new Date(d.toLocaleString("en-US",{timeZone:"America/Sao_Paulo"}));return Math.round((a-b)/36e5);};
  function plan(){return fm>=45?[["Foco",(fm-5)/2],["Pausa",5],["Foco",(fm-5)/2]]:[["Foco",fm]];}
- function dR(){rt.innerHTML=[["foco","Sessões de foco"],["mundo","Relógio mundial"],["crono","Cronômetro"]].map(([k,l])=>`<button class="tab2" data-rt="${k}" aria-selected="${tab===k}">${l}</button>`).join("");
+ function dR(){rt.innerHTML=[["foco","Sessões de foco"],["mundo","Relógio mundial"],["crono","Cronômetro"]].map(([k,l])=>`<button class="tab2" role="tab" data-rt="${k}" aria-selected="${tab===k}">${l}</button>`).join("");
   if(tab==="foco"){const P=plan(),tot=fm;let acc=0,ph="";P.forEach(p=>{if(fel>=acc&&fel<acc+p[1])ph=p[0];acc+=p[1];});const pct=Math.min(100,fel/tot*100);
    rb.innerHTML=`<div class="focus"><div class="ring" style="--p:${pct}"><div><b>${frun||fel>=tot?Math.max(0,Math.ceil(tot-fel))+" min":fm+" min"}</b><span>${fel>=tot?"Sessão concluída":frun?ph:"Pronto para focar"}</span></div></div>
    <div class="fside"><div class="opts">${[15,30,45,60].map(v=>`<button class="mini" data-fm="${v}" aria-pressed="${fm===v}" ${frun?"disabled":""}>${v} min</button>`).join("")}</div>
@@ -1805,7 +1807,7 @@ function pPBL(i,m){return `<div class="toolbar"><span>Aprendizagem Baseada em Pr
   </article>`}).join("");}
 
 function pLab(i){const L=LABS[i],d=L.m.filter(([id])=>S.l[i+":"+id]).length;return `<section class="labwrap"><div class="labgrid"><div class="labmain"><div><div class="eyebrow">Laboratório visual</div><h2 style="font-size:1.25rem;margin-top:4px">${L.t}</h2><p class="hint" style="margin:6px 0 0;max-width:75ch">${esc(L.d)}</p></div><div class="labmain" id="stage">${L.html()}</div></div>
-  <aside class="mis"><h3>Missões</h3><div class="misbar"><span id="misbar" style="width:${d/L.m.length*100}%"></span></div><ul>${L.m.map(([id,l])=>`<li data-mis="${id}" class="${S.l[i+":"+id]?"ok":""}"><span class="ck"></span><span>${fmt(l)}</span></li>`).join("")}</ul><p class="hint">As missões são marcadas sozinhas quando você realiza a ação na simulação.</p></aside></div></section>`;}
+  <section class="mis" aria-label="Missões"><h3>Missões</h3><div class="misbar"><span id="misbar" style="width:${d/L.m.length*100}%"></span></div><ul>${L.m.map(([id,l])=>`<li data-mis="${id}" class="${S.l[i+":"+id]?"ok":""}"><span class="ck"></span><span>${fmt(l)}</span></li>`).join("")}</ul><p class="hint">As missões são marcadas sozinhas quando você realiza a ação na simulação.</p></section></div></section>`;}
 function labDone(id){const i=S.mod;if(i<0)return;const k=i+":"+id;if(S.l[k])return;const L=LABS[i];const item=L.m.find(x=>x[0]===id);if(!item)return;S.l[k]=1;save();
   const li=document.querySelector(`[data-mis="${id}"]`);if(li)li.classList.add("ok");const d=L.m.filter(([x])=>S.l[i+":"+x]).length;const mb=$("#misbar");if(mb)mb.style.width=(d/L.m.length*100)+"%";
   const ct=$("#ct-lab");if(ct)ct.textContent=d+"/"+L.m.length;toast("Missão concluída · "+item[1]);renderTop();renderSide();}
@@ -1861,5 +1863,6 @@ window.PROGRESSO_DADOS = () => { let d=0,t=0,ok=0; const det={}; M.forEach((m,i)
 </script>
 <script src="../config.js"></script>
 <script src="../progresso-turma.js"></script>
+<script src="../acessibilidade.js" defer></script>
 </body>
 </html>
