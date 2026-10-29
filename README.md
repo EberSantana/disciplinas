@@ -50,7 +50,7 @@ O portal mostra primeiro as disciplinas do seu curso. Toque em uma para abrir os
 O progresso fica salvo no seu aparelho e é enviado ao professor. Abra o botão do canto da tela para ver a sua pontuação e o **ranking da turma** (aparece só o primeiro nome e a inicial do sobrenome). Se sair do aparelho ou trocar de computador, entre de novo com o mesmo PIN.
 
 ### 6. Deixar o portal do seu jeito
-Toque em **Aparência** (canto inferior esquerdo) para escolher:
+Toque em **Ajustes** (canto inferior esquerdo) para escolher:
 - **cores**: 8 paletas, entre elas Rosa Aurora, Lilás Sonho, Azul, Verde e Alto contraste;
 - **claro, escuro ou automático**;
 - **tamanho da letra** (até 150%), espaçamento, fonte de leitura fácil, menos animação e links sublinhados.
@@ -58,7 +58,7 @@ Toque em **Aparência** (canto inferior esquerdo) para escolher:
 A escolha fica salva para você. O botão **Restaurar padrão** volta ao visual original.
 
 ### 7. Estudar sem internet (modo offline)
-Com internet, abra **Aparência > Uso offline** e toque em **Baixar** na disciplina que quer usar depois sem conexão (de preferência no Wi-Fi). Quando aparecer "Pronta para uso offline", ela abre mesmo sem internet.
+Com internet, abra **Ajustes > Uso offline** e toque em **Baixar** na disciplina que quer usar depois sem conexão (de preferência no Wi-Fi). Quando aparecer "Pronta para uso offline", ela abre mesmo sem internet.
 - O botão **Atualizar** aparece quando o professor muda o material. **Apagar** libera o espaço do aparelho.
 - O que você fizer sem internet **fica salvo** e é **enviado sozinho** quando a conexão voltar. Um aviso mostra quando você está offline.
 - O **login** precisa de internet na primeira vez. VLibras, vídeos e links externos também precisam de conexão.
@@ -80,7 +80,7 @@ Com internet, abra **Aparência > Uso offline** e toque em **Baixar** na discipl
 
 O portal segue as diretrizes WCAG 2.1 nível AA (base do e-MAG) e foi verificado com o axe-core nos temas claro e escuro, sem falhas automáticas nas 36 páginas.
 
-- **Meu visual:** botão **Aparência** em todas as páginas. Cada estudante escolhe entre 8 paletas (Padrão IFS, Verde Comunidade, Azul Institucional, Terracota Editorial, Rosa Aurora, Lilás Sonho, Creme Leitura e Alto contraste), claro/escuro/automático, tamanho da letra (até 150%), espaçamento, fonte de leitura fácil, menos animação e links sublinhados. A escolha fica salva por aluno no aparelho. Todas as paletas têm contraste mínimo de 4,5:1 (Alto contraste, acima de 7:1).
+- **Ajustes:** botão **Ajustes** em todas as páginas. Cada estudante escolhe entre 8 paletas (Padrão IFS, Verde Comunidade, Azul Institucional, Terracota Editorial, Rosa Aurora, Lilás Sonho, Creme Leitura e Alto contraste), claro/escuro/automático, tamanho da letra (até 150%), espaçamento, fonte de leitura fácil, menos animação e links sublinhados. A escolha fica salva por aluno no aparelho. Todas as paletas têm contraste mínimo de 4,5:1 (Alto contraste, acima de 7:1).
 - **VLibras** em todas as páginas (tradutor para Libras do governo federal; exige internet).
 - Link **"Pular para o conteúdo"** (aparece ao apertar Tab) e foco de teclado visível.
 - Navegação completa por **teclado**; elementos que só respondiam ao mouse passaram a aceitar Tab, Enter e Espaço.
@@ -127,7 +127,7 @@ disciplinas/
 ├── sw.js                   service worker (cache do material baixado)
 ├── manifest.webmanifest    instalação como aplicativo
 ├── offline-manifest.json   lista de arquivos por disciplina (gerada por tools/gerar-offline.py)
-├── aparencia.js            seletor de cores e leitura "Meu visual" (todas as páginas)
+├── aparencia.js            seletor de cores e leitura (botão Ajustes) (todas as páginas)
 ├── acessibilidade.js       VLibras, pular conteúdo, foco e teclado (todas as páginas)
 ├── apps-script/Codigo.gs   código da planilha (login, progresso e ranking)
 └── <disciplina>/           uma pasta por disciplina, com index.html e os materiais

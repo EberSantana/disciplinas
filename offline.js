@@ -1,7 +1,7 @@
 /* Uso offline · Prof. Eber Santana
  * - Registra o service worker (sw.js).
  * - Mostra um aviso quando o aparelho fica sem internet e quando ela volta.
- * - Oferece, no painel "Aparência", a seção "Uso offline": baixar, atualizar e apagar o material por disciplina.
+ * - Oferece, no painel "Ajustes", a seção "Uso offline": baixar, atualizar e apagar o material por disciplina.
  * O progresso feito sem internet fica guardado e é enviado sozinho (veja progresso-turma.js).
  */
 (function () {
@@ -160,7 +160,7 @@
     return Promise.resolve(0);
   }
 
-  /* ---------- interface (dentro do painel Aparência) ---------- */
+  /* ---------- interface (dentro do painel Ajustes) ---------- */
   function html() {
     var b = baixados();
     var h = "<legend>Uso offline</legend>";

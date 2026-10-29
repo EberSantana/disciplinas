@@ -1,4 +1,4 @@
-/* Meu visual · Prof. Eber Santana
+/* Ajustes (aparência, leitura e acessibilidade) · Prof. Eber Santana
  * Cada estudante escolhe cores, tamanho da letra, espaçamento e fonte. A escolha fica salva
  * para ele (no aparelho, ligada ao login) e vale em todas as páginas do portal.
  * Todas as paletas têm contraste de texto de pelo menos 4,5:1 (WCAG 2.1 AA / e-MAG);
@@ -206,7 +206,7 @@
   }
   function corpo() {
     var e = esquema(), n = nomeAluno();
-    var h = '<h2 id="a11y-ap-t" tabindex="-1">' + (n ? "Visual de " + esc(n) : "Meu visual") + "</h2>" +
+    var h = '<h2 id="a11y-ap-t" tabindex="-1">' + (n ? "Ajustes de " + esc(n) : "Ajustes e acessibilidade") + "</h2>" +
       "<p>Escolha o que deixa o estudo mais confortável para você. " + (n ? "Fica salvo na sua conta neste aparelho." : "Fica salvo neste aparelho.") + "</p>";
     h += '<fieldset><legend>Cores</legend><div class="a11y-temas">' + ORDEM.map(function (t) {
       var v = TEMAS[t][e], sw = '<span class="a11y-sw" aria-hidden="true"><i style="background:' + v[0] + '"></i><i style="background:' + v[6] + '"></i><i style="background:' + v[2] + '"></i></span>';
@@ -293,8 +293,8 @@
   function montar() {
     if (!d.body || d.querySelector(".a11y-ap-btn")) return;
     btn = d.createElement("button"); btn.type = "button"; btn.className = "a11y-ap-btn";
-    btn.setAttribute("aria-haspopup", "dialog"); btn.setAttribute("aria-expanded", "false");
-    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2H17a4 4 0 0 0 4-4c0-4.4-4-8-9-8z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10.5" cy="7" r="1"/><circle cx="15.5" cy="7.5" r="1"/></svg><span>Aparência</span>';
+    btn.setAttribute("aria-haspopup", "dialog"); btn.setAttribute("aria-label", "Ajustes e acessibilidade"); btn.setAttribute("aria-expanded", "false");
+    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2H17a4 4 0 0 0 4-4c0-4.4-4-8-9-8z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10.5" cy="7" r="1"/><circle cx="15.5" cy="7.5" r="1"/></svg><span>Ajustes</span>';
     btn.onclick = function () { if (painel.hidden) abrir(); else fechar(); };
     painel = d.createElement("div"); painel.className = "a11y-ap"; painel.setAttribute("role", "dialog"); painel.setAttribute("aria-labelledby", "a11y-ap-t"); painel.hidden = true;
     estadoEl = d.createElement("div"); estadoEl.className = "a11y-estado"; estadoEl.setAttribute("role", "status"); estadoEl.setAttribute("aria-live", "polite");

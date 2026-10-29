@@ -116,13 +116,13 @@ Se depois você alterar o código, use **Implantar** › **Gerenciar implantaç�
 - **Nunca envie o `Turmas.csv` (nem outra lista de alunos) para o repositório**, nem pelo "Add files via upload": o GitHub ignora o `.gitignore` nesse envio. Guarde o arquivo só no seu computador e na planilha. Se subir por engano, apague e avise para limpar o histórico.
 - Os pontos são calculados no navegador do aluno. Servem para acompanhar e motivar, não como nota oficial.
 
-## Seletor de aparência ("Meu visual")
+## Ajustes (cores, leitura e acessibilidade)
 
 O `aparencia.js` entra no `<head>` de toda página nova: `<script src="../aparencia.js"></script>` (sem `../` na raiz). Para a página aceitar a troca de cores, acrescente `data-a11y-cores` na tag `<html>` e use as variáveis de cor padrão (`--bg`, `--panel`, `--ink`, `--muted`, `--accent` etc.). Páginas com cores fixas ficam sem o atributo e ainda recebem tamanho de letra, espaçamento, fonte e movimento. As paletas ficam no começo do `aparencia.js`; ao alterar uma, confira o contraste (mínimo 4,5:1).
 
 ## Uso offline (PWA)
 
-O aluno baixa o material por disciplina em **Aparência > Uso offline**. Quem controla isso é o `offline-manifest.json`, **gerado automaticamente**.
+O aluno baixa o material por disciplina em **Ajustes > Uso offline**. Quem controla isso é o `offline-manifest.json`, **gerado automaticamente**.
 
 **Sempre que você criar, mudar ou apagar um material, rode na raiz do repositório:**
 
