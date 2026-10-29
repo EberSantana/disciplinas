@@ -26,12 +26,41 @@ Há ainda o [Laboratório 3D](https://ebersantana.github.io/disciplinas/laborato
 
 ---
 
-## Como o estudante usa
+## Como acessar e usar o portal
 
-1. Abre o portal, escolhe a turma, toca no próprio nome e digita um PIN de 4 números (no primeiro acesso, cria o PIN). Nada de digitar nome, e-mail ou turno.
-2. O portal mostra primeiro as disciplinas do curso dele. O botão **Minhas disciplinas**, no canto da tela, leva a elas a partir de qualquer página.
-3. Estuda os módulos. O progresso fica salvo no aparelho e é enviado ao professor.
-4. Acompanha a própria pontuação no ranking da turma.
+### 1. Acessar
+Abra **[ebersantana.github.io/disciplinas](https://ebersantana.github.io/disciplinas/)** no navegador do computador, tablet ou celular. Não precisa instalar nada. Dica: salve o endereço nos favoritos ou adicione à tela inicial do celular.
+
+### 2. Entrar (primeiro acesso)
+1. Escolha a **sua turma**.
+2. Toque no **seu nome** na lista.
+3. **Crie um PIN de 4 números** e digite duas vezes para confirmar. Anote o PIN: ele é a sua senha.
+
+Nos próximos acessos, escolha a turma, toque no seu nome e digite o PIN. Não precisa digitar nome, e-mail ou matrícula. Depois de 5 erros de PIN a conta fica bloqueada por 15 minutos. Se esquecer o PIN, fale com o professor.
+
+### 3. Escolher a disciplina
+O portal mostra primeiro as disciplinas do seu curso. Toque em uma para abrir os materiais. O botão **Minhas disciplinas**, no canto da tela, leva de volta a elas a partir de qualquer página.
+
+### 4. Estudar
+- Cada disciplina tem **módulos**. Em cada um você encontra atividades de caderno, flashcards, verdadeiro ou falso com justificativa, quiz e problemas de PBL.
+- **Tente responder antes**: o gabarito e a explicação só aparecem depois da sua tentativa.
+- Os **laboratórios visuais** (como a Trilha Windows 11 e o Subnetting na Prática) mostram o conceito funcionando. Mexa à vontade.
+
+### 5. Acompanhar o progresso e o ranking
+O progresso fica salvo no seu aparelho e é enviado ao professor. Abra o botão do canto da tela para ver a sua pontuação e o **ranking da turma** (aparece só o primeiro nome e a inicial do sobrenome). Se sair do aparelho ou trocar de computador, entre de novo com o mesmo PIN.
+
+### 6. Deixar o portal do seu jeito
+Toque em **Aparência** (canto inferior esquerdo) para escolher:
+- **cores**: 8 paletas, entre elas Rosa Aurora, Lilás Sonho, Azul, Verde e Alto contraste;
+- **claro, escuro ou automático**;
+- **tamanho da letra** (até 150%), espaçamento, fonte de leitura fácil, menos animação e links sublinhados.
+
+A escolha fica salva para você. O botão **Restaurar padrão** volta ao visual original.
+
+### 7. Acessibilidade e ajuda
+- **Libras:** o ícone do **VLibras** aparece nas páginas e traduz o texto para a Língua Brasileira de Sinais (precisa de internet).
+- **Teclado:** use Tab para navegar, Enter ou Espaço para ativar e Esc para fechar janelas. O primeiro Tab mostra o link **Pular para o conteúdo**.
+- Algum problema ou barreira de acesso? Avise o professor.
 
 ## Proposta pedagógica
 
