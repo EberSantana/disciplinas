@@ -77,7 +77,7 @@
   window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); evInstalar = e; atualiza(); });
   window.addEventListener("appinstalled", function () { evInstalar = null; atualiza(); });
   function instalado() { return (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true; }
-  function ehIOS() { return /iphone|ipad|ipod/i.test(navigator.userAgent); }
+  function ehIOS() { return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1); } /* iPadOS novo se identifica como Mac */
 
   /* ---------- manifesto de materiais ---------- */
   var M = null, lista = null, estado = { ocupado: false, msg: "", prog: null };
@@ -184,8 +184,8 @@
     h += '<div class="st" role="status" aria-live="polite" id="a11y-off-st">' + esc(estado.msg) + "</div>";
     if (!instalado()) {
       if (evInstalar) h += '<button type="button" class="sec" data-off="instalar">Instalar na tela inicial</button>';
-      else if (ehIOS()) h += "<p>No iPhone ou iPad: toque em Compartilhar e depois em <strong>Adicionar à Tela de Início</strong>.</p>";
-      else h += "<p>Para abrir como aplicativo, use a opção <strong>Instalar</strong> ou <strong>Adicionar à tela inicial</strong> do menu do navegador.</p>";
+      else if (ehIOS()) h += "<p>No iPhone ou iPad (Safari): toque em Compartilhar e depois em <strong>Adicionar à Tela de Início</strong>.</p>";
+      else h += "<p>Para abrir como aplicativo, abra o menu do navegador (os três pontinhos) e escolha <strong>Instalar aplicativo</strong> ou <strong>Adicionar à tela inicial</strong>.</p>";
     }
     h += '<div class="st" id="a11y-off-uso"></div>';
     return h;
