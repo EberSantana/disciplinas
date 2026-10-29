@@ -60,7 +60,8 @@ A escolha fica salva para você. O botão **Restaurar padrão** volta ao visual 
 ### 7. Estudar sem internet (modo offline)
 Com internet, abra **Ajustes > Uso offline** e toque em **Baixar** na disciplina que quer usar depois sem conexão (de preferência no Wi-Fi). Quando aparecer "Pronta para uso offline", ela abre mesmo sem internet.
 - O botão **Atualizar** aparece quando o professor muda o material. **Apagar** libera o espaço do aparelho.
-- O que você fizer sem internet **fica salvo** e é **enviado sozinho** quando a conexão voltar. Um aviso mostra quando você está offline.
+- O **selo ao lado do botão Ajustes** mostra a conexão: **Online**, **Offline**, **Aguardando envio (n)** e **Progresso enviado**. No celular ele aparece só como ícone.
+- O que você fizer sem internet **fica salvo** e é **enviado sozinho** quando a conexão voltar. Em **Ajustes > Uso offline** o botão **Enviar agora** tenta o envio na hora.
 - O **login** precisa de internet na primeira vez. VLibras, vídeos e links externos também precisam de conexão.
 - Para abrir como aplicativo, use **Instalar na tela inicial** (no iPhone: Compartilhar > Adicionar à Tela de Início).
 

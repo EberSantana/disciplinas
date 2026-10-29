@@ -103,7 +103,8 @@
     /* interface do painel (cores próprias, não dependem do tema da página) */
     ".a11y-ap-btn,.a11y-ap,.a11y-ap-dica{--u-bg:#FFFFFF;--u-ink:#16261C;--u-ink2:#3F4F5B;--u-line:#8FA39A;--u-acc:#1F5135;--u-acc-ink:#FFFFFF;--u-soft:#E3EEE7;--u-focus:#0B6BCB}" +
     "html[data-a11y-esq=escuro] :is(.a11y-ap-btn,.a11y-ap,.a11y-ap-dica){--u-bg:#16222B;--u-ink:#E4ECEF;--u-ink2:#B8C6CD;--u-line:#5C7280;--u-acc:#6BAA68;--u-acc-ink:#0B140E;--u-soft:#1F3328;--u-focus:#7FB5F5}" +
-    ".a11y-ap-btn{position:fixed;left:16px;bottom:16px;z-index:9997;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;border:2px solid var(--u-acc);background:var(--u-bg);color:var(--u-ink);font:600 15px/1 system-ui,-apple-system,'Segoe UI',sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.22)}" +
+    ".a11y-ap-dock{position:fixed;left:16px;bottom:16px;z-index:9997;display:flex;align-items:center;gap:8px}" +
+    ".a11y-ap-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;border:2px solid var(--u-acc);background:var(--u-bg);color:var(--u-ink);font:600 15px/1 system-ui,-apple-system,'Segoe UI',sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.22)}" +
     ".a11y-ap-btn svg{flex:none}.a11y-ap-btn:hover{background:var(--u-soft)}" +
     ".a11y-ap-btn:focus-visible,.a11y-ap :is(button,input,summary):focus-visible,.a11y-ap-dica button:focus-visible{outline:3px solid var(--u-focus)!important;outline-offset:2px}" +
     ".a11y-ap{position:fixed;left:16px;bottom:72px;z-index:9999;width:min(94vw,400px);max-height:min(82vh,720px);overflow:auto;background:var(--u-bg);color:var(--u-ink);border:2px solid var(--u-acc);border-radius:16px;padding:18px;box-shadow:0 16px 48px rgba(0,0,0,.35);font:16px/1.5 system-ui,-apple-system,'Segoe UI',sans-serif;text-align:left}" +
@@ -129,7 +130,7 @@
     ".a11y-ap-dica{position:fixed;left:16px;bottom:72px;z-index:9996;width:min(94vw,340px);background:var(--u-bg);color:var(--u-ink);border:2px solid var(--u-acc);border-radius:14px;padding:14px 16px;box-shadow:0 10px 32px rgba(0,0,0,.3);font:15px/1.45 system-ui,-apple-system,'Segoe UI',sans-serif}" +
     ".a11y-ap-dica p{margin:0 0 10px;letter-spacing:0;word-spacing:0}.a11y-dica-acoes{display:flex;gap:8px;flex-wrap:wrap}" +
     ".a11y-estado{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}" +
-    "@media (max-width:480px){.a11y-ap{left:8px;right:8px;width:auto;bottom:68px}.a11y-ap-btn{left:8px;bottom:8px}.a11y-ap-dica{left:8px;right:8px;width:auto}}";
+    "@media (max-width:480px){.a11y-ap{left:8px;right:8px;width:auto;bottom:68px}.a11y-ap-dock{left:8px;bottom:8px}.a11y-ap-dica{left:8px;right:8px;width:auto}}";
 
   var estilo = d.createElement("style");
   estilo.setAttribute("data-a11y-tema", "");
@@ -298,7 +299,7 @@
     btn.onclick = function () { if (painel.hidden) abrir(); else fechar(); };
     painel = d.createElement("div"); painel.className = "a11y-ap"; painel.setAttribute("role", "dialog"); painel.setAttribute("aria-labelledby", "a11y-ap-t"); painel.hidden = true;
     estadoEl = d.createElement("div"); estadoEl.className = "a11y-estado"; estadoEl.setAttribute("role", "status"); estadoEl.setAttribute("aria-live", "polite");
-    d.body.appendChild(btn); d.body.appendChild(painel); d.body.appendChild(estadoEl);
+    var dock = d.createElement("div"); dock.className = "a11y-ap-dock"; dock.appendChild(btn); d.body.appendChild(dock); d.body.appendChild(painel); d.body.appendChild(estadoEl);
     d.addEventListener("keydown", function (ev) {
       if (painel.hidden) return;
       if (ev.key === "Escape") { ev.preventDefault(); fechar(); return; }

@@ -36,11 +36,12 @@
   var css = d.createElement("style");
   css.setAttribute("data-offline", "");
   css.textContent =
-    ".pt-off-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9995;max-width:min(92vw,520px);padding:12px 18px;border-radius:12px;border:2px solid #8A5A00;background:#FFF4D6;color:#3A2A00;font:600 15px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.25);text-align:center}" +
-    ".pt-off-bar.ok{border-color:#1F5135;background:#E3F3E8;color:#10331F}.pt-off-bar[hidden]{display:none}" +
-    "html[data-a11y-esq=escuro] .pt-off-bar{border-color:#E6B450;background:#3A2F12;color:#FBEFD0}html[data-a11y-esq=escuro] .pt-off-bar.ok{border-color:#63C48F;background:#123425;color:#DDF0E4}" +
-    "@media (prefers-color-scheme:dark){html:not([data-a11y-esq]) .pt-off-bar{border-color:#E6B450;background:#3A2F12;color:#FBEFD0}html:not([data-a11y-esq]) .pt-off-bar.ok{border-color:#63C48F;background:#123425;color:#DDF0E4}}" +
-    "@media (max-width:560px){.pt-off-bar{bottom:72px}}" +
+    ".pt-con{--c-bg:#E3F3E8;--c-ink:#10331F;--c-bd:#1F5135;display:inline-flex;align-items:center;gap:7px;min-height:36px;box-sizing:border-box;padding:0 14px 0 11px;border-radius:999px;border:2px solid var(--c-bd);background:var(--c-bg);color:var(--c-ink);font:600 14px/1.2 system-ui,-apple-system,'Segoe UI',sans-serif;letter-spacing:0;word-spacing:0;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.15)}" +
+    ".pt-con .ico{display:inline-flex;flex:none}" +
+    ".pt-con[data-estado=offline]{--c-bg:#FFF4D6;--c-ink:#3A2A00;--c-bd:#8A5A00}.pt-con[data-estado=pendente]{--c-bg:#E1ECFA;--c-ink:#0F2B4D;--c-bd:#2A5C8C}" +
+    "html[data-a11y-esq=escuro] .pt-con{--c-bg:#123425;--c-ink:#DDF0E4;--c-bd:#63C48F}html[data-a11y-esq=escuro] .pt-con[data-estado=offline]{--c-bg:#3A2F12;--c-ink:#FBEFD0;--c-bd:#E6B450}html[data-a11y-esq=escuro] .pt-con[data-estado=pendente]{--c-bg:#12263F;--c-ink:#DCE9F8;--c-bd:#7FB0E0}" +
+    "@media (max-width:520px){.pt-con{width:40px;height:40px;padding:0;justify-content:center}.pt-con .txt{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}" +
+    ".a11y-off .con{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;border:2px solid var(--u-line);margin:0 0 10px;font-size:14.5px;line-height:1.35;font-weight:600;color:var(--u-ink);letter-spacing:0;word-spacing:0}" +
     ".a11y-off p{margin:0 0 10px}.a11y-off ul{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:8px}" +
     ".a11y-off li{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;border:2px solid var(--u-line);border-radius:12px;padding:10px;background:var(--u-bg)}" +
     ".a11y-off li.ok{border-color:var(--u-acc);background:var(--u-soft)}" +
@@ -53,24 +54,51 @@
     ".a11y-off .st{font-size:14px;color:var(--u-ink);margin:6px 0;letter-spacing:0;word-spacing:0;min-height:1.4em}";
   (d.head || d.documentElement).appendChild(css);
 
-  var bar = null, tBar = null;
-  function mostraBar(txt, ok, ms) {
-    if (!d.body) return;
-    if (!bar) {
-      bar = d.createElement("div"); bar.className = "pt-off-bar"; bar.setAttribute("role", "status"); bar.setAttribute("aria-live", "polite"); bar.hidden = true;
-      d.body.appendChild(bar);
-    }
-    clearTimeout(tBar);
-    bar.className = "pt-off-bar" + (ok ? " ok" : "");
-    bar.textContent = txt; bar.hidden = false;
-    if (ms) tBar = setTimeout(function () { bar.hidden = true; }, ms);
+  /* ---------- selo de conexão (ao lado do botão Ajustes) ---------- */
+  var ICONES = {
+    online: '<path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.2" r="1"/>',
+    offline: '<path d="M5 12.5a10 10 0 0 1 4-2.3"/><path d="M14.5 10.4a10 10 0 0 1 4.5 2.1"/><path d="M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.2" r="1"/><path d="M3 3l18 18"/>',
+    pendente: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    enviado: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.2 9.5"/>'
+  };
+  var enviadoAte = 0, tEnviado = null, selo = null, seloTxt = null, seloIco = null, seloTipo = "";
+  function nFila() {
+    try { if (window.PT_FILA) return window.PT_FILA.n(); return Object.keys(JSON.parse(lerLS("pt-fila") || "{}")).length; } catch (e) { return 0; }
   }
-  function aoFicarOffline() { mostraBar("Você está sem internet. O que você fizer fica salvo e será enviado quando a conexão voltar.", false); atualiza(); }
-  function aoVoltar() { mostraBar("A internet voltou. Seu progresso será enviado.", true, 5000); atualiza(); }
-  window.addEventListener("offline", aoFicarOffline);
-  window.addEventListener("online", aoVoltar);
-  function iniciaAviso() { if (navigator.onLine === false) aoFicarOffline(); }
-  if (d.readyState !== "loading") iniciaAviso(); else d.addEventListener("DOMContentLoaded", iniciaAviso);
+  function estadoCon() {
+    var n = nFila(), on = navigator.onLine !== false;
+    if (enviadoAte > Date.now()) return { tipo: "enviado", texto: "Progresso enviado" };
+    if (!on) return { tipo: "offline", texto: n ? "Offline · " + n + " na fila" : "Offline" };
+    if (n) return { tipo: "pendente", texto: "Aguardando envio (" + n + ")" };
+    return { tipo: "online", texto: "Online" };
+  }
+  function atualizaSelo() {
+    if (!selo) return;
+    var e = estadoCon();
+    if (e.tipo !== seloTipo) {
+      seloTipo = e.tipo; selo.setAttribute("data-estado", e.tipo);
+      seloIco.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONES[e.tipo] + "</svg>";
+    }
+    if (seloTxt.textContent !== e.texto) { seloTxt.textContent = e.texto; selo.title = e.texto; } /* só muda o texto quando o estado muda: o leitor de tela anuncia a mudança */
+  }
+  function montaSelo() {
+    if (selo || !d.body) return;
+    var dock = d.querySelector(".a11y-ap-dock");
+    if (!dock) { dock = d.createElement("div"); dock.className = "a11y-ap-dock"; dock.style.cssText = "position:fixed;left:16px;bottom:16px;z-index:9997;display:flex;align-items:center;gap:8px"; d.body.appendChild(dock); }
+    selo = d.createElement("div"); selo.className = "pt-con"; selo.setAttribute("role", "status");
+    seloIco = d.createElement("span"); seloIco.className = "ico";
+    seloTxt = d.createElement("span"); seloTxt.className = "txt";
+    selo.appendChild(seloIco); selo.appendChild(seloTxt); dock.appendChild(selo);
+    atualizaSelo();
+  }
+  function marcaEnviado() {
+    enviadoAte = Date.now() + 5000; gravarLS("pt-ultimo-envio", String(Date.now()));
+    clearTimeout(tEnviado); tEnviado = setTimeout(function () { atualizaSelo(); atualiza(); }, 5100);
+  }
+  window.addEventListener("offline", function () { atualizaSelo(); atualiza(); });
+  window.addEventListener("online", function () { atualizaSelo(); atualiza(); });
+  window.addEventListener("pt:fila", function (ev) { if (ev.detail && ev.detail.enviado) marcaEnviado(); atualizaSelo(); atualiza(); });
+  if (d.readyState === "complete") montaSelo(); else d.addEventListener("DOMContentLoaded", montaSelo);
 
   /* ---------- instalar na tela inicial ---------- */
   var evInstalar = null;
@@ -161,11 +189,20 @@
   }
 
   /* ---------- interface (dentro do painel Ajustes) ---------- */
+  function statusPainel() {
+    var n = nFila(), on = navigator.onLine !== false, e = estadoCon(), t, b = "";
+    if (!on) t = n ? "Sem internet. " + n + (n > 1 ? " itens aguardam" : " item aguarda") + " envio." : "Você está sem internet. O que você fizer fica salvo e será enviado quando a conexão voltar.";
+    else if (n) { t = "Aguardando envio: " + n + (n > 1 ? " itens" : " item") + " do seu progresso."; b = '<button type="button" data-off="enviar"' + (estado.enviando ? " disabled" : "") + ">" + (estado.enviando ? "Enviando…" : "Enviar agora") + "</button>"; }
+    else { var u = +lerLS("pt-ultimo-envio") || 0; t = u ? "Tudo enviado. Último envio às " + new Date(u).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) + "." : "Online. Seu progresso está em dia."; }
+    return '<div class="con"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none">' + ICONES[e.tipo === "enviado" ? "enviado" : (!on ? "offline" : n ? "pendente" : "online")] + "</svg><span>" + esc(t) + "</span></div>" + b;
+  }
+
   function html() {
     var b = baixados();
     var h = "<legend>Uso offline</legend>";
     if (!temSW) return h + "<p>Este navegador não permite o uso offline. Os materiais continuam funcionando com internet.</p>";
     if (!M) return h + "<p>Carregando a lista de materiais…</p>";
+    h += statusPainel();
     h += "<p>Baixe a disciplina para estudar sem internet. Prefira o Wi-Fi para não gastar seus dados. O login precisa de internet na primeira vez.</p><ul>";
     M.grupos.forEach(function (g) {
       var r = b[g.id], tem = !!r, velho = tem && r.versao !== g.versao;
@@ -221,6 +258,10 @@
       var a = b.getAttribute("data-off"), id = b.getAttribute("data-id");
       if (a === "baixar") baixar(id);
       else if (a === "apagar") apagar(id);
+      else if (a === "enviar" && window.PT_FILA) {
+        estado.enviando = true; estado.msg = "Enviando seu progresso…"; atualiza();
+        window.PT_FILA.enviarAgora().then(function () { estado.enviando = false; estado.msg = nFila() ? "Ainda há itens na fila. Tente de novo com uma conexão melhor." : "Tudo enviado."; atualiza(); });
+      }
       else if (a === "instalar" && evInstalar) { evInstalar.prompt(); evInstalar.userChoice.then(function () { evInstalar = null; atualiza(); }); }
     });
     pinta();

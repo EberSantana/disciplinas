@@ -144,18 +144,28 @@
      e \u00e9 enviado sozinho quando a conex\u00e3o volta. */
   var FILA = "pt-fila";
   function lerFila() { try { return JSON.parse(localStorage.getItem(FILA) || "{}") || {}; } catch (e) { return {}; } }
+  function tamFila() { return Object.keys(lerFila()).length; }
+  function avisaFila(enviado) { try { window.dispatchEvent(new CustomEvent("pt:fila", { detail: { n: tamFila(), enviado: !!enviado } })); } catch (e) {} }
   function guardarNaFila(c) {
     try { var f = lerFila(); f[c.id + "|" + c.disciplina] = c; localStorage.setItem(FILA, JSON.stringify(f)); } catch (e) {}
+    avisaFila(false);
   }
   function esvaziarFila() {
-    if (!URL_ || navigator.onLine === false) return;
+    if (!URL_ || navigator.onLine === false) return Promise.resolve();
     var f = lerFila(), chaves = Object.keys(f);
-    chaves.forEach(function (k) {
-      fetch(URL_, { method: "POST", body: JSON.stringify(f[k]) }).then(function (r) { return r.json(); }).then(function (r) {
-        if (r && (r.ok || /n\u00e3o encontrado|PIN errado|bloquead/i.test(r.erro || ""))) { var g = lerFila(); delete g[k]; try { localStorage.setItem(FILA, JSON.stringify(g)); } catch (e) {} }
-      }).catch(function () {});
+    return Promise.all(chaves.map(function (k) {
+      return fetch(URL_, { method: "POST", body: JSON.stringify(f[k]) }).then(function (r) { return r.json(); }).then(function (r) {
+        if (r && (r.ok || /n\u00e3o encontrado|PIN errado|bloquead/i.test(r.erro || ""))) {
+          var g = lerFila(); delete g[k]; try { localStorage.setItem(FILA, JSON.stringify(g)); } catch (e) {}
+          return !!r.ok;
+        }
+        return false;
+      }).catch(function () { return false; });
+    })).then(function (rs) {
+      if (chaves.length) avisaFila(tamFila() === 0 && rs.some(Boolean));
     });
   }
+  window.PT_FILA = { n: tamFila, enviarAgora: function () { return (DADOS && perfil ? enviar(dados()) : Promise.resolve()).then(esvaziarFila); } };
   function enviar(d) {
     if (!URL_ || !perfil || !d) return Promise.resolve({ ok: false, erro: "sem configura\u00e7\u00e3o" });
     var c = corpo(d);
