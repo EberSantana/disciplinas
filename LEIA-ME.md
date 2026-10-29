@@ -89,7 +89,7 @@ A lista fica no começo do arquivo `progresso-turma.js`, na parte `CURSOS`. Para
 Enviam o progresso para a planilha: Subnetting na Prática, Mapa do Chamado, Método Office Visual, Trilha Windows 11, Detetives Digitais e as atividades com ranking de Redes e de Projeto de Redes.
 
 Na planilha ficam duas abas:
-- **Turmas**: você importa o `Turmas.csv` (uma linha por aluno: turma, curso, turno, matrícula, nome). A coluna `pin` começa vazia e é preenchida quando o aluno cria o PIN (aparece como `p1234`).
+- **Turmas**: você importa o `Turmas.csv` guardado no seu computador, fora do repositório (uma linha por aluno: turma, curso, turno, matrícula, nome). A coluna `pin` começa vazia e é preenchida quando o aluno cria o PIN (aparece como `p1234`).
 - **Progresso**: criada sozinha; uma linha por aluno e por material, com atividades feitas, total, pontos e data.
 
 **Aluno esqueceu o PIN?** Apague a célula do PIN dele na aba **Turmas**; no próximo acesso ele cria outro. **Conta bloqueada** (5 erros)? Apague as células `tentativas` e `bloqueado ate` dele.
@@ -113,4 +113,5 @@ Se depois você alterar o código, use **Implantar** › **Gerenciar implantaç�
 
 - O repositório é público: não coloque dados pessoais de alunos nos arquivos. Os dados dos alunos ficam só na planilha.
 - Não compartilhe a planilha: ela tem nome completo e matrícula dos alunos.
+- **Nunca envie o `Turmas.csv` (nem outra lista de alunos) para o repositório**, nem pelo "Add files via upload": o GitHub ignora o `.gitignore` nesse envio. Guarde o arquivo só no seu computador e na planilha. Se subir por engano, apague e avise para limpar o histórico.
 - Os pontos são calculados no navegador do aluno. Servem para acompanhar e motivar, não como nota oficial.
