@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-a11y-cores>
 <head>
 <meta charset="utf-8">
 <script>try{var pa=JSON.parse(localStorage.getItem("perfil:aluno")||"null");if(!(pa&&pa.id&&pa.pin)&&!/[?&]professor\b/.test(location.search))document.documentElement.classList.add("pt-gate")}catch(e){}</script><style>html.pt-gate body>*:not(.pt-screen){visibility:hidden}</style>
@@ -82,8 +82,8 @@ h1{margin:0; font-family:var(--font-display); font-weight:700; font-size:26px; l
   position:absolute; left:10px; bottom:10px; right:10px; pointer-events:none; font-size:11.5px;
   font-family:var(--font-mono); color:var(--muted); text-shadow:0 0 6px var(--stage), 0 0 2px var(--stage);
 }
+.glfail{position:absolute; inset:0; display:grid; place-items:center; padding:24px; text-align:center; color:var(--ink)}
 .glfail[hidden]{display:none}
-.glfail{position:absolute; inset:0; display:grid; place-items:center; padding:24px; text-align:center; color:var(--muted)}
 
 .pins{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px}
 .chip{
@@ -214,6 +214,7 @@ pre#serial .err{color:#ff8f80} pre#serial .warn{color:#f2c25c} pre#serial .sys{c
 @media (max-width:640px){ .hint{display:none} .stage{aspect-ratio:1/1; max-height:none} }
 @media (prefers-reduced-motion:reduce){ .bar i{transition:none} }
 </style>
+<script src="../aparencia.js"></script>
 </head>
 <body>
 <div class="app" data-mode="intro">

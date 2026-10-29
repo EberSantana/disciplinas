@@ -25,9 +25,9 @@
     "box-shadow:0 0 0 3px #1F5135,0 8px 20px rgba(0,0,0,.3);transition:top .15s}" +
     ".a11y-skip:focus{top:12px;outline:none}" +
     ".a11y-vh{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}" +
-    ":where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}" +
-    "[data-a11y-kb]:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}" +
-    "@media (prefers-color-scheme:dark){:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible,[data-a11y-kb]:focus-visible{outline-color:#7FB5F5}}" +
+    ":where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:3px solid var(--a11y-focus,#0B6BCB);outline-offset:2px}" +
+    "[data-a11y-kb]:focus-visible{outline:3px solid var(--a11y-focus,#0B6BCB);outline-offset:2px}" +
+    "@media (prefers-color-scheme:dark){:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible,[data-a11y-kb]:focus-visible{outline-color:var(--a11y-focus,#7FB5F5)}}" +
     "@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;" +
     "animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}";
   var st = d.createElement("style");

@@ -336,6 +336,7 @@
         perfil = r.perfil; perfil.pin = p;
         try { localStorage.setItem(PKEY, JSON.stringify(perfil)); } catch (err) {}
         try { sessionStorage.setItem("pt-sync", perfil.id); } catch (err) {}
+        if (window.A11Y_AP) window.A11Y_AP.recarregar();
         if (DADOS) enviar(dados());
         paintFab(); esconderEntrada(); avisar();
       });
@@ -384,6 +385,7 @@
     if (s) s.onclick = function () { bmsg("Enviando\u2026"); enviar(dados()).then(function (r) { bmsg(r.ok ? "Progresso salvo." : r.erro || "Falha no envio.", r.ok ? "good" : "bad"); if (r.ok) ranking(); }); };
     box.querySelector("#pt-out").onclick = function () {
       perfil = null; try { localStorage.removeItem(PKEY); } catch (e) {}
+      if (window.A11Y_AP) window.A11Y_AP.recarregar();
       fechar(); avisar(); mostrarEntrada();
     };
     ranking();

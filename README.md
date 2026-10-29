@@ -44,6 +44,7 @@ Há ainda o [Laboratório 3D](https://ebersantana.github.io/disciplinas/laborato
 
 O portal segue as diretrizes WCAG 2.1 nível AA (base do e-MAG) e foi verificado com o axe-core nos temas claro e escuro, sem falhas automáticas nas 36 páginas.
 
+- **Meu visual:** botão **Aparência** em todas as páginas. Cada estudante escolhe entre 6 paletas (Padrão IFS, Verde Comunidade, Azul Institucional, Terracota Editorial, Creme Leitura e Alto contraste), claro/escuro/automático, tamanho da letra (até 150%), espaçamento, fonte de leitura fácil, menos animação e links sublinhados. A escolha fica salva por aluno no aparelho. Todas as paletas têm contraste mínimo de 4,5:1 (Alto contraste, acima de 7:1).
 - **VLibras** em todas as páginas (tradutor para Libras do governo federal; exige internet).
 - Link **"Pular para o conteúdo"** (aparece ao apertar Tab) e foco de teclado visível.
 - Navegação completa por **teclado**; elementos que só respondiam ao mouse passaram a aceitar Tab, Enter e Espaço.
@@ -69,6 +70,7 @@ disciplinas/
 ├── index.html              página inicial do portal
 ├── config.js               endereço do serviço de progresso
 ├── progresso-turma.js      login, menu de disciplinas e envio do progresso
+├── aparencia.js            seletor de cores e leitura "Meu visual" (todas as páginas)
 ├── acessibilidade.js       VLibras, pular conteúdo, foco e teclado (todas as páginas)
 ├── apps-script/Codigo.gs   código da planilha (login, progresso e ranking)
 └── <disciplina>/           uma pasta por disciplina, com index.html e os materiais
