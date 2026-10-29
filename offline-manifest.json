@@ -10,7 +10,9 @@
   "offline.html",
   "offline-manifest.json",
   "icons/icon-192.png",
-  "icons/icon-512.png"
+  "icons/icon-512.png",
+  "icons/favicon-32.png",
+  "favicon.ico"
  ],
  "externosCore": [
   "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap"
@@ -19,8 +21,8 @@
   {
    "id": "redes-de-computadores",
    "nome": "Redes de Computadores",
-   "versao": "45b242bf3e",
-   "bytes": 618486,
+   "versao": "8a3368e59c",
+   "bytes": 619680,
    "arquivos": [
     "redes-de-computadores/atividades.html",
     "redes-de-computadores/console-de-estudo.html",
@@ -40,8 +42,8 @@
   {
    "id": "projeto-de-redes",
    "nome": "Projeto de Redes",
-   "versao": "4c33ad6e8e",
-   "bytes": 213021,
+   "versao": "36c2c6b9f4",
+   "bytes": 213419,
    "arquivos": [
     "projeto-de-redes/atividades.html",
     "projeto-de-redes/index.html"
@@ -54,8 +56,8 @@
   {
    "id": "seguranca-da-informacao",
    "nome": "Segurança da Informação",
-   "versao": "42d31ebd43",
-   "bytes": 292493,
+   "versao": "7faffb03f4",
+   "bytes": 293090,
    "arquivos": [
     "seguranca-da-informacao/console-de-estudo.html",
     "seguranca-da-informacao/detetives-digitais.html",
@@ -70,8 +72,8 @@
   {
    "id": "informatica-basica",
    "nome": "Informática Básica",
-   "versao": "928e86fa22",
-   "bytes": 10996295,
+   "versao": "7619f56f16",
+   "bytes": 10997290,
    "arquivos": [
     "informatica-basica/ambiente-interativo.html",
     "informatica-basica/apostila.html",
@@ -189,8 +191,8 @@
   {
    "id": "engenharia-de-software",
    "nome": "Engenharia de Software",
-   "versao": "eb83a9d1ab",
-   "bytes": 828232,
+   "versao": "9032de1ea3",
+   "bytes": 829625,
    "arquivos": [
     "engenharia-de-software/apostila-engenharia-de-requisitos.html",
     "engenharia-de-software/apostila-engenharia-de-software-1.html",
@@ -208,8 +210,8 @@
   {
    "id": "construcao-de-sites-1",
    "nome": "Construção de Sites 1",
-   "versao": "ae6bf919a5",
-   "bytes": 393762,
+   "versao": "ee3edb666e",
+   "bytes": 394160,
    "arquivos": [
     "construcao-de-sites-1/apostila.html",
     "construcao-de-sites-1/index.html"
@@ -221,8 +223,8 @@
   {
    "id": "banco-de-dados",
    "nome": "Banco de Dados",
-   "versao": "4de1e548f5",
-   "bytes": 1410294,
+   "versao": "e96c105ee2",
+   "bytes": 1410891,
    "arquivos": [
     "banco-de-dados/apostila.html",
     "banco-de-dados/console-de-estudo.html",
@@ -236,8 +238,8 @@
   {
    "id": "recursos-de-aula",
    "nome": "Recursos de aula",
-   "versao": "ffe5f5c482",
-   "bytes": 534796,
+   "versao": "2d38993edd",
+   "bytes": 535592,
    "arquivos": [
     "recursos-de-aula/codigos-para-aprender-com-ia.html",
     "recursos-de-aula/cronometro-de-equipes.html",
@@ -253,8 +255,8 @@
   {
    "id": "laboratorio-3d",
    "nome": "Laboratório 3D",
-   "versao": "a2e427ac31",
-   "bytes": 177362,
+   "versao": "dfc665d294",
+   "bytes": 177959,
    "arquivos": [
     "laboratorio-3d/esp32-lab-3d.html",
     "laboratorio-3d/index.html",
