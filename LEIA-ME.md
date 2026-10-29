@@ -119,3 +119,21 @@ Se depois você alterar o código, use **Implantar** › **Gerenciar implantaç�
 ## Seletor de aparência ("Meu visual")
 
 O `aparencia.js` entra no `<head>` de toda página nova: `<script src="../aparencia.js"></script>` (sem `../` na raiz). Para a página aceitar a troca de cores, acrescente `data-a11y-cores` na tag `<html>` e use as variáveis de cor padrão (`--bg`, `--panel`, `--ink`, `--muted`, `--accent` etc.). Páginas com cores fixas ficam sem o atributo e ainda recebem tamanho de letra, espaçamento, fonte e movimento. As paletas ficam no começo do `aparencia.js`; ao alterar uma, confira o contraste (mínimo 4,5:1).
+
+## Uso offline (PWA)
+
+O aluno baixa o material por disciplina em **Aparência > Uso offline**. Quem controla isso é o `offline-manifest.json`, **gerado automaticamente**.
+
+**Sempre que você criar, mudar ou apagar um material, rode na raiz do repositório:**
+
+```
+python3 tools/gerar-offline.py
+```
+
+e envie o `offline-manifest.json` junto. Os alunos que já baixaram a disciplina veem "há atualização" e tocam em **Atualizar**.
+
+- Página nova: acrescente no `<head>` `<link rel="manifest" href="../manifest.webmanifest">` e `<script src="../offline.js" defer></script>` (sem `../` na raiz).
+- Disciplina nova: acrescente a pasta e o nome no dicionário `NOMES` de `tools/gerar-offline.py`.
+- Para forçar a limpeza do cache em todos os aparelhos (mudança grande), troque `VERSAO` no `sw.js` e `MAT`/`EXT` no `offline.js`.
+- O service worker só funciona em `https` (GitHub Pages) ou `localhost`.
+

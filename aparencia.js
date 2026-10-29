@@ -258,7 +258,7 @@
     });
     void sw;
   }
-  function renderPainel() { painel.innerHTML = corpo(); ligar(); nota(); }
+  function renderPainel() { painel.innerHTML = corpo(); ligar(); nota(); if (window.PT_OFFLINE && window.PT_OFFLINE.montar) window.PT_OFFLINE.montar(painel); }
   function abrir() {
     fecharDica(true);
     renderPainel();

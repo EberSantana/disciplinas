@@ -1,0 +1,272 @@
+{
+ "core": [
+  "index.html",
+  "config.js",
+  "progresso-turma.js",
+  "acessibilidade.js",
+  "aparencia.js",
+  "offline.js",
+  "manifest.webmanifest",
+  "offline.html",
+  "offline-manifest.json",
+  "icons/icon-192.png",
+  "icons/icon-512.png"
+ ],
+ "externosCore": [
+  "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap"
+ ],
+ "grupos": [
+  {
+   "id": "redes-de-computadores",
+   "nome": "Redes de Computadores",
+   "versao": "45b242bf3e",
+   "bytes": 618486,
+   "arquivos": [
+    "redes-de-computadores/atividades.html",
+    "redes-de-computadores/console-de-estudo.html",
+    "redes-de-computadores/index.html",
+    "redes-de-computadores/mapa-do-chamado.html",
+    "redes-de-computadores/subnetting-na-pratica.html",
+    "redes-de-computadores/subnetting-na-prática.html"
+   ],
+   "externos": [
+    "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
+    "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap",
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap",
+    "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600;700&display=swap"
+   ]
+  },
+  {
+   "id": "projeto-de-redes",
+   "nome": "Projeto de Redes",
+   "versao": "4c33ad6e8e",
+   "bytes": 213021,
+   "arquivos": [
+    "projeto-de-redes/atividades.html",
+    "projeto-de-redes/index.html"
+   ],
+   "externos": [
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap",
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap"
+   ]
+  },
+  {
+   "id": "seguranca-da-informacao",
+   "nome": "Segurança da Informação",
+   "versao": "42d31ebd43",
+   "bytes": 292493,
+   "arquivos": [
+    "seguranca-da-informacao/console-de-estudo.html",
+    "seguranca-da-informacao/detetives-digitais.html",
+    "seguranca-da-informacao/index.html"
+   ],
+   "externos": [
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap",
+    "https://fonts.googleapis.com/css2?family=Special+Elite&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap"
+   ]
+  },
+  {
+   "id": "informatica-basica",
+   "nome": "Informática Básica",
+   "versao": "928e86fa22",
+   "bytes": 10996295,
+   "arquivos": [
+    "informatica-basica/ambiente-interativo.html",
+    "informatica-basica/apostila.html",
+    "informatica-basica/index.html",
+    "informatica-basica/metodo-office-visual.html",
+    "informatica-basica/trilha-windows-11.html",
+    "office-visual-img/p001.webp",
+    "office-visual-img/p002.webp",
+    "office-visual-img/p003.webp",
+    "office-visual-img/p004.webp",
+    "office-visual-img/p005.webp",
+    "office-visual-img/p006.webp",
+    "office-visual-img/p007.webp",
+    "office-visual-img/p008.webp",
+    "office-visual-img/p009.webp",
+    "office-visual-img/p010.webp",
+    "office-visual-img/p011.webp",
+    "office-visual-img/p012.webp",
+    "office-visual-img/p013.webp",
+    "office-visual-img/p014.webp",
+    "office-visual-img/p015.webp",
+    "office-visual-img/p016.webp",
+    "office-visual-img/p017.webp",
+    "office-visual-img/p018.webp",
+    "office-visual-img/p019.webp",
+    "office-visual-img/p020.webp",
+    "office-visual-img/p021.webp",
+    "office-visual-img/p022.webp",
+    "office-visual-img/p023.webp",
+    "office-visual-img/p024.webp",
+    "office-visual-img/p025.webp",
+    "office-visual-img/p026.webp",
+    "office-visual-img/p027.webp",
+    "office-visual-img/p028.webp",
+    "office-visual-img/p029.webp",
+    "office-visual-img/p030.webp",
+    "office-visual-img/p031.webp",
+    "office-visual-img/p032.webp",
+    "office-visual-img/p033.webp",
+    "office-visual-img/p034.webp",
+    "office-visual-img/p035.webp",
+    "office-visual-img/p036.webp",
+    "office-visual-img/p037.webp",
+    "office-visual-img/p038.webp",
+    "office-visual-img/p039.webp",
+    "office-visual-img/p040.webp",
+    "office-visual-img/p041.webp",
+    "office-visual-img/p042.webp",
+    "office-visual-img/p043.webp",
+    "office-visual-img/p044.webp",
+    "office-visual-img/p045.webp",
+    "office-visual-img/p046.webp",
+    "office-visual-img/p047.webp",
+    "office-visual-img/p048.webp",
+    "office-visual-img/p049.webp",
+    "office-visual-img/p050.webp",
+    "office-visual-img/p051.webp",
+    "office-visual-img/p052.webp",
+    "office-visual-img/p053.webp",
+    "office-visual-img/p054.webp",
+    "office-visual-img/p055.webp",
+    "office-visual-img/p056.webp",
+    "office-visual-img/p057.webp",
+    "office-visual-img/p058.webp",
+    "office-visual-img/p059.webp",
+    "office-visual-img/p060.webp",
+    "office-visual-img/p061.webp",
+    "office-visual-img/p062.webp",
+    "office-visual-img/p063.webp",
+    "office-visual-img/p064.webp",
+    "office-visual-img/p065.webp",
+    "office-visual-img/p066.webp",
+    "office-visual-img/p067.webp",
+    "office-visual-img/p068.webp",
+    "office-visual-img/p069.webp",
+    "office-visual-img/p070.webp",
+    "office-visual-img/p071.webp",
+    "office-visual-img/p072.webp",
+    "office-visual-img/p073.webp",
+    "office-visual-img/p074.webp",
+    "office-visual-img/p075.webp",
+    "office-visual-img/p076.webp",
+    "office-visual-img/p077.webp",
+    "office-visual-img/p078.webp",
+    "office-visual-img/p079.webp",
+    "office-visual-img/p080.webp",
+    "office-visual-img/p081.webp",
+    "office-visual-img/p082.webp",
+    "office-visual-img/p083.webp",
+    "office-visual-img/p084.webp",
+    "office-visual-img/p085.webp",
+    "office-visual-img/p086.webp",
+    "office-visual-img/p087.webp",
+    "office-visual-img/p088.webp",
+    "office-visual-img/p089.webp",
+    "office-visual-img/p090.webp",
+    "office-visual-img/p091.webp",
+    "office-visual-img/p092.webp",
+    "office-visual-img/p093.webp",
+    "office-visual-img/p094.webp",
+    "office-visual-img/p095.webp",
+    "office-visual-img/p096.webp",
+    "office-visual-img/p097.webp",
+    "office-visual-img/p098.webp",
+    "office-visual-img/p099.webp",
+    "office-visual-img/p100.webp"
+   ],
+   "externos": [
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap",
+    "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Outfit:wght@200..700&family=Figtree:ital,wght@0,300..800;1,300..700&family=Google+Sans+Code:wght@300..700&family=JetBrains+Mono:wght@400;600&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,200..700,0..1,0&display=swap",
+    "https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap"
+   ]
+  },
+  {
+   "id": "engenharia-de-software",
+   "nome": "Engenharia de Software",
+   "versao": "eb83a9d1ab",
+   "bytes": 828232,
+   "arquivos": [
+    "engenharia-de-software/apostila-engenharia-de-requisitos.html",
+    "engenharia-de-software/apostila-engenharia-de-software-1.html",
+    "engenharia-de-software/apostila-engenharia-de-software.html",
+    "engenharia-de-software/dicionario-de-dados.html",
+    "engenharia-de-software/estante.html",
+    "engenharia-de-software/index.html",
+    "engenharia-de-software/roteiro-processo-de-software.html"
+   ],
+   "externos": [
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap"
+   ]
+  },
+  {
+   "id": "construcao-de-sites-1",
+   "nome": "Construção de Sites 1",
+   "versao": "ae6bf919a5",
+   "bytes": 393762,
+   "arquivos": [
+    "construcao-de-sites-1/apostila.html",
+    "construcao-de-sites-1/index.html"
+   ],
+   "externos": [
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap"
+   ]
+  },
+  {
+   "id": "banco-de-dados",
+   "nome": "Banco de Dados",
+   "versao": "4de1e548f5",
+   "bytes": 1410294,
+   "arquivos": [
+    "banco-de-dados/apostila.html",
+    "banco-de-dados/console-de-estudo.html",
+    "banco-de-dados/index.html"
+   ],
+   "externos": [
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap",
+    "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap"
+   ]
+  },
+  {
+   "id": "recursos-de-aula",
+   "nome": "Recursos de aula",
+   "versao": "ffe5f5c482",
+   "bytes": 534796,
+   "arquivos": [
+    "recursos-de-aula/codigos-para-aprender-com-ia.html",
+    "recursos-de-aula/cronometro-de-equipes.html",
+    "recursos-de-aula/index.html",
+    "recursos-de-aula/linha-do-tempo-tecnologica.html"
+   ],
+   "externos": [
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap",
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=JetBrains+Mono:wght@400;500;700&display=swap"
+   ]
+  },
+  {
+   "id": "laboratorio-3d",
+   "nome": "Laboratório 3D",
+   "versao": "a2e427ac31",
+   "bytes": 177362,
+   "arquivos": [
+    "laboratorio-3d/esp32-lab-3d.html",
+    "laboratorio-3d/index.html",
+    "laboratorio-3d/microbit-lab-3d.html"
+   ],
+   "externos": [
+    "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js",
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap",
+    "https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap",
+    "https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap"
+   ]
+  }
+ ]
+}

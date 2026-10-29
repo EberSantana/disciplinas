@@ -57,7 +57,14 @@ Toque em **Aparência** (canto inferior esquerdo) para escolher:
 
 A escolha fica salva para você. O botão **Restaurar padrão** volta ao visual original.
 
-### 7. Acessibilidade e ajuda
+### 7. Estudar sem internet (modo offline)
+Com internet, abra **Aparência > Uso offline** e toque em **Baixar** na disciplina que quer usar depois sem conexão (de preferência no Wi-Fi). Quando aparecer "Pronta para uso offline", ela abre mesmo sem internet.
+- O botão **Atualizar** aparece quando o professor muda o material. **Apagar** libera o espaço do aparelho.
+- O que você fizer sem internet **fica salvo** e é **enviado sozinho** quando a conexão voltar. Um aviso mostra quando você está offline.
+- O **login** precisa de internet na primeira vez. VLibras, vídeos e links externos também precisam de conexão.
+- Para abrir como aplicativo, use **Instalar na tela inicial** (no iPhone: Compartilhar > Adicionar à Tela de Início).
+
+### 8. Acessibilidade e ajuda
 - **Libras:** o ícone do **VLibras** aparece nas páginas e traduz o texto para a Língua Brasileira de Sinais (precisa de internet).
 - **Teclado:** use Tab para navegar, Enter ou Espaço para ativar e Esc para fechar janelas. O primeiro Tab mostra o link **Pular para o conteúdo**.
 - Algum problema ou barreira de acesso? Avise o professor.
@@ -116,6 +123,10 @@ disciplinas/
 ├── index.html              página inicial do portal
 ├── config.js               endereço do serviço de progresso
 ├── progresso-turma.js      login, menu de disciplinas e envio do progresso
+├── offline.js              uso offline: baixar material por disciplina e fila de envio
+├── sw.js                   service worker (cache do material baixado)
+├── manifest.webmanifest    instalação como aplicativo
+├── offline-manifest.json   lista de arquivos por disciplina (gerada por tools/gerar-offline.py)
 ├── aparencia.js            seletor de cores e leitura "Meu visual" (todas as páginas)
 ├── acessibilidade.js       VLibras, pular conteúdo, foco e teclado (todas as páginas)
 ├── apps-script/Codigo.gs   código da planilha (login, progresso e ranking)
