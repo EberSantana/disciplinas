@@ -138,6 +138,28 @@
       curso: perfil.curso, turno: perfil.turno, pontos: d.pontos, feitas: d.feitas, total: d.total, detalhe: d.detalhe || {} };
   }
   function avisar() { try { window.dispatchEvent(new CustomEvent("perfil:mudou", { detail: perfil })); } catch (e) {} }
+  /* Restri\u00e7\u00e3o por turma: o aluno s\u00f3 abre as disciplinas do pr\u00f3prio curso. Recursos de aula e Laborat\u00f3rio 3D s\u00e3o de todos. */
+  var COMUNS = [["Recursos de aula", "recursos-de-aula"], ["Laborat\u00f3rio 3D", "laboratorio-3d"]];
+  function permitida(pasta) {
+    if (LIVRE || !perfil) return true;
+    var c = cursoDe(perfil.curso); if (!c) return true;
+    if (pasta === "office-visual-img") pasta = "informatica-basica";
+    for (var i = 0; i < COMUNS.length; i++) if (COMUNS[i][1] === pasta) return true;
+    var conhecida = CURSOS.some(function (x) { return x.disciplinas.some(function (d) { return d[1] === pasta; }); });
+    if (!conhecida) return true;
+    return c.disciplinas.some(function (d) { return d[1] === pasta; });
+  }
+  function bloquear() {
+    var pasta = pastaAtual(); if (permitida(pasta)) return;
+    var escuro = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches;
+    var el = document.createElement("div"); el.setAttribute("role", "alertdialog"); el.setAttribute("aria-modal", "true"); el.setAttribute("aria-labelledby", "pt-bloq-t");
+    el.style.cssText = "position:fixed;inset:0;z-index:10001;display:grid;place-items:center;padding:24px;overflow:auto;background:" + (escuro ? "#0F171D" : "#EEF2F0") + ";color:" + (escuro ? "#E4ECEF" : "#16261C") + ";font:16px/1.55 " + F;
+    el.innerHTML = '<div style="max-width:460px"><h1 id="pt-bloq-t" style="font:700 30px/1.15 ' + FD + ';margin:0 0 10px;color:inherit">Esta disciplina \u00e9 de outra turma</h1>' +
+      '<p style="margin:0 0 18px">Voc\u00ea est\u00e1 em <b>' + esc(perfil.curso) + "</b>. Aqui est\u00e3o as suas disciplinas, o Laborat\u00f3rio 3D e os Recursos de aula.</p>" +
+      '<a href="' + esc(BASE + "index.html") + '" style="display:inline-block;padding:13px 20px;border-radius:10px;background:' + (escuro ? "#6BAA68" : "#1F5135") + ";color:" + (escuro ? "#0B140E" : "#fff") + ';font-weight:600;text-decoration:none">Ir para as minhas disciplinas</a></div>';
+    document.body.appendChild(el); root.style.overflow = "hidden";
+    var lk = el.querySelector("a"); if (lk) lk.focus();
+  }
   function pastaAtual() {
     if (!BASE || location.href.indexOf(BASE) !== 0) return "";
     return location.href.slice(BASE.length).split(/[\/?#]/)[0];
@@ -405,6 +427,10 @@
       '<ul class="pt-menu">' + c.disciplinas.map(function (x) {
         return '<li><a href="' + esc(BASE + x[1] + "/") + '"' + (atual === x[1] ? ' aria-current="page"' : "") + ">" + esc(x[0]) + "<span>\u2192</span></a></li>";
       }).join("") + "</ul>" +
+      "<h4>Para todos</h4>" +
+      '<ul class="pt-menu">' + COMUNS.map(function (x) {
+        return '<li><a href="' + esc(BASE + x[1] + "/") + '"' + (atual === x[1] ? ' aria-current="page"' : "") + ">" + esc(x[0]) + "<span>\u2192</span></a></li>";
+      }).join("") + "</ul>" +
       (d ? "<h4>Este material</h4>" + '<p class="pt-stat">' + d.feitas + " de " + d.total + " feitas \u00b7 " + d.pontos + " pontos</p>" +
         (URL_ ? "<p>O progresso \u00e9 enviado sozinho enquanto voc\u00ea estuda.</p>" : "<p>O envio para o professor ainda n\u00e3o foi ativado. Seu progresso fica salvo neste aparelho.</p>") : "") +
       '<div class="pt-row">' + (d && URL_ ? '<button class="pt-btn" id="pt-s" type="button">Enviar agora</button>' : "") +
@@ -458,7 +484,7 @@
   });
 
   // Para a p\u00e1gina inicial organizar as disciplinas pelo curso do aluno
-  window.PORTAL_ALUNO = { perfil: function () { return perfil; }, cursos: CURSOS, entrar: mostrarEntrada };
+  window.PORTAL_ALUNO = { perfil: function () { return perfil; }, cursos: CURSOS, comuns: COMUNS, permitida: permitida, entrar: mostrarEntrada };
 
   // Quem entrou quando o envio ainda n\u00e3o estava ligado \u00e9 cadastrado na planilha agora (uma vez por visita).
   function sincronizar() {
@@ -469,7 +495,7 @@
     });
   }
 
-  if (perfil) { paintFab(); esconderEntrada(); sincronizar(); esvaziarFila(); }
+  if (perfil) { paintFab(); esconderEntrada(); bloquear(); sincronizar(); esvaziarFila(); }
   else if (LIVRE) { root.classList.remove("pt-gate"); }
   else { mostrarEntrada(); }
   avisar();

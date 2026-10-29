@@ -206,7 +206,7 @@
     if (!M) return h + "<p>Carregando a lista de materiais…</p>";
     h += statusPainel();
     h += "<p>Baixe a disciplina para estudar sem internet. Prefira o Wi-Fi para não gastar seus dados. O login precisa de internet na primeira vez.</p><ul>";
-    M.grupos.forEach(function (g) {
+    M.grupos.filter(function (g) { var PA = window.PORTAL_ALUNO; return !PA || !PA.permitida || PA.permitida(g.id); }).forEach(function (g) {
       var r = b[g.id], tem = !!r, velho = tem && r.versao !== g.versao;
       var st = tem ? (velho ? "Baixada · há atualização" : "Pronta para uso offline") : "Não baixada";
       var ocup = estado.ocupado === g.id;

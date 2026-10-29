@@ -86,6 +86,8 @@ Depois do login:
 
 A lista fica no começo do arquivo `progresso-turma.js`, na parte `CURSOS`. Para incluir uma disciplina num curso, acrescente uma linha `["Nome que aparece", "nome-da-pasta"]` dentro do curso. Uma disciplina pode estar em mais de um curso.
 
+**Restrição por turma:** cada aluno vê e abre apenas as disciplinas do próprio curso. **Recursos de aula** e **Laboratório 3D** são comuns a todos (lista `COMUNS` no mesmo arquivo). O modo professor (`?professor` no endereço) abre tudo. Atenção: é uma separação de organização, feita no navegador; os arquivos continuam públicos no GitHub Pages. Se algum material não puder ser visto por outras pessoas, o repositório precisa ser privado ou ficar atrás de um login de verdade.
+
 Enviam o progresso para a planilha: Subnetting na Prática, Mapa do Chamado, Método Office Visual, Trilha Windows 11, Detetives Digitais e as atividades com ranking de Redes e de Projeto de Redes.
 
 Na planilha ficam duas abas:

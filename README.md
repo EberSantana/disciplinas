@@ -39,7 +39,7 @@ Abra **[ebersantana.github.io/disciplinas](https://ebersantana.github.io/discipl
 Nos próximos acessos, escolha a turma, toque no seu nome e digite o PIN. Não precisa digitar nome, e-mail ou matrícula. Depois de 5 erros de PIN a conta fica bloqueada por 15 minutos. Se esquecer o PIN, fale com o professor.
 
 ### 3. Escolher a disciplina
-O portal mostra primeiro as disciplinas do seu curso. Toque em uma para abrir os materiais. O botão **Minhas disciplinas**, no canto da tela, leva de volta a elas a partir de qualquer página.
+O portal mostra só as disciplinas do seu curso e da sua turma, além dos **Recursos de aula** e do **Laboratório 3D**, que são de todos. Toque em uma para abrir os materiais. Se abrir o endereço de uma disciplina de outra turma, o portal avisa e leva você de volta às suas. O botão **Minhas disciplinas**, no canto da tela, leva de volta a elas a partir de qualquer página.
 
 ### 4. Estudar
 - Cada disciplina tem **módulos**. Em cada um você encontra atividades de caderno, flashcards, verdadeiro ou falso com justificativa, quiz e problemas de PBL.
