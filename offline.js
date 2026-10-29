@@ -36,11 +36,12 @@
   var css = d.createElement("style");
   css.setAttribute("data-offline", "");
   css.textContent =
-    ".pt-con{--c-bg:#E3F3E8;--c-ink:#10331F;--c-bd:#1F5135;display:inline-flex;align-items:center;gap:7px;min-height:36px;box-sizing:border-box;padding:0 14px 0 11px;border-radius:999px;border:2px solid var(--c-bd);background:var(--c-bg);color:var(--c-ink);font:600 14px/1.2 system-ui,-apple-system,'Segoe UI',sans-serif;letter-spacing:0;word-spacing:0;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.15)}" +
-    ".pt-con .ico{display:inline-flex;flex:none}" +
-    ".pt-con[data-estado=offline]{--c-bg:#FFF4D6;--c-ink:#3A2A00;--c-bd:#8A5A00}.pt-con[data-estado=pendente]{--c-bg:#E1ECFA;--c-ink:#0F2B4D;--c-bd:#2A5C8C}" +
-    "html[data-a11y-esq=escuro] .pt-con{--c-bg:#123425;--c-ink:#DDF0E4;--c-bd:#63C48F}html[data-a11y-esq=escuro] .pt-con[data-estado=offline]{--c-bg:#3A2F12;--c-ink:#FBEFD0;--c-bd:#E6B450}html[data-a11y-esq=escuro] .pt-con[data-estado=pendente]{--c-bg:#12263F;--c-ink:#DCE9F8;--c-bd:#7FB0E0}" +
-    "@media (max-width:520px){.pt-con{width:40px;height:40px;padding:0;justify-content:center}.pt-con .txt{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}" +
+    ".pt-con{--c:#1E7A45;display:inline-flex;align-items:center;gap:6px;box-sizing:border-box;padding:0 12px 0 10px;border-left:1px solid var(--u-line);color:var(--u-ink2);font:500 13px/1 system-ui,-apple-system,'Segoe UI',sans-serif;letter-spacing:0;word-spacing:0;white-space:nowrap}" +
+    ".pt-con .ico{display:inline-flex;flex:none;color:var(--c)}.pt-con .n{display:none}" +
+    ".pt-con[data-estado=offline]{--c:#B26A00}.pt-con[data-estado=pendente]{--c:#2B62C4}" +
+    "html[data-a11y-esq=escuro] .pt-con{--c:#5FD08A}html[data-a11y-esq=escuro] .pt-con[data-estado=offline]{--c:#F0B35A}html[data-a11y-esq=escuro] .pt-con[data-estado=pendente]{--c:#7FB0F0}" +
+    "@media (max-width:1024px){.pt-con{height:44px;min-width:44px;justify-content:center;padding:0 12px;border:2px solid var(--c);border-radius:999px;background:var(--u-bg);color:var(--u-ink);font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.2)}.pt-con .txt{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.pt-con .n{display:inline}.pt-con .n:empty{display:none}}" +
+    "@media (max-width:600px){.pt-con{position:absolute;right:-8px;top:-8px;height:26px;min-width:26px;padding:0 5px;gap:2px;font-size:12px;box-shadow:none}.pt-con .ico svg{width:14px;height:14px}}" +
     ".a11y-off .con{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;border:2px solid var(--u-line);margin:0 0 10px;font-size:14.5px;line-height:1.35;font-weight:600;color:var(--u-ink);letter-spacing:0;word-spacing:0}" +
     ".a11y-off p{margin:0 0 10px}.a11y-off ul{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:8px}" +
     ".a11y-off li{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;border:2px solid var(--u-line);border-radius:12px;padding:10px;background:var(--u-bg)}" +
@@ -61,7 +62,7 @@
     pendente: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
     enviado: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.2 9.5"/>'
   };
-  var enviadoAte = 0, tEnviado = null, selo = null, seloTxt = null, seloIco = null, seloTipo = "";
+  var enviadoAte = 0, tEnviado = null, selo = null, seloTxt = null, seloIco = null, seloN = null, seloTipo = "";
   function nFila() {
     try { if (window.PT_FILA) return window.PT_FILA.n(); return Object.keys(JSON.parse(lerLS("pt-fila") || "{}")).length; } catch (e) { return 0; }
   }
@@ -77,18 +78,19 @@
     var e = estadoCon();
     if (e.tipo !== seloTipo) {
       seloTipo = e.tipo; selo.setAttribute("data-estado", e.tipo);
-      seloIco.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONES[e.tipo] + "</svg>";
+      seloIco.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONES[e.tipo] + "</svg>";
     }
+    var nn = (e.tipo === "enviado" || e.tipo === "online") ? "" : String(nFila() || ""); if (seloN.textContent !== nn) seloN.textContent = nn;
     if (seloTxt.textContent !== e.texto) { seloTxt.textContent = e.texto; selo.title = e.texto; } /* só muda o texto quando o estado muda: o leitor de tela anuncia a mudança */
   }
   function montaSelo() {
     if (selo || !d.body) return;
     var dock = d.querySelector(".a11y-ap-dock");
-    if (!dock) { dock = d.createElement("div"); dock.className = "a11y-ap-dock"; dock.style.cssText = "position:fixed;left:16px;bottom:16px;z-index:9997;display:flex;align-items:center;gap:8px"; d.body.appendChild(dock); }
+    if (!dock) { dock = d.createElement("div"); dock.className = "a11y-ap-dock"; d.body.appendChild(dock); }
     selo = d.createElement("div"); selo.className = "pt-con"; selo.setAttribute("role", "status");
     seloIco = d.createElement("span"); seloIco.className = "ico";
-    seloTxt = d.createElement("span"); seloTxt.className = "txt";
-    selo.appendChild(seloIco); selo.appendChild(seloTxt); dock.appendChild(selo);
+    seloTxt = d.createElement("span"); seloTxt.className = "txt"; seloN = d.createElement("span"); seloN.className = "n"; seloN.setAttribute("aria-hidden", "true");
+    selo.appendChild(seloIco); selo.appendChild(seloTxt); selo.appendChild(seloN); dock.appendChild(selo);
     atualizaSelo();
   }
   function marcaEnviado() {
