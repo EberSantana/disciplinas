@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="pt-BR" data-a11y-cores>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Painel do professor · Ambientes de estudo</title>
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<script src="aparencia.js"></script>
+<style>
+:root{--bg:#EEF2F0;--panel:#fff;--ink:#16261C;--ink-2:#3F4F5B;--muted:#5B6871;--line:#D5DDDA;--accent:#1F5135;--on:#fff;--warn:#8A4B00;--warn-bg:#FFF1D6;--ok:#1E6B3E;--ok-bg:#E3F3E8;--bad:#9B1C1C;--bad-bg:#FBE4E4}
+@media (prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#0F171D;--panel:#16222B;--ink:#E4ECEF;--ink-2:#B8C6CD;--muted:#9FB1BA;--line:#2A3A45;--accent:#6BAA68;--on:#0B140E;--warn:#F0B35A;--warn-bg:#3A2F12;--ok:#7FD79F;--ok-bg:#123425;--bad:#FF9C9C;--bad-bg:#3D1B1B}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Source Sans 3","Segoe UI",system-ui,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 16px 96px}
+h1{font:700 36px/1.1 "Barlow Condensed","Arial Narrow",sans-serif;margin:0 0 4px}
+.sub{color:var(--ink-2);margin:0 0 20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+form.login{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+label{display:block;font-weight:600;margin:0 0 4px}
+input,select,button{font:inherit}
+input,select{min-height:44px;padding:0 12px;border:2px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink)}
+button{min-height:44px;padding:0 18px;border:2px solid var(--accent);border-radius:10px;background:var(--accent);color:var(--on);font-weight:600;cursor:pointer}
+button.sec{background:var(--panel);color:var(--ink)}
+:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
+.msg{margin:10px 0 0;min-height:1.4em;color:var(--ink-2)}.msg.bad{color:var(--bad);font-weight:600}
+.resumo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 16px}
+.resumo b{display:block;font:700 34px/1 "Barlow Condensed","Arial Narrow",sans-serif}
+.resumo span{color:var(--ink-2);font-size:14px}
+.filtros{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin:0 0 12px}
+.filtros .grow{flex:1 1 220px}
+.tabela{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 12px/1.2 ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+.tag{display:inline-block;padding:2px 9px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid currentColor}
+.t-ok{color:var(--ok);background:var(--ok-bg)}.t-warn{color:var(--warn);background:var(--warn-bg)}.t-bad{color:var(--bad);background:var(--bad-bg)}.t-n{color:var(--ink-2)}
+.barra{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:4px;min-width:90px}.barra i{display:block;height:100%;background:var(--accent)}
+details summary{cursor:pointer;color:var(--accent);font-weight:600}
+.det{margin:6px 0 0;padding:0;list-style:none;font-size:14px;color:var(--ink-2)}
+.acoes{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
+.aviso{font-size:14px;color:var(--ink-2);margin:14px 0 0}
+[hidden]{display:none!important}
+@media print{.nao-imprime,.a11y-ap-dock,.a11y-ap{display:none!important}body{background:#fff;color:#000}.tabela{border:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Painel do professor</h1>
+  <p class="sub">Acompanhe quem está estudando, em que aparelho e quem precisa de atenção. Os dados vêm da planilha, direto para este navegador, e não ficam salvos no site.</p>
+
+  <section class="card nao-imprime" id="entrada" aria-labelledby="tl">
+    <form class="login" id="form">
+      <div><label for="chave" id="tl">Senha do painel</label><input id="chave" type="password" autocomplete="current-password" required></div>
+      <button type="submit">Abrir painel</button>
+    </form>
+    <p class="msg" id="msg" role="status"></p>
+    <p class="aviso">A senha é a propriedade <b>PROFESSOR_CHAVE</b> que você define no Apps Script (veja o LEIA-ME). Ela fica só nesta aba do navegador e some quando você fecha.</p>
+  </section>
+
+  <div id="painel" hidden>
+    <div class="resumo" id="resumo"></div>
+    <div class="filtros nao-imprime">
+      <div class="grow"><label for="f-busca">Buscar aluno</label><input id="f-busca" type="search" style="width:100%" autocomplete="off"></div>
+      <div><label for="f-turma">Turma</label><select id="f-turma"></select></div>
+      <div><label for="f-situ">Situação</label><select id="f-situ"><option value="">Todas</option><option value="alerta">Precisam de atenção</option><option value="agora">Online agora</option><option value="hoje">Estudaram hoje</option><option value="nunca">Nunca entraram</option></select></div>
+    </div>
+    <p class="msg" id="contagem" role="status" aria-live="polite"></p>
+    <div class="tabela"><table>
+      <caption class="sr" style="position:absolute;left:-9999px">Alunos, último acesso, aparelho, progresso e pontos</caption>
+      <thead><tr><th scope="col">Aluno</th><th scope="col">Turma</th><th scope="col">Último acesso</th><th scope="col">Aparelho</th><th scope="col">Progresso</th><th scope="col">Pontos</th></tr></thead>
+      <tbody id="corpo"></tbody>
+    </table></div>
+    <div class="acoes nao-imprime">
+      <button type="button" id="atualizar">Atualizar</button>
+      <button type="button" class="sec" id="csv">Baixar planilha (CSV)</button>
+      <button type="button" class="sec" id="imprimir">Imprimir / salvar em PDF</button>
+      <button type="button" class="sec" id="sair">Sair</button>
+    </div>
+    <p class="aviso">Este painel mostra nomes e matrículas dos alunos. Não deixe aberto em tela compartilhada e guarde o arquivo baixado fora do repositório.</p>
+  </div>
+</div>
+<script src="config.js"></script>
+<script>
+(function () {
+  var URL_ = String(window.RANKING_URL || "").trim(), KEY = "pt-prof-chave", D = null;
+  var $ = function (id) { return document.getElementById(id); };
+  function msg(t, bad) { var m = $("msg"); m.textContent = t || ""; m.className = "msg" + (bad ? " bad" : ""); }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function quando(ms) {
+    if (!ms) return "Nunca entrou";
+    var m = Math.round((D.agora - ms) / 60000);
+    if (m < 2) return "Agora"; if (m < 60) return "Há " + m + " min"; var h = Math.round(m / 60);
+    if (h < 24) return "Há " + h + " h"; var d = Math.floor(h / 24); return "Há " + d + (d === 1 ? " dia" : " dias");
+  }
+  function situ(a) {
+    if (!a.acesso) return "nunca";
+    var m = (D.agora - a.acesso) / 60000;
+    if (m < 15) return "agora";
+    if (a.dias >= D.diasAlerta) return "alerta";
+    if (a.dias < 1 && new Date(a.acesso).toDateString() === new Date(D.agora).toDateString()) return "hoje";
+    return "ok";
+  }
+  var TAGS = { agora: ["t-ok", "Online agora"], hoje: ["t-ok", "Estudou hoje"], ok: ["t-n", ""], alerta: ["t-warn", "Sem acessar há mais de 7 dias"], nunca: ["t-bad", "Nunca entrou"] };
+  function filtrados() {
+    var q = $("f-busca").value.trim().toLowerCase(), t = $("f-turma").value, s = $("f-situ").value;
+    return D.alunos.filter(function (a) {
+      return (!q || a.nome.toLowerCase().indexOf(q) >= 0 || String(a.matricula).indexOf(q) >= 0) && (!t || a.turma === t) &&
+        (!s || (s === "hoje" ? ["hoje", "agora"].indexOf(situ(a)) >= 0 : situ(a) === s));
+    }).sort(function (a, b) { return a.nome.localeCompare(b.nome, "pt-BR"); });
+  }
+  function desenha() {
+    var l = filtrados(), c = D.alunos, n = function (f) { return c.filter(f).length; };
+    $("resumo").innerHTML = [["Alunos", c.length], ["Online agora", n(function (a) { return situ(a) === "agora"; })],
+      ["Estudaram hoje", n(function (a) { return ["agora", "hoje"].indexOf(situ(a)) >= 0; })],
+      ["Precisam de atenção", n(function (a) { return situ(a) === "alerta"; })], ["Nunca entraram", n(function (a) { return situ(a) === "nunca"; })],
+      ["Sem PIN", n(function (a) { return a.semPin; })]].map(function (x) { return '<div class="card"><b>' + x[1] + "</b><span>" + x[0] + "</span></div>"; }).join("");
+    $("contagem").textContent = l.length + " de " + c.length + " alunos";
+    $("corpo").innerHTML = l.map(function (a) {
+      var s = situ(a), tg = TAGS[s], pc = a.total ? Math.round(100 * a.feitas / a.total) : 0;
+      var det = a.materiais.length ? "<details><summary>" + a.materiais.length + " material(is)</summary><ul class=\"det\">" + a.materiais.map(function (m) {
+        return "<li>" + esc(m.material) + ": " + m.feitas + "/" + m.total + " · " + m.pontos + " pts</li>"; }).join("") + "</ul></details>" : "";
+      return "<tr><th scope=\"row\" style=\"font:inherit;text-transform:none;letter-spacing:0;color:inherit\">" + esc(a.nome) + '<br><span style="color:var(--muted);font-size:13px">' + esc(a.matricula) + "</span></th>" +
+        "<td>" + esc(a.turma) + "</td><td>" + quando(a.acesso) + (tg[1] ? '<br><span class="tag ' + tg[0] + '">' + tg[1] + "</span>" : "") + "</td>" +
+        "<td>" + esc(a.aparelho || "—") + "</td><td>" + a.feitas + " de " + a.total + " (" + pc + '%)<div class="barra" aria-hidden="true"><i style="width:' + pc + '%"></i></div>' + det + "</td><td>" + a.pontos + "</td></tr>";
+    }).join("");
+  }
+  function preenche() {
+    var ts = {}; D.alunos.forEach(function (a) { ts[a.turma] = 1; });
+    var atual = $("f-turma").value;
+    $("f-turma").innerHTML = '<option value="">Todas</option>' + Object.keys(ts).sort().map(function (t) { return '<option value="' + esc(t) + '">' + esc(t) + "</option>"; }).join("");
+    $("f-turma").value = ts[atual] ? atual : "";
+  }
+  function carregar(chave) {
+    if (!URL_) { msg("O portal ainda não está ligado à planilha (config.js).", true); return Promise.resolve(); }
+    msg("Carregando…");
+    return fetch(URL_, { method: "POST", body: JSON.stringify({ acao: "painel", chave: chave }) }).then(function (r) { return r.json(); }).then(function (r) {
+      if (!r.ok) { msg(r.erro || "Não foi possível abrir.", true); try { sessionStorage.removeItem(KEY); } catch (e) {} return; }
+      try { sessionStorage.setItem(KEY, chave); } catch (e) {}
+      D = r; msg(""); $("entrada").hidden = true; $("painel").hidden = false; preenche(); desenha();
+    }).catch(function () { msg("Sem conexão com a planilha. Confira a internet e tente de novo.", true); });
+  }
+  $("form").onsubmit = function (e) { e.preventDefault(); carregar($("chave").value); };
+  ["f-busca", "f-turma", "f-situ"].forEach(function (id) { $(id).addEventListener("input", function () { if (D) desenha(); }); });
+  $("atualizar").onclick = function () { var k = ""; try { k = sessionStorage.getItem(KEY) || ""; } catch (e) {} carregar(k); };
+  $("imprimir").onclick = function () { window.print(); };
+  $("sair").onclick = function () { try { sessionStorage.removeItem(KEY); } catch (e) {} D = null; $("painel").hidden = true; $("entrada").hidden = false; $("chave").value = ""; $("chave").focus(); };
+  function cel(v) { v = String(v == null ? "" : v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return '"' + v.replace(/"/g, '""') + '"'; }
+  $("csv").onclick = function () {
+    var cab = ["Turma", "Curso", "Aluno", "Matrícula", "Último acesso", "Aparelho", "Feitas", "Total", "Pontos", "Situação"];
+    var linhas = filtrados().map(function (a) { return [a.turma, a.curso, a.nome, a.matricula, a.acesso ? new Date(a.acesso).toLocaleString("pt-BR") : "Nunca", a.aparelho, a.feitas, a.total, a.pontos, (TAGS[situ(a)][1] || "Normal")].map(cel).join(";"); });
+    var blob = new Blob(["﻿" + [cab.map(cel).join(";")].concat(linhas).join("\r\n")], { type: "text/csv;charset=utf-8" });
+    var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "painel-turmas-" + new Date().toISOString().slice(0, 10) + ".csv";
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  };
+  var k0 = ""; try { k0 = sessionStorage.getItem(KEY) || ""; } catch (e) {}
+  if (k0) carregar(k0);
+})();
+</script>
+<script src="acessibilidade.js" defer></script>
+</body>
+</html>

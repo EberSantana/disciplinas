@@ -174,7 +174,7 @@ footer{color:var(--muted);font-size:14px;margin-top:32px}
     cards.forEach(function (a) { todas.appendChild(a); });
     todas.style.display = ""; document.getElementById("todas-titulo").style.display = "";
     if (!curso) { meu.hidden = true; aviso.hidden = false; document.getElementById("todas-titulo").textContent = "Disciplinas"; return; }
-    var minhas = curso.disciplinas.map(function (d) { return d[1]; });
+    var minhas = (P.minhas() || curso.disciplinas).map(function (d) { return d[1]; });
     minhas.forEach(function (f) { cards.forEach(function (a) { if (pasta(a) === f) meuGrid.appendChild(a); }); });
     document.getElementById("meu-curso-titulo").textContent = curso.nome + " · " + p.turma + " · " + p.turno;
     todas.style.display = "none"; document.getElementById("todas-titulo").style.display = "none"; /* cada turma v\u00ea s\u00f3 as suas disciplinas */

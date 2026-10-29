@@ -22,8 +22,8 @@
   {
    "id": "redes-de-computadores",
    "nome": "Redes de Computadores",
-   "versao": "8a3368e59c",
-   "bytes": 619680,
+   "versao": "db9afbf2c0",
+   "bytes": 619929,
    "arquivos": [
     "redes-de-computadores/atividades.html",
     "redes-de-computadores/console-de-estudo.html",
@@ -43,8 +43,8 @@
   {
    "id": "projeto-de-redes",
    "nome": "Projeto de Redes",
-   "versao": "36c2c6b9f4",
-   "bytes": 213419,
+   "versao": "29c495305a",
+   "bytes": 213502,
    "arquivos": [
     "projeto-de-redes/atividades.html",
     "projeto-de-redes/index.html"
@@ -57,8 +57,8 @@
   {
    "id": "seguranca-da-informacao",
    "nome": "Segurança da Informação",
-   "versao": "7faffb03f4",
-   "bytes": 293090,
+   "versao": "b460e281b9",
+   "bytes": 293173,
    "arquivos": [
     "seguranca-da-informacao/console-de-estudo.html",
     "seguranca-da-informacao/detetives-digitais.html",
@@ -73,8 +73,8 @@
   {
    "id": "informatica-basica",
    "nome": "Informática Básica",
-   "versao": "7619f56f16",
-   "bytes": 10997290,
+   "versao": "df69c0bf1b",
+   "bytes": 10997456,
    "arquivos": [
     "informatica-basica/ambiente-interativo.html",
     "informatica-basica/apostila.html",
@@ -192,8 +192,8 @@
   {
    "id": "engenharia-de-software",
    "nome": "Engenharia de Software",
-   "versao": "9032de1ea3",
-   "bytes": 829625,
+   "versao": "ad717abd60",
+   "bytes": 830123,
    "arquivos": [
     "engenharia-de-software/apostila-engenharia-de-requisitos.html",
     "engenharia-de-software/apostila-engenharia-de-software-1.html",
@@ -211,8 +211,8 @@
   {
    "id": "construcao-de-sites-1",
    "nome": "Construção de Sites 1",
-   "versao": "ee3edb666e",
-   "bytes": 394160,
+   "versao": "ce8e316b95",
+   "bytes": 394243,
    "arquivos": [
     "construcao-de-sites-1/apostila.html",
     "construcao-de-sites-1/index.html"
@@ -224,8 +224,8 @@
   {
    "id": "banco-de-dados",
    "nome": "Banco de Dados",
-   "versao": "e96c105ee2",
-   "bytes": 1410891,
+   "versao": "7fff928040",
+   "bytes": 1411057,
    "arquivos": [
     "banco-de-dados/apostila.html",
     "banco-de-dados/console-de-estudo.html",

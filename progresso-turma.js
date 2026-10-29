@@ -136,20 +136,36 @@
   function primeiroNome() { return perfil ? perfil.nome.trim().split(/\s+/)[0] : ""; }
   function dados() { return DADOS ? DADOS() : null; }
   function corpo(d) {
-    return { disciplina: ID || "portal", turma: perfil.turma, id: perfil.id, pin: perfil.pin, nome: perfil.nome, apelido: perfil.apelido,
+    return { aparelho: aparelhoGeral(), disciplina: ID || "portal", turma: perfil.turma, id: perfil.id, pin: perfil.pin, nome: perfil.nome, apelido: perfil.apelido,
       curso: perfil.curso, turno: perfil.turno, pontos: d.pontos, feitas: d.feitas, total: d.total, detalhe: d.detalhe || {} };
   }
   function avisar() { try { window.dispatchEvent(new CustomEvent("perfil:mudou", { detail: perfil })); } catch (e) {} }
   /* Restri\u00e7\u00e3o por turma: o aluno s\u00f3 abre as disciplinas do pr\u00f3prio curso. Recursos de aula e Laborat\u00f3rio 3D s\u00e3o de todos. */
   var COMUNS = [["Recursos de aula", "recursos-de-aula"], ["Laborat\u00f3rio 3D", "laboratorio-3d"]];
+  function todasDisc() {
+    var m = {}; CURSOS.forEach(function (x) { x.disciplinas.forEach(function (d) { m[d[1]] = d; }); }); return m;
+  }
+  /* Disciplinas do aluno: a lista da turma (config.js) ou, se n\u00e3o houver, a do curso. */
+  function minhas() {
+    var c = perfil && cursoDe(perfil.curso); if (!c) return null;
+    var o = window.DISCIPLINAS_POR_TURMA && window.DISCIPLINAS_POR_TURMA[perfil.turma];
+    if (o && o.length) { var t = todasDisc(); return o.filter(function (f) { return t[f]; }).map(function (f) { return t[f]; }); }
+    return c.disciplinas;
+  }
   function permitida(pasta) {
     if (LIVRE || !perfil) return true;
-    var c = cursoDe(perfil.curso); if (!c) return true;
+    var ms = minhas(); if (!ms) return true;
     if (pasta === "office-visual-img") pasta = "informatica-basica";
     for (var i = 0; i < COMUNS.length; i++) if (COMUNS[i][1] === pasta) return true;
-    var conhecida = CURSOS.some(function (x) { return x.disciplinas.some(function (d) { return d[1] === pasta; }); });
-    if (!conhecida) return true;
-    return c.disciplinas.some(function (d) { return d[1] === pasta; });
+    if (!todasDisc()[pasta]) return true;
+    return ms.some(function (d) { return d[1] === pasta; });
+  }
+  /* Libera\u00e7\u00e3o por data: devolve "dd/mm/aaaa" se a p\u00e1gina ainda n\u00e3o abriu, sen\u00e3o "". */
+  function aindaFechada(rel) {
+    if (LIVRE || !rel) return "";
+    var L = window.LIBERACAO || {}, pasta = rel.split("/")[0], d = L[rel] || L[pasta];
+    if (!d || !/^\d{4}-\d{2}-\d{2}$/.test(d) || dia() >= d) return "";
+    return d.slice(8, 10) + "/" + d.slice(5, 7) + "/" + d.slice(0, 4);
   }
   /* Estudo do aluno: \u00faltima p\u00e1gina aberta, sequ\u00eancia de dias e anota\u00e7\u00f5es (tudo guardado neste aparelho). */
   function uid() { return perfil ? perfil.id : "anon"; }
@@ -173,16 +189,28 @@
     if (ds.indexOf(h) < 0) { ds.push(h); ds = ds.slice(-120); gravarLS("pt-dias:" + uid(), JSON.stringify(ds)); }
   }
   function notaChave() { return "pt-nota:" + uid() + ":" + relAtual(); }
-  function bloquear() {
-    var pasta = pastaAtual(); if (permitida(pasta)) return;
+  /* Tipo de aparelho em linhas gerais (ex.: "Android \u00b7 Chrome"), s\u00f3 para o professor saber onde o aluno estuda. */
+  function aparelhoGeral() {
+    var u = navigator.userAgent || "", so = /iPad|iPhone|iPod/.test(u) ? "iOS" : /Android/.test(u) ? "Android" : /Windows/.test(u) ? "Windows" : /Mac OS X|Macintosh/.test(u) ? (navigator.maxTouchPoints > 1 ? "iPadOS" : "Mac") : /CrOS/.test(u) ? "ChromeOS" : /Linux/.test(u) ? "Linux" : "Outro";
+    var nav = /Edg\//.test(u) ? "Edge" : /OPR\/|Opera/.test(u) ? "Opera" : /SamsungBrowser/.test(u) ? "Samsung" : /Firefox|FxiOS/.test(u) ? "Firefox" : /Chrome|CriOS/.test(u) ? "Chrome" : /Safari/.test(u) ? "Safari" : "Outro";
+    return so + " \u00b7 " + nav;
+  }
+  function tela(titulo, texto) {
     var escuro = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches;
     var el = document.createElement("div"); el.setAttribute("role", "alertdialog"); el.setAttribute("aria-modal", "true"); el.setAttribute("aria-labelledby", "pt-bloq-t");
     el.style.cssText = "position:fixed;inset:0;z-index:10001;display:grid;place-items:center;padding:24px;overflow:auto;background:" + (escuro ? "#0F171D" : "#EEF2F0") + ";color:" + (escuro ? "#E4ECEF" : "#16261C") + ";font:16px/1.55 " + F;
-    el.innerHTML = '<div style="max-width:460px"><h1 id="pt-bloq-t" style="font:700 30px/1.15 ' + FD + ';margin:0 0 10px;color:inherit">Esta disciplina \u00e9 de outra turma</h1>' +
-      '<p style="margin:0 0 18px">Voc\u00ea est\u00e1 em <b>' + esc(perfil.curso) + "</b>. Aqui est\u00e3o as suas disciplinas, o Laborat\u00f3rio 3D e os Recursos de aula.</p>" +
+    el.innerHTML = '<div style="max-width:460px"><h1 id="pt-bloq-t" style="font:700 30px/1.15 ' + FD + ';margin:0 0 10px;color:inherit">' + titulo + "</h1>" +
+      '<p style="margin:0 0 12px">' + texto + "</p>" +
+      '<p style="margin:0 0 18px;font-size:14.5px;opacity:.85">Acha que isso \u00e9 um engano? Fale com o professor.</p>' +
       '<a href="' + esc(BASE + "index.html") + '" style="display:inline-block;padding:13px 20px;border-radius:10px;background:' + (escuro ? "#6BAA68" : "#1F5135") + ";color:" + (escuro ? "#0B140E" : "#fff") + ';font-weight:600;text-decoration:none">Ir para as minhas disciplinas</a></div>';
     document.body.appendChild(el); root.style.overflow = "hidden";
     var lk = el.querySelector("a"); if (lk) lk.focus();
+  }
+  function bloquear() {
+    var rel = relAtual(), pasta = pastaAtual();
+    if (!permitida(pasta)) { tela("Esta disciplina \u00e9 de outra turma", "Voc\u00ea est\u00e1 em <b>" + esc(perfil.curso) + "</b>. Nas suas disciplinas, no Laborat\u00f3rio 3D e nos Recursos de aula voc\u00ea tem acesso a tudo."); return; }
+    var d = aindaFechada(rel);
+    if (d) tela("Ainda n\u00e3o est\u00e1 dispon\u00edvel", "Este material abre em <b>" + d + "</b>. Volte nessa data para estudar.");
   }
   function pastaAtual() {
     if (!BASE || location.href.indexOf(BASE) !== 0) return "";
@@ -399,7 +427,7 @@
     if (!alunoSel.temPin && p !== p2) { gmsg("Os dois PINs n\u00e3o s\u00e3o iguais. Digite de novo.", "bad"); q("#pt-p2").focus(); return; }
     var btn = q(".pt-go"), txt = btn.textContent;
     btn.disabled = true; btn.textContent = "Entrando\u2026"; gmsg("");
-    fetch(URL_, { method: "POST", body: JSON.stringify({ acao: "entrar", turma: turmaSel.turma, id: alunoSel.id, pin: p, criarPin: !alunoSel.temPin }) })
+    fetch(URL_, { method: "POST", body: JSON.stringify({ aparelho: aparelhoGeral(), acao: "entrar", turma: turmaSel.turma, id: alunoSel.id, pin: p, criarPin: !alunoSel.temPin }) })
       .then(function (r) { return r.json(); })
       .catch(function () { return { ok: false, erro: "Sem conex\u00e3o com a internet. Tente de novo." }; })
       .then(function (r) {
@@ -442,7 +470,7 @@
   function bmsg(t, cl) { var m = box.querySelector(".pt-msg"); if (m) { m.textContent = t; m.className = "pt-msg " + (cl || ""); } }
 
   function painel() {
-    var d = dados(), c = cursoDe(perfil.curso) || { disciplinas: [].concat.apply([], CURSOS.map(function (x) { return x.disciplinas; })).filter(function (x, i, a) { return a.map(function (y) { return y[1]; }).indexOf(x[1]) === i; }) }, atual = pastaAtual();
+    var d = dados(), c = cursoDe(perfil.curso) ? { disciplinas: minhas() || cursoDe(perfil.curso).disciplinas } : { disciplinas: [].concat.apply([], CURSOS.map(function (x) { return x.disciplinas; })).filter(function (x, i, a) { return a.map(function (y) { return y[1]; }).indexOf(x[1]) === i; }) }, atual = pastaAtual();
     box.innerHTML =
       '<button class="pt-close" id="pt-x" type="button" aria-label="Fechar">\u00d7</button>' +
       "<h3>Ol\u00e1, " + esc(primeiroNome()) + "</h3>" +
@@ -514,7 +542,7 @@
   });
 
   // Para a p\u00e1gina inicial organizar as disciplinas pelo curso do aluno
-  window.PORTAL_ALUNO = { perfil: function () { return perfil; }, cursos: CURSOS, comuns: COMUNS, permitida: permitida, ultima: ultima, sequencia: sequencia, entrar: mostrarEntrada };
+  window.PORTAL_ALUNO = { perfil: function () { return perfil; }, cursos: CURSOS, comuns: COMUNS, permitida: permitida, ultima: ultima, sequencia: sequencia, minhas: minhas, entrar: mostrarEntrada };
 
   // Quem entrou quando o envio ainda n\u00e3o estava ligado \u00e9 cadastrado na planilha agora (uma vez por visita).
   function sincronizar() {

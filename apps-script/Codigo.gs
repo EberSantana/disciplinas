@@ -14,9 +14,12 @@
  */
 const ABA_TURMAS = "Turmas";
 const ABA_PROG = "Progresso";
-const CAB_TURMAS = ["turma", "curso", "turno", "matricula", "nome", "pin", "ultimo acesso", "tentativas", "bloqueado ate"];
+const CAB_TURMAS = ["turma", "curso", "turno", "matricula", "nome", "pin", "ultimo acesso", "tentativas", "bloqueado ate", "aparelho"];
 const CAB_PROG = ["material", "nome", "matricula", "curso", "turno", "turma", "feitas", "total", "pontos", "atualizado", "detalhe"];
 const MAX_TENTATIVAS = 5, BLOQUEIO_MIN = 15;
+// Painel do professor: defina a senha em Configurações do projeto > Propriedades do script > PROFESSOR_CHAVE.
+// Sem essa propriedade o painel fica desligado.
+const DIAS_ALERTA = 7;
 
 function aba_(nome, cab) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -69,7 +72,7 @@ function lerTurmas_() {
   const v = turmas_().getDataRange().getValues();
   return v.slice(1).map((r, i) => ({ linha: i + 2, turma: txt_(r[0], 60), curso: txt_(r[1], 80), turno: txt_(r[2], 20),
     matricula: String(r[3]).trim(), nome: txt_(r[4], 100), pin: String(r[5] || ""), tentativas: Number(r[7]) || 0,
-    bloqueio: r[8] ? new Date(r[8]) : null })).filter(a => a.turma && a.nome && a.matricula);
+    bloqueio: r[8] ? new Date(r[8]) : null, acesso: r[6] ? new Date(r[6]) : null, aparelho: txt_(r[9], 40) })).filter(a => a.turma && a.nome && a.matricula);
 }
 
 function doGet(e) {
@@ -111,6 +114,7 @@ function autenticar_(d, sh) {
   if (!a.pin) {
     if (!d.criarPin) return { erro: "Você ainda não tem PIN. Volte e crie o seu." };
     sh.getRange(a.linha, 6, 1, 4).setValues([["p" + pin, agora, 0, ""]]);
+    sh.getRange(a.linha, 10).setValue(aparelho_(d));
     return { aluno: a, novo: true };
   }
   if (a.pin !== "p" + pin) {
@@ -119,7 +123,37 @@ function autenticar_(d, sh) {
     return { erro: n >= MAX_TENTATIVAS ? "PIN errado. Por segurança, espere " + BLOQUEIO_MIN + " minutos para tentar de novo." : "PIN errado. Confira e tente de novo." };
   }
   sh.getRange(a.linha, 7, 1, 3).setValues([[agora, 0, ""]]);
+  sh.getRange(a.linha, 10).setValue(aparelho_(d));
   return { aluno: a };
+}
+
+// Aparelho em linhas gerais ("Android · Chrome"). Só o tipo de aparelho e o navegador, nada que identifique a pessoa.
+const aparelho_ = d => txt_(d.aparelho, 40);
+
+// Painel do professor: resumo por aluno. Exige a senha guardada em PROFESSOR_CHAVE.
+function painel_(d) {
+  const chave = PropertiesService.getScriptProperties().getProperty("PROFESSOR_CHAVE");
+  if (!chave) return { ok: false, erro: "O painel ainda não foi ativado. Defina PROFESSOR_CHAVE no Apps Script." };
+  const cache = CacheService.getScriptCache();
+  const falhas = Number(cache.get("painel-falhas") || 0);
+  if (falhas >= 5) return { ok: false, erro: "Muitas tentativas. Espere 15 minutos." };
+  if (String(d.chave || "") !== chave) { cache.put("painel-falhas", String(falhas + 1), 900); return { ok: false, erro: "Senha incorreta." }; }
+  cache.remove("painel-falhas");
+  const alunos = lerTurmas_();
+  const prog = prog_().getDataRange().getValues().slice(1);
+  const agora = new Date();
+  const porMat = {};
+  prog.forEach(r => { (porMat[String(r[2]).trim()] = porMat[String(r[2]).trim()] || []).push({ material: r[0], feitas: Number(r[6]) || 0, total: Number(r[7]) || 0, pontos: Number(r[8]) || 0, em: r[9] ? new Date(r[9]).getTime() : 0 }); });
+  const lista = alunos.map(a => {
+    const ms = porMat[a.matricula] || [];
+    const ultimoEnvio = ms.reduce((m, x) => Math.max(m, x.em), 0);
+    const acesso = Math.max(a.acesso ? a.acesso.getTime() : 0, ultimoEnvio);
+    return { turma: a.turma, curso: a.curso, turno: a.turno, nome: a.nome, matricula: a.matricula, aparelho: a.aparelho,
+      acesso: acesso || null, dias: acesso ? Math.floor((agora.getTime() - acesso) / 86400000) : null,
+      feitas: ms.reduce((s, x) => s + x.feitas, 0), total: ms.reduce((s, x) => s + x.total, 0), pontos: ms.reduce((s, x) => s + x.pontos, 0),
+      materiais: ms.map(x => ({ material: x.material, feitas: x.feitas, total: x.total, pontos: x.pontos, em: x.em })), semPin: !a.pin };
+  });
+  return { ok: true, agora: agora.getTime(), diasAlerta: DIAS_ALERTA, alunos: lista };
 }
 
 function doPost(e) {
@@ -127,6 +161,7 @@ function doPost(e) {
   lock.waitLock(10000);
   try {
     const d = JSON.parse(e.postData.contents);
+    if (d.acao === "painel") return json_(painel_(d));
     const sh = turmas_();
     const r = autenticar_(d, sh);
     if (r.erro) return json_({ ok: false, erro: r.erro });
