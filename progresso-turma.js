@@ -103,6 +103,8 @@
     ".pt-fab .pt-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;background:#7CF0B0;vertical-align:middle}" +
     ".pt-box{position:fixed;right:16px;bottom:72px;z-index:9999;width:min(380px,calc(100vw - 32px));max-height:calc(100vh - 100px);overflow:auto;border-radius:14px;padding:18px;font:15px/1.5 " + F + ";background:#fff;color:#16261C;border:1px solid #D5DDDA;box-shadow:0 10px 30px rgba(0,0,0,.25);text-align:left}" +
     ".pt-box[hidden]{display:none}" +
+    ".pt-box textarea{display:block;width:100%;box-sizing:border-box;min-height:88px;resize:vertical;padding:10px 12px;border:2px solid #8FA39A;border-radius:10px;background:#fff;color:#16261C;font:15px/1.45 " + F + "}" +
+    ".pt-box textarea:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}.pt-sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}" +
     ".pt-close{position:absolute;top:8px;right:8px;width:40px;height:40px;border:0;border-radius:10px;background:transparent;color:inherit;font:400 28px/1 " + F + ";cursor:pointer;opacity:.7}.pt-close:hover,.pt-close:focus-visible{opacity:1;background:rgba(127,127,127,.15);outline:none}" +
     ".pt-box h3{margin:0 0 4px;padding-right:40px;font:700 24px/1.1 " + FD + ";color:inherit}" +
     ".pt-box h4{margin:14px 0 6px;font:700 12px/1.2 " + FM + ";letter-spacing:.08em;text-transform:uppercase;color:#163D28}" +
@@ -124,7 +126,7 @@
       ".pt-card{background:#16222B;border-color:#2A3A45;box-shadow:none}.pt-card .pt-sub{color:#B8C6CD}.pt-note{color:#8699A4}" +
       ".pt-card input,.pt-card select{background:#0F171D;color:#E4ECEF;border-color:#3A4C58}" +
       ".pt-opt{background:#0F171D;color:#E4ECEF;border-color:#2A3A45}.pt-opt small{color:#8699A4}.pt-back{color:#7FBF7A}" +
-      ".pt-box{background:#16222B;color:#E4ECEF;border-color:#2A3A45}.pt-box p{color:#B8C6CD}.pt-box h4{color:#7FBF7A}" +
+      ".pt-box textarea{background:#0F171D;color:#E4ECEF;border-color:#5C7280}.pt-box{background:#16222B;color:#E4ECEF;border-color:#2A3A45}.pt-box p{color:#B8C6CD}.pt-box h4{color:#7FBF7A}" +
       ".pt-btn.sec{color:#7FBF7A;border-color:#7FBF7A}.pt-menu a{border-color:#2A3A45}.pt-menu a span{color:#7FBF7A}.pt-rank li{border-color:#2A3A45}" +
       ".pt-msg.bad{color:#FF8174}.pt-msg.good{color:#4FD899}}" +
     "@media print{.pt-fab,.pt-box,.pt-screen{display:none}}";
@@ -149,6 +151,28 @@
     if (!conhecida) return true;
     return c.disciplinas.some(function (d) { return d[1] === pasta; });
   }
+  /* Estudo do aluno: \u00faltima p\u00e1gina aberta, sequ\u00eancia de dias e anota\u00e7\u00f5es (tudo guardado neste aparelho). */
+  function uid() { return perfil ? perfil.id : "anon"; }
+  function lerLS(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function gravarLS(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function relAtual() { return BASE && location.href.indexOf(BASE) === 0 ? location.href.slice(BASE.length).split(/[?#]/)[0] : ""; }
+  function dia(d) { var x = d || new Date(); return x.getFullYear() + "-" + ("0" + (x.getMonth() + 1)).slice(-2) + "-" + ("0" + x.getDate()).slice(-2); }
+  function dias() { try { return JSON.parse(lerLS("pt-dias:" + uid()) || "[]") || []; } catch (e) { return []; } }
+  function sequencia() {
+    var ds = dias(), n = 0, d = new Date();
+    if (ds.indexOf(dia(d)) < 0) d.setDate(d.getDate() - 1); /* ainda n\u00e3o estudou hoje: a sequ\u00eancia de ontem continua valendo */
+    while (ds.indexOf(dia(d)) >= 0) { n++; d.setDate(d.getDate() - 1); }
+    return { dias: n, hoje: ds.indexOf(dia()) >= 0, total: ds.length };
+  }
+  function ultima() { try { return JSON.parse(lerLS("pt-ultima:" + uid()) || "null"); } catch (e) { return null; } }
+  function registrarVisita() {
+    var rel = relAtual(); if (!perfil || !rel || rel.indexOf("/") < 1 || !permitida(pastaAtual())) return;
+    var titulo = (document.title || rel).replace(/\s*[\u00b7|\u2013-]\s*(Ambientes de estudo|Prof\..*)$/, "");
+    gravarLS("pt-ultima:" + uid(), JSON.stringify({ u: rel, t: titulo, ts: Date.now() }));
+    var ds = dias(), h = dia();
+    if (ds.indexOf(h) < 0) { ds.push(h); ds = ds.slice(-120); gravarLS("pt-dias:" + uid(), JSON.stringify(ds)); }
+  }
+  function notaChave() { return "pt-nota:" + uid() + ":" + relAtual(); }
   function bloquear() {
     var pasta = pastaAtual(); if (permitida(pasta)) return;
     var escuro = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches;
@@ -427,6 +451,7 @@
       '<ul class="pt-menu">' + c.disciplinas.map(function (x) {
         return '<li><a href="' + esc(BASE + x[1] + "/") + '"' + (atual === x[1] ? ' aria-current="page"' : "") + ">" + esc(x[0]) + "<span>\u2192</span></a></li>";
       }).join("") + "</ul>" +
+      (relAtual().indexOf("/") > 0 ? '<h4>Minhas anota\u00e7\u00f5es desta p\u00e1gina</h4><label for="pt-nota" class="pt-sr">Anota\u00e7\u00f5es desta p\u00e1gina</label><textarea id="pt-nota" rows="4" placeholder="Escreva aqui o que quiser lembrar."></textarea><p class="pt-note" id="pt-nota-st">Fica salvo s\u00f3 neste aparelho, tamb\u00e9m sem internet.</p>' : "") +
       "<h4>Para todos</h4>" +
       '<ul class="pt-menu">' + COMUNS.map(function (x) {
         return '<li><a href="' + esc(BASE + x[1] + "/") + '"' + (atual === x[1] ? ' aria-current="page"' : "") + ">" + esc(x[0]) + "<span>\u2192</span></a></li>";
@@ -438,6 +463,11 @@
       '<button class="pt-btn sec" id="pt-out" type="button">Sair</button></div>' +
       '<div class="pt-msg" role="status"></div>' + (d && URL_ ? '<ol class="pt-rank" aria-label="Ranking da turma"></ol>' : "");
     box.querySelector("#pt-x").onclick = fechar;
+    var nt = box.querySelector("#pt-nota"), nst = box.querySelector("#pt-nota-st"), tn = null;
+    if (nt) {
+      nt.value = lerLS(notaChave()) || "";
+      nt.oninput = function () { clearTimeout(tn); tn = setTimeout(function () { gravarLS(notaChave(), nt.value); if (nst) nst.textContent = "Salvo neste aparelho."; }, 400); };
+    }
     var s = box.querySelector("#pt-s");
     if (s) s.onclick = function () { bmsg("Enviando\u2026"); enviar(dados()).then(function (r) { bmsg(r.ok ? "Progresso salvo." : r.erro || "Falha no envio.", r.ok ? "good" : "bad"); if (r.ok) ranking(); }); };
     box.querySelector("#pt-out").onclick = function () {
@@ -484,7 +514,7 @@
   });
 
   // Para a p\u00e1gina inicial organizar as disciplinas pelo curso do aluno
-  window.PORTAL_ALUNO = { perfil: function () { return perfil; }, cursos: CURSOS, comuns: COMUNS, permitida: permitida, entrar: mostrarEntrada };
+  window.PORTAL_ALUNO = { perfil: function () { return perfil; }, cursos: CURSOS, comuns: COMUNS, permitida: permitida, ultima: ultima, sequencia: sequencia, entrar: mostrarEntrada };
 
   // Quem entrou quando o envio ainda n\u00e3o estava ligado \u00e9 cadastrado na planilha agora (uma vez por visita).
   function sincronizar() {
@@ -495,7 +525,7 @@
     });
   }
 
-  if (perfil) { paintFab(); esconderEntrada(); bloquear(); sincronizar(); esvaziarFila(); }
+  if (perfil) { paintFab(); esconderEntrada(); bloquear(); registrarVisita(); sincronizar(); esvaziarFila(); }
   else if (LIVRE) { root.classList.remove("pt-gate"); }
   else { mostrarEntrada(); }
   avisar();

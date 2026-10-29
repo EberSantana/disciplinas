@@ -12,7 +12,8 @@
   "icons/icon-192.png",
   "icons/icon-512.png",
   "icons/favicon-32.png",
-  "favicon.ico"
+  "favicon.ico",
+  "busca-index.json"
  ],
  "externosCore": [
   "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap"

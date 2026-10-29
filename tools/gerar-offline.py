@@ -2,7 +2,7 @@
 """Gera offline-manifest.json: lista de arquivos de cada disciplina para uso offline.
 Rode na raiz do repositório depois de alterar qualquer material:  python3 tools/gerar-offline.py
 A 'versao' de cada grupo muda sozinha quando um arquivo dele muda; assim o aluno vê "atualização disponível"."""
-import hashlib, json, os, re, sys
+import unicodedata, hashlib, json, os, re, sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(RAIZ)
@@ -21,7 +21,7 @@ NOMES = {
 EXTRAS = {"informatica-basica": ["office-visual-img"]}  # pastas de imagens usadas por uma disciplina
 CORE = ["index.html", "config.js", "progresso-turma.js", "acessibilidade.js", "aparencia.js", "offline.js",
         "manifest.webmanifest", "offline.html", "offline-manifest.json",
-        "icons/icon-192.png", "icons/icon-512.png", "icons/favicon-32.png", "favicon.ico"]
+        "icons/icon-192.png", "icons/icon-512.png", "icons/favicon-32.png", "favicon.ico", "busca-index.json"]
 EXT = re.compile(r'(?:src|href)=["\'](https://(?:fonts\.googleapis\.com|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net)[^"\']+)["\']')
 IGNORA = (".md", ".csv", ".zip", ".gs")
 
@@ -63,4 +63,32 @@ def principal():
     print("grupos:", len(gs), "| total %.1f MB" % (tot / 1048576))
     for g in gs: print("  %-26s %5d arquivos %6.1f MB  v%s" % (g["id"], len(g["arquivos"]), g["bytes"] / 1048576, g["versao"]))
 
+
+TAG = re.compile(r"<[^>]+>")
+def limpa(s):
+    import html as H
+    return re.sub(r"\s+", " ", H.unescape(TAG.sub(" ", s))).strip()
+
+def busca():
+    """Índice de busca do portal: título e títulos de seção de cada página (sem o corpo do texto)."""
+    itens = []
+    for slug in NOMES:
+        if not os.path.isdir(slug): continue
+        for f in arquivos(slug):
+            if not f.endswith(".html"): continue
+            t = open(f, encoding="utf-8", errors="ignore").read()
+            m = re.search(r"<title>(.*?)</title>", t, re.S)
+            titulo = limpa(m.group(1)) if m else f
+            secoes = []
+            for h in re.findall(r"<h[123][^>]*>(.*?)</h[123]>", t, re.S):
+                x = limpa(h)
+                if 3 < len(x) < 90 and "${" not in x and "{{" not in x and x not in secoes: secoes.append(x)
+            chave = "".join(c for c in unicodedata.normalize("NFD", f) if not unicodedata.combining(c))  # ignora cópias do mesmo arquivo com nome acentuado
+            if any(i["h"] == chave for i in itens): continue
+            itens.append({"h": chave, "u": f, "d": NOMES[slug], "t": titulo, "s": secoes[:40]})
+    with open("busca-index.json", "w", encoding="utf-8") as fh:
+        json.dump([{k: v for k, v in i.items() if k != "h"} for i in itens], fh, ensure_ascii=False, separators=(",", ":"))
+    print("busca:", len(itens), "páginas")
+
 principal()
+busca()
