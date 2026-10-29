@@ -54,6 +54,23 @@ O portal segue as diretrizes WCAG 2.1 nível AA (base do e-MAG) e foi verificado
 
 O `acessibilidade.js` é carregado em todas as páginas. Em uma página nova, acrescente `<script src="../acessibilidade.js" defer></script>` antes de `</body>`. Para conferir, use WAVE, ASES (e-MAG) e AccessMonitor sobre o endereço publicado, e teste com um leitor de tela (NVDA).
 
+### Base legal e normas
+
+O portal busca atender às regras de acessibilidade digital do Brasil:
+
+| Norma | O que estabelece | Como o portal responde |
+|---|---|---|
+| [Lei nº 13.146/2015](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm) (Lei Brasileira de Inclusão, art. 63) | Torna obrigatória a acessibilidade nos sítios da internet mantidos por empresas e órgãos públicos | Páginas com navegação por teclado, contraste, estrutura e leitura por leitor de tela |
+| [Lei nº 10.098/2000](https://www.planalto.gov.br/ccivil_03/leis/l10098.htm) | Normas gerais para a promoção da acessibilidade, inclusive nos meios de comunicação e informação | Uso do portal com segurança e autonomia, sem depender do mouse ou de um tipo de tela |
+| [Decreto nº 5.296/2004](https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/decreto/d5296.htm) | Regulamenta a Lei 10.098 e trata da acessibilidade nos sítios da administração pública | Seguimos o modelo e-MAG |
+| [Lei nº 10.436/2002](https://www.planalto.gov.br/ccivil_03/leis/2002/l10436.htm) e [Decreto nº 5.626/2005](https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2005/decreto/d5626.htm) | Reconhecem a Língua Brasileira de Sinais (Libras) | VLibras em todas as páginas |
+| [e-MAG](https://www.gov.br/governodigital/pt-br/acessibilidade-e-usuario/acessibilidade-digital) (Modelo de Acessibilidade em Governo Eletrônico) | Recomendações de acessibilidade para sítios do governo federal | Verificação com ASES e AccessMonitor |
+| [WCAG 2.1](https://www.w3.org/TR/WCAG21/) nível AA (W3C) | Padrão internacional em que o e-MAG se baseia | Verificação automática com axe-core, sem falhas |
+
+O portal também respeita a [Lei nº 13.709/2018 (LGPD)](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm) no tratamento dos dados dos estudantes (veja Privacidade).
+
+A verificação automática não substitui o teste com pessoas. Se você encontrar uma barreira de acesso, avise o professor para que ela seja corrigida.
+
 ---
 
 ## Como é feito
