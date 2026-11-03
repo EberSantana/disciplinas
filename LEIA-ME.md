@@ -150,6 +150,8 @@ Se algo falhar, aparece um X vermelho em **Actions** no GitHub. Para rodar no se
 
 O `aparencia.js` entra no `<head>` de toda página nova: `<script src="../aparencia.js"></script>` (sem `../` na raiz). Para a página aceitar a troca de cores, acrescente `data-a11y-cores` na tag `<html>` e use as variáveis de cor padrão (`--bg`, `--panel`, `--ink`, `--muted`, `--accent` etc.). Páginas com cores fixas ficam sem o atributo e ainda recebem tamanho de letra, espaçamento, fonte e movimento. As paletas ficam no começo do `aparencia.js`; ao alterar uma, confira o contraste (mínimo 4,5:1).
 
+O painel também tem **Toque para ouvir** e **Descrever imagens** (usam `speechSynthesis`, a voz do navegador, sem servidor nem IA), **Esconder imagens**, **Monocromático** e **perfis prontos** (objeto `PERFIS` no `aparencia.js`). Por isso toda `<img>` precisa de `alt` descritivo, ou `alt=""` se for só decoração: é esse texto que é lido e exibido quando as imagens são escondidas. Os ajustes ficam salvos por aluno.
+
 ## Uso offline (PWA)
 
 O aluno baixa o material por disciplina em **Ajustes > Uso offline**. Quem controla isso é o `offline-manifest.json`, **gerado automaticamente**.

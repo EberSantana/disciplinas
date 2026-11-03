@@ -55,7 +55,11 @@ O progresso fica salvo no seu aparelho e é enviado ao professor. Abra o botão 
 Toque em **Ajustes** (canto inferior esquerdo) para escolher:
 - **cores**: 8 paletas, entre elas Rosa Aurora, Lilás Sonho, Azul, Verde e Alto contraste;
 - **claro, escuro ou automático**;
-- **tamanho da letra** (até 150%), espaçamento, fonte de leitura fácil, menos animação e links sublinhados.
+- **tamanho da letra** (botões A− e A+, até 150%), espaçamento, fonte de leitura fácil, menos animação e links sublinhados;
+- **Toque para ouvir**: toque em um texto para ouvi-lo em voz alta (voz do próprio aparelho, nada é enviado pela internet), com botão Parar e velocidades 0,8x, 1x e 1,25x;
+- **Descrever imagens**: toque em uma imagem para ouvir a descrição dela;
+- **Esconder imagens** (o texto alternativo aparece no lugar) e **Monocromático** (tons de cinza);
+- **Perfis prontos**: Baixa visão, Dislexia, Daltonismo, Foco (TDAH) e Conforto para a vista ligam vários ajustes de uma vez.
 
 A escolha fica salva para você. O botão **Restaurar padrão** volta ao visual original.
 

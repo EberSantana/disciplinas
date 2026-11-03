@@ -214,9 +214,10 @@
     if (!temSW) return h + "<p>Este navegador não permite o uso offline. Os materiais continuam funcionando com internet.</p>";
     if (!M) return h + "<p>Carregando a lista de materiais…</p>";
     h += statusPainel();
-    h += "<p>Baixe a disciplina para estudar sem internet. Prefira o Wi-Fi para não gastar seus dados. O login precisa de internet na primeira vez.</p><ul>";
+    h += "<p>Baixe a disciplina para estudar sem internet. Prefira o Wi-Fi para não gastar seus dados. O login precisa de internet na primeira vez.</p>";
     var pend = permitidos().filter(function (g) { return !b[g.id] || b[g.id].versao !== g.versao; });
     if (pend.length > 1) h += '<button type="button" data-off="tudo"' + (estado.ocupado ? " disabled" : "") + ' style="margin:0 0 10px">Baixar tudo da minha turma (' + tam(pend.reduce(function (s, g) { return s + g.bytes; }, 0)) + ")</button>";
+    h += "<ul>";
     permitidos().forEach(function (g) {
       var r = b[g.id], tem = !!r, velho = tem && r.versao !== g.versao;
       var st = tem ? (velho ? "Baixada · há atualização" : "Pronta para uso offline") : "Não baixada";
