@@ -30,6 +30,8 @@ a.card h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:28p
 a.card p{margin:0;color:var(--ink-2);font-size:15.5px}
 a.card .go{margin-top:auto;padding-top:6px;font-weight:600;color:var(--accent)}
 .meta{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted)}
+a.card.ext .go::after{content:" ↗"}
+.nota{color:var(--muted);font-size:14.5px;margin:0 0 14px;max-width:70ch}
 footer{color:var(--muted);font-size:14px;margin-top:32px}
 </style>
 <script src="../aparencia.js"></script>
@@ -71,6 +73,34 @@ footer{color:var(--muted);font-size:14px;margin-top:32px}
       <h2>Mapa do Chamado</h2>
       <p>IP, portas, TCP x UDP e diagnóstico de chamados camada por camada (nslookup, ping, Test-NetConnection).</p>
       <span class="go">Abrir →</span>
+    </a>
+  </div>
+  <h2 class="sec">Ferramentas e laboratórios externos</h2>
+  <p class="nota">Sites de terceiros que abrem em nova aba. Explore com o professor ou em ambiente de laboratório.</p>
+  <div class="grid">
+    <a class="card ext" href="https://securityexplorer.minocodi.com/?lab=cve-2026-109518-apt" target="_blank" rel="noopener noreferrer">
+      <span class="meta">Laboratório 3D · Segurança de redes</span>
+      <h2>Security Explorer: ataque ao APT</h2>
+      <p>Simulador passo a passo de pacotes: um atacante no meio do caminho (MitM) explora redirecionamentos HTTP do APT. Alterne entre o modo de ataque e o modo corrigido. Em inglês.</p>
+      <span class="go">Abrir site externo<span class="sr" style="position:absolute;left:-9999px"> (abre em nova aba)</span></span>
+    </a>
+    <a class="card ext" href="https://ipchat.in/" target="_blank" rel="noopener noreferrer">
+      <span class="meta">Demonstração · Endereço IP</span>
+      <h2>IPChat</h2>
+      <p>Mensageiro em salas: quem digita o mesmo endereço IP entra na mesma sala. Bom para discutir endereçamento, identificadores e a diferença entre IP e sessão.</p>
+      <span class="go">Abrir site externo<span class="sr" style="position:absolute;left:-9999px"> (abre em nova aba)</span></span>
+    </a>
+    <a class="card ext" href="https://hacksplaining.com/" target="_blank" rel="noopener noreferrer">
+      <span class="meta">Segurança · Aula interativa</span>
+      <h2>Hacksplaining</h2>
+      <p>Lições interativas e gratuitas sobre vulnerabilidades comuns (injeção de SQL, XSS, CSRF e outras) e como corrigi-las. Em inglês.</p>
+      <span class="go">Abrir site externo<span class="sr" style="position:absolute;left:-9999px"> (abre em nova aba)</span></span>
+    </a>
+    <a class="card ext" href="https://www.ifixit.com/" target="_blank" rel="noopener noreferrer">
+      <span class="meta">Hardware · Manutenção</span>
+      <h2>iFixit</h2>
+      <p>Guias passo a passo de desmontagem e reparo de computadores, roteadores e celulares. Útil para as aulas de montagem e manutenção.</p>
+      <span class="go">Abrir site externo<span class="sr" style="position:absolute;left:-9999px"> (abre em nova aba)</span></span>
     </a>
   </div>
   <footer>Prof. Eber Santana · IFS Campus Tobias Barreto. O progresso fica salvo no navegador do aparelho que você usar.</footer>
