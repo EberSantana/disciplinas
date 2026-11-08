@@ -241,11 +241,12 @@
   {
    "id": "recursos-de-aula",
    "nome": "Recursos de aula",
-   "versao": "2d38993edd",
-   "bytes": 535592,
+   "versao": "c74b53610b",
+   "bytes": 552344,
    "arquivos": [
     "recursos-de-aula/codigos-para-aprender-com-ia.html",
     "recursos-de-aula/cronometro-de-equipes.html",
+    "recursos-de-aula/essenciais-para-o-dia-a-dia.html",
     "recursos-de-aula/index.html",
     "recursos-de-aula/linha-do-tempo-tecnologica.html"
    ],

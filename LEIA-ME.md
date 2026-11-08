@@ -48,6 +48,7 @@ disciplinas/
 │   ├── index.html
 │   ├── cronometro-de-equipes.html
 │   ├── linha-do-tempo-tecnologica.html
+│   ├── essenciais-para-o-dia-a-dia.html   (monta o link do ninite.com com os programas marcados)
 │   └── codigos-para-aprender-com-ia.html
 └── apps-script/Codigo.gs           ← código da planilha (login, progresso e ranking)
 ```
