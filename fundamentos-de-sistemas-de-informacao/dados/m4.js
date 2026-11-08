@@ -1,6 +1,17 @@
 FSI.modulo({
   n: 4, unidade: "Unidade 4", nome: "Papéis estratégicos", titulo: "Papéis estratégicos dos sistemas de informação",
   resumoCurto: "Forças competitivas, estratégias genéricas, usos estratégicos dos sistemas e como sustentar a vantagem competitiva.",
+  duracao: "5 h",
+  analogia: { titulo: "A disputa das academias", txt: "<p>No seu bairro abriu uma academia de rede, com mensalidade baixíssima: é a estratégia de <b>liderança em custo</b>. A academia antiga respondeu com aulas exclusivas e personal incluso: <b>diferenciação</b>. Uma terceira só atende idosos com fisioterapeuta: <b>foco</b> (nicho).</p><p>A antiga também lançou um aplicativo com o histórico de treinos de cada aluno. Agora, trocar de academia significa perder anos de registros — isso é <b>custo de troca</b>, criado por um sistema de informação. É assim que a tecnologia vira <b>arma competitiva</b>.</p>" },
+  chave: [
+    "As <b>cinco forças</b> de Porter: rivalidade entre concorrentes, novos entrantes, produtos substitutos, poder dos clientes e poder dos fornecedores.",
+    "Estratégias genéricas: <b>liderança em custo</b>, <b>diferenciação</b> e <b>foco</b> (nicho).",
+    "Usos estratégicos de SI: reduzir custos, diferenciar, inovar, <b>criar custos de troca</b>, levantar <b>barreiras à entrada</b>, construir alianças.",
+    "A <b>cadeia de valor</b> mostra onde a TI agrega valor nas atividades primárias e de apoio.",
+    "Vantagem competitiva <b>não é permanente</b>: concorrentes copiam; é preciso inovar continuamente.",
+    "Sistemas estratégicos alinham a TI aos objetivos do negócio."
+  ],
+  termos: [["Cinco forças", "Modelo de Porter da pressão competitiva."], ["Liderança em custo", "Produzir mais barato que os rivais."], ["Diferenciação", "Oferecer algo único, valorizado pelo cliente."], ["Foco", "Atender muito bem um nicho."], ["Custo de troca", "O que o cliente perde ao mudar de fornecedor."], ["Barreira de entrada", "Dificuldade para novos concorrentes entrarem."]],
   objetivos: ["Identificar as <b>forças competitivas</b> que afetam uma organização.", "Distinguir as <b>estratégias competitivas</b> (custo, diferenciação, inovação, crescimento, aliança).", "Reconhecer <b>usos estratégicos</b> dos sistemas de informação, custos de troca e barreiras de entrada.", "Explicar por que a vantagem competitiva precisa ser <b>sustentada</b>."],
   licoes: [
     { t: "As forças competitivas", txt: "<p>Organizações buscam vantagem competitiva; sem ela não sobrevivem. Além dos <b>concorrentes tradicionais</b> (mesmo ramo, mesmo mercado), há outras forças:</p>", pontos: ["<b>Entrantes potenciais</b>: novos concorrentes tornam a competição mais acirrada e podem saturar o mercado.", "<b>Produtos e serviços substitutos</b>: máquinas de datilografar foram superadas não por máquinas melhores, mas pelo microcomputador.", "<b>Poder de barganha dos clientes</b> e <b>dos fornecedores</b>: poucos clientes ou fornecedores sem alternativa = dependência e baixo poder de negociação.", "A vantagem pode vir de melhorar a capacidade de lidar com clientes, fornecedores, substitutos e entrantes."], pense: "Quais substitutos ameaçam a TV aberta? E as gravadoras de música?" },
@@ -27,6 +38,33 @@ FSI.modulo({
       cats: ["Custo", "Inovação", "Aliança", "Crescimento"],
       itens: [["Pregão eletrônico do governo reduz o preço das compras", 0], ["Citibank pioneiro nos caixas eletrônicos", 1], ["Wal-Mart e fornecedores: reabastecimento acionado pela venda", 2], ["Le Postiche: rede entre lojas, fabricantes e fornecedores", 2], ["Banco expande para o mercado global com rede de telecomunicações", 3], ["Venda de passagens pela internet", 1]] }
   ],
+  lab: {
+    intro: "Você é o diretor de estratégia de uma livraria que enfrenta gigantes da internet. Cada decisão mexe na sua participação de mercado. Depois, classifique as jogadas estratégicas e calcule um custo de troca.",
+    sims: [
+      { tipo: "cenarios", titulo: "Jogo de estratégia: a livraria contra-ataca", cfg: { id: "estr", rotulo: "Rodada", medidor: { nome: "Participação de mercado", ini: 50 }, itens: [
+        { t: "Um site gigante vende os mesmos livros 30% mais barato. Qual força competitiva está pressionando você?", ops: [["Rivalidade entre concorrentes", true, "Concorrente direto disputando os mesmos clientes."], ["Poder dos fornecedores", false, "As editoras não mudaram nada."], ["Produtos substitutos", false, "É o mesmo produto, vendido por outro."]] },
+        { t: "Muitos leitores passaram a assinar serviços de e-book e audiolivro em vez de comprar livros.", ops: [["Ameaça de produtos substitutos", true, "Outro produto atende à mesma necessidade."], ["Novos entrantes", false, "Não é uma nova livraria; é outro tipo de produto."], ["Poder dos clientes", false, "Os clientes trocaram de produto, não negociaram preço."]] },
+        { t: "Você não consegue vender mais barato que o gigante. Qual estratégia genérica faz mais sentido?", ops: [["Diferenciação: curadoria, eventos e atendimento especializado", true, "Sem escala para custo, diferencie-se no que o gigante não oferece."], ["Liderança em custo", false, "Exige escala que você não tem."], ["Copiar o site do gigante", false, "Imitar o líder raramente gera vantagem."]] },
+        { t: "Você cria um clube de leitura com histórico, pontos e recomendações personalizadas no app.", ops: [["Cria custo de troca: sair do clube = perder histórico e pontos", true, "O SI prende o cliente pelo valor acumulado."], ["Levanta barreira de entrada", false, "O efeito principal é sobre o cliente atual."], ["Reduz o poder dos fornecedores", false, "Não afeta as editoras."]] },
+        { t: "Você decide atender só colecionadores de quadrinhos raros, com busca especializada.", ops: [["Estratégia de foco (nicho)", true, "Atender muito bem um segmento específico."], ["Liderança em custo", false, "O foco não é ser o mais barato."], ["Diferenciação ampla", false, "É diferenciação dentro de um nicho: foco."]] },
+        { t: "Você integra seu estoque ao das editoras para pedir só o necessário e reduzir o encalhe.", ops: [["Uso estratégico de SI para reduzir custos (cadeia de suprimentos)", true, "Integração com fornecedores corta desperdício."], ["Criar custo de troca para o cliente", false, "O cliente nem percebe essa integração."], ["Barreira de entrada", false, "O ganho é eficiência interna."]] },
+        { t: "Um ano depois, o gigante lança um clube de leitura igual ao seu. O que isso ensina?", ops: [["Vantagem competitiva não é permanente: é preciso continuar inovando", true, "Ideias são copiadas; sustentar a vantagem exige inovação contínua."], ["Seu sistema era inútil", false, "Ele gerou vantagem enquanto era único."], ["É hora de desistir de TI", false, "A resposta é inovar de novo."]] }] } },
+      { tipo: "classificar", id: "lab-uso", titulo: "Que jogada estratégica é esta?", instr: "Classifique cada iniciativa pelo efeito estratégico principal.", cats: ["Custo de troca", "Barreira de entrada", "Redução de custos"], itens: [["Programa de milhas com pontos acumulados", 0], ["Plataforma tão cara de construir que poucos conseguem copiar", 1], ["Autoatendimento que dispensa filas e funcionários", 2], ["Histórico de playlists que o usuário perderia ao sair", 0], ["Rede de 3 mil lojas integradas que um novato não teria", 1], ["Robô que automatiza a conciliação bancária", 2], ["Integração do sistema do cliente com o seu (EDI)", 0], ["Patente de um algoritmo de recomendação", 1]] }
+    ],
+    missoes: [
+      { id: "m1", t: "Identifique corretamente 3 situações estratégicas", ev: "estr:acertos:3" },
+      { id: "m2", t: "Leve a participação de mercado a 80% ou mais", ev: "estr:medidor80" },
+      { id: "m3", t: "Jogue todas as rodadas", ev: "estr:fim" },
+      { id: "m4", t: "Vença todas as rodadas sem errar", ev: "estr:perfeito" },
+      { id: "m5", t: "Classifique as jogadas estratégicas sem erros", ev: "vis:lab-uso" }
+    ],
+    guiados: [
+      { titulo: "Quanto custa trocar de fornecedor?", txt: "<p>Uma empresa usa um sistema de gestão alugado. Um concorrente oferece o mesmo serviço por <b>R$ 400 a menos por mês</b>. Mas, para migrar, ela gastaria <b>R$ 8.000</b> com conversão de dados e treinamento.</p>", passos: [
+        { p: "O custo de troca é de quantos reais?", r: 8000, un: "R$", dica: "É o gasto único para mudar.", expl: "R$ 8.000: migração + treinamento." },
+        { p: "Em quantos meses a economia paga a troca?", r: 20, un: "meses", dica: "Custo de troca ÷ economia mensal.", expl: "8.000 ÷ 400 = 20 meses." },
+        { p: "Num horizonte de 3 anos (36 meses), quanto a empresa economiza ao trocar (R$)?", r: 6400, un: "R$", dica: "36 × 400 − 8.000.", expl: "14.400 − 8.000 = R$ 6.400. Custo de troca alto faz o cliente hesitar — é exatamente por isso que as empresas o criam de propósito." }] }
+    ]
+  },
   fc: [
     ["O que são <b>entrantes potenciais</b>?", "Organizações que querem ingressar no ramo; aumentam a concorrência e podem saturar o mercado."],
     ["Exemplo de <b>produto substituto</b> do livro?", "O microcomputador, que superou as máquinas de datilografar."],

@@ -1,6 +1,17 @@
 FSI.modulo({
   n: 5, unidade: "Unidade 5", nome: "Desenvolvimento de sistemas", titulo: "Como são desenvolvidos os sistemas de informação?",
   resumoCurto: "Ciclo de vida, prototipagem, estratégias (in-house, pacote, terceirização, usuário final) e gestão da mudança organizacional.",
+  duracao: "5 h",
+  analogia: { titulo: "Construir uma casa", txt: "<p>Ninguém começa uma casa assentando tijolos. Primeiro se entende a família (<b>investigação e análise</b>), depois se faz a planta (<b>projeto</b>), aí vem a obra (<b>implementação</b>), a mudança (<b>implantação</b>) e, por anos, os consertos (<b>manutenção</b>). Pular etapas custa caro: mudar uma parede na planta é barato; derrubá-la depois de pronta, não.</p><p>E dá para escolher: construir do zero com sua equipe (<b>in-house</b>), comprar uma casa pronta e adaptar (<b>pacote</b>), contratar uma construtora (<b>terceirização</b>) ou fazer você mesmo um puxadinho (<b>desenvolvimento pelo usuário final</b>). E, se a família não quiser se mudar, a casa nova fica vazia: é a <b>gestão da mudança</b>.</p>" },
+  chave: [
+    "Ciclo de vida: <b>investigação, análise, projeto, implementação, implantação (conversão) e manutenção</b>.",
+    "<b>Prototipagem</b>: versões rápidas e iterativas para o usuário validar cedo.",
+    "Estratégias: <b>in-house</b>, <b>pacote</b> (software pronto), <b>terceirização</b> e <b>desenvolvimento pelo usuário final</b>.",
+    "Conversão: <b>direta</b>, <b>paralela</b>, <b>piloto</b> ou <b>em fases</b> — cada uma com risco e custo diferentes.",
+    "Erros descobertos tarde custam muito mais caro que os descobertos na análise.",
+    "Sistemas mudam a organização: a <b>gestão da mudança</b> e o envolvimento dos usuários decidem o sucesso."
+  ],
+  termos: [["Ciclo de vida", "Etapas do desenvolvimento de um sistema."], ["Prototipagem", "Versões rápidas para validar com o usuário."], ["Pacote", "Software pronto, adaptado à empresa."], ["Terceirização", "Contratar outra empresa para desenvolver/operar."], ["Conversão paralela", "Sistemas novo e antigo rodando juntos."], ["Gestão da mudança", "Preparar pessoas e processos para o novo sistema."]],
   objetivos: ["Entender o desenvolvimento de SI como <b>solução de problemas</b>.", "Descrever as <b>cinco fases</b> do ciclo de vida e a <b>prototipagem</b>.", "Comparar as <b>estratégias</b>: in-house, pacote, terceirização e usuário final.", "Aplicar estratégias para <b>reduzir a resistência</b> à mudança."],
   licoes: [
     { t: "Solucionando problemas com sistemas de informação", txt: "<p>Desenvolver um SI normalmente é a resposta a um <b>problema de negócio</b>, em três passos: (1) entender o problema e avaliar alternativas; (2) desenvolver a solução escolhida; (3) implantá-la. No exemplo da planilha de orçamento doméstico: entender onde o dinheiro é gasto; construir a planilha (entradas, processamento do saldo, saída); usar e refinar a solução.</p>", pense: "A “Fábula dos porcos assados” mostra o perigo de resolver problemas sem pensar crítica e criativamente. Que lição ela traz?" },
@@ -27,6 +38,41 @@ FSI.modulo({
       cats: ["Própria (in-house)", "Terceirização", "Pacote", "Usuário final"],
       itens: [["Alto custo de manter equipe especializada", 0], ["Garante melhor o atendimento dos pré-requisitos", 0], ["Dependência de fornecedores externos", 1], ["Libera recursos humanos internos para outros projetos", 1], ["Pode não atender requisitos próprios da empresa", 2], ["Ganho de tempo e de dinheiro", 2], ["Pode levar à proliferação descontrolada de sistemas", 3], ["Reduz a fila de solicitações não atendidas (backlog)", 3]] }
   ],
+  lab: {
+    intro: "Você é o gerente do projeto do novo sistema da biblioteca da escola. Tome as decisões em cada fase e mantenha o projeto saudável. Depois, ordene o ciclo de vida e compare os custos das estratégias.",
+    sims: [
+      { tipo: "cenarios", titulo: "Gerente do projeto da biblioteca", cfg: { id: "proj", rotulo: "Decisão", embaralhar: false, medidor: { nome: "Saúde do projeto", ini: 50 }, itens: [
+        { t: "A diretora diz: “quero um sistema para a biblioteca”. Qual o primeiro passo?", ops: [["Investigar o problema e a viabilidade com bibliotecária e alunos", true, "Entender o problema antes de qualquer solução."], ["Comprar logo um software", false, "Sem saber o problema, a compra é um tiro no escuro."], ["Começar a programar", false, "Programar sem análise gera retrabalho caro."]] },
+        { t: "Na análise, a bibliotecária não consegue descrever como quer as telas.", ops: [["Fazer um protótipo rápido para ela testar e opinar", true, "A prototipagem torna o requisito concreto."], ["Escrever um documento de 80 páginas", false, "Ela continuaria sem visualizar."], ["Decidir sozinho como ela quer", false, "Sem o usuário, o risco de rejeição sobe."]] },
+        { t: "A escola não tem programadores e há vários sistemas de biblioteca prontos no mercado.", ops: [["Avaliar e adotar um pacote, adaptando o necessário", true, "Rápido e mais barato quando o processo é padrão."], ["Contratar uma equipe in-house", false, "Caro e lento para um problema comum."], ["Pedir que um aluno faça no fim de semana", false, "Desenvolvimento pelo usuário final tem riscos de qualidade e suporte."]] },
+        { t: "Os dados de 3 mil livros estão num caderno e numa planilha antiga.", ops: [["Planejar a conversão e a limpeza dos dados antes de implantar", true, "Entra lixo, sai lixo: dados ruins arruínam o sistema novo."], ["Ignorar os dados antigos", false, "O acervo é o coração do sistema."], ["Digitar tudo no dia da inauguração", false, "Sem planejamento, haverá erros e atrasos."]] },
+        { t: "É hora de pôr o sistema no ar. Não pode haver risco de perder empréstimos.", ops: [["Conversão paralela por algumas semanas", true, "Os dois sistemas rodam juntos: mais trabalho, menos risco."], ["Conversão direta numa segunda-feira", false, "Se algo falhar, não há volta."], ["Não converter nunca", false, "O projeto não entregaria valor."]] },
+        { t: "Alguns professores resistem: “o caderno sempre funcionou”.", ops: [["Envolver, treinar e mostrar ganhos concretos: gestão da mudança", true, "Pessoas são parte do sistema sociotécnico."], ["Obrigar por decreto", false, "Imposição gera boicote silencioso."], ["Ignorar e esperar que se acostumem", false, "A resistência tende a crescer."]] },
+        { t: "Seis meses depois, pedem um relatório de livros mais emprestados.", ops: [["Tratar como manutenção evolutiva", true, "Manutenção é a fase mais longa e inclui melhorias."], ["Recomeçar o projeto do zero", false, "Uma melhoria não exige um sistema novo."], ["Dizer que o sistema está pronto e não muda", false, "Sistemas vivos evoluem com a organização."]] }] } },
+      { tipo: "linha", id: "lab-ciclo", titulo: "Ponha o ciclo de vida em ordem", instr: "Percorra as fases e depois resolva o desafio de ordenar.", ordenar: true, passos: [
+        { t: "Investigação", d: "Qual é o problema? Vale a pena resolver?" },
+        { t: "Análise", d: "Levantar requisitos com os usuários." },
+        { t: "Projeto", d: "Definir como o sistema vai funcionar." },
+        { t: "Implementação", d: "Construir, adquirir ou adaptar e testar." },
+        { t: "Implantação", d: "Converter dados, treinar e pôr no ar." },
+        { t: "Manutenção", d: "Corrigir, adaptar e melhorar ao longo dos anos." }] }
+    ],
+    missoes: [
+      { id: "m1", t: "Tome 4 decisões corretas", ev: "proj:acertos:4" },
+      { id: "m2", t: "Mantenha a saúde do projeto em 80% ou mais", ev: "proj:medidor80" },
+      { id: "m3", t: "Conduza o projeto até o fim", ev: "proj:fim" },
+      { id: "m4", t: "Conduza o projeto sem nenhum erro", ev: "proj:perfeito" },
+      { id: "m5", t: "Veja todas as fases do ciclo", ev: "vis:lab-ciclo" },
+      { id: "m6", t: "Ordene o ciclo de vida corretamente", ev: "ord:lab-ciclo" }
+    ],
+    guiados: [
+      { titulo: "Qual estratégia sai mais barata em 3 anos?", txt: "<p>Horizonte: <b>36 meses</b>.<br>• <b>In-house:</b> R$ 60.000 para desenvolver + R$ 1.000/mês de manutenção.<br>• <b>Pacote:</b> R$ 15.000 de licença e adaptação + R$ 800/mês.<br>• <b>Terceirização:</b> R$ 2.500/mês, tudo incluído.</p>", passos: [
+        { p: "Custo total do in-house em 36 meses (R$)", r: 96000, un: "R$", dica: "60.000 + 36 × 1.000.", expl: "60.000 + 36.000 = R$ 96.000." },
+        { p: "Custo total do pacote em 36 meses (R$)", r: 43800, un: "R$", dica: "15.000 + 36 × 800.", expl: "15.000 + 28.800 = R$ 43.800." },
+        { p: "Custo total da terceirização em 36 meses (R$)", r: 90000, un: "R$", dica: "36 × 2.500.", expl: "R$ 90.000." },
+        { p: "Quanto o pacote economiza em relação à opção mais cara (R$)?", r: 52200, un: "R$", dica: "In-house − pacote.", expl: "96.000 − 43.800 = R$ 52.200. Para um processo padrão como uma biblioteca, o pacote vence; o in-house se justifica quando o processo é único e estratégico." }] }
+    ]
+  },
   fc: [
     ["Os três passos para solucionar um problema com SI?", "Entender o problema e avaliar alternativas; desenvolver a solução escolhida; implantar a solução."],
     ["As cinco fases do ciclo de vida?", "Definição, análise, projeto, implantação e manutenção (operação)."],

@@ -168,7 +168,9 @@ Os materiais são de uso educacional. Para reutilizar ou adaptar em outra instit
 As novas disciplinas seguem o modelo de `fundamentos-de-sistemas-de-informacao/`: o motor é compartilhado em `motor-interativo/` e cada disciplina só traz **dados** (`dados/m1.js`…) e um `disciplina.json`.
 
 - Cada módulo tem ~40 atividades: 12 flashcards, 12 verdadeiro/falso com justificativa, 10 questões de caderno e PBL (3 problemas × 2 etapas). A resposta só aparece depois da tentativa do aluno.
-- Recursos visuais: diagramas de rede clicáveis, pirâmides/camadas, linhas do tempo com desafio de ordenação e jogos de classificar.
+- Recursos visuais: diagramas de rede clicáveis, pirâmides/camadas, linhas do tempo com desafio de ordenação, diagramas de sequência e jogos de classificar.
+- **Laboratório** (`lab` no `dados/mN.js`): simuladores de `motor-interativo/labs.js` (cenários com medidor, montar fluxo, tabela dado→informação, matriz de risco, multiprogramação, estados de processo, escalonamento, condição de corrida, spool, alocação, paginação, substituição de páginas e terminal Linux), **missões** que se marcam sozinhas e **exercícios guiados** passo a passo.
+- Pontos, níveis (`niveis`/`passo` no `disciplina.json`), selos por módulo, desafio relâmpago e simulado final.
 - Para criar ou atualizar: edite `dados/mN.js` e rode `python3 tools/gerar-disciplina.py <pasta>` e depois `python3 tools/gerar-offline.py`.
-- Disciplinas já no padrão: `fundamentos-de-sistemas-de-informacao/` (6 módulos) e `mapas-mentais/` (9 módulos de revisão de TI, textos e questões originais a partir dos temas dos mapas mentais do professor).
+- Disciplinas já no padrão: `fundamentos-de-sistemas-de-informacao/` (6 módulos, cada um com laboratório), `sistemas-operacionais/` (8 módulos com simuladores de processos, escalonamento, memória e terminal Linux, a partir do e-book e do guia de atividades do professor) e `mapas-mentais/` (9 módulos de revisão de TI, textos e questões originais a partir dos temas dos mapas mentais do professor).
 - Para restringir por curso/turma, inclua a pasta na lista `CURSOS` de `progresso-turma.js`.

@@ -5,7 +5,7 @@
 <script>try{var pa=JSON.parse(localStorage.getItem("perfil:aluno")||"null");if(!(pa&&pa.id&&pa.pin)&&!/[?&]professor\b/.test(location.search))document.documentElement.classList.add("pt-gate")}catch(e){}</script><style>html.pt-gate body>*:not(.pt-screen){visibility:hidden}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Simulado — Fundamentos para Sistemas de Informação</title>
-<meta name="description" content="Conceitos, tipos, papel estratégico, desenvolvimento e segurança dos sistemas de informação — com diagramas clicáveis, flashcards, V ou F com justificativa, caderno e PBL.">
+<meta name="description" content="Conceitos, tipos, papel estratégico, desenvolvimento e segurança dos sistemas de informação — com laboratórios práticos (pizzaria, cantina, supermercado, livraria, biblioteca e clínica), missões, exercícios guiados, diagramas clicáveis, flashcards, V ou F com justificativa, caderno e PBL.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap">
@@ -17,12 +17,12 @@
 <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
 <meta name="theme-color" content="#16261C">
 <script src="../offline.js" defer></script>
-<script>window.FSI_CFG={disc:"fsi",nome:"Fundamentos para Sistemas de Informação"};</script>
+<script>window.FSI_CFG={"disc": "fsi", "nome": "Fundamentos para Sistemas de Informação", "eixo": "Disciplina interativa · baseada no livro da UnisulVirtual (Mülbert e Ayres)", "descricao": "Conceitos, tipos, papel estratégico, desenvolvimento e segurança dos sistemas de informação — com laboratórios práticos (pizzaria, cantina, supermercado, livraria, biblioteca e clínica), missões, exercícios guiados, diagramas clicáveis, flashcards, V ou F com justificativa, caderno e PBL.", "como": ["Comece pela aba <b>Estudar</b>: leia a analogia e os pontos-chave antes das lições.", "No <b>Laboratório</b>, cumpra as missões: cada uma vale pontos e mostra a teoria funcionando.", "Faça os <b>exercícios guiados</b> passo a passo; a resposta só aparece depois de duas tentativas.", "Responda no caderno <b>antes</b> de ver qualquer resposta — o gabarito só abre depois da sua tentativa.", "Nos verdadeiro ou falso, escreva a justificativa: é ela que mostra se você entendeu.", "Feche com o desafio relâmpago e o simulado, e revise os módulos em que errou mais."], "aulas": ["<b>Aulas 1–2:</b> Módulo 1 (sistemas e SI) e Módulo 2 (dado, informação e conhecimento)", "<b>Aulas 3–4:</b> Módulo 3 (tipos de sistemas: SPT, SIG, SAD, EIS, ERP, CRM…)", "<b>Aulas 5–6:</b> Módulo 4 (papéis estratégicos e vantagem competitiva)", "<b>Aulas 7–8:</b> Módulo 5 (desenvolvimento de sistemas)", "<b>Aulas 9–10:</b> Módulo 6 (segurança) + simulado"], "analogia": {"titulo": "A informação é o sangue da empresa", "txt": "<p>Toda empresa, da pizzaria da esquina ao banco, funciona à base de informação: o pedido que chega, o estoque que baixa, o relatório que o gerente lê, o painel que a diretoria consulta. Um <b>sistema de informação</b> é o sistema circulatório que leva essa informação a quem precisa decidir — e ele envolve tecnologia, processos e pessoas.</p><p>Nesta disciplina você não vai só ler sobre isso: vai montar o sistema de uma pizzaria, transformar a tabela de vendas da cantina em informação, escolher o sistema certo para cada setor de um supermercado, defender uma livraria contra gigantes, gerenciar um projeto e proteger os dados de uma clínica.</p>"}, "niveis": ["Dado bruto", "Informação", "Conhecimento", "Gestor de SI", "Estrategista", "CIO"], "passo": 300};</script>
 </head>
 <body>
-<header class="top"><div class="wrap"><a class="back" href="./">← Fundamentos para Sistemas de Informação</a><span class="eyebrow">Simulado final</span><h1>Simulado</h1></div></header>
-<main><div class="wrap" id="sim"></div></main>
+<div id="app"></div>
 <script src="../motor-interativo/motor.js"></script>
+<script src="../motor-interativo/labs.js"></script>
 <script src="dados/m1.js"></script>
 <script src="dados/m2.js"></script>
 <script src="dados/m3.js"></script>

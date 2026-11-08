@@ -241,8 +241,8 @@
   {
    "id": "fundamentos-de-sistemas-de-informacao",
    "nome": "Fundamentos para Sistemas de Informação",
-   "versao": "d821fa1de6",
-   "bytes": 191454,
+   "versao": "c10590ad36",
+   "bytes": 375642,
    "arquivos": [
     "fundamentos-de-sistemas-de-informacao/dados/m1.js",
     "fundamentos-de-sistemas-de-informacao/dados/m2.js",
@@ -259,6 +259,40 @@
     "fundamentos-de-sistemas-de-informacao/modulo-5.html",
     "fundamentos-de-sistemas-de-informacao/modulo-6.html",
     "fundamentos-de-sistemas-de-informacao/simulado.html",
+    "motor-interativo/labs.js",
+    "motor-interativo/motor.css",
+    "motor-interativo/motor.js"
+   ],
+   "externos": [
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap"
+   ]
+  },
+  {
+   "id": "sistemas-operacionais",
+   "nome": "Fundamentos de Sistemas Operacionais",
+   "versao": "aa87f60c46",
+   "bytes": 399924,
+   "arquivos": [
+    "sistemas-operacionais/dados/m1.js",
+    "sistemas-operacionais/dados/m2.js",
+    "sistemas-operacionais/dados/m3.js",
+    "sistemas-operacionais/dados/m4.js",
+    "sistemas-operacionais/dados/m5.js",
+    "sistemas-operacionais/dados/m6.js",
+    "sistemas-operacionais/dados/m7.js",
+    "sistemas-operacionais/dados/m8.js",
+    "sistemas-operacionais/disciplina.json",
+    "sistemas-operacionais/index.html",
+    "sistemas-operacionais/modulo-1.html",
+    "sistemas-operacionais/modulo-2.html",
+    "sistemas-operacionais/modulo-3.html",
+    "sistemas-operacionais/modulo-4.html",
+    "sistemas-operacionais/modulo-5.html",
+    "sistemas-operacionais/modulo-6.html",
+    "sistemas-operacionais/modulo-7.html",
+    "sistemas-operacionais/modulo-8.html",
+    "sistemas-operacionais/simulado.html",
+    "motor-interativo/labs.js",
     "motor-interativo/motor.css",
     "motor-interativo/motor.js"
    ],
@@ -269,8 +303,8 @@
   {
    "id": "mapas-mentais",
    "nome": "Mapas Mentais de TI",
-   "versao": "452206dd45",
-   "bytes": 204188,
+   "versao": "955cf34dd3",
+   "bytes": 336472,
    "arquivos": [
     "mapas-mentais/dados/m1.js",
     "mapas-mentais/dados/m2.js",
@@ -293,6 +327,7 @@
     "mapas-mentais/modulo-8.html",
     "mapas-mentais/modulo-9.html",
     "mapas-mentais/simulado.html",
+    "motor-interativo/labs.js",
     "motor-interativo/motor.css",
     "motor-interativo/motor.js"
    ],

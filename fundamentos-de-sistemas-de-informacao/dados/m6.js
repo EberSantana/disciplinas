@@ -1,6 +1,17 @@
 FSI.modulo({
   n: 6, unidade: "Unidade 6", nome: "Segurança dos sistemas", titulo: "Segurança de sistemas de informação",
   resumoCurto: "Confidencialidade, integridade e disponibilidade; ameaças e vulnerabilidades; medidas preventivas, detectáveis e corretivas; responsáveis.",
+  duracao: "5 h",
+  analogia: { titulo: "O cofre, o carimbo e a porta aberta", txt: "<p>Pense no prontuário de um paciente numa clínica. <b>Confidencialidade</b> é o cofre: só o médico e o paciente podem ler. <b>Integridade</b> é o carimbo: ninguém pode alterar a dose do remédio sem deixar rastro. <b>Disponibilidade</b> é a porta aberta: na emergência, o prontuário precisa estar lá, na hora.</p><p>Um vírus que apaga arquivos ataca a disponibilidade; um funcionário curioso que espia fichas quebra a confidencialidade; um erro de digitação que muda um resultado de exame fere a integridade. Segurança é proteger os três ao mesmo tempo — com tecnologia, processos e pessoas.</p>" },
+  chave: [
+    "Tríade <b>CID</b>: confidencialidade, integridade e disponibilidade.",
+    "<b>Ameaça</b> é o que pode causar dano; <b>vulnerabilidade</b> é a fraqueza explorada; <b>risco</b> combina probabilidade e impacto.",
+    "Ameaças podem ser <b>naturais, acidentais ou intencionais</b>, internas ou externas.",
+    "Medidas <b>preventivas</b> (evitar), <b>detectáveis</b> (perceber) e <b>corretivas</b> (recuperar).",
+    "Backup, controle de acesso, criptografia, firewall, antivírus, política de senhas e treinamento.",
+    "Segurança é responsabilidade de <b>todos</b>: alta direção, TI e cada usuário."
+  ],
+  termos: [["Confidencialidade", "Só quem tem permissão acessa."], ["Integridade", "A informação não é alterada indevidamente."], ["Disponibilidade", "A informação está acessível quando necessária."], ["Vulnerabilidade", "Fraqueza que uma ameaça pode explorar."], ["Risco", "Probabilidade × impacto."], ["Backup", "Cópia de segurança para recuperar dados."]],
   objetivos: ["Explicar <b>confidencialidade, integridade e disponibilidade</b>.", "Classificar <b>ameaças</b> e <b>vulnerabilidades</b> dos sistemas.", "Propor medidas <b>preventivas, detectáveis e corretivas</b> e um plano de recuperação de desastres.", "Identificar os <b>responsáveis</b> pela segurança."],
   licoes: [
     { t: "Conceitos fundamentais: a tríade CID", txt: "<p>Quando a informação era só papel, bastava trancá-la. Com computadores em rede, dispositivos sem fio e notebooks, a segurança ficou complexa. Redes multiplicaram os problemas: em 2003 os incidentes reportados ao CAIS/RNP cresceram 60% sobre o ano anterior. Todo incidente afeta ao menos uma de três propriedades:</p>", pontos: ["<b>Confidencialidade</b>: a informação só deve chegar a quem é destinada (dados de pesquisa, registros médicos e bancários, salários, estratégias).", "<b>Integridade</b>: a informação deve ser mantida como o proprietário a disponibilizou, livre de alterações indevidas, intencionais ou acidentais, e as saídas do sistema devem ser livres de erros.", "<b>Disponibilidade</b>: a informação útil deve estar disponível a quem precisa, quando precisa."], pense: "Caso do ano bissexto no Japão (29/02/2000): qual propriedade falhou, e a falha foi intencional?" },
@@ -31,6 +42,40 @@ FSI.modulo({
       cats: ["Natural", "Involuntária", "Voluntária"],
       itens: [["Enchente inunda a sala de servidores", 0], ["Usuário apaga arquivos sem entender a consequência", 1], ["Hacker invade o site da empresa", 2], ["Falta de energia elétrica", 1], ["Criador de vírus dissemina worm", 2], ["Tempestade eletromagnética", 0]] }
   ],
+  lab: {
+    intro: "Você foi contratado para cuidar da segurança de uma clínica médica. Primeiro, faça a análise de riscos e escolha o tratamento de cada ameaça. Depois, responda a incidentes reais e calcule o prejuízo de um backup mal planejado.",
+    sims: [
+      { tipo: "risco", titulo: "Matriz de riscos da clínica", instr: "Dê probabilidade e impacto (1 a 5) para cada ameaça, compare com o especialista e escolha o tratamento.", cfg: { id: "clin", ameacas: [
+        { t: "Ransomware criptografa os prontuários", p: 3, i: 5, trat: "Mitigar", fb: "Backup isolado, atualizações e treinamento reduzem probabilidade e impacto." },
+        { t: "Funcionário anota a senha num post-it no monitor", p: 4, i: 3, trat: "Mitigar", fb: "Política de senhas, autenticação em dois fatores e conscientização." },
+        { t: "Incêndio destrói o servidor local", p: 1, i: 5, trat: "Transferir", fb: "Seguro e cópia em nuvem/outro local transferem e reduzem o impacto." },
+        { t: "Uso de um sistema antigo sem suporte, cheio de falhas conhecidas", p: 4, i: 4, trat: "Evitar", fb: "Desativar o sistema obsoleto elimina a fonte do risco." },
+        { t: "Queda de energia de 10 minutos uma vez por ano", p: 2, i: 1, trat: "Aceitar", fb: "Impacto baixo: monitorar e aceitar é mais econômico (ou um nobreak simples)." },
+        { t: "Paciente recebe por e-mail o exame de outra pessoa", p: 2, i: 4, trat: "Mitigar", fb: "Conferência dupla e envio por portal autenticado reduzem o erro." }] } },
+      { tipo: "cenarios", titulo: "Resposta a incidentes", cfg: { id: "inc", rotulo: "Incidente", medidor: { nome: "Confiança dos pacientes", ini: 50 }, itens: [
+        { t: "Um funcionário recebe e-mail “do banco” pedindo para clicar e confirmar a senha.", ops: [["Não clicar, reportar à TI e alertar os colegas (phishing)", true, "Engenharia social se combate com desconfiança e aviso rápido."], ["Clicar só para ver o que é", false, "Um clique pode instalar malware ou roubar credenciais."], ["Responder pedindo mais informações", false, "Confirma ao golpista que o endereço é ativo."]] },
+        { t: "Ao chegar de manhã, todos os arquivos estão com extensão estranha e há um pedido de resgate.", ops: [["Isolar as máquinas da rede e restaurar do backup", true, "Conter a propagação e recuperar: medida corretiva."], ["Pagar o resgate imediatamente", false, "Não garante a devolução e financia o crime."], ["Desligar o antivírus para não atrapalhar", false, "Piora a situação."]] },
+        { t: "Uma recepcionista consegue ver os resultados de exames, embora não precise deles.", ops: [["Revisar permissões: cada um acessa só o necessário", true, "Princípio do menor privilégio protege a confidencialidade."], ["Deixar como está, ela é de confiança", false, "Confiança não substitui controle de acesso."], ["Tirar o acesso de todos", false, "Comprometeria a disponibilidade para quem precisa."]] },
+        { t: "O valor de um exame aparece diferente no sistema e no laudo impresso.", ops: [["Investigar os registros de alteração (log) e corrigir: integridade", true, "Trilhas de auditoria detectam alterações indevidas."], ["Escolher o valor que parece certo", false, "Sem investigar, o erro pode se repetir."], ["Apagar o registro", false, "Destrói a evidência."]] },
+        { t: "O antivírus da recepção está desatualizado há 8 meses.", ops: [["Atualizar e ativar a atualização automática: preventiva", true, "Evitar é mais barato que remediar."], ["Esperar um problema para agir", false, "Atitude reativa aumenta o risco."], ["Desinstalar, já que está velho", false, "Remove uma camada de proteção."]] },
+        { t: "Quem é responsável pela segurança da informação na clínica?", ops: [["Todos: direção, TI e cada usuário", true, "Segurança é cultura, não só tecnologia."], ["Só o técnico de informática", false, "A maioria dos incidentes começa no usuário."], ["Só o fornecedor do sistema", false, "A responsabilidade é compartilhada."]] }] } }
+    ],
+    missoes: [
+      { id: "m1", t: "Avalie probabilidade e impacto de todas as ameaças", ev: "clin:avaliou" },
+      { id: "m2", t: "Compare sua matriz com a do especialista", ev: "clin:comparou" },
+      { id: "m3", t: "Escolha um tratamento para cada ameaça", ev: "clin:tratou" },
+      { id: "m4", t: "Acerte todos os tratamentos", ev: "clin:tratou-certo" },
+      { id: "m5", t: "Responda corretamente a 4 incidentes", ev: "inc:acertos:4" },
+      { id: "m6", t: "Mantenha a confiança dos pacientes em 80% ou mais", ev: "inc:medidor80" },
+      { id: "m7", t: "Responda a todos os incidentes sem errar", ev: "inc:perfeito" }
+    ],
+    guiados: [
+      { titulo: "Quanto se perde sem um bom backup?", txt: "<p>A clínica faz backup <b>uma vez por dia, às 23h</b>. Num dia, o ransomware ataca às <b>18h</b>. A clínica registra em média <b>12 atendimentos por hora</b>, das 7h às 19h.</p>", passos: [
+        { p: "Quantas horas de dados se perdem (do último backup até o ataque)?", r: 19, un: "horas", dica: "Das 23h de ontem às 18h de hoje.", expl: "1 h até meia-noite + 18 h = 19 horas." },
+        { p: "Dessas, quantas são horas de atendimento (7h–18h)?", r: 11, un: "horas", dica: "Das 7h às 18h.", expl: "11 horas de atendimento." },
+        { p: "Quantos atendimentos precisarão ser redigitados?", r: 132, un: "atendimentos", dica: "11 × 12.", expl: "132 atendimentos. Com backups a cada hora, a perda cairia para no máximo 12 — a frequência do backup é uma decisão de risco." }] }
+    ]
+  },
   fc: [
     ["Defina <b>confidencialidade</b>.", "Proteger a informação conforme seu sigilo, com acesso apenas às pessoas a quem se destina."],
     ["Defina <b>integridade</b>.", "Manter a informação como o proprietário a disponibilizou, protegida de alterações indevidas (intencionais ou acidentais) e livre de erros."],

@@ -1,6 +1,17 @@
 FSI.modulo({
   n: 1, unidade: "Unidade 1", nome: "Conceitos fundamentais", titulo: "Conceitos fundamentais de sistemas de informação",
   resumoCurto: "O que é um sistema, como funciona um sistema de informação, por que ele é sociotécnico e como saber se deu certo.",
+  duracao: "4 h",
+  analogia: { titulo: "Do caderninho da pizzaria ao sistema", txt: "<p>O Zé anota os pedidos num caderninho: nome, endereço, sabor. Na cozinha, alguém lê o caderno e monta as pizzas; no fim da noite, ele soma tudo para saber quanto vendeu. Quando um cliente reclama que a pizza chegou fria, o Zé muda a ordem das entregas. Sem perceber, ele tem um <b>sistema de informação</b> completo: <b>entrada</b> (o pedido), <b>processamento</b> (montar e calcular), <b>saída</b> (a comanda, o total do dia) e <b>realimentação</b> (a reclamação que muda o processo).</p><p>Se o Zé comprar um aplicativo caro e ninguém souber usar, ou se ele não mudar a rotina da cozinha, o sistema fracassa. Por isso um SI é <b>sociotécnico</b>: tecnologia, organização e pessoas precisam andar juntas.</p>" },
+  chave: [
+    "<b>Sistema</b> é um conjunto de elementos em interação com um objetivo; o todo é mais que a soma das partes.",
+    "Todo sistema tem <b>entrada, processamento, saída e realimentação</b> e pode ser dividido em <b>subsistemas</b>.",
+    "<b>Sistema de informação</b> coleta, processa, armazena e distribui informação para apoiar decisões e controle.",
+    "O computador <b>não é obrigatório</b>: um fichário organizado já é um SI; a TI é a ferramenta.",
+    "<b>Abordagem sociotécnica:</b> tecnologia, organização e pessoas — falhar em uma compromete o sistema.",
+    "Cinco indicadores de sucesso: <b>rentabilidade, desempenho, áreas de aplicação, satisfação dos usuários e utilização generalizada</b>."
+  ],
+  termos: [["Sistema", "Elementos em interação com um objetivo."], ["Subsistema", "Parte de um sistema com objetivo próprio."], ["Realimentação", "Saída usada para ajustar entrada ou processamento."], ["SI", "Coleta, processa, armazena e distribui informação."], ["Sociotécnico", "Tecnologia + organização + pessoas."], ["Indicadores de sucesso", "Rentabilidade, desempenho, áreas, satisfação, utilização."]],
   objetivos: ["Definir <b>sistema</b> e reconhecer entrada, processamento, saída e realimentação.", "Explicar o que é um <b>sistema de informação</b> e por que o computador não é obrigatório.", "Aplicar a <b>abordagem sociotécnica</b>: tecnologia, organização e pessoas.", "Avaliar um sistema usando os <b>cinco indicadores de sucesso</b>."],
   licoes: [
     { t: "O que é um sistema?", txt: "<p>A teoria geral dos sistemas foi formulada pelo biólogo <b>Ludwig von Bertalanffy</b> (anos 1930, publicada em 1968). Para ele, sistema é <b>um complexo de elementos em interação</b>. Outras definições dizem que é um conjunto de partes coordenadas que concorrem para um objetivo, ou um conjunto de componentes e processos que transformam entradas em saídas.</p><p>Por isso a palavra serve para o sistema solar, o sistema imunológico, o sistema viário, uma fábrica ou um programa de computador.</p>", pontos: ["Todo sistema tem <b>entradas, processamento, saídas e realimentação (feedback)</b>.", "Um sistema pode ser dividido em <b>subsistemas</b> (“dividir para conquistar”), mas <b>sem perder a visão do todo</b>: o sistema não é a soma das partes, e sim o resultado da <b>interação</b> entre elas.", "Todo sistema tem um <b>objetivo</b>; os objetivos dos subsistemas contribuem para o objetivo maior.", "Uma <b>organização</b> é um sistema: recebe capital, trabalho e insumos, processa e entrega produtos ou serviços ao ambiente."], pense: "No exemplo do bolo, o que seria o subsistema “misturar” e qual é a saída dele?" },
@@ -28,6 +39,32 @@ FSI.modulo({
       cats: ["Tecnologia", "Organização", "Pessoas"],
       itens: [["Banco de dados", 0], ["Rede de telecomunicações", 0], ["Procedimento para pagar fornecedor", 1], ["Processos administrativos de planejamento e controle", 1], ["Treinamento do usuário", 2], ["Motivação e clareza do que se espera do trabalho", 2], ["Software de gestão", 0], ["Cultura e práticas de trabalho informais", 1]] }
   ],
+  lab: {
+    intro: "Monte o sistema de informação da pizzaria, peça por peça, e depois rode para ver a informação circulando. Em seguida, avalie sistemas reais com os cinco indicadores de sucesso.",
+    sims: [
+      { tipo: "fluxo", titulo: "Monte e rode o sistema da pizzaria", instr: "Toque numa peça e depois na etapa a que ela pertence. Quando tudo estiver certo, rode o sistema.", cfg: { id: "pizza", etapas: [{ t: "Entrada" }, { t: "Processamento" }, { t: "Saída" }, { t: "Realimentação" }], pecas: [["Pedido recebido pelo WhatsApp", 0], ["Endereço e sabor digitados no sistema", 0], ["Cálculo do valor com a taxa de entrega", 1], ["Ordem de produção gerada para a cozinha", 1], ["Comanda impressa para o entregador", 2], ["Relatório de vendas do dia", 2], ["Cliente avalia: a pizza chegou fria", 3], ["Gerente muda a rota de entrega após as avaliações", 3]], rodar: ["O pedido de uma calabresa grande chega e é digitado com o endereço.", "O sistema calcula R$ 52 + R$ 6 de entrega e manda a ordem para a cozinha.", "Sai a comanda para o entregador e, à noite, o relatório de vendas.", "As avaliações mostram atrasos no bairro Centro: a rota é ajustada para amanhã."], fim: "A realimentação fecha o ciclo: a saída de hoje melhora o processo de amanhã." } },
+      { tipo: "cenarios", titulo: "Avaliador de sistemas: qual indicador de sucesso está em jogo?", cfg: { id: "ind", rotulo: "Caso", itens: [
+        { t: "O novo sistema de vendas custou R$ 40 mil e, em um ano, gerou R$ 90 mil de economia em papel e retrabalho.", ops: [["Rentabilidade", true, "Os benefícios superam os custos."], ["Satisfação dos usuários", false, "O caso fala de custo × benefício, não de opinião."], ["Utilização generalizada", false, "Não há dados sobre quantos usam."]] },
+        { t: "Depois do sistema, os gerentes passaram a decidir as compras com base em relatórios e erraram muito menos nos pedidos.", ops: [["Desempenho", true, "Melhorou a qualidade das decisões."], ["Rentabilidade", false, "O foco é a qualidade da decisão."], ["Áreas de aplicação", false, "Não se discute qual problema é mais importante."]] },
+        { t: "A escola investiu num sistema para controlar a cantina, mas o grande problema dela é a evasão de alunos, que continua sem nenhum apoio.", ops: [["Áreas de aplicação", true, "O sistema não atende ao problema mais importante da organização."], ["Desempenho", false, "Não se fala da qualidade das decisões."], ["Satisfação dos usuários", false, "Ninguém reclamou do uso."]] },
+        { t: "Numa pesquisa, 85% dos funcionários disseram que o sistema facilitou o trabalho deles.", ops: [["Satisfação dos usuários", true, "Avaliação subjetiva de quem usa — válida junto com os outros indicadores."], ["Utilização generalizada", false, "Gostar não é o mesmo que usar amplamente."], ["Rentabilidade", false, "Não há custos nem benefícios financeiros."]] },
+        { t: "O sistema de chamados é usado por todos os setores da empresa, todos os dias, sem obrigação.", ops: [["Utilização generalizada", true, "Amplamente usado e aprovado."], ["Áreas de aplicação", false, "O caso fala de uso, não de qual problema resolve."], ["Desempenho", false, "Não fala de decisões."]] },
+        { t: "O aplicativo da clínica dá lucro, mas recepcionistas e pacientes evitam usá-lo e voltam ao telefone.", ops: [["Satisfação e utilização estão falhando", true, "Rentabilidade sozinha não garante sucesso: falham satisfação e utilização."], ["O sistema é um sucesso completo", false, "Um sistema que ninguém quer usar não é bem-sucedido."], ["Só a rentabilidade importa", false, "São cinco indicadores, avaliados juntos."]] }] } }
+    ],
+    missoes: [
+      { id: "m1", t: "Monte o sistema da pizzaria sem erros", ev: "pizza:montou" },
+      { id: "m2", t: "Rode o sistema e veja o ciclo completo", ev: "pizza:rodou" },
+      { id: "m3", t: "Acerte 3 casos do avaliador", ev: "ind:acertos:3" },
+      { id: "m4", t: "Avalie todos os casos", ev: "ind:fim" },
+      { id: "m5", t: "Acerte todos os casos numa rodada", ev: "ind:perfeito" }
+    ],
+    guiados: [
+      { titulo: "O sistema da pizzaria se paga?", txt: "<p>O Zé vai comprar um sistema por <b>R$ 12.000</b> e pagar <b>R$ 500 por mês</b> de manutenção. Ele estima economizar <b>R$ 1.500 por mês</b> com menos erros e desperdício.</p>", passos: [
+        { p: "Ganho líquido por mês (R$)", r: 1000, un: "R$", dica: "Economia mensal − custo mensal.", expl: "1.500 − 500 = R$ 1.000 por mês." },
+        { p: "Em quantos meses o investimento inicial se paga?", r: 12, un: "meses", dica: "Investimento ÷ ganho líquido mensal.", expl: "12.000 ÷ 1.000 = 12 meses." },
+        { p: "Qual o saldo depois de 24 meses (R$)?", r: 12000, un: "R$", dica: "24 × ganho líquido − investimento.", expl: "24 × 1.000 − 12.000 = R$ 12.000 positivos: indicador de rentabilidade atendido (mas ainda falta ver os outros quatro!)." }] }
+    ]
+  },
   fc: [
     ["Como Bertalanffy definiu <b>sistema</b>?", "Um complexo de elementos em interação."],
     ["Quais são as quatro atividades de qualquer sistema?", "Entrada, processamento, saída e realimentação (feedback)."],

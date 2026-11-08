@@ -1,6 +1,17 @@
 FSI.modulo({
   n: 2, unidade: "Unidade 2", nome: "Informação e organizações", titulo: "Informação e organizações",
   resumoCurto: "Dado, informação e conhecimento; as leis da informação; atributos de qualidade e os tipos de informação.",
+  duracao: "4 h",
+  analogia: { titulo: "O caderno da cantina", txt: "<p>A cantina da escola anota cada venda: “segunda, coxinha, manhã, 20 unidades, R$ 100”. Uma linha dessas, sozinha, é <b>dado</b>: um registro bruto. Quando alguém organiza o caderno e descobre que “o pão de queijo é o que mais sai, mas é a coxinha que traz mais dinheiro”, isso é <b>informação</b>: dado com significado para quem decide. E quando a dona da cantina, com a experiência dela, conclui “vou fazer mais coxinha de manhã e uma promoção de pão de queijo à tarde”, isso é <b>conhecimento</b> aplicado.</p><p>Neste módulo você vai fazer exatamente isso no laboratório: pegar uma tabela bruta e transformá-la em respostas para o gerente.</p>" },
+  chave: [
+    "<b>Dado</b> é registro bruto; <b>informação</b> é dado com significado e propósito; <b>conhecimento</b> é a informação aplicada pela experiência (muitas vezes tácito).",
+    "A informação é <b>recurso</b>: apoia decisões, agrega valor à produção, gera sinergia e orienta comportamentos.",
+    "As <b>sete leis</b>: compartilhável, valor cresce com o uso, depreciação própria, precisão, combinação, excesso atrapalha, multiplica-se.",
+    "Qualidade: <b>precisa, completa, econômica, flexível, confiável, relevante, simples, em tempo e verificável</b>.",
+    "“Entra lixo, sai lixo”: sem dado preciso não existe informação de qualidade.",
+    "Tipos: <b>operacionais × gerenciais</b>, <b>internas × externas</b>, <b>formais × informais</b>."
+  ],
+  termos: [["Dado", "Registro bruto, fácil de estruturar."], ["Informação", "Dado com significado para quem decide."], ["Conhecimento", "Informação aplicada; muitas vezes tácito."], ["Sinergia", "Bom fluxo de informação melhora o todo."], ["Informação gerencial", "Resumo tratado para controle e decisão."], ["Entra lixo, sai lixo", "Dado ruim gera informação ruim."]],
   objetivos: ["Distinguir <b>dado</b>, <b>informação</b> e <b>conhecimento</b>.", "Explicar a informação como <b>recurso</b> e aplicar as <b>sete leis</b> da informação.", "Avaliar a <b>qualidade</b> de uma informação pelos seus atributos.", "Classificar informações em operacionais/gerenciais, internas/externas e formais/informais."],
   licoes: [
     { t: "Dado, informação e conhecimento", txt: "<p><b>Dado</b> é qualquer elemento em forma bruta que, sozinho, não leva à compreensão de um fato — pode ser número, palavra, imagem ou som. <b>Informação</b> (do latim <i>informare</i>, dar forma a algo) é o dado coletado, organizado e ao qual se atribui significado e contexto: o dado trabalhado que permite decidir. <b>Conhecimento</b> é o conjunto de informações com reflexão, síntese e contexto, ligado à inteligência de quem associa informações, experiências e conceitos.</p><p>Exemplo do livro: peso 63 kg e idade 10 anos são dados; a associação indica uma criança obesa (informação); o médico, com outras informações e experiência, conhece o estado de saúde e decide um programa de alimentação (conhecimento).</p>", pontos: ["Dado: fácil de estruturar, obter por máquinas e transferir.", "Informação: exige consenso sobre o significado e mediação humana.", "Conhecimento: difícil de estruturar, capturar em máquinas e transferir; frequentemente tácito."], pense: "Uma nota 7,0 sozinha é dado. O que a transforma em informação? E em conhecimento?" },
@@ -27,6 +38,40 @@ FSI.modulo({
       cats: ["Precisa", "Completa", "Relevante", "Em tempo", "Confiável"],
       itens: [["Relatório com erro de digitação no total", 0], ["Investimento sem incluir todos os custos", 1], ["Preço da madeira para um fabricante de chips", 2], ["Estoque informado só depois que a venda foi perdida", 3], ["Boato sem fonte conhecida", 4]] }
   ],
+  lab: {
+    intro: "Você recebeu o caderno de vendas da cantina numa tabela crua. Use filtro, resumo e ordenação para responder às perguntas do gerente — é a transformação de dado em informação acontecendo nas suas mãos.",
+    sims: [
+      { tipo: "dadosinfo", titulo: "Do dado à informação: as vendas da cantina", instr: "Comece olhando a tabela bruta. Depois filtre, resuma (agrupe e some) e ordene até achar cada resposta.", cfg: { id: "cant", colunas: [{ n: "Dia" }, { n: "Produto" }, { n: "Turno" }, { n: "Quantidade", tipo: "num" }, { n: "Valor (R$)", tipo: "num" }], linhas: [
+        ["Segunda", "Coxinha", "Manhã", 20, 100], ["Segunda", "Suco", "Manhã", 15, 60], ["Segunda", "Pão de queijo", "Tarde", 30, 90], ["Terça", "Coxinha", "Tarde", 25, 125], ["Terça", "Bolo", "Manhã", 10, 60], ["Terça", "Suco", "Tarde", 18, 72], ["Quarta", "Pão de queijo", "Manhã", 40, 120], ["Quarta", "Coxinha", "Manhã", 22, 110], ["Quinta", "Suco", "Tarde", 20, 80], ["Quinta", "Bolo", "Tarde", 12, 72], ["Quinta", "Pão de queijo", "Manhã", 35, 105], ["Sexta", "Coxinha", "Tarde", 30, 150], ["Sexta", "Suco", "Manhã", 16, 64], ["Sexta", "Bolo", "Manhã", 8, 48]],
+        perguntas: [
+          { p: "Qual produto vendeu mais <b>unidades</b> na semana?", r: "Pão de queijo", dica: "Agrupe por Produto e some a Quantidade.", expl: "Pão de queijo: 105 unidades." },
+          { p: "E qual produto trouxe mais <b>dinheiro</b> (faturamento)?", r: "Coxinha", dica: "Agrupe por Produto e some o Valor.", expl: "Coxinha: R$ 485. Repare: o mais vendido não é o que mais fatura — informação muda decisão!" },
+          { p: "Quanto a cantina faturou na <b>segunda-feira</b> (R$)?", r: 250, dica: "Filtre Dia = Segunda e some os valores (ou agrupe por Dia).", expl: "100 + 60 + 90 = R$ 250." },
+          { p: "Em qual <b>turno</b> o faturamento foi maior?", r: ["Manhã", "manha"], dica: "Agrupe por Turno e some o Valor.", expl: "Manhã: R$ 667 contra R$ 589 à tarde." }] } },
+      { tipo: "cenarios", titulo: "As sete leis da informação na prática", cfg: { id: "leis", rotulo: "Situação", itens: [
+        { t: "Duas turmas usam a mesma apostila digital ao mesmo tempo, e ela não “acaba”.", ops: [["1ª lei: é infinitamente compartilhável", true, "Usar a informação não a consome."], ["6ª lei: mais informação não é melhor", false, "Não há excesso aqui."], ["4ª lei: valor aumenta com a precisão", false, "O caso não fala de precisão."]] },
+        { t: "Uma planilha de contatos ficou anos esquecida; quando a equipe soube que existia, ela passou a gerar vendas.", ops: [["2ª lei: o valor aumenta com o uso", true, "Informação que ninguém usa não gera valor."], ["3ª lei: deprecia-se de modo distinto", false, "O valor apareceu com o uso, não com o tempo."], ["7ª lei: a informação se multiplica", false, "Não houve geração de informação nova."]] },
+        { t: "A cotação do dólar de ontem quase não vale nada para quem vai comprar dólar agora.", ops: [["3ª lei: deprecia-se de modo distinto dos bens", true, "Algumas informações perdem valor muito rápido."], ["1ª lei: compartilhável", false, "Não se trata de compartilhar."], ["5ª lei: combinação", false, "Não houve integração de informações."]] },
+        { t: "Um GPS com erro de 2 metros vale muito mais que um com erro de 200 metros.", ops: [["4ª lei: o valor aumenta com a precisão", true, "Informação mais precisa vale mais."], ["2ª lei: valor aumenta com o uso", false, "Os dois são usados; o que muda é a precisão."], ["6ª lei: excesso atrapalha", false, "Não é questão de quantidade."]] },
+        { t: "Ao cruzar o cadastro de clientes com o histórico de compras, a loja descobriu quem são os clientes mais fiéis.", ops: [["5ª lei: o valor aumenta com a combinação", true, "Integrar informações gera mais valor."], ["3ª lei: depreciação", false, "Não é sobre o tempo."], ["1ª lei: compartilhável", false, "O ponto é juntar as bases."]] },
+        { t: "O gerente recebe 40 relatórios por dia e não consegue decidir nada.", ops: [["6ª lei: mais informação não é necessariamente melhor", true, "Excesso gera sobrecarga; é preciso equilíbrio."], ["7ª lei: a informação se multiplica", false, "O problema é o excesso, não a geração."], ["2ª lei: valor com o uso", false, "Ele nem consegue usar."]] },
+        { t: "Analisando as vendas do ano, a loja percebeu uma tendência e criou uma campanha nova.", ops: [["7ª lei: a informação se multiplica", true, "Processada com inteligência, gera novas informações."], ["4ª lei: precisão", false, "O ponto é gerar informação nova."], ["6ª lei: excesso", false, "Não há excesso."]] }] } }
+    ],
+    missoes: [
+      { id: "m1", t: "Filtre a tabela de vendas", ev: "cant:filtrou" },
+      { id: "m2", t: "Resuma os dados (agrupar e somar)", ev: "cant:resumiu" },
+      { id: "m3", t: "Ordene um resultado", ev: "cant:ordenou" },
+      { id: "m4", t: "Responda às quatro perguntas do gerente", ev: "cant:todas" },
+      { id: "m5", t: "Reconheça 5 leis da informação", ev: "leis:acertos:5" },
+      { id: "m6", t: "Termine o jogo das sete leis", ev: "leis:fim" }
+    ],
+    guiados: [
+      { titulo: "Indicadores da cantina", txt: "<p>Use os totais por produto (some no laboratório): Coxinha R$ 485, Suco R$ 276, Pão de queijo R$ 315, Bolo R$ 180, em 5 dias de aula.</p>", passos: [
+        { p: "Faturamento total da semana (R$)", r: 1256, un: "R$", dica: "Some os quatro produtos.", expl: "485 + 276 + 315 + 180 = R$ 1.256." },
+        { p: "Faturamento médio por dia (R$, uma casa decimal)", r: 251.2, un: "R$", dica: "Total ÷ 5 dias.", expl: "1.256 ÷ 5 = R$ 251,20." },
+        { p: "Que percentual do faturamento vem da coxinha? (uma casa decimal)", r: 38.6, tol: 0.15, un: "%", dica: "485 ÷ 1.256 × 100.", expl: "≈ 38,6%: quase 4 de cada 10 reais. Isso já é informação gerencial, pronta para decidir." }] }
+    ]
+  },
   fc: [
     ["O que é <b>dado</b>?", "Elemento em forma bruta que, isolado, não leva à compreensão de um fato (números, palavras, imagens, sons)."],
     ["De onde vem a palavra <b>informação</b> e o que significa?", "Do latim <i>informare</i>: dar forma a algo. É o dado coletado, organizado, com significado e contexto."],

@@ -1,6 +1,17 @@
 FSI.modulo({
   n: 3, unidade: "Unidade 3", nome: "Tipos de sistemas", titulo: "Tipos de sistemas de informação",
   resumoCurto: "Como classificar sistemas por abrangência, área funcional e nível — e conhecer SPT, SIG, SAD, EIS, ERP, CRM, SCM, BI e outros.",
+  duracao: "5 h",
+  analogia: { titulo: "O prédio da empresa", txt: "<p>Imagine a empresa como um prédio. No <b>térreo</b>, o caixa registra cada venda: é o <b>SPT</b>, que anota transações aos milhares. No <b>1º andar</b>, os gerentes recebem relatórios semanais prontos: é o <b>SIG</b>. No <b>2º andar</b>, o analista simula “e se o preço subir 10%?”: é o <b>SAD</b>. Na <b>cobertura</b>, a diretoria olha um painel com poucos indicadores e o mercado lá fora: é o <b>EIS</b>.</p><p>E os elevadores que ligam todos os andares e setores? São os <b>sistemas integrados</b>: ERP por dentro, CRM com clientes, SCM com fornecedores.</p>" },
+  chave: [
+    "Classificação por <b>abrangência</b> (pessoal, de grupo, organizacional), <b>área funcional</b> (vendas, finanças, RH, produção) e <b>nível</b> (operacional, tático, estratégico).",
+    "<b>SPT</b>: registra transações do dia a dia, é a base de todos os outros.",
+    "<b>SIG</b>: relatórios periódicos e resumidos para a gerência média.",
+    "<b>SAD</b>: modelos e simulações (“e se?”) para decisões semiestruturadas.",
+    "<b>EIS/SAE</b>: painéis com indicadores-chave e dados externos para a alta direção.",
+    "Integradores: <b>ERP</b> (processos internos), <b>CRM</b> (clientes), <b>SCM</b> (cadeia de suprimentos); e ainda <b>BI</b>, <b>GIS</b> e sistemas especialistas."
+  ],
+  termos: [["SPT", "Sistema de processamento de transações."], ["SIG", "Sistema de informação gerencial: relatórios."], ["SAD", "Sistema de apoio à decisão: simulação."], ["EIS", "Sistema de informação executiva: painel."], ["ERP", "Sistema integrado de gestão empresarial."], ["CRM", "Gestão do relacionamento com o cliente."]],
   objetivos: ["Classificar sistemas por <b>abrangência</b>, <b>área funcional</b> e <b>nível organizacional</b>.", "Diferenciar <b>SPT, SIG, SAD, EIS, STC e SAE</b>.", "Reconhecer os sistemas interorganizacionais (EDI, EFT, extranets).", "Entender <b>ERP, SCM, CRM, BI, sistemas especialistas e GIS</b>."],
   licoes: [
     { t: "Não existe um sistema único", txt: "<p>Nenhum grande sistema atende a todas as necessidades de informação de uma empresa. Há tipos diferentes para <b>diferentes níveis de problemas, funções e estruturas</b>. E não existe uma única classificação rígida: as mais usuais são por <b>abrangência</b>, <b>áreas funcionais</b> e <b>níveis organizacionais</b>.</p>", pense: "Que sistemas você usa na sua escola? Em que classificação cada um se encaixa?" },
@@ -27,6 +38,35 @@ FSI.modulo({
       cats: ["Pessoal", "Grupo", "Corporativo", "Interorganizacional"],
       itens: [["Planilha do seu orçamento", 0], ["Agenda eletrônica", 0], ["Videoconferência da equipe", 1], ["Banco de dados multiusuário do projeto", 1], ["Sistema único de toda a empresa com banco central", 2], ["EDI com o fornecedor", 3], ["Extranet com parceiros", 3], ["Transferência eletrônica de fundos entre bancos", 3]] }
   ],
+  lab: {
+    intro: "Você é o consultor de TI de uma rede de supermercados. Cada setor traz um problema: indique o sistema certo e mantenha a confiança da diretoria alta. Depois, organize a pirâmide dos sistemas.",
+    sims: [
+      { tipo: "cenarios", titulo: "Consultoria: qual sistema resolve?", cfg: { id: "qual", rotulo: "Pedido", medidor: { nome: "Confiança da diretoria", ini: 50 }, itens: [
+        { t: "O caixa precisa registrar cada compra, dar baixa no estoque e emitir o cupom fiscal na hora.", ops: [["SPT — processamento de transações", true, "Transações rotineiras, em grande volume, registradas uma a uma."], ["EIS", false, "Painel executivo não registra vendas."], ["SAD", false, "Não há simulação, só registro."]] },
+        { t: "O gerente de loja quer receber toda segunda-feira um relatório com as vendas da semana por seção.", ops: [["SIG — informação gerencial", true, "Relatórios periódicos e resumidos para a gerência média."], ["SPT", false, "O SPT registra; o relatório resumido é papel do SIG."], ["GIS", false, "Não há componente geográfico."]] },
+        { t: "O analista quer simular: “se dermos 15% de desconto no leite, quanto o lucro muda?”", ops: [["SAD — apoio à decisão", true, "Modelos e perguntas “e se?” para decisões semiestruturadas."], ["SIG", false, "SIG entrega relatórios prontos, não simula."], ["CRM", false, "Não é sobre relacionamento com clientes."]] },
+        { t: "O presidente quer um painel com 5 indicadores da rede e notícias do mercado, para olhar em 2 minutos.", ops: [["EIS — informação executiva", true, "Visão resumida, gráfica e com dados externos para a alta direção."], ["SPT", false, "Nível operacional demais."], ["Sistema especialista", false, "Não há regras de um especialista aqui."]] },
+        { t: "Compras, estoque, financeiro e RH usam sistemas separados que não conversam; os números nunca batem.", ops: [["ERP — gestão integrada", true, "Uma base única integra os processos internos."], ["GIS", false, "Mapas não resolvem integração."], ["SAD", false, "O problema é integração, não simulação."]] },
+        { t: "A rede quer saber quem são os clientes fiéis, o que compram e enviar ofertas personalizadas.", ops: [["CRM — relacionamento com o cliente", true, "Foco no cliente: histórico, segmentação e campanhas."], ["SCM", false, "SCM olha para fornecedores e logística."], ["SPT", false, "Registra a venda, mas não gerencia o relacionamento."]] },
+        { t: "Os fornecedores precisam ver o estoque das lojas para repor automaticamente, sem faltar produto.", ops: [["SCM — cadeia de suprimentos", true, "Integra a empresa com fornecedores e logística."], ["CRM", false, "CRM é para clientes, não fornecedores."], ["EIS", false, "Painel executivo não faz reposição."]] },
+        { t: "A diretoria quer cruzar 5 anos de vendas para descobrir padrões escondidos e tendências.", ops: [["BI — inteligência de negócios", true, "Data warehouse, mineração e análise de grandes volumes."], ["SPT", false, "O SPT só registra o dia a dia."], ["Sistema especialista", false, "Não se trata de regras de especialista."]] },
+        { t: "A empresa quer decidir onde abrir a próxima loja olhando população, renda e concorrentes no mapa.", ops: [["GIS — informação geográfica", true, "Dados associados a localização, em mapas."], ["SIG", false, "Apesar do nome parecido, SIG é relatório gerencial."], ["CRM", false, "O foco é o território."]] }] } },
+      { tipo: "classificar", id: "lab-piramide", titulo: "Monte a pirâmide", instr: "Classifique cada sistema ou característica no nível organizacional certo.", cats: ["Operacional", "Tático (gerencial)", "Estratégico"], itens: [["SPT: registro de cada venda", 0], ["Folha de pagamento processada todo mês", 0], ["Relatório semanal de vendas por seção", 1], ["SIG com comparação entre lojas", 1], ["SAD para escolher o melhor mix de produtos", 1], ["EIS com indicadores e notícias do mercado", 2], ["Decisão de entrar num novo estado", 2], ["Controle de entrada e saída do estoque", 0]] }
+    ],
+    missoes: [
+      { id: "m1", t: "Atenda 4 pedidos corretamente", ev: "qual:acertos:4" },
+      { id: "m2", t: "Leve a confiança da diretoria a 80% ou mais", ev: "qual:medidor80" },
+      { id: "m3", t: "Atenda todos os setores", ev: "qual:fim" },
+      { id: "m4", t: "Acerte os 9 pedidos numa rodada", ev: "qual:perfeito" },
+      { id: "m5", t: "Monte a pirâmide sem erros", ev: "vis:lab-piramide" }
+    ],
+    guiados: [
+      { titulo: "Quanto o SPT trabalha?", txt: "<p>Uma loja tem <b>8 caixas</b>. Cada caixa registra em média <b>45 vendas por hora</b> e a loja abre <b>12 horas</b> por dia.</p>", passos: [
+        { p: "Transações por hora na loja inteira", r: 360, un: "transações", dica: "Caixas × vendas por hora.", expl: "8 × 45 = 360 por hora." },
+        { p: "Transações por dia", r: 4320, un: "transações", dica: "Por hora × horas abertas.", expl: "360 × 12 = 4.320 por dia." },
+        { p: "Numa rede com 25 lojas iguais, quantas transações por dia?", r: 108000, un: "transações", dica: "Multiplique pelo número de lojas.", expl: "4.320 × 25 = 108.000 por dia — por isso o SPT precisa ser rápido e confiável: é a base de que SIG, SAD e EIS se alimentam." }] }
+    ]
+  },
   fc: [
     ["Três formas usuais de classificar sistemas de informação?", "Por abrangência organizacional, por áreas funcionais e por níveis organizacionais."],
     ["As quatro funções empresariais básicas?", "Produção, vendas e marketing, finanças e contabilidade, recursos humanos."],

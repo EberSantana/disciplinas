@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR" data-a11y-cores>
+<head>
+<meta charset="utf-8">
+<script>try{var pa=JSON.parse(localStorage.getItem("perfil:aluno")||"null");if(!(pa&&pa.id&&pa.pin)&&!/[?&]professor\b/.test(location.search))document.documentElement.classList.add("pt-gate")}catch(e){}</script><style>html.pt-gate body>*:not(.pt-screen){visibility:hidden}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Módulo 3 — Fundamentos de Sistemas Operacionais</title>
+<meta name="description" content="Da sala de válvulas ao celular: história, tipos de sistema operacional, processos, escalonamento, sincronização, memória, arquivos e E/S — com simuladores, missões, exercícios guiados e um terminal Linux para praticar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap">
+<link rel="stylesheet" href="../motor-interativo/motor.css">
+<script src="../aparencia.js"></script>
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<meta name="theme-color" content="#16261C">
+<script src="../offline.js" defer></script>
+<script>window.FSI_CFG={"disc": "fso", "nome": "Fundamentos de Sistemas Operacionais", "eixo": "Disciplina interativa · Técnico em Informática · 40 h", "descricao": "Da sala de válvulas ao celular: história, tipos de sistema operacional, processos, escalonamento, sincronização, memória, arquivos e E/S — com simuladores, missões, exercícios guiados e um terminal Linux para praticar.", "como": ["Comece cada módulo pela <b>analogia</b> e pelos <b>pontos-chave</b>; depois leia as lições.", "No <b>Explorar</b>, clique em tudo e assista às sequências animadas.", "No <b>Laboratório</b>, cumpra as missões: elas se marcam sozinhas quando você faz a ação.", "Faça os <b>exercícios guiados</b> no caderno antes de digitar a resposta.", "Responda caderno, V ou F e PBL <b>antes</b> de ver o gabarito.", "Feche com o <b>desafio relâmpago</b> e o <b>simulado</b>."], "aulas": ["<b>Aulas 1–2:</b> Módulos 1 e 2 (história, tipos de SO, kernel)", "<b>Aulas 3–4:</b> Módulos 3 e 4 (multiprogramação, threads, processos)", "<b>Aulas 5–6:</b> Módulos 5 e 6 (sincronização, E/S, escalonamento)", "<b>Aulas 7–8:</b> Módulo 7 (memória real e virtual)", "<b>Aulas 9–10:</b> Módulo 8 (arquivos, E/S e prática no Linux) + simulado"], "analogia": {"titulo": "O maestro invisível", "txt": "<p>Pense no computador como uma orquestra. O processador, a memória, o disco, o teclado e a tela são os músicos; os programas são as partituras. Sozinhos, os músicos não sabem quando entrar. O <b>sistema operacional</b> é o maestro: não toca nenhum instrumento, mas decide quem toca, quando e por quanto tempo, para que tudo soe junto sem atropelos.</p><p>Nesta disciplina você vai abrir a caixa-preta do maestro: ver os processos mudando de estado, a fila da CPU sendo organizada, a memória sendo dividida em páginas e os arquivos sendo protegidos — mexendo nos simuladores, não só lendo.</p>"}, "niveis": ["Boot", "Kernel carregado", "Multitarefa", "Escalonador", "Memória virtual", "Root"], "passo": 300};</script>
+</head>
+<body>
+<div id="app"></div>
+<script src="../motor-interativo/motor.js"></script>
+<script src="../motor-interativo/labs.js"></script>
+<script src="dados/m1.js"></script>
+<script src="dados/m2.js"></script>
+<script src="dados/m3.js"></script>
+<script src="dados/m4.js"></script>
+<script src="dados/m5.js"></script>
+<script src="dados/m6.js"></script>
+<script src="dados/m7.js"></script>
+<script src="dados/m8.js"></script>
+<script>FSI.montarModulo(3)</script>
+<script src="../config.js"></script>
+<script src="../progresso-turma.js"></script>
+<script src="../acessibilidade.js" defer></script>
+</body>
+</html>

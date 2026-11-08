@@ -12,6 +12,7 @@ cfg = json.load(open(os.path.join(base, "disciplina.json"), encoding="utf-8"))
 N = cfg["modulos"]
 GATE = '<script>try{var pa=JSON.parse(localStorage.getItem("perfil:aluno")||"null");if(!(pa&&pa.id&&pa.pin)&&!/[?&]professor\\b/.test(location.search))document.documentElement.classList.add("pt-gate")}catch(e){}</script><style>html.pt-gate body>*:not(.pt-screen){visibility:hidden}</style>'
 def head(titulo, desc):
+    CFG = json.dumps({k: cfg[k] for k in ('disc','nome','eixo','descricao','como','aulas','analogia','niveis','passo') if k in cfg}, ensure_ascii=False)
     return f'''<!doctype html>
 <html lang="pt-BR" data-a11y-cores>
 <head>
@@ -31,7 +32,7 @@ def head(titulo, desc):
 <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
 <meta name="theme-color" content="#16261C">
 <script src="../offline.js" defer></script>
-<script>window.FSI_CFG={{disc:{json.dumps(cfg["disc"])},nome:{json.dumps(cfg["nome"], ensure_ascii=False)}}};</script>
+<script>window.FSI_CFG={CFG};</script>
 </head>
 <body>
 '''
@@ -41,28 +42,10 @@ def fim(extra):
 RODAPE = '<script src="../config.js"></script>\n<script src="../progresso-turma.js"></script>\n<script src="../acessibilidade.js" defer></script>\n</body>\n</html>\n'
 def grava(nome, txt): open(os.path.join(base, nome), "w", encoding="utf-8").write(txt)
 
-for i in range(1, N + 1):
-    grava(f"modulo-{i}.html", head(f"Módulo {i} — {cfg['nome']}", cfg["descricao"]) +
-          f'<div id="app"></div>\n<script src="../motor-interativo/motor.js"></script>\n<script src="dados/m{i}.js"></script>\n' +
-          (f'<script src="dados/m{i+1}.js"></script>\n' if i < N else "") +
-          f'<script>FSI.montarModulo({i})</script>\n' + RODAPE)
 todos = "".join(f'<script src="dados/m{i}.js"></script>\n' for i in range(1, N + 1))
-como = "".join(f"<li>{c}</li>" for c in cfg.get("como", []))
-grava("index.html", head(cfg["nome"], cfg["descricao"]) + f'''<header class="top"><div class="wrap"><a class="back" href="../">← Todas as disciplinas</a><span class="eyebrow">{html.escape(cfg["eixo"])}</span><h1>{html.escape(cfg["nome"])}</h1><p>{html.escape(cfg["descricao"])}</p><div class="prog" aria-label="Seu progresso geral"><div class="bar"><i style="width:0"></i></div><b></b></div></div></header>
-<main><div class="wrap">
-<h2 class="t">Módulos</h2><p class="lead">Estude na ordem. Cada módulo tem lições, diagramas para explorar, flashcards, verdadeiro ou falso com justificativa, atividades de caderno e problemas (PBL).</p>
-<div class="grid" id="modulos"></div>
-<div class="viz" id="mapa" style="margin-top:22px"></div>
-<div class="card"><h3>Como estudar com este material</h3><ol>{como}</ol></div>
-<div class="grid"><a class="mod" href="simulado.html"><span class="meta">Para finalizar</span><h3>Simulado final</h3><p>20 afirmações sorteadas de todos os módulos, com justificativa de cada gabarito.</p><span class="go">Começar →</span></a></div>
-</div></main>
-<div id="app"></div>
-<script src="../motor-interativo/motor.js"></script>
-{todos}<script>FSI.montarIndice()</script>
-''' + RODAPE)
-grava("simulado.html", head(f"Simulado — {cfg['nome']}", cfg["descricao"]) + f'''<header class="top"><div class="wrap"><a class="back" href="./">← {html.escape(cfg["nome"])}</a><span class="eyebrow">Simulado final</span><h1>Simulado</h1></div></header>
-<main><div class="wrap" id="sim"></div></main>
-<script src="../motor-interativo/motor.js"></script>
-{todos}<script>FSI.montarSimulado()</script>
-''' + RODAPE)
+MOTOR = '<div id="app"></div>\n<script src="../motor-interativo/motor.js"></script>\n<script src="../motor-interativo/labs.js"></script>\n'
+for i in range(1, N + 1):
+    grava(f"modulo-{i}.html", head(f"Módulo {i} — {cfg['nome']}", cfg["descricao"]) + MOTOR + todos + f'<script>FSI.montarModulo({i})</script>\n' + RODAPE)
+grava("index.html", head(cfg["nome"], cfg["descricao"]) + MOTOR + todos + '<script>FSI.montarIndice()</script>\n' + RODAPE)
+grava("simulado.html", head(f"Simulado — {cfg['nome']}", cfg["descricao"]) + MOTOR + todos + '<script>FSI.montarSimulado()</script>\n' + RODAPE)
 print("ok:", N, "módulos +", "index, simulado")

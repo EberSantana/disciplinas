@@ -20,6 +20,7 @@
       ["Inform\u00e1tica B\u00e1sica", "informatica-basica"],
       ["Engenharia de Software", "engenharia-de-software"],
       ["Fundamentos para Sistemas de Informa\u00e7\u00e3o", "fundamentos-de-sistemas-de-informacao"],
+      ["Fundamentos de Sistemas Operacionais", "sistemas-operacionais"],
       ["Mapas Mentais de TI", "mapas-mentais"] ] },
     { nome: "Integrado em Desenvolvimento de Sistemas \u00b7 1\u00ba ano", disciplinas: [
       ["Constru\u00e7\u00e3o de Sites 1", "construcao-de-sites-1"] ] },
@@ -31,6 +32,7 @@
       ["Projeto de Redes", "projeto-de-redes"],
       ["Seguran\u00e7a da Informa\u00e7\u00e3o", "seguranca-da-informacao"],
       ["Fundamentos para Sistemas de Informa\u00e7\u00e3o", "fundamentos-de-sistemas-de-informacao"],
+      ["Fundamentos de Sistemas Operacionais", "sistemas-operacionais"],
       ["Mapas Mentais de TI", "mapas-mentais"] ] }
   ];
   var TKEY = "pt-ultima-turma", LKEY = "pt-turmas-v2";
