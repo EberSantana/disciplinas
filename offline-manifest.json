@@ -241,8 +241,8 @@
   {
    "id": "fundamentos-de-sistemas-de-informacao",
    "nome": "Fundamentos para Sistemas de Informação",
-   "versao": "89b03859cd",
-   "bytes": 190877,
+   "versao": "a45ded002b",
+   "bytes": 191141,
    "arquivos": [
     "fundamentos-de-sistemas-de-informacao/dados/m1.js",
     "fundamentos-de-sistemas-de-informacao/dados/m2.js",
@@ -259,6 +259,40 @@
     "fundamentos-de-sistemas-de-informacao/modulo-5.html",
     "fundamentos-de-sistemas-de-informacao/modulo-6.html",
     "fundamentos-de-sistemas-de-informacao/simulado.html",
+    "motor-interativo/motor.css",
+    "motor-interativo/motor.js"
+   ],
+   "externos": [
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap"
+   ]
+  },
+  {
+   "id": "mapas-mentais",
+   "nome": "Mapas Mentais de TI",
+   "versao": "ea594eb44e",
+   "bytes": 203875,
+   "arquivos": [
+    "mapas-mentais/dados/m1.js",
+    "mapas-mentais/dados/m2.js",
+    "mapas-mentais/dados/m3.js",
+    "mapas-mentais/dados/m4.js",
+    "mapas-mentais/dados/m5.js",
+    "mapas-mentais/dados/m6.js",
+    "mapas-mentais/dados/m7.js",
+    "mapas-mentais/dados/m8.js",
+    "mapas-mentais/dados/m9.js",
+    "mapas-mentais/disciplina.json",
+    "mapas-mentais/index.html",
+    "mapas-mentais/modulo-1.html",
+    "mapas-mentais/modulo-2.html",
+    "mapas-mentais/modulo-3.html",
+    "mapas-mentais/modulo-4.html",
+    "mapas-mentais/modulo-5.html",
+    "mapas-mentais/modulo-6.html",
+    "mapas-mentais/modulo-7.html",
+    "mapas-mentais/modulo-8.html",
+    "mapas-mentais/modulo-9.html",
+    "mapas-mentais/simulado.html",
     "motor-interativo/motor.css",
     "motor-interativo/motor.js"
    ],

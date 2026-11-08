@@ -47,7 +47,7 @@ for i in range(1, N + 1):
           (f'<script src="dados/m{i+1}.js"></script>\n' if i < N else "") +
           f'<script>FSI.montarModulo({i})</script>\n' + RODAPE)
 todos = "".join(f'<script src="dados/m{i}.js"></script>\n' for i in range(1, N + 1))
-como = "".join(f"<li>{html.escape(c)}</li>" for c in cfg.get("como", []))
+como = "".join(f"<li>{c}</li>" for c in cfg.get("como", []))
 grava("index.html", head(cfg["nome"], cfg["descricao"]) + f'''<header class="top"><div class="wrap"><a class="back" href="../">← Todas as disciplinas</a><span class="eyebrow">{html.escape(cfg["eixo"])}</span><h1>{html.escape(cfg["nome"])}</h1><p>{html.escape(cfg["descricao"])}</p><div class="prog" aria-label="Seu progresso geral"><div class="bar"><i style="width:0"></i></div><b></b></div></div></header>
 <main><div class="wrap">
 <h2 class="t">Módulos</h2><p class="lead">Estude na ordem. Cada módulo tem lições, diagramas para explorar, flashcards, verdadeiro ou falso com justificativa, atividades de caderno e problemas (PBL).</p>

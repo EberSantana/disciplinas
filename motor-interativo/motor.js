@@ -321,9 +321,9 @@
     });
     var b = $(".prog .bar i"); if (b) b.style.width = Math.round((100 * fei) / (tot || 1)) + "%"; var t = $(".prog b"); if (t) t.textContent = fei + "/" + tot + " · " + pts + " pts";
     var mapa = {
-      tipo: "rede", id: "mapa-geral", titulo: "Mapa da disciplina", forma: "elipse", h: 420, dir: true,
+      tipo: "rede", id: "mapa-geral", titulo: "Mapa da disciplina", forma: "elipse", h: ids.length <= 6 ? 420 : Math.ceil(ids.length / 3) * 210 - 10, dir: true,
       instr: "Clique em cada módulo para ver o que ele traz e como se liga aos outros. Use o botão para abrir.",
-      nos: ids.map(function (n, i) { var xs = [[130, 80], [360, 80], [590, 80], [590, 330], [360, 330], [130, 330]]; var d = FSI.mods[n]; return { id: "m" + n, x: xs[i][0], y: xs[i][1], t: "Módulo " + n + "\n" + d.nome, d: d.resumoCurto, href: "modulo-" + n + ".html" }; }),
+      nos: ids.map(function (n, i) { var xs = ids.length <= 6 ? [[130, 80], [360, 80], [590, 80], [590, 330], [360, 330], [130, 330]][i] : (function () { var r = Math.floor(i / 3), c = i % 3; if (r % 2) c = 2 - c; return [130 + 230 * c, 80 + 210 * r]; })(); var d = FSI.mods[n]; return { id: "m" + n, x: xs[0], y: xs[1], t: "Módulo " + n + "\n" + (ids.length > 6 ? d.nome.replace(/(.{1,15})(\s|$)/g, "$1\n").replace(/\n+$/, "") : d.nome), d: d.resumoCurto, href: "modulo-" + n + ".html" }; }),
       liga: ids.slice(0, -1).map(function (n) { return ["m" + n, "m" + (n + 1)]; })
     };
     var S0 = {}; visRede(mapa, $("#mapa"), S0, function () { });

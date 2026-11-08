@@ -170,4 +170,5 @@ As novas disciplinas seguem o modelo de `fundamentos-de-sistemas-de-informacao/`
 - Cada módulo tem ~40 atividades: 12 flashcards, 12 verdadeiro/falso com justificativa, 10 questões de caderno e PBL (3 problemas × 2 etapas). A resposta só aparece depois da tentativa do aluno.
 - Recursos visuais: diagramas de rede clicáveis, pirâmides/camadas, linhas do tempo com desafio de ordenação e jogos de classificar.
 - Para criar ou atualizar: edite `dados/mN.js` e rode `python3 tools/gerar-disciplina.py <pasta>` e depois `python3 tools/gerar-offline.py`.
+- Disciplinas já no padrão: `fundamentos-de-sistemas-de-informacao/` (6 módulos) e `mapas-mentais/` (9 módulos de revisão de TI, textos e questões originais a partir dos temas dos mapas mentais do professor).
 - Para restringir por curso/turma, inclua a pasta na lista `CURSOS` de `progresso-turma.js`.
