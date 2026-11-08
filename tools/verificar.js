@@ -8,7 +8,8 @@ const fs = require("fs");
 const axeSrc = fs.readFileSync(require.resolve("axe-core/axe.min.js"), "utf8");
 const BASE = process.env.PORTAL_URL || "http://localhost:8765/";
 const PAGINAS = ["index.html", "como-usar.html", "professor.html", "redes-de-computadores/index.html", "banco-de-dados/index.html",
-  "informatica-basica/index.html", "engenharia-de-software/index.html", "laboratorio-3d/index.html", "recursos-de-aula/index.html"];
+  "informatica-basica/index.html", "engenharia-de-software/index.html", "laboratorio-3d/index.html", "recursos-de-aula/index.html",
+  "fundamentos-de-sistemas-de-informacao/index.html", "fundamentos-de-sistemas-de-informacao/modulo-1.html", "fundamentos-de-sistemas-de-informacao/simulado.html"];
 const PERFIL = { id: "A1", nome: "Aluno Teste", turma: "T1", curso: "Integrado em Desenvolvimento de Sistemas · 2º ano", turno: "N", pin: "1234" };
 (async () => {
   const b = await chromium.launch(); let falhas = 0;

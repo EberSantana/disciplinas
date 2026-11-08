@@ -15,10 +15,11 @@ NOMES = {
     "engenharia-de-software": "Engenharia de Software",
     "construcao-de-sites-1": "Construção de Sites 1",
     "banco-de-dados": "Banco de Dados",
+    "fundamentos-de-sistemas-de-informacao": "Fundamentos para Sistemas de Informação",
     "recursos-de-aula": "Recursos de aula",
     "laboratorio-3d": "Laboratório 3D",
 }
-EXTRAS = {"informatica-basica": ["office-visual-img"]}  # pastas de imagens usadas por uma disciplina
+EXTRAS = {"informatica-basica": ["office-visual-img"], "fundamentos-de-sistemas-de-informacao": ["motor-interativo"]}  # pastas de imagens usadas por uma disciplina
 CORE = ["index.html", "config.js", "progresso-turma.js", "acessibilidade.js", "aparencia.js", "offline.js",
         "manifest.webmanifest", "offline.html", "offline-manifest.json",
         "icons/icon-192.png", "icons/icon-512.png", "icons/favicon-32.png", "favicon.ico", "busca-index.json", "como-usar.html", "icons/apple-touch-icon.png"]

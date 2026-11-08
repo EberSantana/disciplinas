@@ -162,3 +162,12 @@ Professor EBTT do Instituto Federal de Sergipe, Campus Tobias Barreto. Pesquisad
 ## Uso dos materiais
 
 Os materiais são de uso educacional. Para reutilizar ou adaptar em outra instituição, entre em contato com o autor.
+
+## Disciplinas interativas (padrão para as novas disciplinas)
+
+As novas disciplinas seguem o modelo de `fundamentos-de-sistemas-de-informacao/`: o motor é compartilhado em `motor-interativo/` e cada disciplina só traz **dados** (`dados/m1.js`…) e um `disciplina.json`.
+
+- Cada módulo tem ~40 atividades: 12 flashcards, 12 verdadeiro/falso com justificativa, 10 questões de caderno e PBL (3 problemas × 2 etapas). A resposta só aparece depois da tentativa do aluno.
+- Recursos visuais: diagramas de rede clicáveis, pirâmides/camadas, linhas do tempo com desafio de ordenação e jogos de classificar.
+- Para criar ou atualizar: edite `dados/mN.js` e rode `python3 tools/gerar-disciplina.py <pasta>` e depois `python3 tools/gerar-offline.py`.
+- Para restringir por curso/turma, inclua a pasta na lista `CURSOS` de `progresso-turma.js`.

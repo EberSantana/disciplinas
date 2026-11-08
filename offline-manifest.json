@@ -239,6 +239,34 @@
    ]
   },
   {
+   "id": "fundamentos-de-sistemas-de-informacao",
+   "nome": "Fundamentos para Sistemas de Informação",
+   "versao": "25671d4e48",
+   "bytes": 190576,
+   "arquivos": [
+    "fundamentos-de-sistemas-de-informacao/dados/m1.js",
+    "fundamentos-de-sistemas-de-informacao/dados/m2.js",
+    "fundamentos-de-sistemas-de-informacao/dados/m3.js",
+    "fundamentos-de-sistemas-de-informacao/dados/m4.js",
+    "fundamentos-de-sistemas-de-informacao/dados/m5.js",
+    "fundamentos-de-sistemas-de-informacao/dados/m6.js",
+    "fundamentos-de-sistemas-de-informacao/disciplina.json",
+    "fundamentos-de-sistemas-de-informacao/index.html",
+    "fundamentos-de-sistemas-de-informacao/modulo-1.html",
+    "fundamentos-de-sistemas-de-informacao/modulo-2.html",
+    "fundamentos-de-sistemas-de-informacao/modulo-3.html",
+    "fundamentos-de-sistemas-de-informacao/modulo-4.html",
+    "fundamentos-de-sistemas-de-informacao/modulo-5.html",
+    "fundamentos-de-sistemas-de-informacao/modulo-6.html",
+    "fundamentos-de-sistemas-de-informacao/simulado.html",
+    "motor-interativo/motor.css",
+    "motor-interativo/motor.js"
+   ],
+   "externos": [
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap"
+   ]
+  },
+  {
    "id": "recursos-de-aula",
    "nome": "Recursos de aula",
    "versao": "dfc23f8a85",
