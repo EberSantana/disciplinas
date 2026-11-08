@@ -15,6 +15,7 @@
   "favicon.ico",
   "busca-index.json",
   "como-usar.html",
+  "jornadas.html",
   "icons/apple-touch-icon.png"
  ],
  "externosCore": [
@@ -241,8 +242,8 @@
   {
    "id": "fundamentos-de-sistemas-de-informacao",
    "nome": "Fundamentos para Sistemas de Informação",
-   "versao": "a45ded002b",
-   "bytes": 191141,
+   "versao": "57638e5984",
+   "bytes": 191408,
    "arquivos": [
     "fundamentos-de-sistemas-de-informacao/dados/m1.js",
     "fundamentos-de-sistemas-de-informacao/dados/m2.js",
@@ -269,8 +270,8 @@
   {
    "id": "mapas-mentais",
    "nome": "Mapas Mentais de TI",
-   "versao": "ea594eb44e",
-   "bytes": 203875,
+   "versao": "3ef6094478",
+   "bytes": 204142,
    "arquivos": [
     "mapas-mentais/dados/m1.js",
     "mapas-mentais/dados/m2.js",

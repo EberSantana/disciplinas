@@ -10,7 +10,7 @@ const BASE = process.env.PORTAL_URL || "http://localhost:8765/";
 const PAGINAS = ["index.html", "como-usar.html", "professor.html", "redes-de-computadores/index.html", "banco-de-dados/index.html",
   "informatica-basica/index.html", "engenharia-de-software/index.html", "laboratorio-3d/index.html", "recursos-de-aula/index.html",
   "fundamentos-de-sistemas-de-informacao/index.html", "fundamentos-de-sistemas-de-informacao/modulo-1.html", "fundamentos-de-sistemas-de-informacao/simulado.html",
-  "mapas-mentais/index.html", "mapas-mentais/modulo-1.html", "mapas-mentais/modulo-3.html", "mapas-mentais/modulo-7.html", "mapas-mentais/simulado.html"];
+  "jornadas.html", "mapas-mentais/index.html", "mapas-mentais/modulo-1.html", "mapas-mentais/modulo-3.html", "mapas-mentais/modulo-7.html", "mapas-mentais/simulado.html"];
 const PERFIL = { id: "A1", nome: "Aluno Teste", turma: "T1", curso: "Integrado em Desenvolvimento de Sistemas · 2º ano", turno: "N", pin: "1234" };
 (async () => {
   const b = await chromium.launch(); let falhas = 0;

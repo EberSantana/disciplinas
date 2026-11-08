@@ -18,7 +18,8 @@
   var uid = (function () { try { var p = JSON.parse(localStorage.getItem("perfil:aluno") || "null"); return p && p.id ? p.id : "anon"; } catch (e) { return "anon"; } })();
   function chave(n) { return "fsi:" + FSI.cfg.disc + ":" + uid + ":" + n; }
   function ler(n) { try { return JSON.parse(localStorage.getItem(chave(n)) || "null") || {}; } catch (e) { return {}; } }
-  function gravar(n, s) { try { localStorage.setItem(chave(n), JSON.stringify(s)); } catch (e) { } if (window.progressoMudou) try { window.progressoMudou(); } catch (e2) { } }
+  function resumo(n, s) { try { var dm = FSI.mods[n]; if (dm) { var c = FSI.contagem(dm, s); localStorage.setItem(chave(n) + ":sum", JSON.stringify({ f: c.feitas, t: c.total, p: c.pontos, ts: Date.now() })); } } catch (e) { } }
+  function gravar(n, s) { try { localStorage.setItem(chave(n), JSON.stringify(s)); } catch (e) { } resumo(n, s); if (window.progressoMudou) try { window.progressoMudou(); } catch (e2) { } }
   FSI.ler = ler; FSI.gravar = gravar;
 
   /* total de itens e feitos de um módulo (usado também pelo índice) */
@@ -171,7 +172,7 @@
   var ABAS = [["estudar", "Estudar"], ["explorar", "Explorar"], ["flash", "Flashcards"], ["vf", "V ou F"], ["caderno", "Caderno"], ["pbl", "PBL"], ["resumo", "Resumo"]];
 
   FSI.montarModulo = function (n) {
-    var d = FSI.mods[n], app = $("#app"), S = ler(n);
+    var d = FSI.mods[n], app = $("#app"), S = ler(n); resumo(n, S);
     function salvar() { gravar(n, S); atualizaProg(); }
     function atualizaProg() { var c = FSI.contagem(d, S); var b = $(".prog .bar i"); if (b) b.style.width = Math.round((100 * c.feitas) / c.total) + "%"; var t = $(".prog b"); if (t) t.textContent = c.feitas + "/" + c.total + " · " + c.pontos + " pts"; var ct = { flash: c.fc, vf: c.vf, caderno: c.cad, pbl: c.pbl }; Object.keys(ct).forEach(function (k) { var s = $('nav.tabs [data-t="' + k + '"] .n'); if (s) s.textContent = ct[k][0] + "/" + ct[k][1]; }); }
     document.title = "Módulo " + n + " · " + d.titulo + " — " + FSI.cfg.nome;
@@ -316,7 +317,7 @@
     var ids = Object.keys(FSI.mods).map(Number).sort(), tot = 0, fei = 0, pts = 0;
     var grade = $("#modulos");
     ids.forEach(function (n) {
-      var d = FSI.mods[n], c = FSI.contagem(d); tot += c.total; fei += c.feitas; pts += c.pontos;
+      var d = FSI.mods[n], c = FSI.contagem(d); resumo(n); tot += c.total; fei += c.feitas; pts += c.pontos;
       grade.appendChild(el("a", { class: "mod", href: "modulo-" + n + ".html" }, '<span class="meta">Módulo ' + n + " · " + esc(d.unidade) + " · ~" + c.total + " atividades</span><h3>" + esc(d.titulo) + "</h3><p>" + esc(d.resumoCurto) + '</p><div class="mini" aria-hidden="true"><i style="width:' + Math.round((100 * c.feitas) / c.total) + '%"></i></div><span class="go">' + (c.feitas ? "Continuar (" + c.feitas + "/" + c.total + ")" : "Começar") + " →</span>"));
     });
     var b = $(".prog .bar i"); if (b) b.style.width = Math.round((100 * fei) / (tot || 1)) + "%"; var t = $(".prog b"); if (t) t.textContent = fei + "/" + tot + " · " + pts + " pts";
