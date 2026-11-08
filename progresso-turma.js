@@ -191,7 +191,40 @@
     var titulo = (document.title || rel).replace(/\s*[\u00b7|\u2013-]\s*(Ambientes de estudo|Prof\..*)$/, "");
     gravarLS("pt-ultima:" + uid(), JSON.stringify({ u: rel, t: titulo, ts: Date.now() }));
     var ds = dias(), h = dia();
-    if (ds.indexOf(h) < 0) { ds.push(h); ds = ds.slice(-120); gravarLS("pt-dias:" + uid(), JSON.stringify(ds)); }
+    if (ds.indexOf(h) < 0) { ds.push(h); ds = ds.slice(-366); gravarLS("pt-dias:" + uid(), JSON.stringify(ds)); }
+    var vs = visitas(), c = codigo(rel);
+    if (vs.indexOf(c) < 0) { vs.push(c); gravarLS("pt-vis:" + uid(), JSON.stringify(vs.slice(-500))); }
+  }
+  /* C\u00f3digo curto e est\u00e1vel de uma p\u00e1gina ("redes-de-computadores/" = "redes-de-computadores/index.html"). */
+  function codigo(rel) {
+    rel = String(rel || "").split(/[?#]/)[0]; if (/\/$/.test(rel)) rel += "index.html";
+    var h = 2166136261; for (var i = 0; i < rel.length; i++) { h ^= rel.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+    return h.toString(36);
+  }
+  function visitas() { try { return JSON.parse(lerLS("pt-vis:" + uid()) || "[]") || []; } catch (e) { return []; } }
+  /* Progresso de cada material com pontos (cache neste aparelho; o servidor completa em jornada()). */
+  function materiais() {
+    var o = {}; try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i), pre = "pt-mat:" + uid() + ":"; if (k && k.indexOf(pre) === 0) o[k.slice(pre.length)] = JSON.parse(localStorage.getItem(k)); } } catch (e) {}
+    return o;
+  }
+  function guardarMat(id, m) {
+    if (!id || !m) return; var k = "pt-mat:" + uid() + ":" + id, v = null;
+    try { v = JSON.parse(lerLS(k) || "null"); } catch (e) {}
+    if (!v || (m.f || 0) >= (v.f || 0) || (m.em || 0) > (v.em || 0)) gravarLS(k, JSON.stringify({ f: m.f || 0, t: m.t || 0, p: m.p || 0, em: m.em || Date.now() }));
+  }
+  /* Junta o que est\u00e1 neste aparelho com o que est\u00e1 na planilha (outros aparelhos) e devolve tudo. */
+  function jornada() {
+    var local = function (sync) { return { visitas: visitas(), dias: dias(), materiais: materiais(), sync: sync }; };
+    if (!URL_ || !perfil) return Promise.resolve(local("sem-conta"));
+    if (navigator.onLine === false) return Promise.resolve(local("offline"));
+    var c = { acao: "jornada", aparelho: aparelhoGeral(), turma: perfil.turma, id: perfil.id, pin: perfil.pin, visitas: visitas(), dias: dias() };
+    return fetch(URL_, { method: "POST", body: JSON.stringify(c) }).then(function (r) { return r.json(); }).then(function (r) {
+      var j = r && r.ok && r.jornada; if (!j) return local(r && r.ok ? "servidor-antigo" : "erro");
+      var vs = visitas(); (j.visitas || []).forEach(function (x) { if (vs.indexOf(x) < 0) vs.push(x); }); gravarLS("pt-vis:" + uid(), JSON.stringify(vs.slice(-500)));
+      var ds = dias(); (j.dias || []).forEach(function (x) { if (ds.indexOf(x) < 0) ds.push(x); }); ds.sort(); gravarLS("pt-dias:" + uid(), JSON.stringify(ds.slice(-366)));
+      (j.materiais || []).forEach(function (m) { guardarMat(m.m, m); });
+      return local("ok");
+    }).catch(function () { return local("erro"); });
   }
   function notaChave() { return "pt-nota:" + uid() + ":" + relAtual(); }
   /* Tipo de aparelho em linhas gerais (ex.: "Android \u00b7 Chrome"), s\u00f3 para o professor saber onde o aluno estuda. */
@@ -248,6 +281,7 @@
   }
   window.PT_FILA = { n: tamFila, enviarAgora: function () { return (DADOS && perfil ? enviar(dados()) : Promise.resolve()).then(esvaziarFila); } };
   function enviar(d) {
+    if (perfil && d && ID) guardarMat(ID, { f: d.feitas, t: d.total, p: d.pontos, em: Date.now() });
     if (!URL_ || !perfil || !d) return Promise.resolve({ ok: false, erro: "sem configura\u00e7\u00e3o" });
     var c = corpo(d);
     if (navigator.onLine === false) { guardarNaFila(c); return Promise.resolve({ ok: false, offline: true, erro: "Sem internet. Seu progresso est\u00e1 salvo e ser\u00e1 enviado quando a conex\u00e3o voltar." }); }
@@ -538,6 +572,7 @@
   /* ---------- envio autom\u00e1tico do progresso ---------- */
   var timer = null;
   window.progressoMudou = function () {
+    if (perfil && DADOS && ID) { var dd = dados(); if (dd) guardarMat(ID, { f: dd.feitas, t: dd.total, p: dd.pontos, em: Date.now() }); }
     if (!URL_ || !perfil || !DADOS) return;
     clearTimeout(timer);
     timer = setTimeout(function () { timer = null; enviar(dados()); }, 4000);
@@ -549,7 +584,8 @@
   });
 
   // Para a p\u00e1gina inicial organizar as disciplinas pelo curso do aluno
-  window.PORTAL_ALUNO = { perfil: function () { return perfil; }, cursos: CURSOS, comuns: COMUNS, permitida: permitida, ultima: ultima, sequencia: sequencia, minhas: minhas, entrar: mostrarEntrada };
+  window.PORTAL_ALUNO = { perfil: function () { return perfil; }, cursos: CURSOS, comuns: COMUNS, permitida: permitida, ultima: ultima, sequencia: sequencia, minhas: minhas, entrar: mostrarEntrada,
+    dias: dias, visitas: visitas, codigo: codigo, materiais: materiais, jornada: jornada };
 
   // Quem entrou quando o envio ainda n\u00e3o estava ligado \u00e9 cadastrado na planilha agora (uma vez por visita).
   function sincronizar() {

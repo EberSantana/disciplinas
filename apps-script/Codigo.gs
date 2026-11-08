@@ -8,6 +8,7 @@
  *   A coluna "pin" começa vazia: o aluno cria o PIN no primeiro acesso.
  *   Para o aluno criar um PIN novo (esqueceu), apague a célula do PIN dele.
  * Aba "Progresso" (criada sozinha): uma linha por aluno e por material.
+ * Aba "Jornadas" (criada sozinha): páginas visitadas e dias de estudo de cada aluno, para a página de jornadas.
  *
  * Nada de nome completo, matrícula ou PIN sai da planilha para o site público:
  * a lista de nomes mostra só o primeiro nome e a inicial do sobrenome.
@@ -40,6 +41,9 @@ function aba_(nome, cab) {
 }
 const turmas_ = () => aba_(ABA_TURMAS, CAB_TURMAS);
 const prog_ = () => aba_(ABA_PROG, CAB_PROG);
+const ABA_JORN = "Jornadas";
+const CAB_JORN = ["matricula", "nome", "turma", "visitas", "dias", "atualizado"];
+const jorn_ = () => aba_(ABA_JORN, CAB_JORN);
 
 function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
@@ -127,6 +131,30 @@ function autenticar_(d, sh) {
   return { aluno: a };
 }
 
+// Jornadas: junta as páginas visitadas e os dias de estudo de todos os aparelhos do aluno
+// e devolve o progresso dele em cada material (para a página jornadas.html).
+const lista_ = (v, re, max) => (Array.isArray(v) ? v : []).map(x => String(x)).filter(x => re.test(x)).slice(0, max);
+function jornada_(a, d, perfil) {
+  const sh = jorn_();
+  const v = sh.getDataRange().getValues();
+  let linha = 0, vis = [], dias = [];
+  for (let i = 1; i < v.length; i++) {
+    if (String(v[i][0]).trim() === a.matricula) {
+      linha = i + 1;
+      vis = String(v[i][3] || "").split(" ").filter(Boolean);
+      dias = String(v[i][4] || "").split(" ").filter(Boolean);
+      break;
+    }
+  }
+  const uv = Array.from(new Set(vis.concat(lista_(d.visitas, /^[a-z0-9]{1,8}$/, 500)))).slice(0, 500);
+  const ud = Array.from(new Set(dias.concat(lista_(d.dias, /^\d{4}-\d{2}-\d{2}$/, 400)))).sort().slice(-366);
+  const row = [a.matricula, a.nome, a.turma, uv.join(" "), ud.join(" "), new Date()];
+  if (linha) sh.getRange(linha, 1, 1, 6).setValues([row]); else sh.appendRow(row);
+  const materiais = prog_().getDataRange().getValues().slice(1).filter(r => String(r[2]).trim() === a.matricula)
+    .map(r => ({ m: String(r[0]), f: Number(r[6]) || 0, t: Number(r[7]) || 0, p: Number(r[8]) || 0, em: r[9] ? new Date(r[9]).getTime() : 0 }));
+  return { ok: true, perfil: perfil, jornada: { visitas: uv, dias: ud, materiais: materiais } };
+}
+
 // Aparelho em linhas gerais ("Android · Chrome"). Só o tipo de aparelho e o navegador, nada que identifique a pessoa.
 const aparelho_ = d => txt_(d.aparelho, 40);
 
@@ -169,6 +197,7 @@ function doPost(e) {
     const curto = nomesCurtos_([a.nome])[0];
     const perfil = { id: idDe_(a.matricula), nome: a.nome, apelido: curto, curso: a.curso, turno: a.turno, turma: a.turma };
 
+    if (d.acao === "jornada") return json_(jornada_(a, d, perfil));
     const material = txt_(d.disciplina, 40);
     if (d.acao === "entrar" || !material || material === "portal") return json_({ ok: true, perfil: perfil, novo: !!r.novo });
 

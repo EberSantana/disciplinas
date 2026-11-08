@@ -23,7 +23,7 @@ NOMES = {
 EXTRAS = {"informatica-basica": ["office-visual-img"], "fundamentos-de-sistemas-de-informacao": ["motor-interativo"], "mapas-mentais": ["motor-interativo"]}  # pastas de imagens usadas por uma disciplina
 CORE = ["index.html", "config.js", "progresso-turma.js", "acessibilidade.js", "aparencia.js", "offline.js",
         "manifest.webmanifest", "offline.html", "offline-manifest.json",
-        "icons/icon-192.png", "icons/icon-512.png", "icons/favicon-32.png", "favicon.ico", "busca-index.json", "como-usar.html", "jornadas.html", "icons/apple-touch-icon.png"]
+        "icons/icon-192.png", "icons/icon-512.png", "icons/favicon-32.png", "favicon.ico", "busca-index.json", "como-usar.html", "icons/apple-touch-icon.png"]
 EXT = re.compile(r'(?:src|href)=["\'](https://(?:fonts\.googleapis\.com|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net)[^"\']+)["\']')
 IGNORA = (".md", ".csv", ".zip", ".gs")
 
