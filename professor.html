@@ -10,8 +10,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap">
 <script src="aparencia.js"></script>
 <style>
-:root{--bg:#F1F4F3;--panel:#fff;--ink:#14231A;--ink-2:#3F4F5B;--muted:#5B6871;--line:#DDE4E1;--line-2:#EDF1EF;--accent:#1F5135;--accent-2:#2E7A4D;--on:#fff;--bar:#16261C;--bar-ink:#E7EFEA;--ok:#17653A;--ok-bg:#E2F3E8;--warn:#8A4B00;--warn-bg:#FFF0D2;--bad:#9B1C1C;--bad-bg:#FBE4E4;--blue:#1F55A8;--blue-bg:#E4EDFA;--shadow:0 1px 2px rgba(20,35,26,.06),0 4px 16px rgba(20,35,26,.05)}
-@media (prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#0D1519;--panel:#15212A;--ink:#E4ECEF;--ink-2:#B8C6CD;--muted:#9FB1BA;--line:#27373F;--line-2:#1D2B34;--accent:#6BAA68;--accent-2:#8CC989;--on:#0B140E;--bar:#0A110D;--bar-ink:#E4ECEF;--ok:#7FD79F;--ok-bg:#123425;--warn:#F0B35A;--warn-bg:#3A2F12;--bad:#FF9C9C;--bad-bg:#3D1B1B;--blue:#8DB6F0;--blue-bg:#14263F;--shadow:0 1px 2px rgba(0,0,0,.4)}}
+:root{--bg:#F1F4F3;--panel:#fff;--ink:#14231A;--ink-2:#3F4F5B;--muted:#5B6871;--line:#DDE4E1;--line-2:#EDF1EF;--accent:#1F5135;--accent-2:#2E7A4D;--on:#fff;--bar:#16261C;--bar-ink:#E7EFEA;--ok:#17653A;--ok-bg:#E2F3E8;--warn:#8A4B00;--warn-bg:#FFF0D2;--bad:#9B1C1C;--bad-bg:#FBE4E4;--blue:#1D6B6B;--blue-bg:#DCEDEC;--shadow:0 1px 2px rgba(20,35,26,.06),0 4px 16px rgba(20,35,26,.05)}
+@media (prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#0D1519;--panel:#15212A;--ink:#E4ECEF;--ink-2:#B8C6CD;--muted:#9FB1BA;--line:#27373F;--line-2:#1D2B34;--accent:#6BAA68;--accent-2:#8CC989;--on:#0B140E;--bar:#0A110D;--bar-ink:#E4ECEF;--ok:#7FD79F;--ok-bg:#123425;--warn:#F0B35A;--warn-bg:#3A2F12;--bad:#FF9C9C;--bad-bg:#3D1B1B;--blue:#6CC4C0;--blue-bg:#173232;--shadow:0 1px 2px rgba(0,0,0,.4)}}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Source Sans 3","Segoe UI",system-ui,sans-serif}
@@ -237,7 +237,7 @@ tr.det td{background:var(--line-2);padding:14px 18px 16px 66px}
   }
   var ROT = { agora: "Online agora", hoje: "Estudou hoje", ok: "Ativo na semana", alerta: "Sem acessar há mais de 7 dias", nunca: "Nunca entrou" };
   var CHIPS = [["", "Todos"], ["agora", "Online agora"], ["hoje", "Estudaram hoje"], ["alerta", "Precisam de atenção"], ["nunca", "Nunca entraram"]];
-  var CORES = ["#1F5135", "#2A5C8C", "#7A3E8E", "#8A5A00", "#9B2C4A", "#2F6F6B", "#5A4FB3", "#6B5B2A"];
+  var CORES = ["#1F5135", "#1D6B6B", "#7A3E8E", "#8A5A00", "#9B2C4A", "#2F6F6B", "#5A4FB3", "#6B5B2A"];
   function cor(s) { var h = 0; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return CORES[h % CORES.length]; }
   function iniciais(n) { var p = n.trim().split(/\s+/).filter(function (w) { return !/^(de|da|do|das|dos|e)$/i.test(w); }); return ((p[0] || "?")[0] + (p.length > 1 ? p[p.length - 1][0] : "")).toUpperCase(); }
   function pct(a) { return a.total ? Math.round(100 * a.feitas / a.total) : 0; }

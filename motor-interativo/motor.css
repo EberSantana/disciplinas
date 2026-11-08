@@ -1,5 +1,5 @@
-:root{--bg:#F1F4F9;--panel:#fff;--ink:#14202E;--ink-2:#3A4A5C;--muted:#566574;--line:#D3DBE6;--accent:#1D4ED8;--accent-soft:#E3ECFD;--side:#0F1B2D;--side-ink:#DCE6F2;--ok:#126B3A;--ok-soft:#DDF3E5;--bad:#A3281E;--bad-soft:#FBE4E1;--warn:#8A5A00;--warn-soft:#FFF1CC}
-@media (prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#0C141F;--panel:#142030;--ink:#E6EEF7;--ink-2:#B9C8D8;--muted:#93A5B7;--line:#2A3B50;--accent:#8DB8FF;--accent-soft:#1B2D49;--side:#08101A;--ok:#6FD39A;--ok-soft:#133323;--bad:#FF9D92;--bad-soft:#3A1B18;--warn:#F2C25B;--warn-soft:#3A2D0E}}
+:root{--bg:#EEF2F0;--panel:#fff;--ink:#16261C;--ink-2:#3F4F5B;--muted:#55636C;--line:#D5DDDA;--accent:#1F5135;--accent-soft:#E2EEE5;--side:#16261C;--side-ink:#DCE5EA;--ok:#126B3A;--ok-soft:#DDF3E5;--bad:#A3281E;--bad-soft:#FBE4E1;--warn:#8A5A00;--warn-soft:#FFF1CC}
+@media (prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#0F171D;--panel:#16222B;--ink:#E4ECEF;--ink-2:#B8C6CD;--muted:#93A5B0;--line:#2A3A45;--accent:#6BAA68;--accent-soft:#1D3324;--side:#0B140E;--ok:#6FD39A;--ok-soft:#133323;--bad:#FF9D92;--bad-soft:#3A1B18;--warn:#F2C25B;--warn-soft:#3A2D0E}}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
@@ -7,14 +7,14 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",
 .wrap{max-width:1040px;margin:0 auto}
 h1,h2,h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif;line-height:1.1;text-wrap:balance}
 header.top{background:var(--side);color:var(--side-ink);padding:34px clamp(16px,5vw,64px) 30px}
-header.top .back{display:inline-block;color:#9CC1FF;text-decoration:none;font-size:15px;margin-bottom:12px}
+header.top .back{display:inline-block;color:#7FBF7A;text-decoration:none;font-size:15px;margin-bottom:12px}
 header.top .back:hover{text-decoration:underline}
-.eyebrow{display:block;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#9CC1FF}
+.eyebrow{display:block;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#7FBF7A}
 header.top h1{font-size:clamp(34px,6vw,56px);margin:8px 0 10px;color:#fff}
-header.top p{margin:0;max-width:64ch;color:#BFD0E4}
+header.top p{margin:0;max-width:64ch;color:#B8C6CD}
 .prog{display:flex;align-items:center;gap:12px;margin-top:18px;max-width:520px}
 .prog .bar{flex:1;height:10px;background:#ffffff26;border-radius:99px;overflow:hidden}
-.prog .bar i{display:block;height:100%;background:#7CC4FF;border-radius:99px;transition:width .4s}
+.prog .bar i{display:block;height:100%;background:#7FBF7A;border-radius:99px;transition:width .4s}
 .prog b{font-family:"JetBrains Mono",monospace;font-size:13px;color:#fff;white-space:nowrap}
 nav.tabs{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);padding:0 clamp(8px,3vw,48px)}
 nav.tabs .wrap{display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
@@ -37,7 +37,8 @@ p.lead{color:var(--ink-2);margin:0 0 18px;max-width:70ch}
 .card li{margin:3px 0}
 .objetivos{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-bottom:18px}
 .objetivos div{background:var(--accent-soft);border-radius:12px;padding:12px 14px;font-size:15.5px;color:var(--ink)}
-.objetivos div b{display:block;font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
+.objetivos div b{font-weight:700}
+.objetivos div>b:first-child{display:block;font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
 .pense{border-left:4px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:0 10px 10px 0;margin:12px 0 4px;font-size:16px}
 .pense b{color:var(--accent)}
 details.licao{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin:0 0 12px;overflow:hidden}

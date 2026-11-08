@@ -426,7 +426,7 @@ input[type=range]::-moz-range-thumb{
   color:#fff;font-family:var(--font-body);font-size:13.5px;font-weight:300;width:100%;line-height:1.55;
 }
 .pick:hover{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.06)}
-.pick.sel{border-color:var(--c2);background:rgba(41,137,216,.14)}
+.pick.sel{border-color:var(--c2);background:rgba(31,81,53,.14)}
 .pick.ok{border-color:var(--ok);background:rgba(44,201,157,.12)}
 .pick.bad{border-color:var(--bad);background:rgba(226,104,95,.12)}
 .pick .lead{flex:1}
@@ -472,7 +472,7 @@ svg.uml text{fill:#e9e9ef;font-size:12px}
 svg.uml text.sm{font-size:10.5px;fill:#a9a9b0}
 svg.uml text.mono{font-family:var(--font-mono);font-size:10.5px;fill:#a9a9b0}
 svg.uml .box{fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.28)}
-svg.uml .box.on{fill:rgba(41,137,216,.18);stroke:#1F5135}
+svg.uml .box.on{fill:rgba(31,81,53,.18);stroke:#1F5135}
 svg.uml .uc{fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.3);cursor:pointer;transition:all .25s ease}
 svg.uml .uc:hover{fill:rgba(255,255,255,.12)}
 svg.uml .uc.linked{fill:rgba(44,201,157,.16);stroke:#2E8B57}
@@ -1705,12 +1705,12 @@ function el(tag, cls, html){
       if(model === "wf"){
         if(w <= 4){ color = "rgba(147,87,204,.65)"; h = 46; }
         else if(w <= 8){ color = "rgba(147,87,204,.4)"; h = 52; }
-        else if(w <= 18){ color = "rgba(41,137,216,.55)"; h = 66; }
+        else if(w <= 18){ color = "rgba(31,81,53,.55)"; h = 66; }
         else if(w <= 22){ color = "rgba(224,163,58,.6)"; h = 58; }
         else { color = "#2E8B57"; h = 92; }
       }else{
         if(w % 3 === 0){ color = "#2E8B57"; h = 92; }
-        else { color = "rgba(41,137,216,.5)"; h = 58; }
+        else { color = "rgba(31,81,53,.5)"; h = 58; }
       }
       b.style.height = h + "%";
       b.style.background = color;
@@ -1722,8 +1722,8 @@ function el(tag, cls, html){
     track.appendChild(axis);
     var lg = el("div","legend",
       model === "wf"
-        ? '<span><i style="background:rgba(147,87,204,.65)"></i>requisitos e projeto</span><span><i style="background:rgba(41,137,216,.55)"></i>desenvolvimento</span><span><i style="background:rgba(224,163,58,.6)"></i>testes</span><span><i style="background:#2E8B57"></i>entrega ao cliente</span>'
-        : '<span><i style="background:rgba(41,137,216,.5)"></i>iteração em andamento</span><span><i style="background:#2E8B57"></i>entrega funcional a cada 3 semanas</span>');
+        ? '<span><i style="background:rgba(147,87,204,.65)"></i>requisitos e projeto</span><span><i style="background:rgba(31,81,53,.55)"></i>desenvolvimento</span><span><i style="background:rgba(224,163,58,.6)"></i>testes</span><span><i style="background:#2E8B57"></i>entrega ao cliente</span>'
+        : '<span><i style="background:rgba(31,81,53,.5)"></i>iteração em andamento</span><span><i style="background:#2E8B57"></i>entrega funcional a cada 3 semanas</span>');
     track.appendChild(lg);
 
     metrics.innerHTML = "";

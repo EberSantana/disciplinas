@@ -29,7 +29,7 @@ def head(titulo, desc):
 <link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
 <link rel="icon" href="../favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
-<meta name="theme-color" content="#0F1B2D">
+<meta name="theme-color" content="#16261C">
 <script src="../offline.js" defer></script>
 <script>window.FSI_CFG={{disc:{json.dumps(cfg["disc"])},nome:{json.dumps(cfg["nome"], ensure_ascii=False)}}};</script>
 </head>

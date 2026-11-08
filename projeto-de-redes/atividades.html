@@ -22,7 +22,7 @@
   --bg:#EEF2F0; --panel:#FFFFFF; --panel-2:#F6F8F7; --ink:#16261C; --ink-2:#3F4F5B; --muted:#5B6871;
   --line:#D5DDDA; --accent:#1F5135; --accent-ink:#FFFFFF; --accent-soft:#E3EEE7;
   --ok:#23845A; --ok-soft:#DDF1E7; --bad:#C23B31; --bad-soft:#F8E0DD; --warn:#A97400; --warn-soft:#F6ECCF;
-  --blue:#2A5B87; --blue-soft:#DDE8F2; --side:#16261C; --side-ink:#DCE5EA; --side-muted:#8FA1AC; --side-hi:#22313D;
+  --blue:#1D6B6B; --blue-soft:#DCEDEC; --side:#16261C; --side-ink:#DCE5EA; --side-muted:#8FA1AC; --side-hi:#22313D;
   --shadow:0 1px 2px rgba(21,33,43,.06),0 4px 14px rgba(21,33,43,.06);
   --f-display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
   --f-body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
@@ -34,7 +34,7 @@
     --bg:#0F171D; --panel:#16222B; --panel-2:#1B2933; --ink:#E4ECEF; --ink-2:#B8C6CD; --muted:#8699A4;
     --line:#2A3A45; --accent:#6BAA68; --accent-ink:#12241A; --accent-soft:#1A2D20;
     --ok:#4CC08A; --ok-soft:#153526; --bad:#F07A6F; --bad-soft:#3D1E1B; --warn:#E3B34B; --warn-soft:#3A2F12;
-    --blue:#7FB0DD; --blue-soft:#1A2E40; --side:#0B140E; --side-ink:#DCE5EA; --side-muted:#7E909B; --side-hi:#1A2630;
+    --blue:#6CC4C0; --blue-soft:#173232; --side:#0B140E; --side-ink:#DCE5EA; --side-muted:#7E909B; --side-hi:#1A2630;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
   }
 }
@@ -43,7 +43,7 @@
   --bg:#0F171D; --panel:#16222B; --panel-2:#1B2933; --ink:#E4ECEF; --ink-2:#B8C6CD; --muted:#8699A4;
   --line:#2A3A45; --accent:#6BAA68; --accent-ink:#12241A; --accent-soft:#1A2D20;
   --ok:#4CC08A; --ok-soft:#153526; --bad:#F07A6F; --bad-soft:#3D1E1B; --warn:#E3B34B; --warn-soft:#3A2F12;
-  --blue:#7FB0DD; --blue-soft:#1A2E40; --side:#0B140E; --side-ink:#DCE5EA; --side-muted:#7E909B; --side-hi:#1A2630;
+  --blue:#6CC4C0; --blue-soft:#173232; --side:#0B140E; --side-ink:#DCE5EA; --side-muted:#7E909B; --side-hi:#1A2630;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
 }
 *{box-sizing:border-box}
@@ -1044,7 +1044,7 @@ LAB.arp = el => flowStepper(el, {
 /* m6 · Crimpagem T568B */
 LAB.crimp = el => {
   const B = labBox(el, "Bancada de crimpagem", "Toque nos fios na ordem do pino 1 ao 8 para montar o conector. Toque num pino já preenchido para tirar o fio. Depois, **teste o cabo**.");
-  const W = {"bl":["Branco-laranja","#E8811F",1],"l":["Laranja","#E8811F",0],"bv":["Branco-verde","#2E9E4F",1],"v":["Verde","#2E9E4F",0],"ba":["Branco-azul","#2F6FD1",1],"a":["Azul","#2F6FD1",0],"bm":["Branco-marrom","#7A4B2A",1],"m":["Marrom","#7A4B2A",0]};
+  const W = {"bl":["Branco-laranja","#E8811F",1],"l":["Laranja","#E8811F",0],"bv":["Branco-verde","#2E9E4F",1],"v":["Verde","#2E9E4F",0],"ba":["Branco-azul","#1F5135",1],"a":["Azul","#1F5135",0],"bm":["Branco-marrom","#7A4B2A",1],"m":["Marrom","#7A4B2A",0]};
   const STD = {B:["bl","l","bv","a","ba","v","bm","m"], A:["bv","v","bl","a","ba","l","bm","m"]};
   let std = "B", slots = Array(8).fill(null), tested = false, tries = 0; const id = "cr" + (++LABN);
   const shuf = () => Object.keys(W).sort(() => Math.random() - .5); let order = shuf();
@@ -1089,7 +1089,7 @@ LAB.cables = el => {
     const cx = 160, cy = 125;
     c.L.forEach((l, j) => {
       if (l[1] === "pares") {
-        const cols = ["#E8811F","#2E9E4F","#2F6FD1","#7A4B2A"];
+        const cols = ["#E8811F","#2E9E4F","#1F5135","#7A4B2A"];
         cols.forEach((co, q) => { const a = q * Math.PI / 2 + Math.PI / 4, px = cx + Math.cos(a) * 45, py = cy + Math.sin(a) * 45; s += `<g class="s-click" data-j="${j}"><circle cx="${px - 10}" cy="${py}" r="12" fill="${co}" class="${sel === j ? "sel" : ""}"/><circle cx="${px + 10}" cy="${py}" r="12" fill="#F4F4F2" stroke="${co}" stroke-width="4"/></g>`; });
       } else {
         let r = l[0]; if (l[1] === "core" && multi) r = 22;

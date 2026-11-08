@@ -12,9 +12,9 @@
 <style>
 /* Layout: bancada do micro:bit. Palco 3D e painel de sensores à esquerda, lição, código e console à direita. */
 :root{
-  --bg:#eceef5; --surface:#f8f9fc; --surface2:#e0e3ee; --fg:#161a2b; --muted:#555a7a; --line:#c8cce0;
+  --bg:#EEF2F0; --surface:#F8FAF9; --surface2:#E3E9E6; --fg:#16261C; --muted:#55636C; --line:#C9D3CF;
   --accent:#c4182f; --accent-fg:#ffffff; --amber:#8a5a00; --amber-bg:#f6ecd2;
-  --stage:#d9dde8; --floor:#c8ccd8; --code-bg:#12141f; --code-fg:#dfe3f5; --code-line:#2a2f48;
+  --stage:#D9E0DC; --floor:#C9D1CD; --code-bg:#121A16; --code-fg:#DDE6E1; --code-line:#2A3A33;
   --good:#12804f; --bad:#b83225; --led-off:#2a1518;
   --font-display:"Lexend","Segoe UI",system-ui,sans-serif;
   --font-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
@@ -22,16 +22,16 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0d0f1a; --surface:#161a2a; --surface2:#1f2438; --fg:#e6e9f6; --muted:#9298b8; --line:#2b3150;
+    --bg:#0F171D; --surface:#16222B; --surface2:#1F2C35; --fg:#E4ECEF; --muted:#93A5B0; --line:#2A3A45;
     --accent:#ff5a6e; --accent-fg:#2a0309; --amber:#f2b84b; --amber-bg:#2a2412;
-    --stage:#101324; --floor:#181c30; --code-bg:#080a12; --code-fg:#dbe0f5; --code-line:#222741;
+    --stage:#111B21; --floor:#18252D; --code-bg:#090F0C; --code-fg:#D8E3DD; --code-line:#22322B;
     --good:#43d18a; --bad:#ff7a6b; --led-off:#2a1518; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0d0f1a; --surface:#161a2a; --surface2:#1f2438; --fg:#e6e9f6; --muted:#9298b8; --line:#2b3150;
+  --bg:#0F171D; --surface:#16222B; --surface2:#1F2C35; --fg:#E4ECEF; --muted:#93A5B0; --line:#2A3A45;
   --accent:#ff5a6e; --accent-fg:#2a0309; --amber:#f2b84b; --amber-bg:#2a2412;
-  --stage:#101324; --floor:#181c30; --code-bg:#080a12; --code-fg:#dbe0f5; --code-line:#222741;
+  --stage:#111B21; --floor:#18252D; --code-bg:#090F0C; --code-fg:#D8E3DD; --code-line:#22322B;
   --good:#43d18a; --bad:#ff7a6b; --led-off:#2a1518; color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -900,7 +900,7 @@ const Scene3D = (() => {
 
   /* ---- Tema e tamanho ---- */
   const applyTheme = () => {
-    const cs = getComputedStyle(document.documentElement), s = cs.getPropertyValue('--stage').trim() || '#d9dde8', f = cs.getPropertyValue('--floor').trim() || '#c8ccd8';
+    const cs = getComputedStyle(document.documentElement), s = cs.getPropertyValue('--stage').trim() || '#D9E0DC', f = cs.getPropertyValue('--floor').trim() || '#C9D1CD';
     scene.background = new THREE.Color(s); scene.fog = new THREE.Fog(new THREE.Color(s), 200, 480); floor.material.color = new THREE.Color(f);
   };
   applyTheme();
