@@ -44,7 +44,7 @@ function aba_(nome, cab) {
 const turmas_ = () => aba_(ABA_TURMAS, CAB_TURMAS);
 const prog_ = () => aba_(ABA_PROG, CAB_PROG);
 const ABA_JORN = "Jornadas";
-const CAB_JORN = ["matricula", "nome", "turma", "visitas", "dias", "atualizado"];
+const CAB_JORN = ["matricula", "nome", "turma", "visitas", "dias", "atualizado", "xp"];
 const jorn_ = () => aba_(ABA_JORN, CAB_JORN);
 const ABA_VIS = "Visibilidade";
 const CAB_VIS = ["escopo", "regras", "atualizado"];
@@ -136,6 +136,28 @@ function doGet(e) {
     const curtos = nomesCurtos_(lista.map(a => a.nome));
     return json_({ ok: true, alunos: lista.map((a, i) => ({ id: idDe_(a.matricula), nome: curtos[i], temPin: !!a.pin })) });
   }
+  if (acao === "ranking") {
+    // Top 10 da turma no Start nos Estudos: só o nome curto e os pontos.
+    const t = chave_(p.turma);
+    if (!t) return json_({ ok: true, lista: [] });
+    const cache = CacheService.getScriptCache(), ck = "rk:" + t;
+    let lista = null; try { lista = JSON.parse(cache.get(ck) || "null"); } catch (err) {}
+    if (!lista) {
+      const pts = {};
+      prog_().getDataRange().getValues().slice(1).forEach(r => { const m = String(r[2]).trim(); pts[m] = (pts[m] || 0) + (Number(r[8]) || 0); });
+      const jv = jorn_().getDataRange().getValues().slice(1).filter(r => chave_(r[2]) === t);
+      const alunos = lerTurmas_().filter(a => chave_(a.turma) === t);
+      const curtos = nomesCurtos_(alunos.map(a => a.nome)), ap = {};
+      alunos.forEach((a, i) => { ap[a.matricula] = curtos[i]; });
+      lista = jv.map(r => {
+        const m = String(r[0]).trim(), rel = Number(r[6]) || 0;
+        const est = (pts[m] || 0) + 10 * String(r[3] || "").split(" ").filter(Boolean).length + 5 * String(r[4] || "").split(" ").filter(Boolean).length;
+        return { apelido: ap[m] || "", xp: rel > 0 ? rel : est };
+      }).filter(x => x.apelido && x.xp > 0).sort((x, y) => y.xp - x.xp).slice(0, 10);
+      cache.put(ck, JSON.stringify(lista), 60);
+    }
+    return json_({ ok: true, lista: lista });
+  }
   // Ranking de um material numa turma
   const material = String(p.disciplina || "");
   const turma = chave_(p.turma);
@@ -191,8 +213,11 @@ function jornada_(a, d, perfil) {
   }
   const uv = Array.from(new Set(vis.concat(lista_(d.visitas, /^[a-z0-9]{1,8}$/, 500)))).slice(0, 500);
   const ud = Array.from(new Set(dias.concat(lista_(d.dias, /^\d{4}-\d{2}-\d{2}$/, 400)))).sort().slice(-366);
-  const row = [a.matricula, a.nome, a.turma, uv.join(" "), ud.join(" "), new Date()];
-  if (linha) sh.getRange(linha, 1, 1, 6).setValues([row]); else sh.appendRow(row);
+  // Pontos do Start nos Estudos, calculados no aparelho do aluno (se não vierem, mantém o que já estava).
+  const xpAnt = linha ? Number(v[linha - 1][6]) || 0 : 0;
+  const xp = d.xp != null && isFinite(Number(d.xp)) ? Math.max(0, Math.min(200000, Math.floor(Number(d.xp)))) : xpAnt;
+  const row = [a.matricula, a.nome, a.turma, uv.join(" "), ud.join(" "), new Date(), xp];
+  if (linha) sh.getRange(linha, 1, 1, 7).setValues([row]); else sh.appendRow(row);
   const materiais = prog_().getDataRange().getValues().slice(1).filter(r => String(r[2]).trim() === a.matricula)
     .map(r => ({ m: String(r[0]), f: Number(r[6]) || 0, t: Number(r[7]) || 0, p: Number(r[8]) || 0, em: r[9] ? new Date(r[9]).getTime() : 0 }));
   return { ok: true, perfil: perfil, jornada: { visitas: uv, dias: ud, materiais: materiais } };
