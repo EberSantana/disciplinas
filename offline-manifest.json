@@ -24,8 +24,8 @@
   {
    "id": "redes-de-computadores",
    "nome": "Redes de Computadores",
-   "versao": "58d68a0709",
-   "bytes": 1732959,
+   "versao": "ecbd113276",
+   "bytes": 1733461,
    "arquivos": [
     "redes-de-computadores/atividades.html",
     "redes-de-computadores/console-de-estudo.html",
@@ -607,8 +607,8 @@
   {
    "id": "recursos-de-aula",
    "nome": "Recursos de aula",
-   "versao": "936d220f27",
-   "bytes": 555940,
+   "versao": "5be5db3c4a",
+   "bytes": 555421,
    "arquivos": [
     "recursos-de-aula/codigos-para-aprender-com-ia.html",
     "recursos-de-aula/cronometro-de-equipes.html",
