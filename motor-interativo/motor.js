@@ -27,7 +27,22 @@
   function resumo(n, s) { try { var dm = FSI.mods[n]; if (dm) { var c = FSI.contagem(dm, s); localStorage.setItem(chave(n) + ":sum", JSON.stringify({ f: c.feitas, t: c.total, p: c.pontos, ts: Date.now() })); } } catch (e) { } }
   function gravar(n, s) { try { localStorage.setItem(chave(n), JSON.stringify(s)); } catch (e) { } resumo(n, s); if (window.progressoMudou) try { window.progressoMudou(); } catch (e2) { } }
   FSI.ler = ler; FSI.gravar = gravar;
-  function ids() { return Object.keys(FSI.mods).map(Number).sort(function (a, b) { return a - b; }); }
+  /* Módulos liberados pelo professor (painel > Liberar conteúdo). As regras vêm da planilha e ficam em cache
+     em "pt-visib" (progresso-turma.js). "o" = oculto; data = abre nesse dia. No modo ?professor tudo aparece. */
+  function vis(n) {
+    if (/[?&]professor\b/.test(location.search)) return "v";
+    try {
+      var pa = JSON.parse(localStorage.getItem("perfil:aluno") || "null"), o = JSON.parse(localStorage.getItem("pt-visib") || "null");
+      if (!pa || !o || o.turma !== pa.turma || !o.r) return "v";
+      var pasta = location.pathname.split("/").slice(-2)[0], v = o.r[pasta + "#" + n];
+      if (v === "o") return "o";
+      if (/^\d{4}-\d{2}-\d{2}$/.test(v || "")) { var d = new Date(), h = d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); return h >= v ? "v" : v; }
+    } catch (e) {}
+    return "v";
+  }
+  FSI.vis = vis;
+  window.addEventListener("visib:mudou", function () { location.reload(); });
+  function ids() { return Object.keys(FSI.mods).map(Number).filter(function (n) { return vis(n) !== "o"; }).sort(function (a, b) { return a - b; }); }
   function recorde() { try { return +localStorage.getItem(chave("desafio-recorde")) || 0; } catch (e) { return 0; } }
 
   function passosGuiados(d) { var t = 0; ((d.lab && d.lab.guiados) || []).forEach(function (g) { t += g.passos.length; }); return t; }
@@ -83,7 +98,8 @@
     h += '<a class="lm' + (atual === "indice" ? " on" : "") + '" href="' + IDX() + '"' + (atual === "indice" ? ' aria-current="page"' : "") + '><span class="ln">◆</span><span class="lx"><small>Comece aqui</small>Visão geral</span></a>';
     lista.forEach(function (n) {
       var d = FSI.mods[n], on = atual === n;
-      h += '<a class="lm' + (on ? " on" : "") + '" href="modulo-' + n + '.html"' + (on ? ' aria-current="page"' : "") + ' data-n="' + n + '"><span class="ln">' + n + '</span><span class="lx"><small>' + esc(d.unidade) + "</small>" + esc(d.nome) + '</span><span class="lb" aria-hidden="true"><i></i></span></a>';
+      var vd = vis(n), fechado = vd !== "v";
+      h += '<a class="lm' + (on ? " on" : "") + '" href="modulo-' + n + '.html"' + (on ? ' aria-current="page"' : "") + ' data-n="' + n + '"><span class="ln">' + n + '</span><span class="lx"><small>' + (fechado ? "Abre em " + vd.slice(8, 10) + "/" + vd.slice(5, 7) : esc(d.unidade)) + "</small>" + esc(d.nome) + '</span><span class="lb" aria-hidden="true"><i></i></span></a>';
     });
     h += '<a class="lm x' + (atual === "desafio" ? " on" : "") + '" href="./#desafio"><span class="ln">⚡</span><span class="lx"><small>Todos os módulos</small>Desafio relâmpago</span></a>';
     h += '<a class="lm x' + (atual === "simulado" ? " on" : "") + '" href="simulado.html"' + (atual === "simulado" ? ' aria-current="page"' : "") + '><span class="ln">✓</span><span class="lx"><small>Para fechar</small>Simulado final</span></a>' + (FSI.cfg.indice ? '<a class="lm x" href="./"><span class="ln">▤</span><span class="lx"><small>Apostila, labs e atividades</small>Materiais da disciplina</span></a>' : "") + '</nav>';
@@ -383,8 +399,9 @@
     main.appendChild(nav);
     var W = el("div", { class: "wrap paineis" }); main.appendChild(W);
     ABAS.forEach(function (a) { W.appendChild(el("section", { class: "painel", id: "p-" + a[0], role: "tabpanel", "aria-labelledby": "tab-" + a[0], hidden: "" })); });
-    var nx = FSI.mods[n + 1] ? '<a href="modulo-' + (n + 1) + '.html">Módulo ' + (n + 1) + ": " + esc(FSI.mods[n + 1].nome) + " →</a>" : '<a href="simulado.html">Fazer o simulado final →</a>';
-    var pv = n > 1 ? '<a href="modulo-' + (n - 1) + '.html">← Módulo ' + (n - 1) + "</a>" : '<a href="' + IDX() + '">← Visão geral</a>';
+    var ix = todos.indexOf(n), nn = ix >= 0 ? todos[ix + 1] : todos.filter(function (k) { return k > n; })[0], pn = ix > 0 ? todos[ix - 1] : null;
+    var nx = nn ? '<a href="modulo-' + nn + '.html">Módulo ' + nn + ": " + esc(FSI.mods[nn].nome) + " →</a>" : '<a href="simulado.html">Fazer o simulado final →</a>';
+    var pv = pn ? '<a href="modulo-' + pn + '.html">← Módulo ' + pn + "</a>" : '<a href="' + IDX() + '">← Visão geral</a>';
     W.appendChild(el("div", { class: "nav2" }, pv + nx));
 
     /* Estudar */

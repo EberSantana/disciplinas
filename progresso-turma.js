@@ -167,14 +167,42 @@
     var m = {}; CURSOS.forEach(function (x) { x.disciplinas.forEach(function (d) { m[d[1]] = d; }); }); return m;
   }
   /* Disciplinas do aluno: a lista da turma (config.js) ou, se n\u00e3o houver, a do curso. */
+  /* Visibilidade definida pelo professor no painel (aba "Liberar conte\u00fado"), guardada na planilha.
+     Regras: { "pasta": "o" | "v" | "aaaa-mm-dd", "pasta#n": ... } (n = m\u00f3dulo de uma disciplina interativa).
+     As regras da turma valem sobre as de "todas as turmas". Ficam em cache neste aparelho para funcionar sem internet. */
+  var VKEY = "pt-visib";
+  function lerVis() { try { var o = JSON.parse(localStorage.getItem(VKEY) || "null"); return o && perfil && o.turma === perfil.turma ? o.r || {} : null; } catch (e) { return null; } }
+  var VIS = null;
+  function regra(k) {
+    if (LIVRE || !perfil) return "v";
+    if (VIS === null) VIS = lerVis() || {};
+    var v = VIS[k];
+    if (v === "o") return "o";
+    if (/^\d{4}-\d{2}-\d{2}$/.test(v || "")) return dia() >= v ? "v" : v;
+    return "v";
+  }
+  function dataBR(d) { return d.slice(8, 10) + "/" + d.slice(5, 7) + "/" + d.slice(0, 4); }
+  function atualizarVis() {
+    if (!URL_ || !perfil || LIVRE || navigator.onLine === false) return;
+    fetch(URL_ + "?acao=visibilidade&turma=" + encodeURIComponent(perfil.turma)).then(function (x) { return x.json(); }).then(function (j) {
+      if (!j || !j.ok) return;
+      var m = {}, k; for (k in (j.todas || {})) m[k] = j.todas[k]; for (k in (j.turma || {})) m[k] = j.turma[k];
+      var antes = JSON.stringify(lerVis() || {}), agora = JSON.stringify(m);
+      try { localStorage.setItem(VKEY, JSON.stringify({ turma: perfil.turma, r: m, ts: Date.now() })); } catch (e) {}
+      VIS = m;
+      if (antes !== agora) { avisar(); try { window.dispatchEvent(new CustomEvent("visib:mudou")); } catch (e) {} bloquear(); }
+    }).catch(function () {});
+  }
   function minhas() {
     var c = perfil && cursoDe(perfil.curso); if (!c) return null;
     var o = window.DISCIPLINAS_POR_TURMA && window.DISCIPLINAS_POR_TURMA[perfil.turma];
-    if (o && o.length) { var t = todasDisc(); return o.filter(function (f) { return t[f]; }).map(function (f) { return t[f]; }); }
-    return c.disciplinas;
+    var l = c.disciplinas;
+    if (o && o.length) { var t = todasDisc(); l = o.filter(function (f) { return t[f]; }).map(function (f) { return t[f]; }); }
+    return l.filter(function (d) { return regra(d[1]) !== "o"; });
   }
   function permitida(pasta) {
     if (LIVRE || !perfil) return true;
+    if (regra(pasta) === "o") return false;
     var ms = minhas(); if (!ms) return true;
     if (pasta === "office-visual-img") pasta = "informatica-basica";
     for (var i = 0; i < COMUNS.length; i++) if (COMUNS[i][1] === pasta) return true;
@@ -184,7 +212,10 @@
   /* Libera\u00e7\u00e3o por data: devolve "dd/mm/aaaa" se a p\u00e1gina ainda n\u00e3o abriu, sen\u00e3o "". */
   function aindaFechada(rel) {
     if (LIVRE || !rel) return "";
-    var L = window.LIBERACAO || {}, pasta = rel.split("/")[0], d = L[rel] || L[pasta];
+    var pasta = rel.split("/")[0], rg = regra(pasta), mm = /^[^\/]+\/modulo-(\d+)\.html$/.exec(rel);
+    if (rg !== "v" && rg !== "o") return dataBR(rg);
+    if (mm) { var rm = regra(pasta + "#" + mm[1]); if (rm !== "v" && rm !== "o") return dataBR(rm); }
+    var L = window.LIBERACAO || {}, d = L[rel] || L[pasta];
     if (!d || !/^\d{4}-\d{2}-\d{2}$/.test(d) || dia() >= d) return "";
     return d.slice(8, 10) + "/" + d.slice(5, 7) + "/" + d.slice(0, 4);
   }
@@ -251,7 +282,7 @@
   }
   function tela(titulo, texto) {
     var escuro = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches;
-    var el = document.createElement("div"); el.setAttribute("role", "alertdialog"); el.setAttribute("aria-modal", "true"); el.setAttribute("aria-labelledby", "pt-bloq-t");
+    var el = document.createElement("div"); el.id = "pt-bloq"; el.setAttribute("role", "alertdialog"); el.setAttribute("aria-modal", "true"); el.setAttribute("aria-labelledby", "pt-bloq-t");
     el.style.cssText = "position:fixed;inset:0;z-index:10001;display:grid;place-items:center;padding:24px;overflow:auto;background:" + (escuro ? "#0F171D" : "#EEF2F0") + ";color:" + (escuro ? "#E4ECEF" : "#16261C") + ";font:16px/1.55 " + F;
     el.innerHTML = '<div style="max-width:460px"><h1 id="pt-bloq-t" style="font:700 30px/1.15 ' + FD + ';margin:0 0 10px;color:inherit">' + titulo + "</h1>" +
       '<p style="margin:0 0 12px">' + texto + "</p>" +
@@ -262,6 +293,10 @@
   }
   function bloquear() {
     var rel = relAtual(), pasta = pastaAtual();
+    if (document.getElementById("pt-bloq")) return;
+    if (regra(pasta) === "o") { tela("Ainda n\u00e3o liberada", "O professor ainda n\u00e3o liberou esta disciplina para a sua turma. Ela aparece nas suas disciplinas assim que for liberada."); return; }
+    var mo = /^[^\/]+\/modulo-(\d+)\.html$/.exec(rel);
+    if (mo && regra(pasta + "#" + mo[1]) === "o") { tela("M\u00f3dulo ainda n\u00e3o liberado", "O professor ainda n\u00e3o liberou este m\u00f3dulo para a sua turma. Continue pelos m\u00f3dulos liberados."); return; }
     if (!permitida(pasta)) { tela("Esta disciplina \u00e9 de outra turma", "Voc\u00ea est\u00e1 em <b>" + esc(perfil.curso) + "</b>. Nas suas disciplinas, no Laborat\u00f3rio 3D e nos Recursos de aula voc\u00ea tem acesso a tudo."); return; }
     var d = aindaFechada(rel);
     if (d) tela("Ainda n\u00e3o est\u00e1 dispon\u00edvel", "Este material abre em <b>" + d + "</b>. Volte nessa data para estudar.");
@@ -500,7 +535,7 @@
         try { sessionStorage.setItem("pt-sync", perfil.id); } catch (err) {}
         if (window.A11Y_AP) window.A11Y_AP.recarregar();
         if (DADOS) enviar(dados());
-        paintFab(); esconderEntrada(); avisar();
+        VIS = null; paintFab(); esconderEntrada(); avisar(); atualizarVis();
       });
   });
 
@@ -556,7 +591,7 @@
     var s = box.querySelector("#pt-s");
     if (s) s.onclick = function () { bmsg("Enviando\u2026"); enviar(dados()).then(function (r) { bmsg(r.ok ? "Progresso salvo." : r.erro || "Falha no envio.", r.ok ? "good" : "bad"); if (r.ok) ranking(); }); };
     box.querySelector("#pt-out").onclick = function () {
-      perfil = null; try { localStorage.removeItem(PKEY); } catch (e) {}
+      perfil = null; VIS = null; try { localStorage.removeItem(PKEY); } catch (e) {}
       if (window.A11Y_AP) window.A11Y_AP.recarregar();
       fechar(); avisar(); mostrarEntrada();
     };
@@ -601,7 +636,7 @@
 
   // Para a p\u00e1gina inicial organizar as disciplinas pelo curso do aluno
   window.PORTAL_ALUNO = { perfil: function () { return perfil; }, cursos: CURSOS, comuns: COMUNS, permitida: permitida, ultima: ultima, sequencia: sequencia, minhas: minhas, entrar: mostrarEntrada,
-    dias: dias, visitas: visitas, codigo: codigo, materiais: materiais, jornada: jornada };
+    dias: dias, visitas: visitas, codigo: codigo, materiais: materiais, jornada: jornada, regra: regra };
 
   // Quem entrou quando o envio ainda n\u00e3o estava ligado \u00e9 cadastrado na planilha agora (uma vez por visita).
   function sincronizar() {
@@ -612,7 +647,7 @@
     });
   }
 
-  if (perfil) { paintFab(); esconderEntrada(); bloquear(); registrarVisita(); sincronizar(); esvaziarFila(); }
+  if (perfil) { paintFab(); esconderEntrada(); bloquear(); registrarVisita(); sincronizar(); esvaziarFila(); atualizarVis(); }
   else if (LIVRE) { root.classList.remove("pt-gate"); }
   else { mostrarEntrada(); }
   avisar();

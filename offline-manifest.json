@@ -241,8 +241,8 @@
   {
    "id": "fundamentos-de-sistemas-de-informacao",
    "nome": "Fundamentos para Sistemas de Informação",
-   "versao": "b31f26bab3",
-   "bytes": 387117,
+   "versao": "23c5dfc37e",
+   "bytes": 388356,
    "arquivos": [
     "fundamentos-de-sistemas-de-informacao/dados/m1.js",
     "fundamentos-de-sistemas-de-informacao/dados/m2.js",
@@ -270,8 +270,8 @@
   {
    "id": "sistemas-operacionais",
    "nome": "Fundamentos de Sistemas Operacionais",
-   "versao": "a53171515f",
-   "bytes": 411399,
+   "versao": "5fd1ac9396",
+   "bytes": 412638,
    "arquivos": [
     "sistemas-operacionais/dados/m1.js",
     "sistemas-operacionais/dados/m2.js",
@@ -303,8 +303,8 @@
   {
    "id": "organizacao-de-computadores",
    "nome": "Organização de Computadores",
-   "versao": "125753c519",
-   "bytes": 314804,
+   "versao": "c25bcd12d7",
+   "bytes": 316043,
    "arquivos": [
     "organizacao-de-computadores/dados/m1.js",
     "organizacao-de-computadores/dados/m2.js",
@@ -330,8 +330,8 @@
   {
    "id": "mapas-mentais",
    "nome": "Mapas Mentais de TI",
-   "versao": "4acfe0ac60",
-   "bytes": 347947,
+   "versao": "e9ec61e8fe",
+   "bytes": 349186,
    "arquivos": [
     "mapas-mentais/dados/m1.js",
     "mapas-mentais/dados/m2.js",

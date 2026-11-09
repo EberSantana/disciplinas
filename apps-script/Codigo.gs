@@ -9,6 +9,8 @@
  *   Para o aluno criar um PIN novo (esqueceu), apague a célula do PIN dele.
  * Aba "Progresso" (criada sozinha): uma linha por aluno e por material.
  * Aba "Jornadas" (criada sozinha): páginas visitadas e dias de estudo de cada aluno, para a página de jornadas.
+ * Aba "Visibilidade" (criada sozinha): o que cada turma vê, definido no painel do professor (Liberar conteúdo).
+ *   escopo ("*" = todas as turmas, ou o nome da turma) | regras (JSON) | atualizado
  *
  * Nada de nome completo, matrícula ou PIN sai da planilha para o site público:
  * a lista de nomes mostra só o primeiro nome e a inicial do sobrenome.
@@ -44,6 +46,39 @@ const prog_ = () => aba_(ABA_PROG, CAB_PROG);
 const ABA_JORN = "Jornadas";
 const CAB_JORN = ["matricula", "nome", "turma", "visitas", "dias", "atualizado"];
 const jorn_ = () => aba_(ABA_JORN, CAB_JORN);
+const ABA_VIS = "Visibilidade";
+const CAB_VIS = ["escopo", "regras", "atualizado"];
+const vis_ = () => aba_(ABA_VIS, CAB_VIS);
+
+// Regras de visibilidade: { "pasta": "o" | "v" | "aaaa-mm-dd", "pasta#n": ... } por escopo ("*" ou turma).
+function lerVis_() {
+  const m = {};
+  vis_().getDataRange().getValues().slice(1).forEach(r => {
+    const k = String(r[0] || "").trim(); if (!k) return;
+    try { m[k] = JSON.parse(r[1] || "{}") || {}; } catch (e) { m[k] = {}; }
+  });
+  return m;
+}
+function limpaRegras_(o) {
+  const out = {};
+  Object.keys(o || {}).slice(0, 600).forEach(k => {
+    const v = String(o[k]);
+    if (/^[a-z0-9-]{1,60}(#\d{1,2})?$/.test(k) && (v === "o" || v === "v" || /^\d{4}-\d{2}-\d{2}$/.test(v))) out[k] = v;
+  });
+  return out;
+}
+function salvarVis_(d) {
+  const erro = chaveErro_(d); if (erro) return { ok: false, erro: erro };
+  const escopo = txt_(d.turma || "*", 60) || "*";
+  const regras = limpaRegras_(d.regras);
+  const sh = vis_(), v = sh.getDataRange().getValues();
+  const linha = [escopo, JSON.stringify(regras), new Date()];
+  let i = 1;
+  for (; i < v.length; i++) if (String(v[i][0]).trim() === escopo) break;
+  if (i < v.length) sh.getRange(i + 1, 1, 1, 3).setValues([linha]); else sh.appendRow(linha);
+  CacheService.getScriptCache().remove("vis");
+  return { ok: true, regras: lerVis_() };
+}
 
 function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
@@ -86,6 +121,14 @@ function doGet(e) {
     const m = {};
     lerTurmas_().forEach(a => { if (!m[a.turma]) m[a.turma] = { turma: a.turma, curso: a.curso, turno: a.turno, alunos: 0 }; m[a.turma].alunos++; });
     return json_({ ok: true, turmas: Object.keys(m).sort().map(k => m[k]) });
+  }
+  if (acao === "visibilidade") {
+    // Público: só diz o que está oculto ou com data de liberação (nenhum dado de aluno).
+    const cache = CacheService.getScriptCache();
+    let m = null; try { m = JSON.parse(cache.get("vis") || "null"); } catch (err) {}
+    if (!m) { m = lerVis_(); cache.put("vis", JSON.stringify(m), 120); }
+    const t = String(p.turma || "");
+    return json_({ ok: true, todas: m["*"] || {}, turma: t ? (m[t] || {}) : {} });
   }
   if (acao === "alunos") {
     const t = chave_(p.turma);
@@ -159,14 +202,18 @@ function jornada_(a, d, perfil) {
 const aparelho_ = d => txt_(d.aparelho, 40);
 
 // Painel do professor: resumo por aluno. Exige a senha guardada em PROFESSOR_CHAVE.
-function painel_(d) {
+function chaveErro_(d) {
   const chave = PropertiesService.getScriptProperties().getProperty("PROFESSOR_CHAVE");
-  if (!chave) return { ok: false, erro: "O painel ainda não foi ativado. Defina PROFESSOR_CHAVE no Apps Script." };
+  if (!chave) return "O painel ainda não foi ativado. Defina PROFESSOR_CHAVE no Apps Script.";
   const cache = CacheService.getScriptCache();
   const falhas = Number(cache.get("painel-falhas") || 0);
-  if (falhas >= 5) return { ok: false, erro: "Muitas tentativas. Espere 15 minutos." };
-  if (String(d.chave || "") !== chave) { cache.put("painel-falhas", String(falhas + 1), 900); return { ok: false, erro: "Senha incorreta." }; }
+  if (falhas >= 5) return "Muitas tentativas. Espere 15 minutos.";
+  if (String(d.chave || "") !== chave) { cache.put("painel-falhas", String(falhas + 1), 900); return "Senha incorreta."; }
   cache.remove("painel-falhas");
+  return "";
+}
+function painel_(d) {
+  const erro = chaveErro_(d); if (erro) return { ok: false, erro: erro };
   const alunos = lerTurmas_();
   const prog = prog_().getDataRange().getValues().slice(1);
   const agora = new Date();
@@ -181,7 +228,7 @@ function painel_(d) {
       feitas: ms.reduce((s, x) => s + x.feitas, 0), total: ms.reduce((s, x) => s + x.total, 0), pontos: ms.reduce((s, x) => s + x.pontos, 0),
       materiais: ms.map(x => ({ material: x.material, feitas: x.feitas, total: x.total, pontos: x.pontos, em: x.em })), semPin: !a.pin };
   });
-  return { ok: true, agora: agora.getTime(), diasAlerta: DIAS_ALERTA, alunos: lista };
+  return { ok: true, agora: agora.getTime(), diasAlerta: DIAS_ALERTA, alunos: lista, visibilidade: lerVis_() };
 }
 
 function doPost(e) {
@@ -190,6 +237,7 @@ function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents);
     if (d.acao === "painel") return json_(painel_(d));
+    if (d.acao === "visibilidade") return json_(salvarVis_(d));
     const sh = turmas_();
     const r = autenticar_(d, sh);
     if (r.erro) return json_({ ok: false, erro: r.erro });

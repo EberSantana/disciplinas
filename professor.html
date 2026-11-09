@@ -148,6 +148,42 @@ tr.det td{background:var(--line-2);padding:14px 18px 16px 66px}
   .kpi,.tab-wrap{box-shadow:none;border:1px solid #999}.rolagem{overflow:visible}table{min-width:0;font-size:12px}tr{break-inside:avoid}
   .av{display:none}tr.det{display:table-row!important}
 }
+/* abas do painel */
+.abas{display:flex;gap:4px;margin:0 0 16px;border-bottom:1px solid var(--line)}
+.abas button{min-height:44px;padding:0 16px;border:0;border-bottom:3px solid transparent;background:none;font-weight:600;color:var(--ink-2);cursor:pointer;margin-bottom:-1px}
+.abas button[aria-selected=true]{color:var(--accent);border-bottom-color:var(--accent)}
+.abas button:hover{color:var(--ink)}
+/* liberar conteúdo */
+#aba-lib .cartao{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.lc-topo{display:grid;gap:10px;margin:0 0 16px}
+.lc-esc{max-width:520px}
+.lc-dica{margin:0;color:var(--ink-2);font-size:14.5px}
+.lc-res{display:flex;flex-wrap:wrap;gap:16px;margin:0;font-size:14px;color:var(--ink-2)}
+.lc-res span{display:inline-flex;align-items:center;gap:6px}
+.lc-acoes{display:flex;flex-wrap:wrap;gap:8px}
+.lc-curso{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px 18px 14px;margin:0 0 14px}
+.lc-curso h3{font-size:24px;margin:12px 0 4px}
+.lc-per{font:600 12px/1 "JetBrains Mono",ui-monospace,monospace;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:14px 0 4px}
+.lc-row{display:grid;grid-template-columns:14px minmax(0,1fr) minmax(200px,300px) 150px;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line-2)}
+.lc-row.sub{padding-left:18px}
+.lc-row.breve{grid-template-columns:14px minmax(0,1fr) auto;color:var(--muted)}
+.lc-row select{min-height:40px}
+.lc-row input[type=date]{min-height:40px;padding:0 8px;border:1px solid var(--line);border-radius:10px;background:var(--panel);width:100%}
+.lc-nome{margin:0;font-weight:600;color:var(--ink);font-size:15px}
+.lc-row.sub .lc-nome{font-weight:400}
+.lc-tag{font:500 11px/1 "JetBrains Mono",ui-monospace,monospace;padding:3px 6px;border-radius:6px;background:var(--line-2);color:var(--muted);vertical-align:middle}
+.lc-tag.int{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
+.lc-st{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--accent)}
+.lc-st.o{background:transparent;border:2px solid var(--bad)}
+.lc-st.d{background:#B7791F}
+.lc-st.b{background:transparent;border:2px dashed var(--muted)}
+.lc-mods{margin:0 0 6px 24px;border-left:2px solid var(--line);padding-left:10px}
+.lc-mods summary{cursor:pointer;min-height:36px;display:flex;align-items:center;font-size:14px;font-weight:600;color:var(--accent)}
+.lc-mods .lc-acoes{padding:8px 0 4px 18px}
+.lc-salvar{position:sticky;bottom:12px;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:var(--panel);box-shadow:0 10px 28px rgba(0,0,0,.12)}
+.lc-salvar span{color:var(--ink-2);font-size:14.5px}
+.lc-salvar .btn[disabled]{opacity:.55;cursor:not-allowed}
+@media (max-width:720px){.lc-row{grid-template-columns:14px minmax(0,1fr)}.lc-row select,.lc-row input[type=date]{grid-column:2}.lc-row.breve{grid-template-columns:14px minmax(0,1fr) auto}}
 </style>
 </head>
 <body>
@@ -183,6 +219,11 @@ tr.det td{background:var(--line-2);padding:14px 18px 16px 66px}
 
   <div id="painel" hidden>
     <div class="demo" id="demo" hidden>Modo demonstração: todos os nomes e dados abaixo são fictícios.</div>
+    <div class="abas" role="tablist" aria-label="Seções do painel">
+      <button type="button" role="tab" id="t-acomp" aria-controls="aba-acomp" aria-selected="true">Acompanhamento</button>
+      <button type="button" role="tab" id="t-lib" aria-controls="aba-lib" aria-selected="false" tabindex="-1">Liberar conteúdo</button>
+    </div>
+    <div id="aba-acomp" role="tabpanel" aria-labelledby="t-acomp">
     <section class="kpis" id="kpis" aria-label="Resumo geral"></section>
     <div class="graficos">
       <section class="cartao" aria-labelledby="g1"><h2 id="g1">Último acesso dos alunos</h2><p class="leg">Quantos alunos acessaram pela última vez em cada um dos últimos 7 dias.</p><div class="cols" id="g-dias" role="img" aria-label="Gráfico de colunas do último acesso por dia"></div></section>
@@ -202,10 +243,14 @@ tr.det td{background:var(--line-2);padding:14px 18px 16px 66px}
       <tbody id="corpo"></tbody>
     </table></div><div class="vazio" id="vazio" hidden><b>Nenhum aluno encontrado</b>Mude a busca ou o filtro de situação.</div></div>
     <div class="rodape"><span id="rod"></span><span>Este painel mostra nomes e matrículas. Não deixe aberto em tela compartilhada e guarde o arquivo exportado fora do repositório.</span></div>
+    </div>
+    <div id="aba-lib" role="tabpanel" aria-labelledby="t-lib" hidden></div>
   </div>
 </main>
 
 <script src="config.js"></script>
+<script src="cursos-ppc.js"></script>
+<script src="painel-conteudo.js"></script>
 <script>
 (function () {
   var URL_ = String(window.RANKING_URL || "").trim(), KEY = "pt-prof-chave", D = null, DEMO = /[?&]demo\b/.test(location.search);
@@ -319,7 +364,18 @@ tr.det td{background:var(--line-2);padding:14px 18px 16px 66px}
     ["atualizar", "sair"].forEach(function (i) { $(i).hidden = false; }); $("menu-exp").hidden = false;
     $("atual").hidden = false; $("atual").textContent = "Atualizado às " + new Date(D.agora).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
     $("demo").hidden = !DEMO; preenche(); desenha();
+    if (window.PAINEL_CONTEUDO) window.PAINEL_CONTEUDO(r, DEMO);
   }
+  /* abas: Acompanhamento × Liberar conteúdo */
+  function aba(qual) {
+    [["t-acomp", "aba-acomp"], ["t-lib", "aba-lib"]].forEach(function (x) { var on = x[0] === qual; $(x[0]).setAttribute("aria-selected", String(on)); $(x[0]).tabIndex = on ? 0 : -1; $(x[1]).hidden = !on; });
+    $("menu-exp").hidden = qual !== "t-acomp";
+    try { sessionStorage.setItem("pt-prof-aba", qual); } catch (e) {}
+  }
+  $("t-acomp").onclick = function () { aba("t-acomp"); };
+  $("t-lib").onclick = function () { aba("t-lib"); };
+  [$("t-acomp"), $("t-lib")].forEach(function (b) { b.onkeydown = function (e) { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { var o = this.id === "t-acomp" ? "t-lib" : "t-acomp"; aba(o); $(o).focus(); } }; });
+  try { if (sessionStorage.getItem("pt-prof-aba") === "t-lib") aba("t-lib"); } catch (e) {}
 
   /* ---------- dados ---------- */
   function demo() {
