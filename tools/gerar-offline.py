@@ -14,6 +14,7 @@ NOMES = {
     "informatica-basica": "Informática Básica",
     "engenharia-de-software": "Engenharia de Software",
     "construcao-de-sites-1": "Construção de Sites 1",
+    "programacao-1": "Programação 1",
     "banco-de-dados": "Banco de Dados",
     "fundamentos-de-sistemas-de-informacao": "Fundamentos para Sistemas de Informação",
     "sistemas-operacionais": "Fundamentos de Sistemas Operacionais",
@@ -22,7 +23,7 @@ NOMES = {
     "recursos-de-aula": "Recursos de aula",
     "laboratorio-3d": "Laboratório 3D",
 }
-EXTRAS = {"engenharia-de-software": ["motor-interativo"], "construcao-de-sites-1": ["motor-interativo"], "projeto-de-redes": ["motor-interativo"], "redes-de-computadores": ["motor-interativo"], "seguranca-da-informacao": ["motor-interativo"], "banco-de-dados": ["motor-interativo"], "informatica-basica": ["motor-interativo", "office-visual-img"], "fundamentos-de-sistemas-de-informacao": ["motor-interativo"], "mapas-mentais": ["motor-interativo"], "sistemas-operacionais": ["motor-interativo"], "organizacao-de-computadores": ["motor-interativo"]}  # pastas de imagens usadas por uma disciplina
+EXTRAS = {"programacao-1": ["motor-interativo"], "engenharia-de-software": ["motor-interativo"], "construcao-de-sites-1": ["motor-interativo"], "projeto-de-redes": ["motor-interativo"], "redes-de-computadores": ["motor-interativo"], "seguranca-da-informacao": ["motor-interativo"], "banco-de-dados": ["motor-interativo"], "informatica-basica": ["motor-interativo", "office-visual-img"], "fundamentos-de-sistemas-de-informacao": ["motor-interativo"], "mapas-mentais": ["motor-interativo"], "sistemas-operacionais": ["motor-interativo"], "organizacao-de-computadores": ["motor-interativo"]}  # pastas de imagens usadas por uma disciplina
 CORE = ["index.html", "config.js", "progresso-turma.js", "acessibilidade.js", "aparencia.js", "offline.js",
         "manifest.webmanifest", "offline.html", "offline-manifest.json",
         "icons/icon-192.png", "icons/icon-512.png", "icons/favicon-32.png", "favicon.ico", "busca-index.json", "como-usar.html", "icons/apple-touch-icon.png"]

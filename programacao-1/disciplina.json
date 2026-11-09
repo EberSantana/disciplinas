@@ -1,0 +1,33 @@
+{
+ "disc": "p1",
+ "nome": "Programação 1",
+ "eixo": "Disciplina interativa · INF101 (Subsequente) e TDS101 (Integrado)",
+ "descricao": "Lógica de programação com Python: algoritmos, variáveis e entrada de dados, decisão, repetição, listas e strings, funções, dicionários, erros e arquivos, classes e módulos — com um console Python que roda no navegador e confere seus desafios.",
+ "niveis": [
+  "Iniciante",
+  "Aprendiz de código",
+  "Programador(a)",
+  "Depurador(a)",
+  "Arquiteto(a) de funções",
+  "Dev Python"
+ ],
+ "passo": 400,
+ "analogia": {
+  "titulo": "Aprender a dar ordens precisas",
+  "txt": "<p>Programar é ensinar um assistente muito rápido e muito literal a resolver problemas. Você descreve os passos (<b>algoritmo</b>), escreve em Python e o computador executa, sempre exatamente como foi escrito. Os erros não são fracasso: são a conversa entre você e a máquina.</p><p>Aqui você escreve código de verdade num console que roda no navegador. Cada desafio é conferido automaticamente com várias entradas.</p>"
+ },
+ "como": [
+  "Comece cada módulo pela <b>analogia</b> e pelos <b>pontos-chave</b>.",
+  "No <b>Laboratório</b>, escreva e execute Python no console (Ctrl+Enter). O desafio é conferido sozinho com várias entradas.",
+  "Se o programa travar num laço infinito, ele é interrompido e você pode corrigir.",
+  "Depois treine no caderno e nos PBL. No seu computador, use o Python (python.org) ou o VS Code.",
+  "Os exercícios clássicos foram inspirados na trilha pública <i>The Legend of Python</i>, do Codédex (licença MIT), reescritos em português."
+ ],
+ "aulas": [
+  "<b>Unidade 1:</b> Módulos 1 e 2 (algoritmos, variáveis, entrada)",
+  "<b>Unidade 2:</b> Módulos 3 e 4 (decisão e repetição)",
+  "<b>Unidade 3:</b> Módulos 5 e 6 (listas, strings e funções)",
+  "<b>Unidade 4:</b> Módulos 7 e 8 (dicionários, erros, arquivos, classes e módulos) + simulado"
+ ],
+ "modulos": 8
+}

@@ -24,8 +24,8 @@
   {
    "id": "redes-de-computadores",
    "nome": "Redes de Computadores",
-   "versao": "2dfa3c8ad4",
-   "bytes": 1700095,
+   "versao": "dfdac7013f",
+   "bytes": 1707883,
    "arquivos": [
     "redes-de-computadores/atividades.html",
     "redes-de-computadores/console-de-estudo.html",
@@ -65,8 +65,8 @@
   {
    "id": "projeto-de-redes",
    "nome": "Projeto de Redes",
-   "versao": "bf32b864e8",
-   "bytes": 1267153,
+   "versao": "106ccacd09",
+   "bytes": 1274941,
    "arquivos": [
     "projeto-de-redes/atividades.html",
     "projeto-de-redes/dados/m1.js",
@@ -97,8 +97,8 @@
   {
    "id": "seguranca-da-informacao",
    "nome": "Segurança da Informação",
-   "versao": "81aba1a26e",
-   "bytes": 1436119,
+   "versao": "7abbd65b42",
+   "bytes": 1443907,
    "arquivos": [
     "seguranca-da-informacao/console-de-estudo.html",
     "seguranca-da-informacao/dados/m1.js",
@@ -139,8 +139,8 @@
   {
    "id": "informatica-basica",
    "nome": "Informática Básica",
-   "versao": "9a0b64599c",
-   "bytes": 12123635,
+   "versao": "b21cdd945e",
+   "bytes": 12131423,
    "arquivos": [
     "informatica-basica/ambiente-interativo.html",
     "informatica-basica/apostila.html",
@@ -284,8 +284,8 @@
   {
    "id": "engenharia-de-software",
    "nome": "Engenharia de Software",
-   "versao": "9bb30d1765",
-   "bytes": 1885300,
+   "versao": "9cd60de439",
+   "bytes": 1893088,
    "arquivos": [
     "engenharia-de-software/apostila-engenharia-de-requisitos.html",
     "engenharia-de-software/apostila-engenharia-de-software-1.html",
@@ -323,8 +323,8 @@
   {
    "id": "construcao-de-sites-1",
    "nome": "Construção de Sites 1",
-   "versao": "0b7b0623d0",
-   "bytes": 1430803,
+   "versao": "868758743d",
+   "bytes": 1438591,
    "arquivos": [
     "construcao-de-sites-1/apostila.html",
     "construcao-de-sites-1/dados/m1.js",
@@ -352,10 +352,45 @@
    ]
   },
   {
+   "id": "programacao-1",
+   "nome": "Programação 1",
+   "versao": "6665a83a0f",
+   "bytes": 1102313,
+   "arquivos": [
+    "programacao-1/dados/m1.js",
+    "programacao-1/dados/m2.js",
+    "programacao-1/dados/m3.js",
+    "programacao-1/dados/m4.js",
+    "programacao-1/dados/m5.js",
+    "programacao-1/dados/m6.js",
+    "programacao-1/dados/m7.js",
+    "programacao-1/dados/m8.js",
+    "programacao-1/disciplina.json",
+    "programacao-1/index.html",
+    "programacao-1/modulo-1.html",
+    "programacao-1/modulo-2.html",
+    "programacao-1/modulo-3.html",
+    "programacao-1/modulo-4.html",
+    "programacao-1/modulo-5.html",
+    "programacao-1/modulo-6.html",
+    "programacao-1/modulo-7.html",
+    "programacao-1/modulo-8.html",
+    "programacao-1/simulado.html",
+    "motor-interativo/labs.js",
+    "motor-interativo/motor.css",
+    "motor-interativo/motor.js",
+    "motor-interativo/sql/sql-wasm.js",
+    "motor-interativo/sql/sql-wasm.wasm"
+   ],
+   "externos": [
+    "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap"
+   ]
+  },
+  {
    "id": "banco-de-dados",
    "nome": "Banco de Dados",
-   "versao": "40bdf77773",
-   "bytes": 2597663,
+   "versao": "be394b51f0",
+   "bytes": 2605451,
    "arquivos": [
     "banco-de-dados/apostila.html",
     "banco-de-dados/console-de-estudo.html",
@@ -403,8 +438,8 @@
   {
    "id": "fundamentos-de-sistemas-de-informacao",
    "nome": "Fundamentos para Sistemas de Informação",
-   "versao": "35334aff5a",
-   "bytes": 1140247,
+   "versao": "5a91258b3d",
+   "bytes": 1148035,
    "arquivos": [
     "fundamentos-de-sistemas-de-informacao/dados/m1.js",
     "fundamentos-de-sistemas-de-informacao/dados/m2.js",
@@ -434,8 +469,8 @@
   {
    "id": "sistemas-operacionais",
    "nome": "Fundamentos de Sistemas Operacionais",
-   "versao": "449c8e0ea8",
-   "bytes": 1164529,
+   "versao": "305cea94a7",
+   "bytes": 1172317,
    "arquivos": [
     "sistemas-operacionais/dados/m1.js",
     "sistemas-operacionais/dados/m2.js",
@@ -469,8 +504,8 @@
   {
    "id": "organizacao-de-computadores",
    "nome": "Organização de Computadores",
-   "versao": "c5ecde9cf7",
-   "bytes": 1067934,
+   "versao": "5cf51214a4",
+   "bytes": 1075722,
    "arquivos": [
     "organizacao-de-computadores/dados/m1.js",
     "organizacao-de-computadores/dados/m2.js",
@@ -498,8 +533,8 @@
   {
    "id": "mapas-mentais",
    "nome": "Mapas Mentais de TI",
-   "versao": "b22df722f1",
-   "bytes": 1101077,
+   "versao": "29163f38ad",
+   "bytes": 1108865,
    "arquivos": [
     "mapas-mentais/dados/m1.js",
     "mapas-mentais/dados/m2.js",

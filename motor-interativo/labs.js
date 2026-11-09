@@ -712,6 +712,90 @@
     carregaSQL().then(function (S) { SQL = S; db = novo(); schema(); desafio(); }).catch(function () { $("[data-sch]", host).innerHTML = "<b>Não foi possível carregar o SQLite.</b> <small>Abra esta página com internet uma vez e tente de novo.</small>"; });
   });
 
+  /* ===================== Programação (Python no navegador) ===================== */
+  /* Console Python real (Pyodide) num Web Worker: o aluno escreve, executa e cumpre desafios.
+     cfg: { id, inicial, entrada, desafios: [{ p, ref, testes?: ["entrada1", …], exige?: ["regex", …], dica, expl }] }
+     - o desafio é cumprido quando a saída do código do aluno é igual à da solução "ref" para todas as entradas de "testes". */
+  var PYW = null, PYN = 0, PYP = {};
+  function pyBase() { return new URL("../python-runtime/", location.href).href; }
+  function pyWorker() {
+    if (PYW) return PYW;
+    var cod = 'var B=' + JSON.stringify(pyBase()) + ';importScripts(B+"pyodide.js");var py=null,pronto=loadPyodide({indexURL:B}).then(function(p){py=p});' +
+      'onmessage=async function(e){var m=e.data;await pronto;var out=[],err=null,ls=String(m.stdin||"").split("\\n"),i=0;' +
+      'py.setStdout({batched:function(s){out.push(s)}});py.setStderr({batched:function(s){out.push(s)}});' +
+      'py.setStdin({stdin:function(){return i<ls.length?ls[i++]:undefined}});' +
+      'try{var g=py.runPython("{\'__name__\':\'__main__\'}");try{py.runPython(m.code,{globals:g})}finally{g.destroy()}}' +
+      'catch(x){var t=String(x&&x.message||x),k=t.indexOf(\'File "<exec>"\');err=(k>=0?t.slice(k):t).replace(/File "<exec>"/g,"Seu código").replace(/, line (\\d+)/g,", linha $1").trim()}' +
+      'postMessage({id:m.id,out:out.join("\\n"),err:err})};postMessage({id:0,pronto:true});';
+    PYW = new Worker(URL.createObjectURL(new Blob([cod], { type: "text/javascript" })));
+    PYW.onmessage = function (e) { var f = PYP[e.data.id]; if (f) { delete PYP[e.data.id]; clearTimeout(f.t); f.ok(e.data); } };
+    PYW.onerror = function () { Object.keys(PYP).forEach(function (k) { var f = PYP[k]; delete PYP[k]; clearTimeout(f.t); f.ok({ out: "", err: "Não foi possível carregar o Python neste navegador." }); }); };
+    return PYW;
+  }
+  function pyRoda(code, stdin, ms) {
+    return new Promise(function (ok) {
+      var w = pyWorker(), id = ++PYN;
+      var t = setTimeout(function () { delete PYP[id]; try { w.terminate(); } catch (e) {} PYW = null; ok({ out: "", err: "O programa demorou demais e foi interrompido. Tem algum laço que nunca termina?", tempo: true }); }, ms || 15000);
+      PYP[id] = { ok: ok, t: t };
+      w.postMessage({ id: id, code: code, stdin: stdin || "" });
+    });
+  }
+  FSI.sim("python", function (host, cfg, api) {
+    var D = cfg.desafios || [], k = 0, erros = 0, ocupado = false;
+    host.innerHTML = '<div class="py">' + (D.length ? '<div class="sim-out" data-des></div>' : "") +
+      '<label for="py-' + cfg.id + '"><b>Seu código Python</b></label><textarea id="py-' + cfg.id + '" class="sql-ed py-ed" spellcheck="false" autocapitalize="off" autocomplete="off" rows="9" data-ed>' + esc(cfg.inicial || 'print("Olá, mundo!")') + '</textarea>' +
+      '<details class="py-in"><summary>Entrada do teclado (uma linha para cada <code>input()</code>)</summary><textarea class="sql-ed" rows="3" spellcheck="false" aria-label="Entrada do programa" data-in>' + esc(cfg.entrada || "") + '</textarea></details>' +
+      '<div class="row"><button class="btn" type="button" data-run>▶ Executar (Ctrl+Enter)</button><button class="btn sec" type="button" data-rst>Restaurar o exemplo</button>' + (D.length ? '<button class="btn sec" type="button" data-sol hidden>Ver uma solução</button>' : "") + '</div>' +
+      '<div class="sql-res" data-res aria-live="polite"><div class="sim-out"><small>Na primeira vez o Python demora alguns segundos para carregar (e precisa de internet se você nunca abriu esta página).</small></div></div></div>';
+    var ED = $("[data-ed]", host), IN = $("[data-in]", host), SAIDA = $("[data-res]", host);
+    IN.addEventListener("input", function () { IN.dataset.t = "1"; });
+    function desafio(msg) {
+      var box = $("[data-des]", host); if (!box) return;
+      if (k >= D.length) { box.className = "sim-out ok"; box.innerHTML = "<b>Todos os desafios concluídos!</b> Continue praticando: o editor é seu."; return; }
+      box.className = "sim-out"; box.innerHTML = (msg || "") + "<b>Desafio " + (k + 1) + " de " + D.length + ":</b> " + D[k].p + (D[k].dica && erros >= 1 ? " <i>Dica: " + D[k].dica + "</i>" : "");
+      var sb = $("[data-sol]", host); if (sb) sb.hidden = erros < 2;
+      if (D[k].testes && !IN.dataset.t && IN.value !== D[k].testes[0]) { IN.value = D[k].testes[0]; $(".py-in", host).open = true; }
+    }
+    function norm(s) { return String(s || "").split("\n").map(function (l) { return l.replace(/\s+$/, ""); }).join("\n").trim(); }
+    async function confere(code) {
+      if (k >= D.length) return;
+      var d = D[k], ok = true, testes = d.testes || [""];
+      (d.exige || []).forEach(function (r) { if (!new RegExp(r).test(code)) ok = false; });
+      for (var i = 0; ok && i < testes.length; i++) {
+        var a = await pyRoda(d.ref, testes[i], 8000), u = await pyRoda(code, testes[i], 8000);
+        if (u.err || norm(a.out) !== norm(u.out)) ok = false;
+      }
+      if (ok) {
+        k++; erros = 0; api.ev(cfg.id + ":desafio:" + k); if (k === D.length) api.ev(cfg.id + ":todos");
+        desafio("<b>Correto!</b> " + (d.expl || "") + (k < D.length ? "<br>Próximo — " : "<br>"));
+      } else { erros++; desafio(); }
+    }
+    async function executa() {
+      if (ocupado) return; var code = ED.value; if (!code.trim()) return;
+      ocupado = true; $("[data-run]", host).disabled = true;
+      SAIDA.innerHTML = '<div class="sim-out">Executando…</div>';
+      var r = await pyRoda(code, IN.value, 8000);
+      api.ev(cfg.id + ":rodou");
+      var U = code;
+      [["for ", "for"], ["while ", "while"], ["if ", "if"], ["def ", "def"], ["class ", "class"], ["input(", "input"], ["import ", "import"], ["[", "lista"], ["{", "dict"]].forEach(function (p) { if (U.indexOf(p[0]) >= 0) api.ev(cfg.id + ":" + p[1]); });
+      if (/\bprint\s*\(/.test(U)) api.ev(cfg.id + ":print");
+      if (r.err && /EOFError/.test(r.err)) r.err = "O programa pediu uma entrada (input), mas a caixa “Entrada do teclado” não tem linhas suficientes. Abra a caixa, escreva um valor por linha e execute de novo.\n\n" + r.err; 
+      SAIDA.innerHTML = (r.out ? '<pre class="py-out" tabindex="0" aria-label="Saída do programa">' + esc(r.out) + "</pre>" : (r.err ? "" : '<div class="sim-out">O programa terminou sem imprimir nada. Use <code>print()</code> para mostrar resultados.</div>')) +
+        (r.err ? '<div class="sim-out bad"><b>Erro:</b><pre class="py-out">' + esc(r.err) + "</pre></div>" : "");
+      if (k < D.length) await confere(code);
+      ocupado = false; $("[data-run]", host).disabled = false;
+    }
+    $("[data-run]", host).onclick = executa;
+    ED.addEventListener("keydown", function (e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); executa(); return; }
+      if (e.key === "Tab" && !e.shiftKey && !e.ctrlKey && !e.altKey) { e.preventDefault(); var s = ED.selectionStart, f = ED.selectionEnd; ED.value = ED.value.slice(0, s) + "    " + ED.value.slice(f); ED.selectionStart = ED.selectionEnd = s + 4; }
+    });
+    $("[data-rst]", host).onclick = function () { ED.value = cfg.inicial || 'print("Olá, mundo!")'; IN.value = cfg.entrada || ""; SAIDA.innerHTML = ""; };
+    var sb = $("[data-sol]", host); if (sb) sb.onclick = function () { if (k < D.length) { ED.value = D[k].ref; ED.focus(); } };
+    desafio();
+    pyWorker();
+  });
+
   /* ===================== Segurança da Informação ===================== */
   /* Cifra de César: desloca as letras; o aluno cifra, decifra e quebra mensagens.
      cfg: { id, desafios: [{ c: "texto cifrado", k: chave, dica }] } */

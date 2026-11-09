@@ -5,7 +5,7 @@
  * "mat" = materiais (apostila, laboratórios e atividades), "breve" = em produção. */
 window.PPC = {
   disc: {
-    "programacao-1": { nome: "Programação 1", st: "breve" },
+    "programacao-1": { nome: "Programação 1", st: "int" },
     "organizacao-de-computadores": { nome: "Organização de Computadores", st: "int" },
     "sistemas-operacionais": { nome: "Fundamentos de Sistemas Operacionais", st: "int" },
     "informatica-basica": { nome: "Informática Básica", st: "int" },
