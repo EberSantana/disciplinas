@@ -24,8 +24,8 @@
   {
    "id": "redes-de-computadores",
    "nome": "Redes de Computadores",
-   "versao": "c74ab16d78",
-   "bytes": 1691251,
+   "versao": "e3d8c17c52",
+   "bytes": 1694635,
    "arquivos": [
     "redes-de-computadores/atividades.html",
     "redes-de-computadores/console-de-estudo.html",
@@ -65,8 +65,8 @@
   {
    "id": "projeto-de-redes",
    "nome": "Projeto de Redes",
-   "versao": "563f4e9d98",
-   "bytes": 1258309,
+   "versao": "716b569c69",
+   "bytes": 1261693,
    "arquivos": [
     "projeto-de-redes/atividades.html",
     "projeto-de-redes/dados/m1.js",
@@ -97,8 +97,8 @@
   {
    "id": "seguranca-da-informacao",
    "nome": "Segurança da Informação",
-   "versao": "4c948ec7de",
-   "bytes": 1427275,
+   "versao": "0ddc1e4b2a",
+   "bytes": 1430659,
    "arquivos": [
     "seguranca-da-informacao/console-de-estudo.html",
     "seguranca-da-informacao/dados/m1.js",
@@ -139,8 +139,8 @@
   {
    "id": "informatica-basica",
    "nome": "Informática Básica",
-   "versao": "e1f88341db",
-   "bytes": 12114791,
+   "versao": "69c274efb8",
+   "bytes": 12118175,
    "arquivos": [
     "informatica-basica/ambiente-interativo.html",
     "informatica-basica/apostila.html",
@@ -303,11 +303,29 @@
   {
    "id": "construcao-de-sites-1",
    "nome": "Construção de Sites 1",
-   "versao": "65796e548e",
-   "bytes": 394239,
+   "versao": "fff8677785",
+   "bytes": 1425343,
    "arquivos": [
     "construcao-de-sites-1/apostila.html",
-    "construcao-de-sites-1/index.html"
+    "construcao-de-sites-1/dados/m1.js",
+    "construcao-de-sites-1/dados/m2.js",
+    "construcao-de-sites-1/dados/m3.js",
+    "construcao-de-sites-1/dados/m4.js",
+    "construcao-de-sites-1/dados/m5.js",
+    "construcao-de-sites-1/disciplina.json",
+    "construcao-de-sites-1/index.html",
+    "construcao-de-sites-1/modulo-1.html",
+    "construcao-de-sites-1/modulo-2.html",
+    "construcao-de-sites-1/modulo-3.html",
+    "construcao-de-sites-1/modulo-4.html",
+    "construcao-de-sites-1/modulo-5.html",
+    "construcao-de-sites-1/simulado.html",
+    "construcao-de-sites-1/trilha.html",
+    "motor-interativo/labs.js",
+    "motor-interativo/motor.css",
+    "motor-interativo/motor.js",
+    "motor-interativo/sql/sql-wasm.js",
+    "motor-interativo/sql/sql-wasm.wasm"
    ],
    "externos": [
     "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap"
@@ -316,8 +334,8 @@
   {
    "id": "banco-de-dados",
    "nome": "Banco de Dados",
-   "versao": "ba3151bf1a",
-   "bytes": 2588791,
+   "versao": "ce79393fa1",
+   "bytes": 2592175,
    "arquivos": [
     "banco-de-dados/apostila.html",
     "banco-de-dados/console-de-estudo.html",
@@ -365,8 +383,8 @@
   {
    "id": "fundamentos-de-sistemas-de-informacao",
    "nome": "Fundamentos para Sistemas de Informação",
-   "versao": "d7043c9913",
-   "bytes": 1131403,
+   "versao": "6b89e656dd",
+   "bytes": 1134787,
    "arquivos": [
     "fundamentos-de-sistemas-de-informacao/dados/m1.js",
     "fundamentos-de-sistemas-de-informacao/dados/m2.js",
@@ -396,8 +414,8 @@
   {
    "id": "sistemas-operacionais",
    "nome": "Fundamentos de Sistemas Operacionais",
-   "versao": "828d606d42",
-   "bytes": 1155685,
+   "versao": "9b26cc51b6",
+   "bytes": 1159069,
    "arquivos": [
     "sistemas-operacionais/dados/m1.js",
     "sistemas-operacionais/dados/m2.js",
@@ -431,8 +449,8 @@
   {
    "id": "organizacao-de-computadores",
    "nome": "Organização de Computadores",
-   "versao": "131f7c8a82",
-   "bytes": 1059090,
+   "versao": "ae313f9583",
+   "bytes": 1062474,
    "arquivos": [
     "organizacao-de-computadores/dados/m1.js",
     "organizacao-de-computadores/dados/m2.js",
@@ -460,8 +478,8 @@
   {
    "id": "mapas-mentais",
    "nome": "Mapas Mentais de TI",
-   "versao": "e03f0d3532",
-   "bytes": 1092233,
+   "versao": "268ac05499",
+   "bytes": 1095617,
    "arquivos": [
     "mapas-mentais/dados/m1.js",
     "mapas-mentais/dados/m2.js",

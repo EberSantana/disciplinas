@@ -900,4 +900,33 @@
     $("[data-pula]", host).onclick = function () { if (k >= I.length) return; var alvo = I[k].k; k++; errou = false; pede("A resposta era <code>" + alvo + "</code>.<br>"); A.focus(); };
     pede();
   });
+
+  /* ===================== Construção de Sites ===================== */
+  /* Editor HTML/CSS com pré-visualização ao vivo e desafios verificados no documento gerado.
+     cfg: { id, codigo: "<!doctype html>…", desafios: [{ p, teste: "expressão JS com doc e css(el, prop)", dica, expl }] }
+     A pré-visualização não executa scripts (sandbox). */
+  FSI.sim("html", function (host, cfg, api) {
+    var D = cfg.desafios || [], k = 0, t0 = null, editou = false;
+    host.innerHTML = (D.length ? '<div class="sim-out" data-des></div>' : "") + '<div class="ed-html"><div><label class="sr" for="ed-' + cfg.id + '">Código</label><textarea id="ed-' + cfg.id + '" class="sql-ed ed-cod" spellcheck="false" autocapitalize="off" autocomplete="off" data-ed></textarea><div class="row"><button class="btn sec" type="button" data-rst>Voltar ao código inicial</button></div></div>' +
+      '<div><small class="ed-rot">Pré-visualização</small><iframe class="ed-prev" title="Pré-visualização da página" sandbox="allow-same-origin" data-prev></iframe></div></div>';
+    var ED = $("[data-ed]", host), PV = $("[data-prev]", host); ED.value = cfg.codigo || "";
+    function des(msg, cl) { var b = $("[data-des]", host); if (!b) return; if (k >= D.length) { b.className = "sim-out ok"; b.innerHTML = (msg || "") + "<b>Todos os desafios concluídos!</b> Copie o código para um arquivo .html e abra no navegador."; return; } b.className = "sim-out " + (cl || ""); b.innerHTML = (msg || "") + "<b>Desafio " + (k + 1) + " de " + D.length + ":</b> " + D[k].p + (D[k].dica ? " <i>Dica: " + esc(D[k].dica) + "</i>" : ""); }
+    function confere() {
+      var doc = PV.contentDocument; if (!doc || k >= D.length) return;
+      var css = function (el, p) { return el ? PV.contentWindow.getComputedStyle(el).getPropertyValue(p) : ""; }, q = function (s) { return doc.querySelector(s); }, qa = function (s) { return doc.querySelectorAll(s); };
+      var msg = "";
+      while (k < D.length) {
+        var ok = false; try { ok = !!new Function("doc", "q", "qa", "css", "return (" + D[k].teste + ");")(doc, q, qa, css); } catch (e) { ok = false; }
+        if (!ok) break;
+        var d = D[k]; k++; api.ev(cfg.id + ":desafio:" + k); if (k === D.length) api.ev(cfg.id + ":todos"); msg += "<b>Certo!</b> " + (d.expl || "") + "<br>";
+      }
+      if (msg) des(msg, "ok");
+    }
+    function render() { PV.srcdoc = ED.value; }
+    PV.addEventListener("load", function () { confere(); });
+    ED.addEventListener("input", function () { if (!editou) { editou = true; api.ev(cfg.id + ":editou"); } clearTimeout(t0); t0 = setTimeout(render, 350); });
+    ED.addEventListener("keydown", function (e) { if (e.key === "Tab") { e.preventDefault(); var a = ED.selectionStart; ED.value = ED.value.slice(0, a) + "  " + ED.value.slice(ED.selectionEnd); ED.selectionStart = ED.selectionEnd = a + 2; } });
+    $("[data-rst]", host).onclick = function () { ED.value = cfg.codigo || ""; render(); };
+    render(); des();
+  });
 })();

@@ -1,0 +1,34 @@
+{
+ "disc": "cs1",
+ "nome": "Construção de Sites 1",
+ "eixo": "Disciplina interativa · INF203 (Subsequente) e TDS102 (Integrado)",
+ "indice": "trilha.html",
+ "descricao": "HTML5 semântico, links, mídias, tabelas e formulários, CSS3, box model e Flexbox, web design, acessibilidade e publicação — com um editor de código ao vivo que confere seus desafios, missões e exercícios guiados.",
+ "niveis": [
+  "Tag",
+  "Elemento",
+  "Página",
+  "Estilista CSS",
+  "Web designer",
+  "Dev front-end"
+ ],
+ "passo": 400,
+ "analogia": {
+  "titulo": "Construir uma casa",
+  "txt": "<p>Uma página web é como uma casa. O <b>HTML</b> é a estrutura — paredes, portas, cômodos com nome (cozinha, quarto). O <b>CSS</b> é o acabamento — tinta, piso, a posição dos móveis. E o <b>JavaScript</b> (que fica para Sites 2) é a parte elétrica, que faz as coisas funcionarem quando você aperta um botão.</p><p>Nesta disciplina você escreve código de verdade num editor que mostra o resultado na hora e confere se você cumpriu cada desafio.</p>"
+ },
+ "como": [
+  "Comece cada módulo pela <b>analogia</b> e pelos <b>pontos-chave</b>.",
+  "No <b>Laboratório</b>, escreva no editor: a pré-visualização atualiza sozinha e os desafios se conferem automaticamente.",
+  "Depois, copie o código para o Bloco de Notas ou VS Code, salve como .html e abra no navegador.",
+  "A apostila interativa completa está nos materiais da disciplina."
+ ],
+ "aulas": [
+  "<b>Unidade 1:</b> Módulo 1 (web e HTML5 semântico)",
+  "<b>Unidade 2:</b> Módulo 2 (links, mídias, tabelas e formulários)",
+  "<b>Unidade 3:</b> Módulo 3 (CSS: seletores, cores, tipografia)",
+  "<b>Unidade 4:</b> Módulo 4 (box model e Flexbox)",
+  "<b>Unidade 5:</b> Módulo 5 (design, acessibilidade e publicação) + simulado"
+ ],
+ "modulos": 5
+}
