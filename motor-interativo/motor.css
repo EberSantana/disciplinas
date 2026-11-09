@@ -414,3 +414,7 @@ a.mod.feito{border-color:var(--ok)}
 .hashes code{display:block;word-break:break-all;font-size:12.5px;padding:6px 8px;border-radius:8px;background:var(--accent-soft)}
 .medidor{height:10px;border-radius:6px;background:var(--line);overflow:hidden;margin:8px 0}.medidor i{display:block;height:100%;width:0;background:#B42318;transition:width .2s}.medidor i.n1{background:#B7791F}.medidor i.n2{background:#5A8F3E}.medidor i.n3{background:var(--accent)}
 input[type=range]{accent-color:var(--accent)}
+.term-in{display:flex;gap:8px;align-items:center;background:#0E1712;color:#7FBF7A;border-radius:0 0 12px 12px;padding:4px 14px 12px;font:14.5px "JetBrains Mono",monospace;margin-top:-10px}
+.term-in input{flex:1;min-width:0;background:transparent;border:0;border-bottom:1px solid #2E4A38;color:#D7F5DF;font:inherit;padding:4px 2px;min-height:36px}
+.term-in input:focus-visible{outline:2px solid #7FBF7A;outline-offset:2px}
+.term > div{white-space:pre-wrap;word-break:break-word}

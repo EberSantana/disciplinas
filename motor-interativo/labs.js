@@ -770,4 +770,59 @@
       api.ev(cfg.id + ":testou"); if (nivel === 0) api.ev(cfg.id + ":fraca"); if (nivel === 3) api.ev(cfg.id + ":forte");
     };
   });
+
+  /* ===================== Redes ===================== */
+  /* Calculadora IPv4 com desafios: rede, broadcast, primeiro/último host e quantidade de hosts. */
+  function ip2n(ip) { var p = String(ip).trim().split("."); if (p.length !== 4) return null; var n = 0; for (var i = 0; i < 4; i++) { var x = +p[i]; if (!/^\d{1,3}$/.test(p[i]) || x > 255) return null; n = n * 256 + x; } return n; }
+  function n2ip(n) { return [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join("."); }
+  function calcIP(ip, pre) { var n = ip2n(ip); if (n === null || !(pre >= 0 && pre <= 32)) return null; var m = pre === 0 ? 0 : (0xFFFFFFFF << (32 - pre)) >>> 0, r = (n & m) >>> 0, b = (r | (~m >>> 0)) >>> 0; return { rede: n2ip(r), bc: n2ip(b), mask: n2ip(m), pri: pre >= 31 ? n2ip(r) : n2ip(r + 1), ult: pre >= 31 ? n2ip(b) : n2ip(b - 1), hosts: pre >= 31 ? (pre === 31 ? 2 : 1) : Math.pow(2, 32 - pre) - 2, bin: ("00000000000000000000000000000000" + n.toString(2)).slice(-32).replace(/(.{8})(?=.)/g, "$1.") }; }
+  FSI.sim("ipv4", function (host, cfg, api) {
+    var D = cfg.desafios || [], k = 0, CAMPOS = { rede: "Endereço de rede", bc: "Broadcast", mask: "Máscara", pri: "Primeiro host", ult: "Último host", hosts: "Hosts utilizáveis" };
+    host.innerHTML = '<div class="sim-bar"><label>Endereço IP <input type="text" data-ip value="' + esc(cfg.ip || "192.168.10.77") + '" style="width:160px" inputmode="decimal"></label><label>Prefixo / <input type="number" data-pre min="0" max="32" value="' + (cfg.pre || 24) + '" style="width:70px"></label><button class="btn" type="button" data-calc>Calcular</button></div>' +
+      '<div class="sim-out" data-res aria-live="polite"></div>' + (D.length ? '<div class="sim-out" data-des></div><div class="sim-bar"><label>Sua resposta <input type="text" data-r style="width:200px" autocomplete="off"></label><button class="btn" type="button" data-ok>Conferir</button></div>' : "");
+    function mostra() { var r = calcIP($("[data-ip]", host).value, +$("[data-pre]", host).value), o = $("[data-res]", host); if (!r) { o.className = "sim-out bad"; o.textContent = "Endereço ou prefixo inválido."; return; } o.className = "sim-out"; o.innerHTML = '<div class="tbl-wrap"><table class="tbl"><tbody>' + Object.keys(CAMPOS).map(function (c) { return "<tr><th>" + CAMPOS[c] + "</th><td><code>" + r[c] + "</code></td></tr>"; }).join("") + "<tr><th>IP em binário</th><td><code>" + r.bin + "</code></td></tr></tbody></table></div>"; api.ev(cfg.id + ":calculou"); if (+$("[data-pre]", host).value !== 24) api.ev(cfg.id + ":prefixo"); }
+    function des(msg, cl) { var b = $("[data-des]", host); if (!b) return; if (k >= D.length) { b.className = "sim-out ok"; b.innerHTML = (msg || "") + "<b>Todos os desafios resolvidos!</b>"; return; } var d = D[k]; b.className = "sim-out " + (cl || ""); b.innerHTML = (msg || "") + "<b>Desafio " + (k + 1) + " de " + D.length + ":</b> qual é o <b>" + CAMPOS[d.campo].toLowerCase() + "</b> de <code>" + d.ip + "/" + d.pre + "</code>? Resolva no caderno antes de usar a calculadora." + (d.dica ? " <i>Dica: " + d.dica + "</i>" : ""); }
+    $("[data-calc]", host).onclick = mostra;
+    var OK = $("[data-ok]", host);
+    if (OK) OK.onclick = function () { if (k >= D.length) return; var d = D[k], r = calcIP(d.ip, d.pre), v = $("[data-r]", host).value.trim(), cert = String(r[d.campo]);
+      if (v === cert || (d.campo === "hosts" && +v === r.hosts)) { k++; $("[data-r]", host).value = ""; api.ev(cfg.id + ":desafio:" + k); if (k === D.length) api.ev(cfg.id + ":todos"); des("Certo: <code>" + cert + "</code>. ", "ok"); }
+      else des("Ainda não. ", "bad"); };
+    mostra(); des();
+  });
+
+  /* Prompt de comando do Windows (simulado): ipconfig, ping, tracert, nslookup, arp, netstat.
+     cfg: { id, cenario: { ip, mask, gw, dns, dhcp, mac, falha: "" | "dns" | "dhcp" | "gateway" } } */
+  FSI.sim("cmd", function (host, cfg, api) {
+    var C = cfg.cenario || {}, ip = C.falha === "dhcp" ? "169.254.33.12" : C.ip || "10.0.1.50", mask = C.mask || "255.255.255.0", gw = C.gw || "10.0.1.1", dns = C.dns || "10.0.1.2", mac = C.mac || "3C-52-82-1A-7F-09";
+    host.innerHTML = '<div class="term" role="log" aria-live="polite" data-o></div><div class="term-in"><span>C:\\Users\\aluno&gt;</span><input type="text" data-cin spellcheck="false" autocomplete="off" aria-label="Comando do prompt"></div><p class="instr">Comandos: <code>ipconfig</code>, <code>ipconfig /all</code>, <code>ping &lt;destino&gt;</code>, <code>tracert &lt;destino&gt;</code>, <code>nslookup &lt;nome&gt;</code>, <code>arp -a</code>, <code>netstat -n</code>, <code>ipconfig /release</code>, <code>ipconfig /renew</code>, <code>cls</code>.</p>';
+    var O = $("[data-o]", host), I = $("[data-cin]", host), renovou = false;
+    function p(t) { O.insertAdjacentHTML("beforeend", "<div>" + esc(t).replace(/\n/g, "<br>") + "</div>"); O.scrollTop = O.scrollHeight; }
+    function ping(dest) {
+      var semRede = C.falha === "dhcp" && !renovou, semGw = C.falha === "gateway", nome = !/^\d+\.\d+\.\d+\.\d+$/.test(dest);
+      if (nome && C.falha === "dns") return "A solicitação ping não pôde encontrar o host " + dest + ". Verifique o nome e tente novamente.";
+      if (semRede || (semGw && dest !== ip)) return "Disparando " + dest + ":\nEsgotado o tempo limite do pedido.\nEsgotado o tempo limite do pedido.\nEstatísticas: Enviados = 2, Recebidos = 0, Perdidos = 2 (100% de perda)";
+      var alvo = nome ? (dest === "google.com" ? "142.250.79.46" : "200.17.141.20") : dest, t = dest === gw || dest === ip || dest === "127.0.0.1" ? 1 : 18 + (dest.length % 9);
+      return "Disparando " + dest + (nome ? " [" + alvo + "]" : "") + " com 32 bytes de dados:\nResposta de " + alvo + ": bytes=32 tempo=" + t + "ms TTL=" + (t < 2 ? 128 : 116) + "\nResposta de " + alvo + ": bytes=32 tempo=" + (t + 1) + "ms TTL=" + (t < 2 ? 128 : 116) + "\nEstatísticas: Enviados = 2, Recebidos = 2, Perdidos = 0 (0% de perda)";
+    }
+    function exec(c) {
+      var a = c.trim(), l = a.toLowerCase(), m;
+      p("C:\\Users\\aluno>" + a); if (!a) return;
+      if (l === "cls") { O.innerHTML = ""; return; }
+      if (l === "ipconfig" || l === "ipconfig /all") {
+        var eip = C.falha === "dhcp" && !renovou ? "169.254.33.12" : (C.ip || "10.0.1.50");
+        p("Adaptador Ethernet Ethernet:\n   Endereço IPv4. . . . . . . . : " + eip + "\n   Máscara de Sub-rede . . . . : " + (eip.indexOf("169.254") === 0 ? "255.255.0.0" : mask) + "\n   Gateway Padrão. . . . . . . : " + (eip.indexOf("169.254") === 0 ? "" : gw) + (l === "ipconfig /all" ? "\n   Endereço Físico . . . . . . : " + mac + "\n   DHCP Habilitado . . . . . . : Sim\n   Servidor DHCP . . . . . . . : " + (C.dhcp || gw) + "\n   Servidores DNS. . . . . . . : " + dns : ""));
+        api.ev(cfg.id + ":ipconfig"); if (l === "ipconfig /all") api.ev(cfg.id + ":all"); if (eip.indexOf("169.254") === 0) api.ev(cfg.id + ":apipa"); return;
+      }
+      if (l === "ipconfig /release") { p("O adaptador Ethernet liberou o endereço."); api.ev(cfg.id + ":release"); return; }
+      if (l === "ipconfig /renew") { renovou = true; p("Endereço IPv4 renovado: " + (C.ip || "10.0.1.50")); api.ev(cfg.id + ":renew"); return; }
+      if ((m = /^ping\s+(\S+)/.exec(l))) { p(ping(m[1])); api.ev(cfg.id + ":ping"); if (m[1] === gw) api.ev(cfg.id + ":ping-gw"); if (!/^\d/.test(m[1])) api.ev(cfg.id + ":ping-nome"); if (m[1] === "8.8.8.8") api.ev(cfg.id + ":ping-externo"); return; }
+      if ((m = /^tracert\s+(\S+)/.exec(l))) { if (C.falha === "gateway") p("Rastreando a rota para " + m[1] + "\n  1     *        *        *     Esgotado o tempo limite do pedido."); else p("Rastreando a rota para " + m[1] + " com no máximo 30 saltos:\n  1    1 ms  " + gw + "\n  2    4 ms  10.255.0.1   (roteador do campus)\n  3   12 ms  200.143.201.17 (provedor)\n  4   19 ms  72.14.215.85\n  5   20 ms  " + (m[1] === "google.com" ? "142.250.79.46" : m[1]) + "\nRastreamento concluído."); api.ev(cfg.id + ":tracert"); return; }
+      if ((m = /^nslookup\s+(\S+)/.exec(l))) { if (C.falha === "dns") p("Servidor: desconhecido\nAddress: " + dns + "\n*** Tempo limite da solicitação esgotado."); else p("Servidor: dns.escola.local\nAddress: " + dns + "\n\nResposta não autoritativa:\nNome: " + m[1] + "\nAddress: " + (m[1] === "google.com" ? "142.250.79.46" : "200.17.141.20")); api.ev(cfg.id + ":nslookup"); return; }
+      if (l === "arp -a") { p("Interface: " + ip + "\n  Endereço IP      Endereço físico      Tipo\n  " + gw + "        00-1A-2B-3C-4D-5E    dinâmico\n  " + dns + "        00-1A-2B-77-88-99    dinâmico\n  255.255.255.255  ff-ff-ff-ff-ff-ff    estático"); api.ev(cfg.id + ":arp"); return; }
+      if (l === "netstat -n") { p("Conexões ativas\n  Proto  Endereço local        Endereço externo      Estado\n  TCP    " + ip + ":51234    142.250.79.46:443     ESTABELECIDA\n  TCP    " + ip + ":51240    200.17.141.20:80      ESPERANDO_FECHAMENTO\n  UDP    " + ip + ":5353     *:*"); api.ev(cfg.id + ":netstat"); return; }
+      p("'" + a.split(" ")[0] + "' não é reconhecido como um comando interno ou externo."); api.ev(cfg.id + ":erro");
+    }
+    I.addEventListener("keydown", function (e) { if (e.key === "Enter") { exec(I.value); I.value = ""; } });
+    p("Microsoft Windows [versão simulada para estudo]\nDigite um comando e pressione Enter.");
+  });
 })();

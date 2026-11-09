@@ -24,15 +24,35 @@
   {
    "id": "redes-de-computadores",
    "nome": "Redes de Computadores",
-   "versao": "50388e9e1a",
-   "bytes": 622269,
+   "versao": "c106889a03",
+   "bytes": 1680984,
    "arquivos": [
     "redes-de-computadores/atividades.html",
     "redes-de-computadores/console-de-estudo.html",
+    "redes-de-computadores/dados/m1.js",
+    "redes-de-computadores/dados/m2.js",
+    "redes-de-computadores/dados/m3.js",
+    "redes-de-computadores/dados/m4.js",
+    "redes-de-computadores/dados/m5.js",
+    "redes-de-computadores/dados/m6.js",
+    "redes-de-computadores/disciplina.json",
     "redes-de-computadores/index.html",
     "redes-de-computadores/mapa-do-chamado.html",
+    "redes-de-computadores/modulo-1.html",
+    "redes-de-computadores/modulo-2.html",
+    "redes-de-computadores/modulo-3.html",
+    "redes-de-computadores/modulo-4.html",
+    "redes-de-computadores/modulo-5.html",
+    "redes-de-computadores/modulo-6.html",
+    "redes-de-computadores/simulado.html",
     "redes-de-computadores/subnetting-na-pratica.html",
-    "redes-de-computadores/subnetting-na-prática.html"
+    "redes-de-computadores/subnetting-na-prática.html",
+    "redes-de-computadores/trilha.html",
+    "motor-interativo/labs.js",
+    "motor-interativo/motor.css",
+    "motor-interativo/motor.js",
+    "motor-interativo/sql/sql-wasm.js",
+    "motor-interativo/sql/sql-wasm.wasm"
    ],
    "externos": [
     "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
@@ -59,8 +79,8 @@
   {
    "id": "seguranca-da-informacao",
    "nome": "Segurança da Informação",
-   "versao": "20dfe0a74f",
-   "bytes": 1407201,
+   "versao": "a39a3fe34b",
+   "bytes": 1417008,
    "arquivos": [
     "seguranca-da-informacao/console-de-estudo.html",
     "seguranca-da-informacao/dados/m1.js",
@@ -252,8 +272,8 @@
   {
    "id": "banco-de-dados",
    "nome": "Banco de Dados",
-   "versao": "73cc92fd6b",
-   "bytes": 2568717,
+   "versao": "60762483ae",
+   "bytes": 2578524,
    "arquivos": [
     "banco-de-dados/apostila.html",
     "banco-de-dados/console-de-estudo.html",
@@ -301,8 +321,8 @@
   {
    "id": "fundamentos-de-sistemas-de-informacao",
    "nome": "Fundamentos para Sistemas de Informação",
-   "versao": "6186d632d5",
-   "bytes": 1111329,
+   "versao": "c7d2aa74f0",
+   "bytes": 1121136,
    "arquivos": [
     "fundamentos-de-sistemas-de-informacao/dados/m1.js",
     "fundamentos-de-sistemas-de-informacao/dados/m2.js",
@@ -332,8 +352,8 @@
   {
    "id": "sistemas-operacionais",
    "nome": "Fundamentos de Sistemas Operacionais",
-   "versao": "042faf2dba",
-   "bytes": 1135611,
+   "versao": "2f14f25b5b",
+   "bytes": 1145418,
    "arquivos": [
     "sistemas-operacionais/dados/m1.js",
     "sistemas-operacionais/dados/m2.js",
@@ -367,8 +387,8 @@
   {
    "id": "organizacao-de-computadores",
    "nome": "Organização de Computadores",
-   "versao": "f34d17d371",
-   "bytes": 1039016,
+   "versao": "2638aad66e",
+   "bytes": 1048823,
    "arquivos": [
     "organizacao-de-computadores/dados/m1.js",
     "organizacao-de-computadores/dados/m2.js",
@@ -396,8 +416,8 @@
   {
    "id": "mapas-mentais",
    "nome": "Mapas Mentais de TI",
-   "versao": "f8816b5667",
-   "bytes": 1072159,
+   "versao": "5eaa3f2cfa",
+   "bytes": 1081966,
    "arquivos": [
     "mapas-mentais/dados/m1.js",
     "mapas-mentais/dados/m2.js",

@@ -17,7 +17,7 @@ window.PPC = {
     "construcao-de-sites-2": { nome: "Construção de Sites 2", st: "breve" },
     "topicos-especiais-1": { nome: "Tópicos Especiais I", st: "breve" },
     "projeto-integrador": { nome: "Projeto Integrador", st: "breve" },
-    "redes-de-computadores": { nome: "Redes de Computadores", st: "mat" },
+    "redes-de-computadores": { nome: "Redes de Computadores", st: "int" },
     "projeto-de-redes": { nome: "Projeto de Redes", st: "mat" },
     "seguranca-da-informacao": { nome: "Segurança da Informação", st: "int" },
     "topicos-especiais-2": { nome: "Tópicos Especiais II", st: "breve" },

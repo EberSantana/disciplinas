@@ -1,0 +1,34 @@
+{
+ "disc": "rdc",
+ "nome": "Redes de Computadores",
+ "eixo": "Disciplina interativa · INF402 (Subsequente) e TDS301 (Integrado)",
+ "indice": "trilha.html",
+ "descricao": "Da ARPANET ao cabo crimpado, descendo as camadas do TCP/IP com o pacote Paco: aplicação, transporte, rede, enlace e meio físico — com prompt de comando simulado, calculadora de sub-redes, handshake animado, montagem do cabo T568B, missões e exercícios guiados.",
+ "niveis": [
+  "Host",
+  "Switch",
+  "Roteador",
+  "Administrador de rede",
+  "Arquiteto de redes",
+  "Backbone"
+ ],
+ "passo": 400,
+ "analogia": {
+  "titulo": "A viagem de Paco",
+  "txt": "<p>Ana, em Coari, manda uma mensagem para Beto, em Manaus. No computador dela nasce <b>Paco</b>, um pacote de dados que mora num prédio de cinco andares — o modelo <b>TCP/IP</b>. Em cada andar ele ganha uma etiqueta: a aplicação diz o que é, o transporte diz para qual programa vai, a rede põe os endereços IP, o enlace põe os endereços físicos e a camada física transforma tudo em sinais no cabo, na fibra ou no ar.</p><p>Nesta disciplina você desce o prédio com Paco: usa o prompt de comando, calcula sub-redes, assiste ao aperto de mão do TCP e monta um cabo de rede na ordem certa.</p>"
+ },
+ "como": [
+  "Comece cada módulo pela <b>analogia</b> e pelos <b>pontos-chave</b>.",
+  "No <b>Laboratório</b>, use o prompt simulado e a calculadora: as missões se marcam sozinhas.",
+  "Calcule as sub-redes no caderno antes de conferir na calculadora.",
+  "Para treinar mais, use o <b>Subnetting na Prática</b> e o <b>Mapa do Chamado</b> nos materiais da disciplina."
+ ],
+ "aulas": [
+  "<b>Unidade I:</b> Módulo 1 (história, borda, núcleo e camadas)",
+  "<b>Unidade II:</b> Módulo 2 (aplicação: HTTP, e-mail, DNS)",
+  "<b>Unidade III:</b> Módulo 3 (transporte: portas, TCP e UDP)",
+  "<b>Unidade IV:</b> Módulo 4 (rede: IP, sub-redes, DHCP, roteamento)",
+  "<b>Unidades V e VI:</b> Módulos 5 e 6 (enlace, switches e cabeamento) + simulado"
+ ],
+ "modulos": 6
+}
