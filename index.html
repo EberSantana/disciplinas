@@ -18,7 +18,7 @@ header{background:var(--side);color:var(--side-ink);padding-inline:clamp(16px,5v
 .back{display:inline-block;color:var(--accent);text-decoration:none;font-size:15px;margin-bottom:14px}
 .back:hover{text-decoration:underline}
 .eyebrow{display:block;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
-header .eyebrow,header .back{color:#7FBF7A}
+header .eyebrow,header .back{color:var(--hl,#7FBF7A)}
 h1{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:clamp(36px,6vw,58px);line-height:1.05;margin:8px 0 10px;color:#fff;text-wrap:balance}
 header p{margin:0;max-width:62ch;color:#B8C6CD}
 main{padding-inline:clamp(16px,5vw,64px);padding-block:28px 64px}
@@ -89,7 +89,7 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
 <header><div class="wrap">
   <span class="eyebrow">Prof. Eber Santana · IFS</span>
   <h1>Ambientes de estudo</h1>
-  <p>Escolha a sua disciplina. Os materiais são interativos e funcionam no computador e no celular. <a href="como-usar.html" style="color:#7FBF7A">Como usar o portal</a></p>
+  <p>Escolha a sua disciplina. Os materiais são interativos e funcionam no computador e no celular. <a href="como-usar.html" style="color:var(--hl,#7FBF7A)">Como usar o portal</a></p>
 </div></header>
 <main><div class="wrap">
   <div class="painel-estudo" id="painel-estudo" hidden>

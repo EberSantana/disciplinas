@@ -51,7 +51,7 @@ button,textarea,select{font:inherit;color:inherit}
 code{font-family:var(--f-mono);font-size:.84em;background:var(--code-bg);padding:.1em .35em;border-radius:4px;white-space:pre-wrap;word-break:break-word}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--top-bg);color:var(--top-ink);}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--side,var(--top-bg));color:var(--side-ink,var(--top-ink));}
 .topbar-in{max-width:1240px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .brand{display:flex;align-items:baseline;gap:10px;min-width:0}
 .brand b{font-family:var(--f-disp);font-size:1.15rem;letter-spacing:.01em}

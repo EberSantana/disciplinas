@@ -7,14 +7,14 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3",
 .wrap{max-width:1040px;margin:0 auto}
 h1,h2,h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif;line-height:1.1;text-wrap:balance}
 header.top{background:var(--side);color:var(--side-ink);padding:34px clamp(16px,5vw,64px) 30px}
-header.top .back{display:inline-block;color:#7FBF7A;text-decoration:none;font-size:15px;margin-bottom:12px}
+header.top .back{display:inline-block;color:var(--hl,#7FBF7A);text-decoration:none;font-size:15px;margin-bottom:12px}
 header.top .back:hover{text-decoration:underline}
-.eyebrow{display:block;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#7FBF7A}
+.eyebrow{display:block;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--hl,#7FBF7A)}
 header.top h1{font-size:clamp(34px,6vw,56px);margin:8px 0 10px;color:#fff}
 header.top p{margin:0;max-width:64ch;color:#B8C6CD}
 .prog{display:flex;align-items:center;gap:12px;margin-top:18px;max-width:520px}
 .prog .bar{flex:1;height:10px;background:#ffffff26;border-radius:99px;overflow:hidden}
-.prog .bar i{display:block;height:100%;background:#7FBF7A;border-radius:99px;transition:width .4s}
+.prog .bar i{display:block;height:100%;background:var(--hl,#7FBF7A);border-radius:99px;transition:width .4s}
 .prog b{font-family:"JetBrains Mono",monospace;font-size:13px;color:#fff;white-space:nowrap}
 nav.tabs{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);padding:0 clamp(8px,3vw,48px)}
 nav.tabs .wrap{display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
@@ -248,7 +248,7 @@ a.mod.feito{border-color:var(--ok)}
 .sr{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 #toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,140%);background:var(--side);color:#fff;border-radius:12px;padding:12px 18px;max-width:min(560px,92vw);box-shadow:0 10px 30px #0004;z-index:60;transition:transform .35s;font-size:15.5px}
 #toast.on{transform:translate(-50%,0)}
-#toast span{color:#7FBF7A;font-weight:700;margin-left:6px}
+#toast span{color:var(--hl,#7FBF7A);font-weight:700;margin-left:6px}
 /* exercícios guiados */
 .guia .gtxt{margin:0 0 10px}
 .gpassos{margin:8px 0 0;padding-left:24px}

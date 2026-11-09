@@ -24,8 +24,8 @@
   {
    "id": "redes-de-computadores",
    "nome": "Redes de Computadores",
-   "versao": "1d3381bcac",
-   "bytes": 1700055,
+   "versao": "2dfa3c8ad4",
+   "bytes": 1700095,
    "arquivos": [
     "redes-de-computadores/atividades.html",
     "redes-de-computadores/console-de-estudo.html",
@@ -65,8 +65,8 @@
   {
    "id": "projeto-de-redes",
    "nome": "Projeto de Redes",
-   "versao": "61a28a476d",
-   "bytes": 1267113,
+   "versao": "bf32b864e8",
+   "bytes": 1267153,
    "arquivos": [
     "projeto-de-redes/atividades.html",
     "projeto-de-redes/dados/m1.js",
@@ -97,8 +97,8 @@
   {
    "id": "seguranca-da-informacao",
    "nome": "Segurança da Informação",
-   "versao": "95b612eaec",
-   "bytes": 1436079,
+   "versao": "81aba1a26e",
+   "bytes": 1436119,
    "arquivos": [
     "seguranca-da-informacao/console-de-estudo.html",
     "seguranca-da-informacao/dados/m1.js",
@@ -139,8 +139,8 @@
   {
    "id": "informatica-basica",
    "nome": "Informática Básica",
-   "versao": "699c997429",
-   "bytes": 12123595,
+   "versao": "9a0b64599c",
+   "bytes": 12123635,
    "arquivos": [
     "informatica-basica/ambiente-interativo.html",
     "informatica-basica/apostila.html",
@@ -284,8 +284,8 @@
   {
    "id": "engenharia-de-software",
    "nome": "Engenharia de Software",
-   "versao": "f124eb1d54",
-   "bytes": 1885260,
+   "versao": "9bb30d1765",
+   "bytes": 1885300,
    "arquivos": [
     "engenharia-de-software/apostila-engenharia-de-requisitos.html",
     "engenharia-de-software/apostila-engenharia-de-software-1.html",
@@ -323,8 +323,8 @@
   {
    "id": "construcao-de-sites-1",
    "nome": "Construção de Sites 1",
-   "versao": "75b6aacf22",
-   "bytes": 1430763,
+   "versao": "0b7b0623d0",
+   "bytes": 1430803,
    "arquivos": [
     "construcao-de-sites-1/apostila.html",
     "construcao-de-sites-1/dados/m1.js",
@@ -354,8 +354,8 @@
   {
    "id": "banco-de-dados",
    "nome": "Banco de Dados",
-   "versao": "fc551edca5",
-   "bytes": 2597595,
+   "versao": "40bdf77773",
+   "bytes": 2597663,
    "arquivos": [
     "banco-de-dados/apostila.html",
     "banco-de-dados/console-de-estudo.html",
@@ -403,8 +403,8 @@
   {
    "id": "fundamentos-de-sistemas-de-informacao",
    "nome": "Fundamentos para Sistemas de Informação",
-   "versao": "ba526c7e12",
-   "bytes": 1140207,
+   "versao": "35334aff5a",
+   "bytes": 1140247,
    "arquivos": [
     "fundamentos-de-sistemas-de-informacao/dados/m1.js",
     "fundamentos-de-sistemas-de-informacao/dados/m2.js",
@@ -434,8 +434,8 @@
   {
    "id": "sistemas-operacionais",
    "nome": "Fundamentos de Sistemas Operacionais",
-   "versao": "209f152387",
-   "bytes": 1164489,
+   "versao": "449c8e0ea8",
+   "bytes": 1164529,
    "arquivos": [
     "sistemas-operacionais/dados/m1.js",
     "sistemas-operacionais/dados/m2.js",
@@ -469,8 +469,8 @@
   {
    "id": "organizacao-de-computadores",
    "nome": "Organização de Computadores",
-   "versao": "df28f4b090",
-   "bytes": 1067894,
+   "versao": "c5ecde9cf7",
+   "bytes": 1067934,
    "arquivos": [
     "organizacao-de-computadores/dados/m1.js",
     "organizacao-de-computadores/dados/m2.js",
@@ -498,8 +498,8 @@
   {
    "id": "mapas-mentais",
    "nome": "Mapas Mentais de TI",
-   "versao": "9485e6b6cd",
-   "bytes": 1101037,
+   "versao": "b22df722f1",
+   "bytes": 1101077,
    "arquivos": [
     "mapas-mentais/dados/m1.js",
     "mapas-mentais/dados/m2.js",

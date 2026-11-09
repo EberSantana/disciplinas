@@ -86,6 +86,10 @@
         s += "--bg:" + m.bg + ";--panel:" + m.panel + ";--surface:" + m.panel + ";--surface-2:" + m.bg + ";--panel-2:" + m.bg +
           ";--ink:" + m.ink + ";--ink-2:" + m.ink2 + ";--ink-soft:" + m.ink2 + ";--muted:" + m.muted + ";--ink-3:" + m.muted + ";--line:" + m.line + ";--line-soft:" + m.line + ";--panel-line:" + m.line +
           ";--accent:" + m.accent + ";--accent-ink:" + m.accentInk + ";--accent-soft:" + m.accentSoft + ";--side:" + m.side + ";--side-ink:" + m.sideInk +
+          ";--side-2:color-mix(in srgb," + m.side + " 78%," + m.accent + ")" +
+          ";--hlink:color-mix(in srgb," + m.accent + " 40%," + m.sideInk + ")" + ";--hl:color-mix(in srgb," + m.accent + " 40%," + m.sideInk + ")" +
+          ";--hline:color-mix(in srgb," + m.side + " 60%," + m.accent + ")" +
+          ";--hbox:color-mix(in srgb," + m.side + " 82%,#000)" +
           ";--ok:" + m.ok + ";--ok-soft:" + m.okSoft + ";--bad:" + m.bad + ";--bad-soft:" + m.badSoft + ";--warn:" + m.warn + ";--warn-soft:" + m.warnSoft + ";--blue:" + m.blue +
           ";color-scheme:" + (e === "escuro" ? "dark" : "light") + "}";
         s += "html[data-a11y-tema=\"" + t + "\"][data-a11y-esq=\"" + e + "\"]{--a11y-focus:" + m.focus + "}";
