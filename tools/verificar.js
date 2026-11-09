@@ -16,7 +16,7 @@ const PAGINAS = ["index.html", "como-usar.html", "professor.html", "redes-de-com
   "redes-de-computadores/trilha.html", "redes-de-computadores/modulo-1.html",
   "projeto-de-redes/trilha.html", "projeto-de-redes/modulo-1.html",
   "informatica-basica/trilha.html", "informatica-basica/modulo-1.html",
-  "construcao-de-sites-1/trilha.html", "construcao-de-sites-1/modulo-1.html",
+  "construcao-de-sites-1/trilha.html", "construcao-de-sites-1/modulo-1.html", "construcao-de-sites-1/modulo-6.html",
   "engenharia-de-software/trilha.html", "engenharia-de-software/modulo-1.html",
   "programacao-1/index.html", "programacao-1/modulo-1.html", "programacao-1/modulo-3.html",
   "sistemas-operacionais/index.html", "sistemas-operacionais/modulo-6.html", "sistemas-operacionais/modulo-8.html", "sistemas-operacionais/simulado.html",

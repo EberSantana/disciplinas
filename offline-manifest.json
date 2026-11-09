@@ -323,8 +323,8 @@
   {
    "id": "construcao-de-sites-1",
    "nome": "Construção de Sites 1",
-   "versao": "868758743d",
-   "bytes": 1438591,
+   "versao": "9d298110e1",
+   "bytes": 1468927,
    "arquivos": [
     "construcao-de-sites-1/apostila.html",
     "construcao-de-sites-1/dados/m1.js",
@@ -332,6 +332,7 @@
     "construcao-de-sites-1/dados/m3.js",
     "construcao-de-sites-1/dados/m4.js",
     "construcao-de-sites-1/dados/m5.js",
+    "construcao-de-sites-1/dados/m6.js",
     "construcao-de-sites-1/disciplina.json",
     "construcao-de-sites-1/index.html",
     "construcao-de-sites-1/modulo-1.html",
@@ -339,6 +340,7 @@
     "construcao-de-sites-1/modulo-3.html",
     "construcao-de-sites-1/modulo-4.html",
     "construcao-de-sites-1/modulo-5.html",
+    "construcao-de-sites-1/modulo-6.html",
     "construcao-de-sites-1/simulado.html",
     "construcao-de-sites-1/trilha.html",
     "motor-interativo/labs.js",
