@@ -630,4 +630,85 @@
     $("[data-p]", host).onchange = function () { pi = +this.value; editou = false; carrega(); };
     carrega();
   });
+
+  /* ===================== Banco de Dados ===================== */
+  /* Console SQL real (SQLite no navegador, via sql.js): o aluno escreve comandos, vê o resultado e cumpre desafios.
+     cfg: { id, setup: "CREATE…; INSERT…", inicial: "SELECT …", desafios: [{ p, ref, verif?, dica, expl }] }
+     - desafio de consulta: o resultado da última consulta do aluno é comparado ao de "ref" (num banco novo).
+     - desafio de alteração (verif): executa "ref" num banco novo e compara "verif" nos dois bancos. */
+  var SQLP = null;
+  function carregaSQL() {
+    if (SQLP) return SQLP;
+    var base = "../motor-interativo/sql/";
+    SQLP = new Promise(function (ok, erro) {
+      if (window.initSqlJs) return ok();
+      var sc = document.createElement("script"); sc.src = base + "sql-wasm.js"; sc.onload = ok; sc.onerror = erro; document.head.appendChild(sc);
+    }).then(function () { return window.initSqlJs({ locateFile: function (f) { return base + f; } }); });
+    SQLP.catch(function () { SQLP = null; });
+    return SQLP;
+  }
+  FSI.sim("sql", function (host, cfg, api) {
+    var SQL = null, db = null, D = cfg.desafios || [], k = 0, erros = 0, ultimo = null, ultSQL = "";
+    host.innerHTML = '<div class="sql"><div class="sql-esq"><div class="sql-schema" data-sch aria-live="polite"><small>Carregando o banco…</small></div></div>' +
+      '<div class="sql-dir">' + (D.length ? '<div class="sim-out" data-des></div>' : "") +
+      '<label class="sr" for="sql-' + cfg.id + '">Comando SQL</label><textarea id="sql-' + cfg.id + '" class="sql-ed" spellcheck="false" autocapitalize="off" autocomplete="off" rows="5" data-ed>' + esc(cfg.inicial || "SELECT * FROM " + (cfg.tabela || "") + ";") + "</textarea>" +
+      '<div class="row"><button class="btn" type="button" data-run>Executar (Ctrl+Enter)</button><button class="btn sec" type="button" data-rst>Restaurar o banco</button>' + (D.length ? '<button class="btn sec" type="button" data-sol hidden>Ver uma solução</button>' : "") + "</div>" +
+      '<div class="sql-res" data-res aria-live="polite"></div></div></div>';
+    var ED = $("[data-ed]", host);
+    function novo() { var b = new SQL.Database(); b.run(cfg.setup || ""); return b; }
+    function tabela(r) {
+      if (!r) return "";
+      var linhas = r.values.slice(0, 60);
+      return '<div class="tbl-wrap"><table class="tbl"><thead><tr>' + r.columns.map(function (c) { return "<th>" + esc(c) + "</th>"; }).join("") + "</tr></thead><tbody>" +
+        linhas.map(function (l) { return "<tr>" + l.map(function (v) { return v === null ? '<td class="nulo">NULL</td>' : "<td>" + esc(v) + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div>" +
+        '<small class="sql-n">' + r.values.length + " linha" + (r.values.length === 1 ? "" : "s") + (r.values.length > 60 ? " (mostrando 60)" : "") + "</small>";
+    }
+    function schema() {
+      var t = db.exec("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name");
+      var nomes = t.length ? t[0].values.map(function (v) { return v[0]; }) : [];
+      $("[data-sch]", host).innerHTML = "<b>Tabelas do banco</b>" + (nomes.length ? nomes.map(function (n) {
+        var c = db.exec('PRAGMA table_info("' + n.replace(/"/g, "") + '")'), cn = db.exec('SELECT COUNT(*) FROM "' + n.replace(/"/g, "") + '"');
+        return '<details><summary>' + esc(n) + ' <small>' + (cn.length ? cn[0].values[0][0] : 0) + " linhas</small></summary><ul>" + (c.length ? c[0].values.map(function (x) { return "<li>" + esc(x[1]) + " <small>" + esc(x[2] || "") + (x[5] ? " · PK" : "") + "</small></li>"; }).join("") : "") + "</ul></details>";
+      }).join("") : "<p><small>Nenhuma tabela.</small></p>");
+    }
+    function chave(r, ordem) { if (!r || !r.values.length) return "∅"; var ls = r.values.map(function (l) { return JSON.stringify(l.map(function (v) { return typeof v === "number" ? Math.round(v * 1000) / 1000 : v; })); }); if (!ordem) ls.sort(); return r.columns.length + "|" + ls.join("\n"); }
+    function desafio() {
+      var box = $("[data-des]", host); if (!box) return;
+      if (k >= D.length) { box.className = "sim-out ok"; box.innerHTML = "<b>Todos os desafios concluídos!</b> Continue praticando: o banco é seu."; return; }
+      box.className = "sim-out"; box.innerHTML = "<b>Desafio " + (k + 1) + " de " + D.length + ":</b> " + D[k].p + (D[k].dica && erros >= 1 ? " <i>Dica: " + D[k].dica + "</i>" : "");
+      var sb = $("[data-sol]", host); if (sb) sb.hidden = erros < 2;
+    }
+    function confere() {
+      if (k >= D.length) return;
+      var d = D[k], ok = false;
+      try {
+        var b = novo();
+        if (d.exige && ultSQL.toUpperCase().indexOf(d.exige) < 0) ok = false;
+        else if (d.verif) { b.run(d.ref); var a = b.exec(d.verif)[0], u = db.exec(d.verif)[0]; ok = chave(a, true) === chave(u, true); }
+        else if (ultimo) { b.close(); b = new SQL.Database(db.export()); var r = b.exec(d.ref)[0], ord = /order\s+by/i.test(d.ref); ok = chave(r, ord) === chave(ultimo, ord); }
+        b.close();
+      } catch (e) { ok = false; }
+      if (ok) { k++; erros = 0; api.ev(cfg.id + ":desafio:" + k); if (k === D.length) api.ev(cfg.id + ":todos"); var box = $("[data-des]", host); desafio(); if (box && d.expl) box.innerHTML = "<b>Correto!</b> " + d.expl + (k < D.length ? "<br>Próximo — <b>Desafio " + (k + 1) + ":</b> " + D[k].p : "<br><b>Todos os desafios concluídos!</b>"); if (box) box.className = "sim-out ok"; }
+      else { erros++; desafio(); }
+    }
+    function executa() {
+      var sql = ED.value.trim(); if (!sql || !db) return; ultSQL = sql;
+      var out = $("[data-res]", host), res;
+      try { res = db.exec(sql); }
+      catch (e) { if (/\bBEGIN\b/i.test(sql)) { try { db.exec("ROLLBACK"); } catch (e2) {} } out.innerHTML = '<div class="sim-out bad"><b>O SGBD recusou o comando' + (/\bBEGIN\b/i.test(sql) ? ' (a transação foi desfeita)' : '') + ':</b> ' + esc(String(e.message || e).replace(/^Error:\s*/, "")) + "</div>"; api.ev(cfg.id + ":erro"); erros++; desafio(); return; }
+      var U2 = sql.toUpperCase();
+      api.ev(cfg.id + ":rodou");
+      [["SELECT", "select"], ["WHERE", "where"], ["ORDER BY", "order"], ["JOIN", "join"], ["GROUP BY", "group"], ["HAVING", "having"], ["INSERT", "insert"], ["UPDATE", "update"], ["DELETE", "delete"], ["CREATE TABLE", "create"], ["ALTER TABLE", "alter"], ["CREATE VIEW", "view"]].forEach(function (x) { if (U2.indexOf(x[0]) >= 0) api.ev(cfg.id + ":" + x[1]); });
+      if (/\b(COUNT|SUM|AVG|MAX|MIN)\s*\(/.test(U2)) api.ev(cfg.id + ":agregou");
+      var r = res.length ? res[res.length - 1] : null;
+      if (r) ultimo = r; else if (/^\s*(SELECT|WITH)\b/i.test(sql.split(";").filter(function (x) { return x.trim(); }).pop() || "")) ultimo = { columns: [], values: [] };
+      out.innerHTML = r ? tabela(r) : ultimo && !ultimo.values.length && ultimo.columns.length === 0 && /^\s*(SELECT|WITH)\b/i.test(sql) ? '<div class="sim-out">A consulta não retornou nenhuma linha.</div>' : '<div class="sim-out ok">Comando executado. ' + db.getRowsModified() + " linha(s) afetada(s).</div>";
+      schema(); confere();
+    }
+    $("[data-run]", host).onclick = executa;
+    ED.addEventListener("keydown", function (e) { if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); executa(); } });
+    $("[data-rst]", host).onclick = function () { if (!SQL) return; if (db) db.close(); db = novo(); ultimo = null; schema(); $("[data-res]", host).innerHTML = '<div class="sim-out">Banco restaurado ao estado inicial.</div>'; };
+    var sb = $("[data-sol]", host); if (sb) sb.onclick = function () { if (k < D.length) { ED.value = D[k].ref; ED.focus(); } };
+    carregaSQL().then(function (S) { SQL = S; db = novo(); schema(); desafio(); }).catch(function () { $("[data-sch]", host).innerHTML = "<b>Não foi possível carregar o SQLite.</b> <small>Abra esta página com internet uma vez e tente de novo.</small>"; });
+  });
 })();

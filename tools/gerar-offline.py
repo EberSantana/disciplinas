@@ -22,7 +22,7 @@ NOMES = {
     "recursos-de-aula": "Recursos de aula",
     "laboratorio-3d": "Laboratório 3D",
 }
-EXTRAS = {"informatica-basica": ["office-visual-img"], "fundamentos-de-sistemas-de-informacao": ["motor-interativo"], "mapas-mentais": ["motor-interativo"], "sistemas-operacionais": ["motor-interativo"], "organizacao-de-computadores": ["motor-interativo"]}  # pastas de imagens usadas por uma disciplina
+EXTRAS = {"banco-de-dados": ["motor-interativo"], "informatica-basica": ["office-visual-img"], "fundamentos-de-sistemas-de-informacao": ["motor-interativo"], "mapas-mentais": ["motor-interativo"], "sistemas-operacionais": ["motor-interativo"], "organizacao-de-computadores": ["motor-interativo"]}  # pastas de imagens usadas por uma disciplina
 CORE = ["index.html", "config.js", "progresso-turma.js", "acessibilidade.js", "aparencia.js", "offline.js",
         "manifest.webmanifest", "offline.html", "offline-manifest.json",
         "icons/icon-192.png", "icons/icon-512.png", "icons/favicon-32.png", "favicon.ico", "busca-index.json", "como-usar.html", "icons/apple-touch-icon.png"]

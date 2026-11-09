@@ -9,7 +9,7 @@
 (function () {
   "use strict";
   var FSI = (window.FSI = { mods: {}, sims: {}, cfg: window.FSI_CFG || { disc: "fsi", nome: "Disciplina" } });
-  FSI.modulo = function (d) { FSI.mods[d.n] = d; };
+  FSI.modulo = function (d) { ["objetivos", "licoes", "visuais", "resumo", "glossario"].forEach(function (k) { if (!d[k]) d[k] = []; }); FSI.mods[d.n] = d; };
   function IDX() { return FSI.cfg.indice || "./"; }
   FSI.sim = function (nome, fn) { FSI.sims[nome] = fn; };
 
@@ -373,6 +373,9 @@
       if (FSI.sims[s.tipo]) { try { FSI.sims[s.tipo]($(".simb", h), s.cfg || {}, api); } catch (err) { $(".simb", h).innerHTML = '<p class="instr">Não foi possível abrir este simulador neste navegador.</p>'; if (window.console) console.error(err); } }
     });
     lista();
+    /* missões ligadas aos diagramas da aba Explorar (vis:id / ord:id) */
+    FSI._checaEx = function () { L.missoes.forEach(function (m) { var mm = /^(vis|ord):(.+)$/.exec(m.ev); if (mm && S.ex && S.ex[mm[2] + (mm[1] === "ord" ? "-ord" : "")]) api.ev(m.ev); }); };
+    FSI._checaEx();
     if (L.guiados && L.guiados.length) montaGuiados($(".guiados", host), L.guiados, S, function () { salvar(); aoMudar(); });
   }
 
@@ -413,12 +416,13 @@
       var det = el("details", { class: "licao" }, '<summary><span class="num">' + (i + 1) + "</span>" + esc(l.t) + '</summary><div class="corpo">' + l.txt + (l.pontos ? "<ul>" + l.pontos.map(function (p) { return "<li>" + p + "</li>"; }).join("") + "</ul>" : "") + (l.pense ? '<div class="pense"><b>Pare e pense:</b> ' + l.pense + "</div>" : "") + "</div>");
       if (i === 0) det.open = true; pe.appendChild(det);
     });
+    if (d.ler && d.ler.length) pe.appendChild(el("div", { class: "card" }, '<h3>Aprofunde nos materiais da disciplina</h3><ul>' + d.ler.map(function (x) { return '<li><a href="' + esc(x[1]) + '">' + esc(x[0]) + "</a></li>"; }).join("") + "</ul>"));
     if (d.termos) pe.appendChild(el("div", { class: "card" }, '<h3>Para anotar no caderno</h3><div class="termos">' + d.termos.map(function (t) { return "<div><b>" + t[0] + "</b><span>" + t[1] + "</span></div>"; }).join("") + "</div>"));
     pe.appendChild(el("div", { class: "proximo" }, "<b>Próximo passo:</b> " + (d.lab ? 'abra o <a href="#explorar" data-ir="explorar">Explorar</a> e depois o <a href="#lab" data-ir="lab">Laboratório</a> para ver o conteúdo funcionando.' : 'abra o <a href="#explorar" data-ir="explorar">Explorar</a> para ver o conteúdo em diagramas.')));
 
     /* Explorar */
     var px = $("#p-explorar"); px.innerHTML = '<h2 class="t">Explorar</h2><p class="lead">Diagramas para clicar, sequências animadas, linhas do tempo e jogos de classificação. Quanto mais você mexe, mais o conceito fica visível.</p>';
-    d.visuais.forEach(function (v) { var hh = el("div", { class: "viz" }); px.appendChild(hh); VIS[v.tipo](v, hh, S, salvar); });
+    d.visuais.forEach(function (v) { var hh = el("div", { class: "viz" }); px.appendChild(hh); VIS[v.tipo](v, hh, S, function () { salvar(); if (FSI._checaEx) FSI._checaEx(); }); });
 
     /* Laboratório */
     if (d.lab) montaLab($("#p-lab"), d, S, salvar, atualizaProg);

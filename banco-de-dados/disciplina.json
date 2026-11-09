@@ -1,0 +1,36 @@
+{
+ "disc": "bd",
+ "nome": "Banco de Dados",
+ "eixo": "Disciplina interativa · INF202 (Subsequente) e TDS203 (Integrado)",
+ "indice": "trilha.html",
+ "descricao": "Do conceito de SGBD ao SQL na prática: modelagem ER e EER, modelo relacional, normalização, integridade, transações e segurança — com um console SQL real no navegador, desafios, missões e exercícios guiados.",
+ "niveis": [
+  "Tupla",
+  "Tabela",
+  "Esquema",
+  "Modelador",
+  "Consultor SQL",
+  "DBA"
+ ],
+ "passo": 400,
+ "analogia": {
+  "titulo": "A biblioteca da escola",
+  "txt": "<p>Pense na biblioteca da escola. Os livros, os alunos e os empréstimos são os <b>dados</b>. As fichas organizadas por autor e por título, que permitem achar qualquer livro em segundos, são o <b>banco de dados</b>. A bibliotecária, que cadastra, empresta, cobra devolução e não deixa ninguém levar livro sem estar matriculado, é o <b>SGBD</b>.</p><p>Nesta disciplina você vai desenhar o modelo dessa biblioteca, transformá-lo em tabelas e conversar com ele em <b>SQL</b> — num banco de verdade, rodando no seu navegador.</p>"
+ },
+ "como": [
+  "Comece cada módulo pela <b>analogia</b> e pelos <b>pontos-chave</b>; depois leia as lições.",
+  "No <b>Laboratório</b>, use o console SQL: o banco é real e você pode errar à vontade — há um botão para restaurá-lo.",
+  "As missões se marcam sozinhas quando você faz a ação; os desafios SQL conferem o resultado da sua consulta.",
+  "Faça os exercícios guiados no caderno antes de digitar.",
+  "Os módulos 9 a 13 aprofundam além da ementa (DW, programação, transações e segurança); o professor pode liberá-los quando quiser.",
+  "Para ler com calma, use a <b>apostila</b> e o <b>console de estudo</b> nos materiais da disciplina."
+ ],
+ "aulas": [
+  "<b>Unidade 1:</b> Módulos 1 e 2 (SGBD, arquitetura e projeto)",
+  "<b>Unidade 2:</b> Módulos 3 e 5 (modelo ER e EER)",
+  "<b>Unidade 3:</b> Módulos 4, 7 e 8 (relacional, normalização e integridade)",
+  "<b>Unidade 4:</b> Módulos 6 e 10 (SQL: DDL, DML, consultas, visões)",
+  "<b>Aprofundamento:</b> Módulos 9, 11, 12 e 13"
+ ],
+ "modulos": 13
+}

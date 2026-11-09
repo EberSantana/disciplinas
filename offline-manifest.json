@@ -226,12 +226,46 @@
   {
    "id": "banco-de-dados",
    "nome": "Banco de Dados",
-   "versao": "b22155ede8",
-   "bytes": 1411049,
+   "versao": "c4b8f509d4",
+   "bytes": 2560366,
    "arquivos": [
     "banco-de-dados/apostila.html",
     "banco-de-dados/console-de-estudo.html",
-    "banco-de-dados/index.html"
+    "banco-de-dados/dados/m1.js",
+    "banco-de-dados/dados/m10.js",
+    "banco-de-dados/dados/m11.js",
+    "banco-de-dados/dados/m12.js",
+    "banco-de-dados/dados/m13.js",
+    "banco-de-dados/dados/m2.js",
+    "banco-de-dados/dados/m3.js",
+    "banco-de-dados/dados/m4.js",
+    "banco-de-dados/dados/m5.js",
+    "banco-de-dados/dados/m6.js",
+    "banco-de-dados/dados/m7.js",
+    "banco-de-dados/dados/m8.js",
+    "banco-de-dados/dados/m9.js",
+    "banco-de-dados/disciplina.json",
+    "banco-de-dados/index.html",
+    "banco-de-dados/modulo-1.html",
+    "banco-de-dados/modulo-10.html",
+    "banco-de-dados/modulo-11.html",
+    "banco-de-dados/modulo-12.html",
+    "banco-de-dados/modulo-13.html",
+    "banco-de-dados/modulo-2.html",
+    "banco-de-dados/modulo-3.html",
+    "banco-de-dados/modulo-4.html",
+    "banco-de-dados/modulo-5.html",
+    "banco-de-dados/modulo-6.html",
+    "banco-de-dados/modulo-7.html",
+    "banco-de-dados/modulo-8.html",
+    "banco-de-dados/modulo-9.html",
+    "banco-de-dados/simulado.html",
+    "banco-de-dados/trilha.html",
+    "motor-interativo/labs.js",
+    "motor-interativo/motor.css",
+    "motor-interativo/motor.js",
+    "motor-interativo/sql/sql-wasm.js",
+    "motor-interativo/sql/sql-wasm.wasm"
    ],
    "externos": [
     "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap",
@@ -241,8 +275,8 @@
   {
    "id": "fundamentos-de-sistemas-de-informacao",
    "nome": "Fundamentos para Sistemas de Informação",
-   "versao": "23c5dfc37e",
-   "bytes": 388356,
+   "versao": "f411a30eda",
+   "bytes": 1102978,
    "arquivos": [
     "fundamentos-de-sistemas-de-informacao/dados/m1.js",
     "fundamentos-de-sistemas-de-informacao/dados/m2.js",
@@ -261,7 +295,9 @@
     "fundamentos-de-sistemas-de-informacao/simulado.html",
     "motor-interativo/labs.js",
     "motor-interativo/motor.css",
-    "motor-interativo/motor.js"
+    "motor-interativo/motor.js",
+    "motor-interativo/sql/sql-wasm.js",
+    "motor-interativo/sql/sql-wasm.wasm"
    ],
    "externos": [
     "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap"
@@ -270,8 +306,8 @@
   {
    "id": "sistemas-operacionais",
    "nome": "Fundamentos de Sistemas Operacionais",
-   "versao": "5fd1ac9396",
-   "bytes": 412638,
+   "versao": "9ab8c23d38",
+   "bytes": 1127260,
    "arquivos": [
     "sistemas-operacionais/dados/m1.js",
     "sistemas-operacionais/dados/m2.js",
@@ -294,7 +330,9 @@
     "sistemas-operacionais/simulado.html",
     "motor-interativo/labs.js",
     "motor-interativo/motor.css",
-    "motor-interativo/motor.js"
+    "motor-interativo/motor.js",
+    "motor-interativo/sql/sql-wasm.js",
+    "motor-interativo/sql/sql-wasm.wasm"
    ],
    "externos": [
     "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap"
@@ -303,8 +341,8 @@
   {
    "id": "organizacao-de-computadores",
    "nome": "Organização de Computadores",
-   "versao": "c25bcd12d7",
-   "bytes": 316043,
+   "versao": "499016c111",
+   "bytes": 1030665,
    "arquivos": [
     "organizacao-de-computadores/dados/m1.js",
     "organizacao-de-computadores/dados/m2.js",
@@ -321,7 +359,9 @@
     "organizacao-de-computadores/simulado.html",
     "motor-interativo/labs.js",
     "motor-interativo/motor.css",
-    "motor-interativo/motor.js"
+    "motor-interativo/motor.js",
+    "motor-interativo/sql/sql-wasm.js",
+    "motor-interativo/sql/sql-wasm.wasm"
    ],
    "externos": [
     "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap"
@@ -330,8 +370,8 @@
   {
    "id": "mapas-mentais",
    "nome": "Mapas Mentais de TI",
-   "versao": "e9ec61e8fe",
-   "bytes": 349186,
+   "versao": "df9fdf6594",
+   "bytes": 1063808,
    "arquivos": [
     "mapas-mentais/dados/m1.js",
     "mapas-mentais/dados/m2.js",
@@ -356,7 +396,9 @@
     "mapas-mentais/simulado.html",
     "motor-interativo/labs.js",
     "motor-interativo/motor.css",
-    "motor-interativo/motor.js"
+    "motor-interativo/motor.js",
+    "motor-interativo/sql/sql-wasm.js",
+    "motor-interativo/sql/sql-wasm.wasm"
    ],
    "externos": [
     "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap"
