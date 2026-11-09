@@ -65,11 +65,29 @@
   {
    "id": "projeto-de-redes",
    "nome": "Projeto de Redes",
-   "versao": "1969912a42",
-   "bytes": 213502,
+   "versao": "f062a4cd00",
+   "bytes": 1248042,
    "arquivos": [
     "projeto-de-redes/atividades.html",
-    "projeto-de-redes/index.html"
+    "projeto-de-redes/dados/m1.js",
+    "projeto-de-redes/dados/m2.js",
+    "projeto-de-redes/dados/m3.js",
+    "projeto-de-redes/dados/m4.js",
+    "projeto-de-redes/dados/m5.js",
+    "projeto-de-redes/disciplina.json",
+    "projeto-de-redes/index.html",
+    "projeto-de-redes/modulo-1.html",
+    "projeto-de-redes/modulo-2.html",
+    "projeto-de-redes/modulo-3.html",
+    "projeto-de-redes/modulo-4.html",
+    "projeto-de-redes/modulo-5.html",
+    "projeto-de-redes/simulado.html",
+    "projeto-de-redes/trilha.html",
+    "motor-interativo/labs.js",
+    "motor-interativo/motor.css",
+    "motor-interativo/motor.js",
+    "motor-interativo/sql/sql-wasm.js",
+    "motor-interativo/sql/sql-wasm.wasm"
    ],
    "externos": [
     "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap",

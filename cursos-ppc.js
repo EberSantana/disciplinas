@@ -18,7 +18,7 @@ window.PPC = {
     "topicos-especiais-1": { nome: "Tópicos Especiais I", st: "breve" },
     "projeto-integrador": { nome: "Projeto Integrador", st: "breve" },
     "redes-de-computadores": { nome: "Redes de Computadores", st: "int" },
-    "projeto-de-redes": { nome: "Projeto de Redes", st: "mat" },
+    "projeto-de-redes": { nome: "Projeto de Redes", st: "int" },
     "seguranca-da-informacao": { nome: "Segurança da Informação", st: "int" },
     "topicos-especiais-2": { nome: "Tópicos Especiais II", st: "breve" },
     "topicos-especiais-tds": { nome: "Tópicos Especiais (TDS)", st: "breve" }

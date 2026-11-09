@@ -1,0 +1,34 @@
+{
+ "disc": "prd",
+ "nome": "Projeto de Redes",
+ "eixo": "Disciplina interativa · complementa INF402 e TDS301",
+ "indice": "trilha.html",
+ "descricao": "Metodologia Top-Down do começo ao fim: metas e requisitos, rede lógica, rede física, rede sem fio, testes e documentação — com o técnico Leo em projetos reais, laboratórios de decisão, cálculos de disponibilidade e banda, missões e exercícios guiados.",
+ "niveis": [
+  "Estagiário",
+  "Técnico",
+  "Projetista",
+  "Consultor",
+  "Arquiteto",
+  "Gerente de infraestrutura"
+ ],
+ "passo": 400,
+ "analogia": {
+  "titulo": "Arquiteto antes do pedreiro",
+  "txt": "<p>Um bom arquiteto não começa escolhendo o tijolo: pergunta como a família vive, quantas pessoas são, o orçamento e o prazo. Só depois desenha a planta e escolhe o material. Projetar uma rede pela metodologia <b>Top-Down</b> é igual: primeiro as <b>metas do negócio</b>, depois o <b>projeto lógico</b>, depois o <b>físico</b>, e por fim <b>testar e documentar</b>.</p><p>Você vai acompanhar Leo, um técnico recém-formado, e suas mentoras Clara e Ana em projetos reais.</p>"
+ },
+ "como": [
+  "Comece cada módulo pela <b>analogia</b> e pelos <b>pontos-chave</b>.",
+  "No <b>Laboratório</b>, tome as decisões de projeto e faça os cálculos.",
+  "Nos PBL, faça o projeto no caderno antes de ver a resposta-modelo.",
+  "Use as atividades com ranking nos materiais da disciplina para revisar."
+ ],
+ "aulas": [
+  "<b>Capítulo 1:</b> Módulo 1 (Top-Down, metas, desempenho e tráfego)",
+  "<b>Capítulo 2:</b> Módulo 2 (rede lógica)",
+  "<b>Capítulo 3:</b> Módulo 3 (rede física, LAN e WAN)",
+  "<b>Capítulo 4:</b> Módulo 4 (rede sem fio)",
+  "<b>Capítulo 5:</b> Módulo 5 (testes e documentação) + simulado"
+ ],
+ "modulos": 5
+}
