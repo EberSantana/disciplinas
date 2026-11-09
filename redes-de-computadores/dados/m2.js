@@ -57,6 +57,10 @@ FSI.modulo({
  ],
  "ler": [
   [
+   "Protocol Explorer: DNS, HTTP e TLS passo a passo (em inglês)",
+   "https://protocol-explorer-alpha.vercel.app/"
+  ],
+  [
    "Console de estudo de Redes",
    "console-de-estudo.html"
   ],

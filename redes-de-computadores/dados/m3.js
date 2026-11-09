@@ -53,6 +53,10 @@ FSI.modulo({
  ],
  "ler": [
   [
+   "Protocol Explorer: TCP e TLS byte a byte (em inglês)",
+   "https://protocol-explorer-alpha.vercel.app/"
+  ],
+  [
    "Console de estudo de Redes",
    "console-de-estudo.html"
   ],
