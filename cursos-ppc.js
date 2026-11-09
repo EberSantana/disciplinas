@@ -13,7 +13,7 @@ window.PPC = {
     "banco-de-dados": { nome: "Banco de Dados", st: "int" },
     "construcao-de-sites-1": { nome: "Construção de Sites 1", st: "int" },
     "programacao-web": { nome: "Programação Web (back-end)", st: "breve" },
-    "engenharia-de-software": { nome: "Engenharia de Software", st: "mat" },
+    "engenharia-de-software": { nome: "Engenharia de Software", st: "int" },
     "construcao-de-sites-2": { nome: "Construção de Sites 2", st: "breve" },
     "topicos-especiais-1": { nome: "Tópicos Especiais I", st: "breve" },
     "projeto-integrador": { nome: "Projeto Integrador", st: "breve" },

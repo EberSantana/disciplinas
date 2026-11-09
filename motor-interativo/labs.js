@@ -929,4 +929,35 @@
     $("[data-rst]", host).onclick = function () { ED.value = cfg.codigo || ""; render(); };
     render(); des();
   });
+
+  /* ===================== Engenharia de Software ===================== */
+  /* Git simulado: init, status, add, commit, log, branch, checkout/switch, merge. Arquivos fictícios são editados com "editar <arquivo>". */
+  FSI.sim("git", function (host, cfg, api) {
+    var G = null, files = { "index.html": 1, "estilo.css": 1, "README.md": 1 }, mod = { "index.html": 1, "estilo.css": 1, "README.md": 1 }, stage = {};
+    host.innerHTML = '<div class="term" role="log" aria-live="polite" data-o></div><div class="term-in"><span>~/projeto$</span><input type="text" data-cin spellcheck="false" autocomplete="off" aria-label="Comando git"></div><p class="instr">Comandos: <code>git init</code>, <code>git status</code>, <code>git add &lt;arquivo&gt;</code> ou <code>git add .</code>, <code>git commit -m "mensagem"</code>, <code>git log</code>, <code>git branch</code>, <code>git checkout -b &lt;nome&gt;</code>, <code>git switch &lt;nome&gt;</code>, <code>git merge &lt;nome&gt;</code>, <code>editar &lt;arquivo&gt;</code>, <code>ls</code>, <code>clear</code>.</p>';
+    var O = $("[data-o]", host), I = $("[data-cin]", host), seq = 0;
+    function p(t, cl) { O.insertAdjacentHTML("beforeend", '<div class="' + (cl || "") + '">' + esc(t).replace(/\n/g, "<br>") + "</div>"); O.scrollTop = O.scrollHeight; }
+    function hash() { seq++; return ((seq * 2654435761) >>> 0).toString(16).slice(0, 7); }
+    function exec(c) {
+      var a = c.trim(), m; p("~/projeto$ " + a, "pr"); if (!a) return;
+      if (a === "clear") { O.innerHTML = ""; return; }
+      if (a === "ls") { p(Object.keys(files).join("  ")); return; }
+      if ((m = /^editar\s+(\S+)$/.exec(a))) { files[m[1]] = 1; mod[m[1]] = 1; p("(arquivo " + m[1] + " modificado)"); api.ev(cfg.id + ":editou"); return; }
+      if (!/^git\b/.test(a)) { p(a.split(" ")[0] + ": comando não encontrado", "er"); return; }
+      if (a === "git init") { if (G) { p("Repositório já existe."); return; } G = { br: "main", brs: { main: [] } }; p("Repositório Git vazio criado em ~/projeto/.git/"); api.ev(cfg.id + ":init"); return; }
+      if (!G) { p("fatal: não é um repositório git (rode git init)", "er"); return; }
+      if (a === "git status") { var st = Object.keys(stage), md = Object.keys(mod).filter(function (f) { return !stage[f]; }); p("No ramo " + G.br + (st.length ? "\nMudanças para o commit:\n" + st.map(function (f) { return "    " + f; }).join("\n") : "") + (md.length ? "\nArquivos modificados/não rastreados:\n" + md.map(function (f) { return "    " + f; }).join("\n") + "\n(use git add para incluir no commit)" : "") + (!st.length && !md.length ? "\nnada para commitar, árvore limpa" : "")); api.ev(cfg.id + ":status"); return; }
+      if ((m = /^git add\s+(.+)$/.exec(a))) { var alvo = m[1].trim(); if (alvo === "." || alvo === "-A") Object.keys(mod).forEach(function (f) { stage[f] = 1; }); else if (files[alvo]) stage[alvo] = 1; else { p("fatal: caminho '" + alvo + "' não existe", "er"); return; } api.ev(cfg.id + ":add"); return; }
+      if ((m = /^git commit\s+-m\s+["'](.+)["']$/.exec(a))) { var st2 = Object.keys(stage); if (!st2.length) { p("nada adicionado ao commit (use git add)", "er"); return; } var h = hash(); G.brs[G.br].push({ h: h, msg: m[1], arqs: st2 }); st2.forEach(function (f) { delete mod[f]; }); stage = {}; p("[" + G.br + " " + h + "] " + m[1] + "\n " + st2.length + " arquivo(s) alterado(s)", "ok"); api.ev(cfg.id + ":commit"); api.ev(cfg.id + ":commits:" + G.brs[G.br].length); if (G.br !== "main") api.ev(cfg.id + ":commit-ramo"); return; }
+      if (/^git commit/.test(a)) { p('use: git commit -m "mensagem que explica a mudança"', "er"); return; }
+      if (a === "git log" || a === "git log --oneline") { var l = G.brs[G.br]; p(l.length ? l.slice().reverse().map(function (x) { return x.h + " " + x.msg; }).join("\n") : "nenhum commit ainda"); api.ev(cfg.id + ":log"); return; }
+      if (a === "git branch") { p(Object.keys(G.brs).map(function (b) { return (b === G.br ? "* " : "  ") + b; }).join("\n")); return; }
+      if ((m = /^git (?:checkout -b|switch -c|branch)\s+(\S+)$/.exec(a))) { if (G.brs[m[1]]) { p("fatal: o ramo '" + m[1] + "' já existe", "er"); return; } G.brs[m[1]] = G.brs[G.br].slice(); if (!/^git branch/.test(a)) G.br = m[1]; p((/^git branch/.test(a) ? "Ramo criado: " : "Mudou para o novo ramo '") + m[1] + (/^git branch/.test(a) ? "" : "'")); api.ev(cfg.id + ":branch"); return; }
+      if ((m = /^git (?:checkout|switch)\s+(\S+)$/.exec(a))) { if (!G.brs[m[1]]) { p("erro: ramo '" + m[1] + "' não existe", "er"); return; } G.br = m[1]; p("Mudou para o ramo '" + m[1] + "'"); api.ev(cfg.id + ":switch"); return; }
+      if ((m = /^git merge\s+(\S+)$/.exec(a))) { var o = G.brs[m[1]]; if (!o || m[1] === G.br) { p("erro: ramo inválido para merge", "er"); return; } var cur = G.brs[G.br], novos = o.filter(function (x) { return !cur.some(function (y) { return y.h === x.h; }); }); if (!novos.length) { p("Já está atualizado."); return; } G.brs[G.br] = cur.concat(novos); p("Atualizando…\nFast-forward: " + novos.length + " commit(s) de " + m[1] + " trazidos para " + G.br, "ok"); api.ev(cfg.id + ":merge"); return; }
+      p("git: comando não reconhecido neste simulador", "er");
+    }
+    I.addEventListener("keydown", function (e) { if (e.key === "Enter") { exec(I.value); I.value = ""; } });
+    p("Pasta ~/projeto com index.html, estilo.css e README.md. Comece com git init.");
+  });
 })();

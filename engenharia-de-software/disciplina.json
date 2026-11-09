@@ -1,0 +1,33 @@
+{
+ "disc": "es",
+ "nome": "Engenharia de Software",
+ "eixo": "Disciplina interativa · INF302 (Subsequente) e TDS203 (Integrado)",
+ "indice": "trilha.html",
+ "descricao": "O que é engenharia de software, processos (cascata, incremental, espiral e ágil com Scrum), engenharia de requisitos, UML (casos de uso, classes e sequência), testes, documentação e versionamento com Git — com simulador de Git, quadro Scrum, jogos de requisitos, missões e exercícios guiados.",
+ "niveis": [
+  "Estagiário",
+  "Programador",
+  "Analista",
+  "Scrum Master",
+  "Arquiteto",
+  "Engenheiro de software"
+ ],
+ "passo": 400,
+ "analogia": {
+  "titulo": "Construir uma ponte, não um banquinho",
+  "txt": "<p>Um banquinho você faz no fim de semana, sem planta. Uma ponte não: precisa entender quem vai passar por ela, desenhar o projeto, construir em etapas, testar e manter por décadas. <b>Engenharia de software</b> é isso para programas: processo, requisitos, modelagem, testes e evolução, para que o sistema funcione, caiba no prazo e no orçamento e possa ser mantido por outras pessoas.</p><p>Nesta disciplina você vai versionar um projeto no Git, conduzir uma sprint, separar requisitos funcionais de não funcionais e ler diagramas UML.</p>"
+ },
+ "como": [
+  "Comece cada módulo pela <b>analogia</b> e pelos <b>pontos-chave</b>.",
+  "No <b>Laboratório</b>, use o simulador de Git e resolva os jogos: as missões se marcam sozinhas.",
+  "Os PBL usam o projeto RápidoJá e situações reais de equipes.",
+  "As três apostilas, o dicionário de dados e o roteiro de atividade estão nos materiais da disciplina."
+ ],
+ "aulas": [
+  "<b>Unidade 1:</b> Módulos 1 e 2 (software, processos, ágil e Scrum)",
+  "<b>Unidade 2:</b> Módulo 3 (engenharia de requisitos)",
+  "<b>Unidade 3:</b> Módulos 4 e 5 (UML: casos de uso, classes e sequência)",
+  "<b>Unidade 4:</b> Módulo 6 (CASE, testes, documentação e Git) + simulado"
+ ],
+ "modulos": 6
+}
