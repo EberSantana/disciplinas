@@ -549,4 +549,85 @@
     linha("Terminal do laboratório (simulado). Nada aqui afeta o seu computador.\nDigite <b>help</b> para começar.".replace(/<b>|<\/b>/g, ""));
     prompt();
   });
+
+  /* ===================== Organização de Computadores ===================== */
+  /* Bases numéricas: liga e desliga bits e vê o número em decimal, binário, octal e hexadecimal. */
+  FSI.sim("bases", function (host, cfg, api) {
+    var NB = cfg.bits || 8, MAX = Math.pow(2, NB) - 1, v = 0, ia = 0, A = cfg.alvos || [], tocou = false;
+    function fmt(x, b) { var t = x.toString(b).toUpperCase(); return b === 2 ? ("00000000" + t).slice(-NB).replace(/(\d{4})(?=\d)/g, "$1 ") : t; }
+    function alvoTxt(a) { return a.como === "hex" ? "0x" + a.v.toString(16).toUpperCase() + " (hexadecimal)" : a.como === "oct" ? a.v.toString(8) + " (octal)" : a.como === "bin" ? fmt(a.v, 2) + " (binário)" : a.v + " (decimal)"; }
+    host.innerHTML = '<p class="instr">Cada botão é um bit. Toque para ligar (1) ou desligar (0). O valor de cada posição é uma potência de 2.</p><div class="bits" data-bits></div>' +
+      '<div class="bases-out" aria-live="polite"><div><small>Decimal</small><b data-d></b></div><div><small>Binário</small><b data-b></b></div><div><small>Octal</small><b data-o></b></div><div><small>Hexadecimal</small><b data-h></b></div></div>' +
+      '<div class="sim-bar"><label>Ou digite um decimal (0 a ' + MAX + ') <input type="number" min="0" max="' + MAX + '" data-in style="width:110px"></label><button class="btn sec" type="button" data-zero>Zerar</button></div>' +
+      (A.length ? '<div class="sim-out" data-alvo></div>' : "");
+    var B = $("[data-bits]", host);
+    for (var i = NB - 1; i >= 0; i--) (function (i) {
+      var p = Math.pow(2, i), b = el("button", { type: "button", class: "bit", "aria-pressed": "false", "aria-label": "Bit de valor " + p }, '<span>0</span><small>' + p + "</small>");
+      b.onclick = function () { v ^= p; if (!tocou) { tocou = true; api.ev(cfg.id + ":bit"); } desenha(); };
+      B.appendChild(b);
+    })(i);
+    function desenha() {
+      $$(".bit", host).forEach(function (b, k) { var on = (v >> (NB - 1 - k)) & 1; b.setAttribute("aria-pressed", on ? "true" : "false"); b.classList.toggle("on", !!on); $("span", b).textContent = on; });
+      $("[data-d]", host).textContent = v; $("[data-b]", host).textContent = fmt(v, 2); $("[data-o]", host).textContent = fmt(v, 8); $("[data-h]", host).textContent = fmt(v, 16);
+      var box = $("[data-alvo]", host); if (!box) return;
+      if (ia < A.length && v === A[ia].v) { ia++; api.ev(cfg.id + ":alvo:" + ia); if (ia === A.length) api.ev(cfg.id + ":todos"); box.className = "sim-out ok"; box.innerHTML = "<b>Acertou!</b> " + (A[ia - 1].expl || "") + (ia < A.length ? "<br>Próximo desafio: monte <b>" + alvoTxt(A[ia]) + "</b>." : "<br><b>Todos os desafios concluídos.</b>"); return; }
+      if (ia < A.length && box.className.indexOf("ok") < 0) { box.className = "sim-out"; box.innerHTML = "Desafio " + (ia + 1) + " de " + A.length + ": monte <b>" + alvoTxt(A[ia]) + "</b> ligando os bits." + (A[ia].dica ? " <i>Dica: " + A[ia].dica + "</i>" : ""); }
+      else if (ia < A.length) box.className = "sim-out";
+    }
+    var IN = $("[data-in]", host);
+    IN.onchange = function () { var x = Math.round(num(IN.value, 0)); v = Math.max(0, Math.min(MAX, x)); api.ev(cfg.id + ":digitou"); desenha(); };
+    $("[data-zero]", host).onclick = function () { v = 0; desenha(); };
+    desenha();
+  });
+
+  /* CPU de Von Neumann simplificada: busca, decodificação e execução, fase por fase. */
+  FSI.sim("cpu", function (host, cfg, api) {
+    var P = cfg.programas, pi = 0, M, PC, IR, ACC, fase, fim, saida, ciclos, editou = false, dest = -1;
+    var INFO = { LOAD: "ACC ← memória[x]", ADD: "ACC ← ACC + memória[x]", SUB: "ACC ← ACC − memória[x]", STORE: "memória[x] ← ACC", JMP: "PC ← x (desvio)", JZ: "se ACC = 0, PC ← x", OUT: "mostra o ACC na saída", HALT: "para a execução" };
+    host.innerHTML = '<div class="sim-bar"><label>Programa <select data-p>' + P.map(function (p, i) { return '<option value="' + i + '">' + esc(p.nome) + "</option>"; }).join("") + '</select></label></div><p class="instr" data-desc></p>' +
+      '<div class="cpu"><div class="cpu-regs"><h4>CPU</h4><div><small>PC · contador de programa</small><b data-pc></b></div><div><small>IR · registrador de instrução</small><b data-ir></b></div><div><small>ACC · acumulador (ULA)</small><b data-acc></b></div><div><small>Próxima fase</small><b data-f></b></div><div><small>Saída</small><b data-out></b></div></div>' +
+      '<div class="tbl-wrap"><table class="tbl cpu-mem"><thead><tr><th class="num">End.</th><th>Conteúdo da memória</th></tr></thead><tbody data-m></tbody></table></div></div>' +
+      '<div class="row"><button class="btn" type="button" data-fase>Próxima fase</button><button class="btn sec" type="button" data-inst>Instrução inteira</button><button class="btn sec" type="button" data-tudo>Executar até o fim</button><button class="btn sec" type="button" data-rei>Reiniciar</button></div><div class="sim-out" aria-live="polite" data-log></div>';
+    function carrega() { var p = P[pi]; M = p.mem.slice(); PC = 0; IR = "—"; ACC = 0; fase = 0; fim = false; saida = []; ciclos = 0; dest = -1; $("[data-desc]", host).innerHTML = p.desc; log("Programa carregado na memória. Clique em <b>Próxima fase</b> para ver o ciclo de instrução."); desenha(); }
+    function log(h, cl) { var o = $("[data-log]", host); o.className = "sim-out " + (cl || ""); o.innerHTML = h; }
+    function dec(ins) { var m = /^([A-Z]+)\s*(\d+)?$/.exec(String(ins).trim()); return m ? { op: m[1], x: m[2] != null ? +m[2] : null } : null; }
+    function desenha() {
+      $("[data-pc]", host).textContent = PC; $("[data-ir]", host).textContent = IR; $("[data-acc]", host).textContent = ACC;
+      $("[data-f]", host).textContent = fim ? "fim" : ["1 · busca", "2 · decodificação", "3 · execução"][fase]; $("[data-out]", host).textContent = saida.length ? saida.join(", ") : "—";
+      $("[data-m]", host).innerHTML = M.map(function (c, k) {
+        var ehDado = typeof c === "number";
+        return '<tr class="' + (k === PC && !fim ? "pc" : "") + (k === dest ? " dst" : "") + '"><td class="num">' + k + "</td><td>" + (ehDado ? '<input type="number" data-c="' + k + '" value="' + c + '" aria-label="Dado no endereço ' + k + '" style="width:90px">' : esc(c) + (dec(c) && INFO[dec(c).op] ? ' <small style="color:var(--muted)">· ' + esc(INFO[dec(c).op]).replace("x", dec(c).x != null ? dec(c).x : "") + "</small>" : "")) + "</td></tr>";
+      }).join("");
+      $$("[data-c]", host).forEach(function (inp) { inp.onchange = function () { M[+inp.getAttribute("data-c")] = Math.round(num(inp.value, 0)); if (!editou) { editou = true; api.ev(cfg.id + ":editou"); } }; });
+      ["fase", "inst", "tudo"].forEach(function (k) { $("[data-" + k + "]", host).disabled = fim; });
+    }
+    function umaFase() {
+      if (fim) return;
+      dest = -1;
+      if (fase === 0) { IR = M[PC]; log("<b>Busca:</b> a UC coloca o endereço <b>" + PC + "</b> no barramento de endereços; a memória devolve <b>" + esc(IR) + "</b> pelo barramento de dados e ela vai para o IR. O PC avança para " + (PC + 1) + "."); PC++; fase = 1; api.ev(cfg.id + ":busca"); }
+      else if (fase === 1) { var d = dec(IR); if (!d || !INFO[d.op]) { fim = true; log("<b>Erro:</b> “" + esc(IR) + "” não é uma instrução válida. Um dado foi lido como instrução — faltou um HALT?", "bad"); desenha(); return; } log("<b>Decodificação:</b> a unidade de controle interpreta <b>" + esc(IR) + "</b>: " + esc(INFO[d.op]).replace("x", d.x != null ? d.x : "") + "."); fase = 2; }
+      else {
+        var d2 = dec(IR), x = d2.x, msg = "";
+        if (d2.op === "LOAD") { ACC = +M[x] || 0; dest = x; msg = "ACC recebe " + ACC + " (lido do endereço " + x + ")."; }
+        else if (d2.op === "ADD") { ACC += +M[x] || 0; dest = x; msg = "A ULA soma: ACC agora vale " + ACC + "."; }
+        else if (d2.op === "SUB") { ACC -= +M[x] || 0; dest = x; msg = "A ULA subtrai: ACC agora vale " + ACC + "."; }
+        else if (d2.op === "STORE") { M[x] = ACC; dest = x; msg = "O valor " + ACC + " é gravado no endereço " + x + "."; }
+        else if (d2.op === "JMP") { PC = x; msg = "O PC passa a " + x + ": a próxima busca será lá."; }
+        else if (d2.op === "JZ") { if (ACC === 0) { PC = x; msg = "ACC = 0, então o PC vai para " + x + "."; } else msg = "ACC ≠ 0: segue em frente, sem desviar."; }
+        else if (d2.op === "OUT") { saida.push(ACC); msg = "Saída: " + ACC + "."; api.ev(cfg.id + ":out"); }
+        else if (d2.op === "HALT") { fim = true; msg = "Fim do programa."; }
+        ciclos++; fase = 0; log("<b>Execução:</b> " + msg + (fim ? " " + (P[pi].fim || "") : ""), fim ? "ok" : "");
+        if (ciclos === 1) api.ev(cfg.id + ":ciclo");
+        if (fim) { api.ev(cfg.id + ":fim:" + P[pi].id); if (editou) api.ev(cfg.id + ":editou-fim"); }
+        if (ciclos > 300 && !fim) { fim = true; log("Parei depois de 300 instruções: parece um laço infinito.", "bad"); }
+      }
+      desenha();
+    }
+    $("[data-fase]", host).onclick = umaFase;
+    $("[data-inst]", host).onclick = function () { do umaFase(); while (fase !== 0 && !fim); };
+    $("[data-tudo]", host).onclick = function () { var g = 0; while (!fim && g++ < 1000) umaFase(); };
+    $("[data-rei]", host).onclick = carrega;
+    $("[data-p]", host).onchange = function () { pi = +this.value; editou = false; carrega(); };
+    carrega();
+  });
 })();

@@ -1,0 +1,35 @@
+{
+ "disc": "orgc",
+ "nome": "Organização de Computadores",
+ "eixo": "Disciplina interativa · INF102 (Subsequente) e TDS103 (Integrado)",
+ "descricao": "Bases numéricas, arquitetura de Von Neumann, uma CPU simulada passo a passo, hierarquia de memória, E/S, barramentos, montagem e a inicialização do computador — com laboratórios, missões e exercícios guiados.",
+ "modulos": 5,
+ "niveis": [
+  "Bit",
+  "Byte",
+  "Registrador",
+  "Barramento",
+  "Placa-mãe",
+  "Arquiteto"
+ ],
+ "passo": 300,
+ "analogia": {
+  "titulo": "Uma cidade dentro da caixa",
+  "txt": "<p>Por dentro, o computador funciona como uma cidade organizada. A <b>CPU</b> é a prefeitura, que decide e calcula; a <b>memória</b> é o arquivo, com gavetas numeradas; os <b>dispositivos de entrada e saída</b> são as portas por onde entram pedidos e saem respostas; os <b>barramentos</b> são as estradas que ligam tudo. E todos falam a mesma língua: <b>zeros e uns</b>.</p><p>Nesta disciplina você vai ligar bits com as próprias mãos, executar um programa dentro de uma CPU simulada, ver a cache acertando e errando, montar um computador na ordem certa e acompanhar a partida do sistema, do botão liga à tela de login.</p>"
+ },
+ "como": [
+  "Comece cada módulo pela <b>analogia</b> e pelos <b>pontos-chave</b>; depois leia as lições.",
+  "No <b>Explorar</b>, clique nos diagramas e resolva os jogos de classificar e ordenar.",
+  "No <b>Laboratório</b>, cumpra as missões: elas se marcam sozinhas quando você faz a ação.",
+  "Faça os <b>exercícios guiados</b> no caderno antes de digitar a resposta; ela só aparece depois de duas tentativas.",
+  "Nos verdadeiro ou falso, escreva a justificativa antes de conferir.",
+  "Feche com o desafio relâmpago e o simulado final."
+ ],
+ "aulas": [
+  "<b>Semanas 1–2:</b> Módulo 1 (história e sistemas de numeração)",
+  "<b>Semanas 3–5:</b> Módulo 2 (Von Neumann e a CPU simulada)",
+  "<b>Semanas 6–7:</b> Módulo 3 (hierarquia de memória e cache)",
+  "<b>Semanas 8–9:</b> Módulo 4 (E/S, barramentos e montagem)",
+  "<b>Semana 10:</b> Módulo 5 (inicialização e ponte para Sistemas Operacionais) + simulado"
+ ]
+}

@@ -15,18 +15,32 @@
  */
 (function () {
   // O nome do curso aqui precisa ser igual \u00e0 coluna "curso" da aba Turmas da planilha.
+  /* Disciplinas por curso conforme os PPCs (veja cursos-ppc.js). Ao publicar uma disciplina nova, inclua a pasta aqui. */
   var CURSOS = [
     { nome: "Subsequente em Inform\u00e1tica", disciplinas: [
-      ["Inform\u00e1tica B\u00e1sica", "informatica-basica"],
-      ["Engenharia de Software", "engenharia-de-software"],
-      ["Fundamentos para Sistemas de Informa\u00e7\u00e3o", "fundamentos-de-sistemas-de-informacao"],
+      ["Organiza\u00e7\u00e3o de Computadores", "organizacao-de-computadores"],
       ["Fundamentos de Sistemas Operacionais", "sistemas-operacionais"],
+      ["Inform\u00e1tica B\u00e1sica", "informatica-basica"],
+      ["Banco de Dados", "banco-de-dados"],
+      ["Constru\u00e7\u00e3o de Sites 1", "construcao-de-sites-1"],
+      ["Engenharia de Software", "engenharia-de-software"],
+      ["Redes de Computadores", "redes-de-computadores"],
+      ["Projeto de Redes", "projeto-de-redes"],
+      ["Seguran\u00e7a da Informa\u00e7\u00e3o", "seguranca-da-informacao"],
+      ["Fundamentos para Sistemas de Informa\u00e7\u00e3o", "fundamentos-de-sistemas-de-informacao"],
       ["Mapas Mentais de TI", "mapas-mentais"] ] },
     { nome: "Integrado em Desenvolvimento de Sistemas \u00b7 1\u00ba ano", disciplinas: [
-      ["Constru\u00e7\u00e3o de Sites 1", "construcao-de-sites-1"] ] },
+      ["Constru\u00e7\u00e3o de Sites 1", "construcao-de-sites-1"],
+      ["Organiza\u00e7\u00e3o de Computadores", "organizacao-de-computadores"],
+      ["Fundamentos de Sistemas Operacionais", "sistemas-operacionais"],
+      ["Inform\u00e1tica B\u00e1sica", "informatica-basica"] ] },
     { nome: "Integrado em Desenvolvimento de Sistemas \u00b7 2\u00ba ano", disciplinas: [
       ["Banco de Dados", "banco-de-dados"],
       ["Engenharia de Software", "engenharia-de-software"] ] },
+    { nome: "Integrado em Desenvolvimento de Sistemas \u00b7 3\u00ba ano", disciplinas: [
+      ["Redes de Computadores", "redes-de-computadores"],
+      ["Seguran\u00e7a da Informa\u00e7\u00e3o", "seguranca-da-informacao"],
+      ["Projeto de Redes", "projeto-de-redes"] ] },
     { nome: "T\u00e9cnico em Inform\u00e1tica", disciplinas: [
       ["Redes de Computadores", "redes-de-computadores"],
       ["Projeto de Redes", "projeto-de-redes"],

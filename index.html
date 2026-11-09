@@ -50,6 +50,26 @@ footer{color:var(--muted);font-size:14px;margin-top:32px}
 .busca-res a{display:block;padding:10px 14px;text-decoration:none;color:inherit}.busca-res a:hover,.busca-res a:focus-visible{background:var(--soft,rgba(31,81,53,.08))}
 .busca-res b{display:block}.busca-res small{color:var(--ink-2)}
 .busca-vazio{padding:10px 14px;color:var(--ink-2)}
+.pc-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+.pc-tabs button{min-height:44px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--ink);font:600 15px/1.2 "Source Sans 3","Segoe UI",system-ui,sans-serif;cursor:pointer}
+.pc-tabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent,#fff)}
+@media (prefers-color-scheme:dark){.pc-tabs button[aria-selected="true"]{--on-accent:#0B140E}}
+.pc-tabs button:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
+.pc-tabs[hidden]{display:none}
+.pc-ato{margin:4px 0 14px;color:var(--ink-2);font-size:15px}
+.pc-leg{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 10px;font-size:14px;color:var(--ink-2)}
+.pc-per{font:700 13px/1.3 "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:22px 0 10px}
+.pc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.pc-c{display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.pc-c h3{margin:0;font:700 22px/1.15 "Barlow Condensed","Arial Narrow",sans-serif;text-wrap:balance}
+.pc-c p{margin:0;color:var(--ink-2);font-size:15px}
+.pc-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:6px}
+.pc-l{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border-radius:8px;border:1px solid var(--accent);color:var(--accent);font-weight:600;font-size:14.5px;text-decoration:none}
+a.pc-l:hover{background:rgba(31,81,53,.08)}
+a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
+.pc-l.breve{border-style:dashed;border-color:var(--line);color:var(--muted);font-weight:400}
+.pc-st{display:inline-block;width:9px;height:9px;border-radius:50%;flex:none}
+.pc-st.int{background:var(--accent)}.pc-st.mat{background:#B7791F}.pc-st.breve{background:transparent;border:2px solid var(--muted)}
 .entrar[hidden],section[hidden]{display:none}
 .entrar p{margin:0;color:var(--ink-2)}
 .entrar button{border:0;border-radius:8px;background:var(--accent);color:#fff;font:600 15px/1 "Source Sans 3","Segoe UI",system-ui,sans-serif;padding:11px 18px;cursor:pointer;transition:background .15s ease}
@@ -100,6 +120,13 @@ footer{color:var(--muted);font-size:14px;margin-top:32px}
     <p>Explore o mundo das disciplinas em trilhas, cumpra missões e acompanhe a sua evolução.</p>
     <span class="go" aria-hidden="true">Explorar →</span>
   </a>
+  <section id="por-curso" aria-labelledby="pc-titulo">
+    <h2 class="sec" id="pc-titulo">Disciplinas por curso</h2>
+    <div class="pc-tabs" role="tablist" aria-label="Cursos" id="pc-tabs"></div>
+    <p class="pc-ato" id="pc-ato"></p>
+    <p class="pc-leg"><span><i class="pc-st int"></i> Interativa (pontos, laboratórios e missões)</span><span><i class="pc-st mat"></i> Materiais (apostila e laboratórios)</span><span><i class="pc-st breve"></i> Em produção</span></p>
+    <div id="pc-corpo" role="tabpanel" aria-labelledby="pc-titulo"></div>
+  </section>
   <h2 class="sec" id="todas-titulo">Disciplinas</h2>
   <div class="grid" id="todas-grid">
     <a class="card" href="redes-de-computadores/" aria-label="Abrir Redes de Computadores">
@@ -156,6 +183,12 @@ footer{color:var(--muted);font-size:14px;margin-top:32px}
       <p>Laboratórios com missões: monte o sistema de uma pizzaria, analise vendas, defenda uma livraria, gerencie um projeto e proteja uma clínica.</p>
       <span class="go" aria-hidden="true">Abrir<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
     </a>
+    <a class="card" href="organizacao-de-computadores/" aria-label="Abrir Organização de Computadores">
+      <span class="meta">Informática · 5 módulos interativos · ~200 atividades</span>
+      <h2>Organização de Computadores</h2>
+      <p>Bases numéricas, Von Neumann, uma CPU simulada passo a passo, hierarquia de memória, montagem e manutenção.</p>
+      <span class="go" aria-hidden="true">Abrir<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a>
     <a class="card" href="sistemas-operacionais/" aria-label="Abrir Fundamentos de Sistemas Operacionais">
       <span class="meta">Informática · 8 módulos interativos · ~320 atividades</span>
       <h2>Fundamentos de Sistemas Operacionais</h2>
@@ -197,7 +230,7 @@ footer{color:var(--muted);font-size:14px;margin-top:32px}
     if (p) P.cursos.forEach(function (c) { if (c.nome === p.curso) curso = c; });
     cards.forEach(function (a) { todas.appendChild(a); });
     todas.style.display = ""; document.getElementById("todas-titulo").style.display = "";
-    if (!curso) { meu.hidden = true; aviso.hidden = false; document.getElementById("todas-titulo").textContent = "Disciplinas"; return; }
+    if (!curso) { meu.hidden = true; aviso.hidden = false; document.getElementById("todas-titulo").textContent = "Todas as disciplinas (A–Z)"; return; }
     var minhas = (P.minhas() || curso.disciplinas).map(function (d) { return d[1]; });
     minhas.forEach(function (f) { cards.forEach(function (a) { if (pasta(a) === f) meuGrid.appendChild(a); }); });
     document.getElementById("meu-curso-titulo").textContent = curso.nome + " · " + p.turma + " · " + p.turno;
@@ -249,6 +282,46 @@ footer{color:var(--muted);font-size:14px;margin-top:32px}
   document.getElementById("busca-q").addEventListener("keydown", function (e) { if (e.key === "Escape") { this.value = ""; busca(); } });
   window.addEventListener("perfil:mudou", inicio);
   inicio();
+})();
+</script>
+<script src="cursos-ppc.js"></script>
+<script>
+(function () {
+  var D = window.PPC; if (!D) return;
+  var tabs = document.getElementById("pc-tabs"), corpo = document.getElementById("pc-corpo"), ato = document.getElementById("pc-ato"), sel = 0;
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function link(slug) {
+    var d = D.disc[slug] || { nome: slug, st: "mat" };
+    if (d.st === "breve") return '<span class="pc-l breve"><i class="pc-st breve"></i>' + esc(d.nome) + " · em produção</span>";
+    return '<a class="pc-l" href="' + slug + '/"><i class="pc-st ' + d.st + '"></i>' + esc(d.nome) + "</a>";
+  }
+  function desenha() {
+    var c = D.cursos[sel];
+    ato.textContent = c.ato;
+    corpo.innerHTML = c.grupos.map(function (g) {
+      return '<h3 class="pc-per">' + esc(g.t) + '</h3><div class="pc-grid">' + g.c.map(function (x) {
+        return '<article class="pc-c"><span class="meta">' + esc(x.cod) + " · " + esc(x.ch) + "</span><h3>" + esc(x.nome) + "</h3><p>" + esc(x.temas) + '</p><div class="pc-links">' + x.p.map(link).join("") + "</div></article>";
+      }).join("") + "</div>";
+    }).join("") + '<h3 class="pc-per">Complementares</h3><div class="pc-links">' + D.complementares.map(function (s) {
+      var a = document.querySelector('#todas-grid a.card[href="' + s + '/"], a.card[href="' + s + '/"]'), n = a ? a.querySelector("h2").textContent : s;
+      return '<a class="pc-l" href="' + s + '/">' + esc(n) + "</a>";
+    }).join("") + "</div>";
+    Array.prototype.forEach.call(tabs.children, function (b, i) { b.setAttribute("aria-selected", i === sel ? "true" : "false"); b.tabIndex = i === sel ? 0 : -1; });
+  }
+  D.cursos.forEach(function (c, i) {
+    var b = document.createElement("button"); b.type = "button"; b.setAttribute("role", "tab"); b.textContent = c.curto;
+    b.onclick = function () { sel = i; desenha(); try { localStorage.setItem("pc-curso", c.id); } catch (e) {} };
+    b.onkeydown = function (e) { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { sel = (sel + (e.key === "ArrowRight" ? 1 : D.cursos.length - 1)) % D.cursos.length; desenha(); tabs.children[sel].focus(); } };
+    tabs.appendChild(b);
+  });
+  try { var g = localStorage.getItem("pc-curso"); D.cursos.forEach(function (c, i) { if (c.id === g) sel = i; }); } catch (e) {}
+  function doAluno() {
+    var P = window.PORTAL_ALUNO, p = P && P.perfil();
+    if (!p || !p.curso) { tabs.hidden = false; return; }
+    D.cursos.forEach(function (c, i) { if (p.curso.indexOf(c.curto) === 0) { sel = i; tabs.hidden = true; } });
+  }
+  window.addEventListener("perfil:mudou", function () { doAluno(); desenha(); });
+  doAluno(); desenha();
 })();
 </script>
 <script src="acessibilidade.js" defer></script>

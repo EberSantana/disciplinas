@@ -10,6 +10,7 @@
   "use strict";
   var FSI = (window.FSI = { mods: {}, sims: {}, cfg: window.FSI_CFG || { disc: "fsi", nome: "Disciplina" } });
   FSI.modulo = function (d) { FSI.mods[d.n] = d; };
+  function IDX() { return FSI.cfg.indice || "./"; }
   FSI.sim = function (nome, fn) { FSI.sims[nome] = fn; };
 
   /* ---------- utilidades ---------- */
@@ -72,20 +73,20 @@
   FSI.casca = function (atual) {
     var lista = ids();
     var topo = el("header", { class: "topo" },
-      '<a class="marca" href="./">' + MARCA + '<span><b>' + esc(FSI.cfg.nome) + "</b><small>" + esc(FSI.cfg.eixo || "Prof. Eber Santana") + "</small></span></a>" +
+      '<a class="marca" href="' + IDX() + '">' + MARCA + '<span><b>' + esc(FSI.cfg.nome) + "</b><small>" + esc(FSI.cfg.eixo || "Prof. Eber Santana") + "</small></span></a>" +
       '<div class="xpbox"><b data-xp>0 XP</b><small data-nv>Nível 1</small></div>' +
       '<div class="gprog" title="Progresso na disciplina"><span data-gt>0 / 0</span><div class="bar" aria-hidden="true"><i data-gb></i></div></div>' +
       '<a class="portal" href="../">← Portal</a>');
     var lay = el("div", { class: "lay" });
     var lado = el("details", { class: "lado", open: "" });
     var h = '<summary>Módulos da disciplina</summary><nav aria-label="Módulos da disciplina"><p class="lt">Módulos da disciplina</p>';
-    h += '<a class="lm' + (atual === "indice" ? " on" : "") + '" href="./"' + (atual === "indice" ? ' aria-current="page"' : "") + '><span class="ln">◆</span><span class="lx"><small>Comece aqui</small>Visão geral</span></a>';
+    h += '<a class="lm' + (atual === "indice" ? " on" : "") + '" href="' + IDX() + '"' + (atual === "indice" ? ' aria-current="page"' : "") + '><span class="ln">◆</span><span class="lx"><small>Comece aqui</small>Visão geral</span></a>';
     lista.forEach(function (n) {
       var d = FSI.mods[n], on = atual === n;
       h += '<a class="lm' + (on ? " on" : "") + '" href="modulo-' + n + '.html"' + (on ? ' aria-current="page"' : "") + ' data-n="' + n + '"><span class="ln">' + n + '</span><span class="lx"><small>' + esc(d.unidade) + "</small>" + esc(d.nome) + '</span><span class="lb" aria-hidden="true"><i></i></span></a>';
     });
     h += '<a class="lm x' + (atual === "desafio" ? " on" : "") + '" href="./#desafio"><span class="ln">⚡</span><span class="lx"><small>Todos os módulos</small>Desafio relâmpago</span></a>';
-    h += '<a class="lm x' + (atual === "simulado" ? " on" : "") + '" href="simulado.html"' + (atual === "simulado" ? ' aria-current="page"' : "") + '><span class="ln">✓</span><span class="lx"><small>Para fechar</small>Simulado final</span></a></nav>';
+    h += '<a class="lm x' + (atual === "simulado" ? " on" : "") + '" href="simulado.html"' + (atual === "simulado" ? ' aria-current="page"' : "") + '><span class="ln">✓</span><span class="lx"><small>Para fechar</small>Simulado final</span></a>' + (FSI.cfg.indice ? '<a class="lm x" href="./"><span class="ln">▤</span><span class="lx"><small>Apostila, labs e atividades</small>Materiais da disciplina</span></a>' : "") + '</nav>';
     lado.innerHTML = h;
     var main = el("main", { class: "cont", id: "conteudo", tabindex: "-1" });
     lay.appendChild(lado); lay.appendChild(main);
@@ -383,7 +384,7 @@
     var W = el("div", { class: "wrap paineis" }); main.appendChild(W);
     ABAS.forEach(function (a) { W.appendChild(el("section", { class: "painel", id: "p-" + a[0], role: "tabpanel", "aria-labelledby": "tab-" + a[0], hidden: "" })); });
     var nx = FSI.mods[n + 1] ? '<a href="modulo-' + (n + 1) + '.html">Módulo ' + (n + 1) + ": " + esc(FSI.mods[n + 1].nome) + " →</a>" : '<a href="simulado.html">Fazer o simulado final →</a>';
-    var pv = n > 1 ? '<a href="modulo-' + (n - 1) + '.html">← Módulo ' + (n - 1) + "</a>" : '<a href="./">← Visão geral</a>';
+    var pv = n > 1 ? '<a href="modulo-' + (n - 1) + '.html">← Módulo ' + (n - 1) + "</a>" : '<a href="' + IDX() + '">← Visão geral</a>';
     W.appendChild(el("div", { class: "nav2" }, pv + nx));
 
     /* Estudar */
@@ -614,7 +615,7 @@
     function fim() {
       if (certas > melhor) { melhor = certas; try { localStorage.setItem(chave("simulado-melhor"), melhor); } catch (e) { } }
       var rev = lista.filter(function (n) { return porMod[n] && porMod[n][0] / porMod[n][1] < 0.7; });
-      app.innerHTML = '<div class="card"><h2 class="t">Resultado: ' + certas + " de " + sorteio.length + '</h2><p>' + (certas >= 16 ? "Excelente domínio da disciplina!" : certas >= 12 ? "Bom caminho. Revise os pontos fracos abaixo." : "Vale rever os módulos antes de tentar de novo.") + "</p><ul>" + lista.filter(function (n) { return porMod[n]; }).map(function (n) { return "<li>Módulo " + n + " — " + FSI.mods[n].titulo + ": <b>" + porMod[n][0] + "/" + porMod[n][1] + "</b></li>"; }).join("") + "</ul>" + (rev.length ? "<p>Revisar: " + rev.map(function (n) { return '<a href="modulo-' + n + '.html#vf">Módulo ' + n + "</a>"; }).join(", ") + ".</p>" : "") + '<div class="row"><button class="btn" id="de">Fazer outro simulado</button><a class="btn sec" style="text-decoration:none" href="./">Voltar à visão geral</a></div></div>';
+      app.innerHTML = '<div class="card"><h2 class="t">Resultado: ' + certas + " de " + sorteio.length + '</h2><p>' + (certas >= 16 ? "Excelente domínio da disciplina!" : certas >= 12 ? "Bom caminho. Revise os pontos fracos abaixo." : "Vale rever os módulos antes de tentar de novo.") + "</p><ul>" + lista.filter(function (n) { return porMod[n]; }).map(function (n) { return "<li>Módulo " + n + " — " + FSI.mods[n].titulo + ": <b>" + porMod[n][0] + "/" + porMod[n][1] + "</b></li>"; }).join("") + "</ul>" + (rev.length ? "<p>Revisar: " + rev.map(function (n) { return '<a href="modulo-' + n + '.html#vf">Módulo ' + n + "</a>"; }).join(", ") + ".</p>" : "") + '<div class="row"><button class="btn" id="de">Fazer outro simulado</button><a class="btn sec" style="text-decoration:none" href="' + IDX() + '">Voltar à visão geral</a></div></div>';
       $("#de").onclick = inicio; if (window.progressoMudou) window.progressoMudou();
     }
     window.PROGRESSO_ID = FSI.cfg.disc + "-simulado-v1";
