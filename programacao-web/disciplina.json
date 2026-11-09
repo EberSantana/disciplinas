@@ -1,0 +1,33 @@
+{
+ "disc": "pw",
+ "nome": "Programação Web",
+ "eixo": "Disciplina interativa · Back-end com Python e Flask · TDS (Integrado)",
+ "descricao": "Back-end na prática: HTTP, rotas, templates e formulários, MVC, sessões e autenticação, banco de dados com DAO, APIs REST com JSON, orientação a objetos no servidor e implantação — com um servidor Flask de mentira que roda no navegador e confere seus desafios.",
+ "niveis": [
+  "Visitante",
+  "Cliente HTTP",
+  "Roteador(a)",
+  "Dev back-end",
+  "Guardião(ã) de sessões",
+  "Arquiteto(a) de APIs"
+ ],
+ "passo": 400,
+ "analogia": {
+  "titulo": "Cozinhar para a web",
+  "txt": "<p>O front-end é o salão do restaurante; o back-end é a cozinha. Ele recebe cada pedido (requisição), consulta a despensa (banco de dados), aplica a receita (regras de negócio) e devolve o prato (resposta). Aqui você aprende a cozinha, com Python e Flask.</p><p>Um servidor Flask simulado roda dentro da página: você escreve <code>from flask import Flask</code> como no mundo real, envia requisições com o <code>test_client()</code> e vê o que o servidor responde.</p>"
+ },
+ "como": [
+  "Comece cada módulo pela <b>analogia</b> e pelos <b>pontos-chave</b>.",
+  "No <b>Laboratório</b>, escreva Flask no console (Ctrl+Enter). O código é o mesmo que você usaria num projeto real; o servidor é simulado no navegador.",
+  "Cada desafio é conferido automaticamente comparando a saída com a de uma solução de referência.",
+  "Depois treine no caderno e nos PBL. Para rodar de verdade: <code>pip install flask</code> no seu computador.",
+  "Pré-requisito: <b>Programação 1</b> (Python) e <b>Construção de Sites 1</b> (HTML/CSS)."
+ ],
+ "aulas": [
+  "<b>Unidade 1:</b> Módulos 1 e 2 (HTTP e primeiras rotas)",
+  "<b>Unidade 2:</b> Módulos 3 e 4 (templates, formulários e MVC)",
+  "<b>Unidade 3:</b> Módulos 5 e 6 (sessões, autenticação, banco de dados e DAO)",
+  "<b>Unidade 4:</b> Módulos 7 e 8 (APIs REST, OO no servidor, testes e implantação) + simulado"
+ ],
+ "modulos": 8
+}

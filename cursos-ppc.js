@@ -12,7 +12,7 @@ window.PPC = {
     "programacao-orientada-a-objetos": { nome: "Programação Orientada a Objetos", st: "breve" },
     "banco-de-dados": { nome: "Banco de Dados", st: "int" },
     "construcao-de-sites-1": { nome: "Construção de Sites 1", st: "int" },
-    "programacao-web": { nome: "Programação Web (back-end)", st: "breve" },
+    "programacao-web": { nome: "Programação Web (back-end)", st: "int" },
     "engenharia-de-software": { nome: "Engenharia de Software", st: "int" },
     "construcao-de-sites-2": { nome: "Construção de Sites 2", st: "breve" },
     "topicos-especiais-1": { nome: "Tópicos Especiais I", st: "breve" },
