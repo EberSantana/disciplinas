@@ -711,4 +711,63 @@
     var sb = $("[data-sol]", host); if (sb) sb.onclick = function () { if (k < D.length) { ED.value = D[k].ref; ED.focus(); } };
     carregaSQL().then(function (S) { SQL = S; db = novo(); schema(); desafio(); }).catch(function () { $("[data-sch]", host).innerHTML = "<b>Não foi possível carregar o SQLite.</b> <small>Abra esta página com internet uma vez e tente de novo.</small>"; });
   });
+
+  /* ===================== Segurança da Informação ===================== */
+  /* Cifra de César: desloca as letras; o aluno cifra, decifra e quebra mensagens.
+     cfg: { id, desafios: [{ c: "texto cifrado", k: chave, dica }] } */
+  function cesar(t, k) { var A = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; return String(t).toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[A-Z]/g, function (c) { return A[(A.indexOf(c) + k % 26 + 26) % 26]; }); }
+  FSI.sim("cifra", function (host, cfg, api) {
+    var D = cfg.desafios || [], k = 0;
+    host.innerHTML = '<div class="sim-bar"><label>Texto <input type="text" data-t value="' + esc(cfg.texto || "ATAQUE AO AMANHECER") + '" style="min-width:220px;flex:1"></label><label>Chave (deslocamento) <input type="range" min="0" max="25" value="3" data-k> <b data-kv>3</b></label></div>' +
+      '<div class="bases-out"><div><small>Texto claro</small><b data-a></b></div><div><small>Texto cifrado</small><b data-c></b></div></div>' +
+      (D.length ? '<div class="sim-out" data-des></div><div class="sim-bar"><label>Sua resposta <input type="text" data-r style="min-width:220px;flex:1" autocomplete="off"></label><button class="btn" type="button" data-ok>Conferir</button></div>' : "");
+    var T = $("[data-t]", host), K = $("[data-k]", host), cifrou = false, mexeu = false;
+    function desenha() { var kk = +K.value; $("[data-kv]", host).textContent = kk; $("[data-a]", host).textContent = cesar(T.value, 0); $("[data-c]", host).textContent = cesar(T.value, kk); }
+    function des() { var b = $("[data-des]", host); if (!b) return; if (k >= D.length) { b.className = "sim-out ok"; b.innerHTML = "<b>Todas as mensagens decifradas!</b> Com só 25 chaves possíveis, a cifra de César cai por força bruta — por isso a criptografia moderna usa chaves enormes."; return; } b.className = "sim-out"; b.innerHTML = "<b>Mensagem interceptada " + (k + 1) + " de " + D.length + ":</b> <code>" + esc(D[k].c) + "</code>" + (D[k].dica ? " <i>Dica: " + D[k].dica + "</i>" : "") + "<br>Como quebrar: cole a mensagem no campo <b>Texto</b> e arraste a chave até o resultado virar português. Decifrar uma chave k é cifrar de novo com 26 − k."; }
+    T.oninput = function () { if (!cifrou) { cifrou = true; api.ev(cfg.id + ":cifrou"); } desenha(); };
+    K.oninput = function () { if (!mexeu) { mexeu = true; api.ev(cfg.id + ":chave"); } desenha(); };
+    var OK = $("[data-ok]", host);
+    if (OK) OK.onclick = function () { if (k >= D.length) return; var r = norm($("[data-r]", host).value).toUpperCase().replace(/[^A-Z ]/g, ""), cert = cesar(D[k].c, -D[k].k).replace(/[^A-Z ]/g, "");
+      var b = $("[data-des]", host);
+      if (r.replace(/\s+/g, " ").trim() === cert.replace(/\s+/g, " ").trim()) { k++; api.ev(cfg.id + ":decifrou:" + k); if (k === D.length) api.ev(cfg.id + ":todos"); $("[data-r]", host).value = ""; des(); if (k < D.length) { b.className = "sim-out ok"; b.innerHTML = "<b>Decifrada!</b> A chave era " + D[k - 1].k + ". Próxima: <code>" + esc(D[k].c) + "</code>"; } }
+      else { b.className = "sim-out bad"; b.innerHTML = "Ainda não. Mensagem: <code>" + esc(D[k].c) + "</code> — teste outras chaves. " + (D[k].dica ? "<i>Dica: " + D[k].dica + "</i>" : ""); } };
+    desenha(); des();
+  });
+
+  /* Hash: resumo SHA-256 de um texto; mudar uma letra muda tudo (efeito avalanche). */
+  function sha256(t) { if (!(window.crypto && crypto.subtle)) return Promise.resolve("(o navegador não oferece SHA-256 aqui)"); return crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)).then(function (b) { return Array.prototype.map.call(new Uint8Array(b), function (x) { return ("0" + x.toString(16)).slice(-2); }).join(""); }); }
+  FSI.sim("hash", function (host, cfg, api) {
+    host.innerHTML = '<div class="hashes"><label>Arquivo original <textarea data-a rows="3">' + esc(cfg.a || "Boletim: Ana Souza — Segurança da Informação — nota 7,5") + '</textarea></label><code data-ha></code>' +
+      '<label>Arquivo recebido <textarea data-b rows="3">' + esc(cfg.b || cfg.a || "Boletim: Ana Souza — Segurança da Informação — nota 7,5") + '</textarea></label><code data-hb></code></div><div class="sim-out" data-o aria-live="polite"></div>';
+    var A = $("[data-a]", host), B = $("[data-b]", host), mudou = false;
+    function dif(x, y) { var n = 0; for (var i = 0; i < x.length; i++) if (x[i] !== y[i]) n++; return n; }
+    function calc() {
+      Promise.all([sha256(A.value), sha256(B.value)]).then(function (h) {
+        $("[data-ha]", host).textContent = "SHA-256: " + h[0]; $("[data-hb]", host).textContent = "SHA-256: " + h[1];
+        var o = $("[data-o]", host), ig = h[0] === h[1];
+        o.className = "sim-out " + (ig ? "ok" : "bad");
+        o.innerHTML = ig ? "<b>Os resumos são iguais:</b> o arquivo recebido é íntegro." : "<b>Os resumos são diferentes</b> em " + dif(h[0], h[1]) + " de 64 caracteres: o arquivo foi alterado. Repare que uma mudança mínima muda o resumo inteiro (efeito avalanche).";
+        api.ev(cfg.id + ":calculou"); if (!ig && mudou) api.ev(cfg.id + ":detectou");
+        if (!ig && A.value.length && B.value.length && Math.abs(A.value.length - B.value.length) <= 1 && dif(A.value, B.value) <= 2) api.ev(cfg.id + ":avalanche");
+      });
+    }
+    A.oninput = B.oninput = function () { mudou = true; calc(); };
+    calc();
+  });
+
+  /* Força de senhas: estimativa por tamanho e variedade de caracteres e tempo para quebrar por força bruta. */
+  FSI.sim("senha", function (host, cfg, api) {
+    host.innerHTML = '<div class="sim-bar"><label>Digite uma senha de teste (não use uma senha real!) <input type="text" data-s autocomplete="off" spellcheck="false" style="min-width:240px;flex:1"></label></div><div class="medidor" aria-hidden="true"><i data-bar></i></div><div class="sim-out" data-o aria-live="polite">Digite para ver a análise.</div>';
+    var S = $("[data-s]", host), COM = ["123456", "senha", "password", "12345678", "qwerty", "abc123", "111111", "admin", "iloveyou", "brasil"];
+    function tempo(s) { var u = [[31536000, "anos"], [86400, "dias"], [3600, "horas"], [60, "minutos"], [1, "segundos"]]; if (s > 31536000 * 1e6) return "mais de um milhão de anos"; for (var i = 0; i < u.length; i++) if (s >= u[i][0]) return Math.round(s / u[i][0]).toLocaleString("pt-BR") + " " + u[i][1]; return "menos de 1 segundo"; }
+    S.oninput = function () {
+      var v = S.value, a = 0; if (/[a-z]/.test(v)) a += 26; if (/[A-Z]/.test(v)) a += 26; if (/[0-9]/.test(v)) a += 10; if (/[^a-zA-Z0-9]/.test(v)) a += 33;
+      var bits = v.length * Math.log2(Math.max(a, 1)), comum = COM.indexOf(v.toLowerCase()) >= 0, seg = Math.pow(2, bits) / 1e10 / 2;
+      var nivel = comum || bits < 28 ? 0 : bits < 45 ? 1 : bits < 65 ? 2 : 3, rot = ["Muito fraca", "Fraca", "Boa", "Forte"][nivel];
+      $("[data-bar]", host).style.width = Math.min(100, bits * 1.25) + "%"; $("[data-bar]", host).className = "n" + nivel;
+      var o = $("[data-o]", host); o.className = "sim-out " + (nivel >= 3 ? "ok" : nivel === 0 ? "bad" : "");
+      o.innerHTML = "<b>" + rot + "</b> · " + v.length + " caracteres, alfabeto de " + a + " símbolos ≈ " + Math.round(bits) + " bits. " + (comum ? "Está na lista das senhas mais usadas: cai na primeira tentativa." : "Força bruta a 10 bilhões de tentativas por segundo: cerca de <b>" + tempo(seg) + "</b>.") + (nivel < 3 ? " Dica: aumente o tamanho — uma frase com 4 palavras e um número vale mais que um símbolo no fim." : "");
+      api.ev(cfg.id + ":testou"); if (nivel === 0) api.ev(cfg.id + ":fraca"); if (nivel === 3) api.ev(cfg.id + ":forte");
+    };
+  });
 })();

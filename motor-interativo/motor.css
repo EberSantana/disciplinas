@@ -409,3 +409,8 @@ a.mod.feito{border-color:var(--ok)}
 .sql-ed{width:100%;min-height:110px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);font:14px/1.5 "JetBrains Mono",ui-monospace,monospace;resize:vertical;margin:10px 0 0}
 .sql-res{margin-top:10px}.sql-res td.nulo{color:var(--muted);font-style:italic}.sql-n{color:var(--muted)}
 
+/* hash e senha */
+.hashes{display:grid;gap:8px}.hashes label{font-weight:600;font-size:14px}.hashes textarea{width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);font:14px/1.45 "Source Sans 3",sans-serif}
+.hashes code{display:block;word-break:break-all;font-size:12.5px;padding:6px 8px;border-radius:8px;background:var(--accent-soft)}
+.medidor{height:10px;border-radius:6px;background:var(--line);overflow:hidden;margin:8px 0}.medidor i{display:block;height:100%;width:0;background:#B42318;transition:width .2s}.medidor i.n1{background:#B7791F}.medidor i.n2{background:#5A8F3E}.medidor i.n3{background:var(--accent)}
+input[type=range]{accent-color:var(--accent)}

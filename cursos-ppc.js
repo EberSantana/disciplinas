@@ -19,7 +19,7 @@ window.PPC = {
     "projeto-integrador": { nome: "Projeto Integrador", st: "breve" },
     "redes-de-computadores": { nome: "Redes de Computadores", st: "mat" },
     "projeto-de-redes": { nome: "Projeto de Redes", st: "mat" },
-    "seguranca-da-informacao": { nome: "Segurança da Informação", st: "mat" },
+    "seguranca-da-informacao": { nome: "Segurança da Informação", st: "int" },
     "topicos-especiais-2": { nome: "Tópicos Especiais II", st: "breve" },
     "topicos-especiais-tds": { nome: "Tópicos Especiais (TDS)", st: "breve" }
   },

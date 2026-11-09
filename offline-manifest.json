@@ -59,12 +59,38 @@
   {
    "id": "seguranca-da-informacao",
    "nome": "Segurança da Informação",
-   "versao": "c294b445e4",
-   "bytes": 293173,
+   "versao": "20dfe0a74f",
+   "bytes": 1407201,
    "arquivos": [
     "seguranca-da-informacao/console-de-estudo.html",
+    "seguranca-da-informacao/dados/m1.js",
+    "seguranca-da-informacao/dados/m2.js",
+    "seguranca-da-informacao/dados/m3.js",
+    "seguranca-da-informacao/dados/m4.js",
+    "seguranca-da-informacao/dados/m5.js",
+    "seguranca-da-informacao/dados/m6.js",
+    "seguranca-da-informacao/dados/m7.js",
+    "seguranca-da-informacao/dados/m8.js",
+    "seguranca-da-informacao/dados/m9.js",
     "seguranca-da-informacao/detetives-digitais.html",
-    "seguranca-da-informacao/index.html"
+    "seguranca-da-informacao/disciplina.json",
+    "seguranca-da-informacao/index.html",
+    "seguranca-da-informacao/modulo-1.html",
+    "seguranca-da-informacao/modulo-2.html",
+    "seguranca-da-informacao/modulo-3.html",
+    "seguranca-da-informacao/modulo-4.html",
+    "seguranca-da-informacao/modulo-5.html",
+    "seguranca-da-informacao/modulo-6.html",
+    "seguranca-da-informacao/modulo-7.html",
+    "seguranca-da-informacao/modulo-8.html",
+    "seguranca-da-informacao/modulo-9.html",
+    "seguranca-da-informacao/simulado.html",
+    "seguranca-da-informacao/trilha.html",
+    "motor-interativo/labs.js",
+    "motor-interativo/motor.css",
+    "motor-interativo/motor.js",
+    "motor-interativo/sql/sql-wasm.js",
+    "motor-interativo/sql/sql-wasm.wasm"
    ],
    "externos": [
     "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap",
@@ -226,8 +252,8 @@
   {
    "id": "banco-de-dados",
    "nome": "Banco de Dados",
-   "versao": "c4b8f509d4",
-   "bytes": 2560366,
+   "versao": "73cc92fd6b",
+   "bytes": 2568717,
    "arquivos": [
     "banco-de-dados/apostila.html",
     "banco-de-dados/console-de-estudo.html",
@@ -275,8 +301,8 @@
   {
    "id": "fundamentos-de-sistemas-de-informacao",
    "nome": "Fundamentos para Sistemas de Informação",
-   "versao": "f411a30eda",
-   "bytes": 1102978,
+   "versao": "6186d632d5",
+   "bytes": 1111329,
    "arquivos": [
     "fundamentos-de-sistemas-de-informacao/dados/m1.js",
     "fundamentos-de-sistemas-de-informacao/dados/m2.js",
@@ -306,8 +332,8 @@
   {
    "id": "sistemas-operacionais",
    "nome": "Fundamentos de Sistemas Operacionais",
-   "versao": "9ab8c23d38",
-   "bytes": 1127260,
+   "versao": "042faf2dba",
+   "bytes": 1135611,
    "arquivos": [
     "sistemas-operacionais/dados/m1.js",
     "sistemas-operacionais/dados/m2.js",
@@ -341,8 +367,8 @@
   {
    "id": "organizacao-de-computadores",
    "nome": "Organização de Computadores",
-   "versao": "499016c111",
-   "bytes": 1030665,
+   "versao": "f34d17d371",
+   "bytes": 1039016,
    "arquivos": [
     "organizacao-de-computadores/dados/m1.js",
     "organizacao-de-computadores/dados/m2.js",
@@ -370,8 +396,8 @@
   {
    "id": "mapas-mentais",
    "nome": "Mapas Mentais de TI",
-   "versao": "df9fdf6594",
-   "bytes": 1063808,
+   "versao": "f8816b5667",
+   "bytes": 1072159,
    "arquivos": [
     "mapas-mentais/dados/m1.js",
     "mapas-mentais/dados/m2.js",

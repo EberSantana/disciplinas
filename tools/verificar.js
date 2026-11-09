@@ -12,6 +12,7 @@ const PAGINAS = ["index.html", "como-usar.html", "professor.html", "redes-de-com
   "fundamentos-de-sistemas-de-informacao/index.html", "fundamentos-de-sistemas-de-informacao/modulo-1.html", "fundamentos-de-sistemas-de-informacao/simulado.html",
   "organizacao-de-computadores/index.html", "organizacao-de-computadores/modulo-2.html", "organizacao-de-computadores/modulo-4.html",
   "banco-de-dados/trilha.html", "banco-de-dados/modulo-1.html",
+  "seguranca-da-informacao/trilha.html", "seguranca-da-informacao/modulo-1.html",
   "sistemas-operacionais/index.html", "sistemas-operacionais/modulo-6.html", "sistemas-operacionais/modulo-8.html", "sistemas-operacionais/simulado.html",
   "mapas-mentais/index.html", "mapas-mentais/modulo-1.html", "mapas-mentais/modulo-3.html", "mapas-mentais/modulo-7.html", "mapas-mentais/simulado.html"];
 const PERFIL = { id: "A1", nome: "Aluno Teste", turma: "T1", curso: "Integrado em Desenvolvimento de Sistemas · 2º ano", turno: "N", pin: "1234" };
