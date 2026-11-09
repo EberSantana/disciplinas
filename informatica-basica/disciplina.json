@@ -1,0 +1,34 @@
+{
+ "disc": "ib",
+ "nome": "Informática Básica",
+ "eixo": "Disciplina interativa · INF103 (Subsequente) e TDS103 (Integrado)",
+ "indice": "trilha.html",
+ "descricao": "Do bit ao documento pronto: conceitos, hardware, software e licenças, Windows e arquivos, teclado e atalhos, internet e segurança, editor de textos, planilhas e apresentações — com treino de atalhos, planilha de verdade, conversor de bits, missões e exercícios guiados.",
+ "niveis": [
+  "Bit",
+  "Byte",
+  "Usuário",
+  "Usuário avançado",
+  "Monitor do laboratório",
+  "Técnico"
+ ],
+ "passo": 400,
+ "analogia": {
+  "titulo": "A cozinha da sua casa",
+  "txt": "<p>O computador é como uma cozinha. O fogão, a geladeira e as panelas são o <b>hardware</b>; as receitas são o <b>software</b>; e quem cozinha é o <b>peopleware</b> — você. Saber onde guardar cada ingrediente é organizar <b>arquivos e pastas</b>; os atalhos de teclado são os truques de quem cozinha rápido; e lavar as mãos antes de mexer na comida é a <b>segurança</b>.</p><p>Nesta disciplina você vai treinar atalhos de verdade, montar fórmulas numa planilha, converter bits e aprender a fazer documentos e apresentações que impressionam.</p>"
+ },
+ "como": [
+  "Comece cada módulo pela <b>analogia</b> e pelos <b>pontos-chave</b>.",
+  "No <b>Laboratório</b>, faça as missões: treino de atalhos, planilha com fórmulas, conversor de bits e jogos.",
+  "Pratique no computador o que aprender: cada lição do editor, da planilha e das apresentações traz uma prática.",
+  "Nos materiais da disciplina há a <b>Trilha Windows 11</b>, o <b>Método Office Visual</b> e a apostila completa."
+ ],
+ "aulas": [
+  "<b>Unidade 1:</b> Módulos 1 a 5 (conceitos, hardware, software, Windows e arquivos, teclado)",
+  "<b>Unidade 5:</b> Módulo 6 (internet, nuvem e segurança)",
+  "<b>Unidade 2:</b> Módulo 7 (editor de textos e ABNT)",
+  "<b>Unidade 3:</b> Módulo 8 (planilhas, fórmulas e gráficos)",
+  "<b>Unidade 4:</b> Módulo 9 (apresentações) + simulado"
+ ],
+ "modulos": 9
+}

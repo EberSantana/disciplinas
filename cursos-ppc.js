@@ -8,7 +8,7 @@ window.PPC = {
     "programacao-1": { nome: "Programação 1", st: "breve" },
     "organizacao-de-computadores": { nome: "Organização de Computadores", st: "int" },
     "sistemas-operacionais": { nome: "Fundamentos de Sistemas Operacionais", st: "int" },
-    "informatica-basica": { nome: "Informática Básica", st: "mat" },
+    "informatica-basica": { nome: "Informática Básica", st: "int" },
     "programacao-orientada-a-objetos": { nome: "Programação Orientada a Objetos", st: "breve" },
     "banco-de-dados": { nome: "Banco de Dados", st: "int" },
     "construcao-de-sites-1": { nome: "Construção de Sites 1", st: "mat" },

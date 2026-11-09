@@ -825,4 +825,79 @@
     I.addEventListener("keydown", function (e) { if (e.key === "Enter") { exec(I.value); I.value = ""; } });
     p("Microsoft Windows [versão simulada para estudo]\nDigite um comando e pressione Enter.");
   });
+
+  /* ===================== Informática Básica ===================== */
+  /* Planilha (estilo Calc/Excel, em português): números, + − * /, referências (B2), intervalos (B2:B5) e
+     SOMA, MÉDIA, MÁXIMO, MÍNIMO, SE. Separador de argumentos: ponto e vírgula. Vírgula decimal.
+     cfg: { id, colunas: 5, dados: [[...linha 1...], ...], desafios: [{ p, cel: "D6", valor, func, dica }] } */
+  FSI.sim("planilha", function (host, cfg, api) {
+    var NC = cfg.colunas || 5, DADOS = cfg.dados || [], NL = Math.max(DADOS.length + 2, cfg.linhas || 6), L = "ABCDEFGHIJ", raw = {}, D = cfg.desafios || [], k = 0, sel = "A1";
+    DADOS.forEach(function (lin, r) { lin.forEach(function (v, c) { if (v !== "" && v != null) raw[L[c] + (r + 1)] = String(v); }); });
+    var h = '<div class="pl-barra"><b data-end>A1</b><span>fx</span><input type="text" data-fx aria-label="Barra de fórmulas" spellcheck="false" autocomplete="off"></div><div class="tbl-wrap"><table class="tbl pl"><thead><tr><th></th>';
+    for (var c = 0; c < NC; c++) h += "<th>" + L[c] + "</th>"; h += "</tr></thead><tbody>";
+    for (var r = 1; r <= NL; r++) { h += "<tr><th>" + r + "</th>"; for (c = 0; c < NC; c++) h += '<td><button type="button" class="pl-c" data-c="' + L[c] + r + '" aria-label="Célula ' + L[c] + r + '"></button></td>'; h += "</tr>"; }
+    host.innerHTML = h + '</tbody></table></div><p class="instr">Clique numa célula, digite na barra de fórmulas e pressione Enter. Fórmulas começam com <code>=</code>: <code>=B2+B3</code>, <code>=SOMA(B2:B5)</code>, <code>=MÉDIA(B2:B5)</code>, <code>=SE(D2&gt;=6;"Aprovado";"Recuperação")</code>.</p>' + (D.length ? '<div class="sim-out" data-des></div>' : "");
+    var FX = $("[data-fx]", host);
+    function num(v) { if (typeof v === "number") return v; var x = parseFloat(String(v).replace(/\./g, "").replace(",", ".")); return isNaN(x) ? 0 : x; }
+    function valor(ref, pilha) {
+      pilha = pilha || {}; if (pilha[ref]) throw new Error("referência circular"); var t = raw[ref]; if (t == null || t === "") return 0;
+      if (t[0] !== "=") { var n = String(t).replace(",", "."); return /^-?\d+(\.\d+)?$/.test(n) ? +n : t; }
+      var p2 = Object.assign({}, pilha); p2[ref] = 1; return avalia(t.slice(1), p2);
+    }
+    function faixa(a, b, pilha) { var c1 = L.indexOf(a[0]), c2 = L.indexOf(b[0]), r1 = +a.slice(1), r2 = +b.slice(1), out = []; for (var cc = Math.min(c1, c2); cc <= Math.max(c1, c2); cc++) for (var rr = Math.min(r1, r2); rr <= Math.max(r1, r2); rr++) out.push(valor(L[cc] + rr, pilha)); return out; }
+    function avalia(f, pilha) {
+      var F = { SOMA: function () { return lista(arguments).reduce(function (a, b) { return a + num(b); }, 0); }, MEDIA: function () { var l = lista(arguments); return l.length ? F.SOMA.apply(null, l) / l.length : 0; },
+        MAXIMO: function () { return Math.max.apply(null, lista(arguments).map(num)); }, MINIMO: function () { return Math.min.apply(null, lista(arguments).map(num)); }, SE: function (c, a, b) { return c ? a : b; } };
+      function lista(args) { var o = []; Array.prototype.forEach.call(args, function (x) { if (Array.isArray(x)) o = o.concat(x); else o.push(x); }); return o; }
+      var strs = [], e = String(f).replace(/"([^"]*)"/g, function (m, t) { strs.push(t); return "§" + (strs.length - 1) + "§"; });
+      e = e.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      e = e.replace(/([A-J])(\d{1,2}):([A-J])(\d{1,2})/g, function (m, a, b, c2, d) { return "R('" + a + b + "','" + c2 + d + "')"; })
+        .replace(/(^|[^'A-Z])([A-J])(\d{1,2})(?![\d'])/g, function (m, p0, a, b) { return p0 + "V('" + a + b + "')"; })
+        .replace(/(\d),(\d)/g, "$1.$2").replace(/;/g, ",").replace(/<>/g, "!=").replace(/([^<>!=])=([^=])/g, "$1==$2");
+      if (/[^A-Z0-9_().,+\-*/<>=!'§ ]/.test(e.replace(/§\d+§/g, ""))) throw new Error("caractere inválido");
+      if (/\b(?!SOMA|MEDIA|MAXIMO|MINIMO|SE|R|V)[A-Z]{2,}\b/.test(e.replace(/'[A-J]\d{1,2}'/g, ""))) throw new Error("função desconhecida");
+      e = e.replace(/§(\d+)§/g, function (m, i) { return JSON.stringify(strs[+i]); });
+      var fn = new Function("SOMA", "MEDIA", "MAXIMO", "MINIMO", "SE", "R", "V", "return (" + e + ");");
+      return fn(F.SOMA, F.MEDIA, F.MAXIMO, F.MINIMO, F.SE, function (a, b) { return faixa(a, b, pilha); }, function (r) { var v = valor(r, pilha); return typeof v === "number" ? v : v; });
+    }
+    function mostra(v) { if (typeof v === "number") return Math.round(v * 100) / 100 + "" === "NaN" ? "#VALOR!" : String(Math.round(v * 100) / 100).replace(".", ","); return String(v); }
+    function desenha() {
+      $$(".pl-c", host).forEach(function (b) { var ref = b.getAttribute("data-c"), t = raw[ref], out = ""; if (t != null && t !== "") { try { out = t[0] === "=" ? mostra(valor(ref)) : t; } catch (e) { out = "#ERRO"; } } b.textContent = out; b.classList.toggle("f", !!(t && t[0] === "=")); b.classList.toggle("on", ref === sel); });
+      $("[data-end]", host).textContent = sel; if (document.activeElement !== FX) FX.value = raw[sel] || "";
+    }
+    function des(msg, cl) { var b = $("[data-des]", host); if (!b) return; if (k >= D.length) { b.className = "sim-out ok"; b.innerHTML = (msg || "") + "<b>Todos os desafios concluídos!</b>"; return; } b.className = "sim-out " + (cl || ""); b.innerHTML = (msg || "") + "<b>Desafio " + (k + 1) + " de " + D.length + ":</b> " + D[k].p + (D[k].dica ? " <i>Dica: " + D[k].dica + "</i>" : ""); }
+    function confere() {
+      if (k >= D.length) return; var d = D[k], t = raw[d.cel] || "", v; try { v = valor(d.cel); } catch (e) { return; }
+      var ok = t[0] === "=" && (typeof d.valor === "number" ? Math.abs(num(v) - d.valor) < 0.01 : String(v) === d.valor) && (!d.func || norm(t).toUpperCase().indexOf(d.func) >= 0);
+      if (ok) { k++; api.ev(cfg.id + ":desafio:" + k); if (k === D.length) api.ev(cfg.id + ":todos"); des("<b>Certo!</b> " + d.cel + " = " + mostra(v) + ". ", "ok"); }
+    }
+    function grava() {
+      var t = FX.value.trim(); if (t) raw[sel] = t; else delete raw[sel];
+      if (t[0] === "=") { var u = norm(t).toUpperCase(); api.ev(cfg.id + ":formula"); if (/[A-J]\d/.test(u)) api.ev(cfg.id + ":ref"); ["SOMA", "MEDIA", "MAXIMO", "MINIMO", "SE"].forEach(function (f) { if (u.indexOf(f + "(") >= 0) api.ev(cfg.id + ":" + f.toLowerCase()); }); try { valor(sel); } catch (e) { api.ev(cfg.id + ":erro"); } }
+      desenha(); confere();
+    }
+    host.addEventListener("click", function (e) { var b = e.target.closest(".pl-c"); if (!b) return; sel = b.getAttribute("data-c"); desenha(); FX.focus(); });
+    FX.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); grava(); var r = +sel.slice(1); if (r < NL) { sel = sel[0] + (r + 1); desenha(); FX.value = raw[sel] || ""; } } });
+    FX.addEventListener("change", grava);
+    desenha(); des();
+  });
+
+  /* Treino de atalhos: o aluno pressiona a combinação de teclas pedida. cfg: { id, itens: [{ t: "Copiar", k: "Ctrl+C", d }] } */
+  FSI.sim("atalhos", function (host, cfg, api) {
+    var I = cfg.itens || [], k = 0, acertos = 0;
+    host.innerHTML = '<div class="sim-out" data-p></div><button type="button" class="atalho-alvo" data-a>Clique aqui e pressione a combinação de teclas</button><div class="row"><button class="btn sec" type="button" data-pula>Pular / ver resposta</button></div>';
+    var P = $("[data-p]", host), A = $("[data-a]", host);
+    function pede(msg) { if (k >= I.length) { P.className = "sim-out ok"; P.innerHTML = (msg || "") + "<b>Fim do treino!</b> " + acertos + " de " + I.length + " na primeira tentativa."; api.ev(cfg.id + ":fim"); if (acertos === I.length) api.ev(cfg.id + ":perfeito"); return; } P.className = "sim-out"; P.innerHTML = (msg || "") + "<b>" + (k + 1) + " de " + I.length + ":</b> qual atalho faz <b>" + I[k].t + "</b>?"; }
+    var errou = false;
+    A.addEventListener("keydown", function (e) {
+      if (["Control", "Shift", "Alt", "Meta"].indexOf(e.key) >= 0 || k >= I.length) return;
+      e.preventDefault(); var partes = []; if (e.ctrlKey) partes.push("Ctrl"); if (e.altKey) partes.push("Alt"); if (e.shiftKey) partes.push("Shift");
+      var tecla = e.key.length === 1 ? e.key.toUpperCase() : e.key === "Delete" ? "Delete" : e.key; partes.push(tecla); var comb = partes.join("+"), alvo = I[k].k;
+      api.ev(cfg.id + ":tentou");
+      if (comb.toUpperCase() === alvo.toUpperCase()) { if (!errou) acertos++; api.ev(cfg.id + ":acertos:" + acertos); var d = I[k].d; k++; errou = false; pede('<span class="ok">Isso! ' + alvo + (d ? " — " + d : "") + "</span><br>"); }
+      else { errou = true; P.className = "sim-out bad"; P.innerHTML = "Você pressionou <code>" + esc(comb) + "</code>. Tente de novo: <b>" + I[k].t + "</b>."; }
+    });
+    $("[data-pula]", host).onclick = function () { if (k >= I.length) return; var alvo = I[k].k; k++; errou = false; pede("A resposta era <code>" + alvo + "</code>.<br>"); A.focus(); };
+    pede();
+  });
 })();
