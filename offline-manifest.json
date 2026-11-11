@@ -625,8 +625,8 @@
   {
    "id": "laboratorio-3d",
    "nome": "Laboratório 3D",
-   "versao": "cb22a6426d",
-   "bytes": 177959,
+   "versao": "4cad8d2b81",
+   "bytes": 178416,
    "arquivos": [
     "laboratorio-3d/esp32-lab-3d.html",
     "laboratorio-3d/index.html",
