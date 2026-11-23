@@ -28,15 +28,15 @@
   /* Disciplinas de cada turma conforme os ement\u00e1rios (Integrado: TDS-INT, Subsequente: INF-SUB).
      O nome do curso precisa come\u00e7ar com BASE_INT ou BASE_SUB e terminar com "\u00b7 1\u00ba ano" ou "\u00b7 1\u00ba per\u00edodo". */
   var CURSOS = [
-    { nome: BASE_INT + " \u00b7 1\u00ba ano", disciplinas: L("p1", "cs1", "oc", "so", "ib") },
-    { nome: BASE_INT + " \u00b7 2\u00ba ano", disciplinas: L("pw", "bd", "es") },
+    { nome: BASE_INT + " \u00b7 1\u00ba ano", disciplinas: L("cs1", "oc", "so", "ib") },
+    { nome: BASE_INT + " \u00b7 2\u00ba ano", disciplinas: L("bd", "es") },
     { nome: BASE_INT + " \u00b7 3\u00ba ano", disciplinas: L("rc", "si", "pr") },
-    { nome: BASE_SUB + " \u00b7 1\u00ba per\u00edodo", disciplinas: L("p1", "oc", "so", "ib") },
+    { nome: BASE_SUB + " \u00b7 1\u00ba per\u00edodo", disciplinas: L("oc", "so", "ib") },
     { nome: BASE_SUB + " \u00b7 2\u00ba per\u00edodo", disciplinas: L("bd", "cs1") },
-    { nome: BASE_SUB + " \u00b7 3\u00ba per\u00edodo", disciplinas: L("pw", "es") },
+    { nome: BASE_SUB + " \u00b7 3\u00ba per\u00edodo", disciplinas: L("es") },
     { nome: BASE_SUB + " \u00b7 4\u00ba per\u00edodo", disciplinas: L("rc", "pr", "si") },
     /* turma do Subsequente sem per\u00edodo no nome: enxerga as disciplinas de todos os per\u00edodos */
-    { nome: BASE_SUB, disciplinas: L("p1", "oc", "so", "ib", "bd", "cs1", "pw", "es", "rc", "pr", "si") },
+    { nome: BASE_SUB, disciplinas: L("oc", "so", "ib", "bd", "cs1", "es", "rc", "pr", "si") },
     { nome: "T\u00e9cnico em Inform\u00e1tica", disciplinas: L("rc", "pr", "si", "so") }
   ];
   /* M\u00f3dulos comuns a todos os cursos: ficam ocultos at\u00e9 o professor liberar (painel > Liberar conte\u00fado). */
