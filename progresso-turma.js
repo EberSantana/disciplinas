@@ -85,14 +85,14 @@
     ".pt-screen{position:fixed;inset:0;z-index:10000;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);background:#EEF2F0;color:#0B1F3B;font:16px/1.55 " + F + ";overflow:auto;-webkit-font-smoothing:antialiased}" +
     ".pt-screen[hidden]{display:none}" +
     ".pt-screen :is(button,input,select,a,[tabindex]):focus-visible,.pt-menu a:focus-visible,.pt-fab:focus-visible{outline:3px solid #0B6BCB!important;outline-offset:2px}" +
-    ".pt-hero{background:linear-gradient(125deg,#0B1F3B 0%,#0E2A4F 60%,#0B3A2A 100%);color:#DCE5EA;padding:clamp(28px,6vw,72px);display:flex;flex-direction:column;justify-content:center;gap:18px;position:relative;overflow:hidden}" +
-    ".pt-hero::after{content:'';position:absolute;right:-120px;bottom:-120px;width:360px;height:360px;border-radius:50%;border:56px solid rgba(0,200,83,.16);pointer-events:none}" +
-    ".pt-eyebrow{font:12px/1.4 " + FM + ";letter-spacing:.12em;text-transform:uppercase;color:#3BE37A}" +
+    ".pt-hero{background:linear-gradient(150deg,#F2FBF4 0%,#E3F7E8 45%,#9BE8B6 78%,#3CCB6E 100%);color:#0F172A;padding:clamp(28px,6vw,72px);display:flex;flex-direction:column;justify-content:center;gap:18px;position:relative;overflow:hidden}" +
+    ".pt-hero::after{content:'';position:absolute;right:-120px;bottom:-120px;width:360px;height:360px;border-radius:50%;border:56px solid rgba(255,255,255,.35);pointer-events:none}" +
+    ".pt-eyebrow{font:12px/1.4 " + FM + ";letter-spacing:.12em;text-transform:uppercase;color:#0B5C2E;position:relative;z-index:1}.pt-logo{width:min(340px,80%);height:auto;position:relative;z-index:1}.pt-lema{font-size:clamp(18px,1.8vw,22px)!important;color:#1E293B!important;font-weight:600;line-height:1.35}.pt-ilus{width:min(520px,100%);height:auto;align-self:center;position:relative;z-index:1}" +
     ".pt-hero h1{margin:0;font:700 clamp(40px,6vw,68px)/1 " + FD + ";color:#fff;text-wrap:balance}" +
-    ".pt-hero p{margin:0;max-width:44ch;color:#B8C6CD;font-size:17px}" +
-    ".pt-feats{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:12px;max-width:46ch}" +
-    ".pt-feats li{display:flex;gap:12px;align-items:flex-start;color:#DCE5EA}" +
-    ".pt-feats b{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:rgba(0,122,53,.18);color:#3BE37A;font:700 14px/1 " + FM + "}" +
+    ".pt-hero p{margin:0;max-width:44ch;color:#334155;font-size:17px;position:relative;z-index:1}" +
+    ".pt-feats{position:relative;z-index:1;list-style:none;margin:8px 0 0;padding:0;display:grid;gap:12px;max-width:46ch}" +
+    ".pt-feats li{display:flex;gap:12px;align-items:flex-start;color:#1E293B;font-weight:600}" +
+    ".pt-feats b{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:#00A844;color:#fff;font:700 14px/1 " + FM + "}" +
     ".pt-side{display:flex;align-items:center;justify-content:center;padding:clamp(20px,5vw,56px)}" +
     ".pt-card{width:100%;max-width:440px;background:#fff;border:1px solid #D5DBE3;border-radius:16px;padding:clamp(20px,4vw,32px);box-shadow:0 12px 40px rgba(21,33,43,.08)}" +
     ".pt-card h2{margin:0 0 4px;font:700 32px/1.1 " + FD + "}" +
@@ -115,7 +115,7 @@
     ".pt-priv{margin:12px 0 0;font-size:14px}.pt-priv summary{cursor:pointer;font-weight:600;color:#00662B;min-height:24px}.pt-priv p{margin:8px 0 0;color:#3F4F5B;font-size:14px}" +
     ".pt-msg{margin-top:10px;font-size:14px}.pt-msg:empty{margin:0}" +
     ".pt-msg.bad{color:#B3261E}.pt-msg.good{color:#0B7A49}" +
-    "@media (max-width:820px){.pt-screen{grid-template-columns:1fr;grid-template-rows:auto auto;align-content:start}.pt-hero{padding:28px 20px 26px;gap:10px;overflow:visible;flex-shrink:0}.pt-hero::after{display:none}.pt-hero h1{font-size:40px}.pt-hero p{font-size:15.5px}.pt-feats{display:none}.pt-side{padding:18px 16px 32px;align-items:flex-start}}" +
+    "@media (max-width:820px){.pt-screen{grid-template-columns:1fr;grid-template-rows:auto auto;align-content:start}.pt-hero{padding:28px 20px 26px;gap:10px;overflow:visible;flex-shrink:0}.pt-hero::after{display:none}.pt-hero h1{font-size:40px}.pt-hero p{font-size:15.5px}.pt-feats{display:none}.pt-ilus{display:none}.pt-logo{width:220px}.pt-side{padding:18px 16px 32px;align-items:flex-start}}" +
     "@media (max-width:380px){.pt-two{grid-template-columns:1fr}}" +
     /* bot\u00e3o e menu depois do login */
     ".pt-fab{position:fixed;right:16px;bottom:16px;z-index:9998;border:0;border-radius:999px;padding:12px 18px;font:600 15px/1.2 " + F + ";background:#007A35;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer;max-width:calc(100vw - 32px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}" +
@@ -146,7 +146,7 @@
     ".pt-rank li{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-top:1px solid #E3E9E6}" +
     ".pt-rank li.me{font-weight:700}" +
     "@media (prefers-color-scheme:dark){" +
-      ".pt-priv summary{color:#3BE37A}.pt-priv p{color:#B8C6CD}.pt-screen{background:#071225;color:#E4ECEF}.pt-hero{background:#0B1F3B}" +
+      ".pt-priv summary{color:#3BE37A}.pt-priv p{color:#B8C6CD}.pt-screen{background:#071225;color:#E4ECEF}.pt-hero{background:linear-gradient(150deg,#0F2A1F 0%,#0E3A27 50%,#0E6B3A 85%,#16A34A 100%);color:#F1F5F9}.pt-hero .pt-logo{content:url(" + BASE + "img/logo-hub-escuro.png)}.pt-lema{color:#E2E8F0!important}.pt-feats li{color:#E2E8F0}.pt-eyebrow{color:#3BE37A}" +
       ".pt-card{background:#0F1E36;border-color:#22324D;box-shadow:none}.pt-card .pt-sub{color:#B8C6CD}.pt-note{color:#8699A4}" +
       ".pt-card input,.pt-card select{background:#071225;color:#E4ECEF;border-color:#3A4C58}" +
       ".pt-opt{background:#071225;color:#E4ECEF;border-color:#22324D}.pt-opt small{color:#8699A4}.pt-back{color:#3BE37A}" +
@@ -356,14 +356,15 @@
   screen.setAttribute("aria-labelledby", "pt-title");
   screen.innerHTML =
     '<section class="pt-hero">' +
-      '<span class="pt-eyebrow">Prof. Eber Santana \u00b7 IFS Campus Tobias Barreto</span>' +
-      "<h1>Ambientes de estudo</h1>" +
-      "<p>Entre para acessar as disciplinas do seu curso e acompanhar o seu progresso.</p>" +
+      '<img class="pt-logo" src="' + BASE + 'img/logo-hub.png" alt="Trilha Rali HUB" width="520" height="172">' +
+      '<p class="pt-lema">Aprenda, pratique e evolua com desafios gamificados de tecnologia.</p>' +
       '<ul class="pt-feats">' +
-        "<li><b>01</b><span>Laborat\u00f3rios visuais e simuladores para ver cada conceito funcionando.</span></li>" +
-        "<li><b>02</b><span>Caderno, flashcards, verdadeiro ou falso e PBL. A resposta aparece depois que voc\u00ea tenta.</span></li>" +
+        "<li><b>01</b><span>Disciplinas com laborat\u00f3rios visuais, simuladores, flashcards e PBL.</span></li>" +
+        "<li><b>02</b><span>Jogos e desafios: Rali NFC, CTF, Cruzada e Desvendando.</span></li>" +
         "<li><b>03</b><span>Seu progresso fica salvo e conta pontos no ranking da turma.</span></li>" +
       "</ul>" +
+      '<img class="pt-ilus" src="' + BASE + 'img/hub-hero.webp" alt="" width="900" height="458">' +
+      '<span class="pt-eyebrow">Prof. Eber Santana \u00b7 IFS Campus Tobias Barreto</span>' +
     "</section>" +
     '<section class="pt-side"><div class="pt-card">' +
       '<div class="pt-step" data-step="1">' +
