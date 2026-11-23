@@ -18,6 +18,15 @@ a.card.jogos h2{color:#3BE37A}a.card.jogos p{color:#CBD5E1}a.card.jogos .meta{co
 a.card.jogos:hover,a.card.jogos:focus-visible{border-color:#3BE37A}
 .rodape{background:#0B1F3B;color:#E2E8F0;border-top:3px solid #00C853;margin-top:40px;padding:18px clamp(16px,5vw,64px);font-size:14px}
 .rodape b{color:#FFFFFF}.rodape span{color:#3BE37A}
+.trilha-nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;position:relative;z-index:2}
+.trilha-nav a{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 15px;border:1px solid rgba(255,255,255,.22);border-radius:11px;color:#E2E8F0;text-decoration:none;font-weight:700;font-size:14px;transition:background .15s,border-color .15s}
+.trilha-nav a[aria-current="page"]{background:#B7F52B;border-color:#B7F52B;color:#0B1F3B}
+.trilha-nav a:hover,.trilha-nav a:focus-visible{border-color:#B7F52B;color:#fff;outline:2px solid transparent}
+.trilha-nav a[aria-current="page"]:hover{color:#0B1F3B}
+.rodape{position:relative;overflow:hidden;border-top:0;padding-top:28px}
+.rodape:before{content:"";position:absolute;inset:0 0 auto;height:8px;background:repeating-linear-gradient(135deg,#00C853 0 14px,#0B1F3B 14px 28px)}
+.rodape .wrap{position:relative}
+@media(max-width:520px){.trilha-nav a{flex:1 1 calc(50% - 8px);justify-content:center}}
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Disciplinas do Prof. Eber</title>
@@ -105,7 +114,13 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
 <header><div class="wrap">
   <span class="eyebrow">Prof. Eber Santana · IFS</span>
   <div class="marca"><svg viewBox="0 0 128 128" aria-hidden="true"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3BE37A"/><stop offset="1" stop-color="#00A844"/></linearGradient></defs><path d="M8 116 C 34 92, 92 130, 122 98" fill="none" stroke="url(#mg)" stroke-width="11" stroke-linecap="round"/><path d="M64 60 C 50 50, 30 48, 14 52 v46 c16-4 36-2 50 8 c14-10 34-12 50-8 V52 c-16-4-36-2-50 8z" fill="#0B1F3B" stroke="url(#mg)" stroke-width="3.5" stroke-linejoin="round"/><path d="M64 60 v46" stroke="url(#mg)" stroke-width="3"/><path d="M24 66 c10-2 22-1 32 4 M24 78 c10-2 22-1 32 4 M104 66 c-10-2-22-1-32 4 M104 78 c-10-2-22-1-32 4" stroke="#E2E8F0" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M64 8 L102 23 L64 38 L26 23 Z" fill="#0B1F3B" stroke="url(#mg)" stroke-width="2.5" stroke-linejoin="round"/><path d="M44 30 v8 c0 6 40 6 40 0 v-8 L64 38z" fill="#0B1F3B" stroke="url(#mg)" stroke-width="2.5" stroke-linejoin="round"/><path d="M64 23 L96 28 v12" fill="none" stroke="#FACC15" stroke-width="2.2" stroke-linecap="round"/><path d="M93 39 h6 l1.5 8 h-9z" fill="#FACC15"/></svg><h1>Ambientes de estudo</h1></div>
-  <p>Escolha a sua disciplina. Os materiais são interativos e funcionam no computador e no celular. <a href="como-usar.html" style="color:#3BE37A">Como usar o portal</a></p>
+  <p>Escolha a sua disciplina. Os materiais são interativos e funcionam no computador e no celular. <a href="como-usar.html" style="color:#B7F52B">Como usar o portal</a></p>
+  <nav class="trilha-nav" aria-label="Navegação principal">
+    <a href="./" aria-current="page">⌂ Início</a>
+    <a href="#todas-titulo">▦ Disciplinas</a>
+    <a href="https://ebersantana.github.io/TrilhaRali/">🎮 Trilha Rali</a>
+    <a href="laboratorio-3d/">⚗ Laboratórios</a>
+  </nav>
 </div></header>
 <main><div class="wrap">
   <div class="painel-estudo" id="painel-estudo" hidden>
@@ -252,7 +267,7 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
   </div>
   <footer>O progresso fica salvo no navegador do aparelho que você usar.</footer>
 </div></main>
-<div class="rodape"><div class="wrap"><b>Instituto Federal de Sergipe (IFS) · Campus Tobias Barreto</b><br><span>Desenvolvido e supervisionado pelo Professor Eber Santana</span></div></div>
+<div class="rodape"><div class="wrap"><b>Instituto Federal de Sergipe (IFS) · Campus Tobias Barreto</b><br><span>Desenvolvido e supervisionado pelo Professor Eber Santana</span><p style="margin:8px 0 0;color:#CBD5E1">Aprenda · Acompanhe · Conquiste · Faça parte <a href="https://ebersantana.github.io/TrilhaRali/" style="margin-left:10px;color:#B7F52B;font-weight:700">Acessar Trilha Rali →</a></p></div></div>
 <script src="config.js"></script>
 <script src="progresso-turma.js"></script>
 <script>
