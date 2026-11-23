@@ -239,7 +239,7 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
   function pasta(a) { return a.getAttribute("href").replace(/\/$/, ""); }
   function render() {
     var p = P.perfil(), curso = null;
-    if (p) P.cursos.forEach(function (c) { if (c.nome === p.curso) curso = c; });
+    if (p) curso = P.meuCurso();
     cards.forEach(function (a) { todas.appendChild(a); });
     todas.style.display = ""; document.getElementById("todas-titulo").style.display = "";
     if (!curso) { meu.hidden = true; aviso.hidden = false; document.getElementById("todas-titulo").textContent = "Todas as disciplinas (A–Z)"; return; }

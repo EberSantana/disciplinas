@@ -16,6 +16,8 @@
   var COMPL = { "fundamentos-de-sistemas-de-informacao": "Fundamentos para Sistemas de Informação", "mapas-mentais": "Mapas Mentais de TI", "laboratorio-3d": "Laboratório 3D", "recursos-de-aula": "Recursos de aula" };
   var MODS = {}; /* pasta -> [nomes dos módulos] (carregados sob demanda) */
 
+  function ehComum(k) { return (PPC.complementares || []).indexOf(String(k).split("#")[0]) >= 0; }
+  function nivelTurma(t) { var m = /([1-4])\s*[\u00ba\u00b0o]?\s*(ano|per[i\u00ed]odo)/i.exec(cursoDaTurma(t) + " " + t); return m ? +m[1] : 0; }
   function rotulo(v) { return !v ? "" : v === "o" ? "Oculta" : v === "v" ? "Visível" : "Abre em " + br(v); }
   function efetivo(k) { var d = S.rascunho[S.escopo] || {}; if (d[k]) return d[k]; if (S.escopo !== "*") return (S.rascunho["*"] || {})[k] || ""; return ""; }
   function situacao(v) { if (v === "o") return "o"; if (/^\d{4}-\d{2}-\d{2}$/.test(v || "") && v > hoje()) return "d"; return "v"; }
@@ -31,13 +33,14 @@
   function controle(k, nome, sub) {
     var d = S.rascunho[S.escopo] || {}, v = d[k] || "", her = S.escopo !== "*" ? (S.rascunho["*"] || {})[k] || "" : "";
     var sel = v === "" ? "" : v === "o" ? "o" : v === "v" ? "v" : "d", id = "c-" + k.replace(/[^a-z0-9]/g, "-");
-    var padrao = S.escopo === "*" ? "Visível (padrão)" : "Igual a todas as turmas" + (her ? " · " + rotulo(her) : " · Visível");
-    var ef = situacao(efetivo(k));
+    var cm = ehComum(k), pad = cm ? "Oculta" : "Vis\u00edvel";
+    var padrao = S.escopo === "*" ? pad + " (padr\u00e3o)" : "Igual a todas as turmas" + (her ? " \u00b7 " + rotulo(her) : " \u00b7 " + pad);
+    var ef = situacao(efetivo(k) || (cm ? "o" : ""));
     return '<div class="lc-row' + (sub ? " sub" : "") + '" data-k="' + esc(k) + '"><span class="lc-st ' + ef + '" aria-hidden="true"></span>' +
       '<label class="lc-nome" for="' + id + '">' + nome + "</label>" +
       '<select id="' + id + '" data-sel>' +
       '<option value=""' + (sel === "" ? " selected" : "") + ">" + esc(padrao) + "</option>" +
-      (S.escopo !== "*" ? '<option value="v"' + (sel === "v" ? " selected" : "") + ">Visível</option>" : "") +
+      (S.escopo !== "*" || cm ? '<option value="v"' + (sel === "v" ? " selected" : "") + ">Visível</option>" : "") +
       '<option value="o"' + (sel === "o" ? " selected" : "") + ">Oculta</option>" +
       '<option value="d"' + (sel === "d" ? " selected" : "") + ">Liberar a partir de…</option></select>" +
       '<input type="date" data-dt aria-label="Data de liberação de ' + esc(nome.replace(/<[^>]+>/g, "")) + '"' + (sel === "d" ? ' value="' + esc(v) + '"' : " hidden") + "></div>";
@@ -77,14 +80,15 @@
   function desenha() {
     var turmas = {}; S.alunos.forEach(function (a) { if (a.turma) turmas[a.turma] = a.curso || ""; });
     var opts = '<option value="*">Todas as turmas</option>' + Object.keys(turmas).sort().map(function (t) { return '<option value="' + esc(t) + '"' + (S.escopo === t ? " selected" : "") + ">" + esc(t) + (turmas[t] ? " · " + esc(turmas[t]) : "") + "</option>"; }).join("");
+    var nv = S.escopo === "*" ? 0 : nivelTurma(S.escopo);
     var vistos = {}, corpo = cursos().map(function (c) {
-      return '<section class="lc-curso"><h3>' + esc(c.nome) + "</h3>" + c.grupos.map(function (g) {
+      return '<section class="lc-curso"><h3>' + esc(c.nome) + "</h3>" + c.grupos.filter(function (g) { return !nv || g.t.indexOf(nv + "\u00ba") === 0; }).map(function (g) {
         var rows = g.c.map(function (x) { return x.p.map(function (p) { return linhaPasta(p, vistos); }).join(""); }).join("");
         return rows ? '<h4 class="lc-per">' + esc(g.t) + "</h4>" + rows : "";
       }).join("") + "</section>";
     }).join("");
     var comp = (PPC.complementares || []).map(function (p) { return linhaPasta(p, vistos); }).join("");
-    if (comp) corpo += '<section class="lc-curso"><h3>Complementares</h3>' + comp + "</section>";
+    if (comp) corpo += '<section class="lc-curso"><h3>M\u00f3dulos comuns a todos os cursos</h3><p class="lc-dica">Ficam <b>ocultos</b> para os alunos at\u00e9 voc\u00ea liberar. Escolha \u201cVis\u00edvel\u201d para a turma que precisar.</p>' + comp + "</section>";
     var ocultas = 0, agend = 0, d = S.rascunho[S.escopo] || {};
     Object.keys(d).forEach(function (k) { var s = situacao(d[k]); if (s === "o") ocultas++; else if (s === "d") agend++; });
     host.innerHTML =
@@ -115,7 +119,7 @@
         if (sel.value === "d") { dt.hidden = false; if (!dt.value) { var a = new Date(); a.setDate(a.getDate() + 7); dt.value = a.toISOString().slice(0, 10); } marca(k, dt.value); dt.focus(); }
         else { dt.hidden = true; marca(k, sel.value); }
       } else if (t === dt) { if (/^\d{4}-\d{2}-\d{2}$/.test(dt.value)) marca(k, dt.value); }
-      row.querySelector(".lc-st").className = "lc-st " + situacao(efetivo(k));
+      row.querySelector(".lc-st").className = "lc-st " + situacao(efetivo(k) || (ehComum(k) ? "o" : ""));
       atualizaRodape();
     });
     host.addEventListener("toggle", function (e) {

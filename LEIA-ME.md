@@ -170,3 +170,9 @@ e envie o `offline-manifest.json` junto. Os alunos que já baixaram a disciplina
 - Para forçar a limpeza do cache em todos os aparelhos (mudança grande), troque `VERSAO` no `sw.js` e `MAT`/`EXT` no `offline.js`.
 - O service worker só funciona em `https` (GitHub Pages) ou `localhost`.
 
+## Turmas, anos e módulos comuns
+
+- **Entrada do aluno:** curso (Integrado ou Subsequente), depois ano (1º ao 3º) ou período (1º ao 4º) e por fim a turma.
+- **Como a turma é reconhecida:** pelo texto da coluna `curso` ou `turma` na aba Turmas da planilha. Escreva o curso como `Integrado em Desenvolvimento de Sistemas · 1º ano` ou `Subsequente em Informática · 2º período` (ou ponha "1º período" no nome da turma). Turma do Subsequente sem período no nome vê as disciplinas de todos os períodos.
+- **Disciplinas de cada ano/período:** lista `CURSOS` em `progresso-turma.js` (segue os ementários TDS-INT e INF-SUB).
+- **Módulos comuns** (Fundamentos para SI, Mapas Mentais, Laboratório 3D, Recursos de aula): ficam ocultos para todos. Libere em `professor.html` > Liberar conteúdo, para todas as turmas ou só para uma.
