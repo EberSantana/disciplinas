@@ -19,7 +19,10 @@
   function junta(a, b) { return a.concat(b); }
 
   var TEMAS = {
-    padrao: { nome: "Padrão IFS", desc: "Verde institucional, o visual original.",
+    padrao: { nome: "Trilha (padrão)", desc: "Azul-marinho e verde, a mesma identidade da Trilha Rali.",
+      claro: junta(["#F4F6F8", "#FFFFFF", "#0F172A", "#344054", "#5D6B7E", "#D5DBE3", "#007A35", "#FFFFFF", "#DDF5E6", "#0B1F3B", "#E2E8F0"], ["#1B6B45", "#DDF0E4", "#A8321F", "#F8E0DB", "#8A5A00", "#FBEFD0", "#1F5F99", "#0B6BCB"]),
+      escuro: junta(["#071225", "#0F1E36", "#E6EDF5", "#B8C4D6", "#8C9BB0", "#22324D", "#3BE37A", "#0B1F3B", "#0F3A28", "#0B1F3B", "#E2E8F0"], OKD) },
+    ifs: { nome: "Verde IFS", desc: "Verde institucional, o visual anterior do portal.",
       claro: junta(["#EEF2F0", "#FFFFFF", "#16261C", "#3F4F5B", "#5B6871", "#D5DDDA", "#1F5135", "#FFFFFF", "#E3EEE7", "#16261C", "#DCE5EA"], ["#25724A", "#DDF0E4", "#AE3A30", "#F6DEDB", "#8A5A00", "#FBEFD0", "#2A5C8C", "#0B6BCB"]),
       escuro: junta(["#0F171D", "#16222B", "#E4ECEF", "#B8C6CD", "#8699A4", "#2A3A45", "#6BAA68", "#12241A", "#1A2D20", "#0B140E", "#DCE5EA"], OKD) },
     verde: { nome: "Verde Comunidade", desc: "Tons calmos de verde-azulado, bons para estudar por mais tempo.",
@@ -44,7 +47,7 @@
       claro: ["#FFFFFF", "#FFFFFF", "#000000", "#000000", "#1F1F1F", "#000000", "#0033CC", "#FFFFFF", "#E6ECFF", "#000000", "#FFFFFF", "#005A2B", "#E3F5EA", "#8F0000", "#FBE3E3", "#6B4600", "#FFF3D1", "#00338F", "#0000FF"],
       escuro: ["#000000", "#000000", "#FFFFFF", "#FFFFFF", "#E0E0E0", "#FFFFFF", "#FFD400", "#000000", "#1A1A00", "#000000", "#FFFFFF", "#4DFF9A", "#002B14", "#FF8A80", "#330000", "#FFD400", "#332B00", "#8FC1FF", "#FFD400"] }
   };
-  var ORDEM = ["padrao", "verde", "azul", "terracota", "rosa", "lilas", "creme", "contraste"];
+  var ORDEM = ["padrao", "ifs", "verde", "azul", "terracota", "rosa", "lilas", "creme", "contraste"];
   var PADRAO = { tema: "padrao", modo: "auto", tam: 100, esp: "normal", fonte: "padrao", mov: "auto", links: "nao", ouvir: "nao", desc: "nao", imgs: "mostrar", mono: "nao", vel: 1 };
   var TAMANHOS = [[100, "Normal"], [115, "Grande"], [130, "Maior"], [150, "Máximo"]];
 
@@ -108,8 +111,8 @@
     "html[data-a11y-mov=reduzir] *,html[data-a11y-mov=reduzir] *::before,html[data-a11y-mov=reduzir] *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}" +
     "html[data-a11y-links=sim] :is(a:not([class]),p a,li a,td a,footer a){text-decoration:underline!important;text-underline-offset:.15em}" +
     /* interface do painel (cores próprias, não dependem do tema da página) */
-    ".a11y-ap-dock,.a11y-ap-btn,.a11y-ap,.a11y-ap-dica,.a11y-bar{--u-bg:#FFFFFF;--u-ink:#16261C;--u-ink2:#3F4F5B;--u-line:#8FA39A;--u-acc:#1F5135;--u-acc-ink:#FFFFFF;--u-soft:#E3EEE7;--u-focus:#0B6BCB}" +
-    "html[data-a11y-esq=escuro] :is(.a11y-ap-dock,.a11y-ap-btn,.a11y-ap,.a11y-ap-dica,.a11y-bar){--u-bg:#16222B;--u-ink:#E4ECEF;--u-ink2:#B8C6CD;--u-line:#5C7280;--u-acc:#6BAA68;--u-acc-ink:#0B140E;--u-soft:#1F3328;--u-focus:#7FB5F5}" +
+    ".a11y-ap-dock,.a11y-ap-btn,.a11y-ap,.a11y-ap-dica,.a11y-bar{--u-bg:#FFFFFF;--u-ink:#0B1F3B;--u-ink2:#3F4F5B;--u-line:#8FA39A;--u-acc:#007A35;--u-acc-ink:#FFFFFF;--u-soft:#DDF5E6;--u-focus:#0B6BCB}" +
+    "html[data-a11y-esq=escuro] :is(.a11y-ap-dock,.a11y-ap-btn,.a11y-ap,.a11y-ap-dica,.a11y-bar){--u-bg:#0F1E36;--u-ink:#E4ECEF;--u-ink2:#B8C6CD;--u-line:#5C7280;--u-acc:#3BE37A;--u-acc-ink:#071225;--u-soft:#0F3A28;--u-focus:#7FB5F5}" +
     ".a11y-ap-dock{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:9997;display:flex;align-items:stretch;height:36px;border-radius:10px;border:1px solid var(--u-line);background:var(--u-bg);box-shadow:0 1px 2px rgba(0,0,0,.12),0 6px 18px rgba(0,0,0,.14);overflow:hidden}" +
     ".a11y-ap-btn{display:inline-flex;align-items:center;gap:7px;min-height:0;padding:0 12px 0 11px;border:0;border-radius:0;background:transparent;color:var(--u-ink);font:500 13px/1 system-ui,-apple-system,'Segoe UI',sans-serif;cursor:pointer}" +
     ".a11y-ap-btn svg{flex:none;width:16px;height:16px}.a11y-ap-btn:hover{background:var(--u-soft)}" +
@@ -176,7 +179,7 @@
   /* ---------- aplicar ---------- */
   var fonteCarregada = false;
   var aplicar = function () {
-    var e = esquema(), pinta = root.hasAttribute("data-a11y-cores") && !(P.tema === "padrao" && P.modo === "auto");
+    var e = esquema(), pinta = root.hasAttribute("data-a11y-cores");
     root.setAttribute("data-a11y-tema", P.tema);
     root.setAttribute("data-a11y-esq", e);
     if (pinta) root.setAttribute("data-a11y-pintar", ""); else root.removeAttribute("data-a11y-pintar");
