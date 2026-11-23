@@ -494,6 +494,13 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
   document.getElementById("nav-ranking").onclick = function (e) { e.preventDefault(); e.stopPropagation(); painel(); };
   function ola() { var p = P && P.perfil(), n = p ? (p.apelido || String(p.nome || "").split(" ")[0]) : ""; document.getElementById("hub-ola").textContent = "Ol\u00e1, " + (n || "estudante") + "! \ud83d\udc4b"; }
   window.addEventListener("perfil:mudou", ola); ola();
+  /* ?volta=<endereço do jogo>: depois de entrar (curso, ano, turma e nome na lista), o aluno volta para o jogo. */
+  var volta = ""; try { volta = new URLSearchParams(location.search).get("volta") || ""; } catch (e) {}
+  if (volta) {
+    var ok = false; try { var u = new URL(volta); ok = u.origin === location.origin; } catch (e) {}
+    var ir = function () { if (P && P.perfil()) location.replace(volta); };
+    if (ok) { if (P && P.perfil()) ir(); else { window.addEventListener("perfil:mudou", ir); if (P) P.entrar(); } }
+  }
 })();
 </script>
 <script src="acessibilidade.js" defer></script>
