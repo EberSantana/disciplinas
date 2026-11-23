@@ -9,7 +9,7 @@
 .hub{display:grid;grid-template-columns:292px 1fr;min-height:100vh}
 .hub-side{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;background:var(--panel);border-right:1px solid var(--line);padding:22px 16px 0;overflow:hidden auto}
 .hub-logo{display:block;color:var(--ink);text-decoration:none;margin:0 6px 26px}
-.hub-logo svg{display:block;width:100%;max-width:230px;height:auto}
+.hub-logo img{display:block;width:100%;max-width:236px;height:auto}
 .hub-nav ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
 .hub-nav a{display:flex;align-items:center;gap:14px;min-height:48px;padding:0 16px;border-radius:12px;color:var(--ink);text-decoration:none;font-weight:600;font-size:16.5px;white-space:nowrap}
 .hub-nav a svg{flex:none;width:24px;height:24px}
@@ -97,6 +97,7 @@
 @media (prefers-reduced-motion:reduce){.jogo,.atal,.hub-side{transition:none}}
 .rodape{background:#0B1F3B;color:#E2E8F0;border-top:3px solid #00C853;margin-top:40px;padding:18px clamp(16px,5vw,64px);font-size:14px}
 .rodape b{color:#FFFFFF}.rodape span{color:#3BE37A}
+html[data-a11y-esq="escuro"] .hub-logo img{content:url(img/logo-hub-escuro.png)}html[data-a11y-esq="claro"] .hub-logo img{content:url(img/logo-hub.png)}
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trilha Rali HUB · Prof. Eber Santana</title>
@@ -184,14 +185,7 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
 <div class="hub">
 <aside class="hub-side" id="hub-side" aria-label="Menu principal">
-  <a class="hub-logo" href="./" aria-label="Trilha Rali HUB, página inicial">
-    <svg viewBox="0 0 250 70" aria-hidden="true"><defs><linearGradient id="trg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3BE37A"/><stop offset="1" stop-color="#00A844"/></linearGradient></defs>
-      <text x="0" y="60" font-family="'Arial Black','Source Sans 3',sans-serif" font-weight="900" font-style="italic" font-size="68" letter-spacing="-6" fill="url(#trg)">TR</text>
-      <text x="104" y="32" font-family="'Source Sans 3',sans-serif" font-weight="800" font-style="italic" font-size="29" fill="currentColor">Trilha Rali</text>
-      <g transform="skewX(-12)"><rect x="118" y="38" width="70" height="28" rx="6" fill="#00A844"/></g>
-      <text x="113" y="60" font-family="'Arial Black','Source Sans 3',sans-serif" font-weight="900" font-style="italic" font-size="22" fill="#fff">HUB</text>
-    </svg>
-  </a>
+  <a class="hub-logo" href="./"><picture><source srcset="img/logo-hub-escuro.png" media="(prefers-color-scheme: dark)"><img src="img/logo-hub.png" alt="Trilha Rali HUB, página inicial" width="520" height="172"></picture></a>
   <nav class="hub-nav" aria-label="Seções do HUB"><ul>
     <li><a href="./" aria-current="page"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 2 11.5h3V21h5.5v-6h3v6H19v-9.5h3z"/></svg>Início</a></li>
     <li><a href="../TrilhaRali/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="12" rx="6"/><path d="M6.5 13h4M8.5 11v4"/><circle cx="15.5" cy="12" r=".8" fill="currentColor"/><circle cx="17.5" cy="14" r=".8" fill="currentColor"/></svg>Jogos e Desafios</a></li>
