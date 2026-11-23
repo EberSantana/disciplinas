@@ -16,39 +16,35 @@
 (function () {
   // O nome do curso aqui precisa ser igual \u00e0 coluna "curso" da aba Turmas da planilha.
   /* Disciplinas por curso conforme os PPCs (veja cursos-ppc.js). Ao publicar uma disciplina nova, inclua a pasta aqui. */
+  var BASE_INT = "Integrado em Desenvolvimento de Sistemas", BASE_SUB = "Subsequente em Inform\u00e1tica";
+  var D = {
+    p1: ["Programa\u00e7\u00e3o 1", "programacao-1"], oc: ["Organiza\u00e7\u00e3o de Computadores", "organizacao-de-computadores"],
+    so: ["Fundamentos de Sistemas Operacionais", "sistemas-operacionais"], ib: ["Inform\u00e1tica B\u00e1sica", "informatica-basica"],
+    cs1: ["Constru\u00e7\u00e3o de Sites 1", "construcao-de-sites-1"], pw: ["Programa\u00e7\u00e3o Web (back-end)", "programacao-web"],
+    bd: ["Banco de Dados", "banco-de-dados"], es: ["Engenharia de Software", "engenharia-de-software"],
+    rc: ["Redes de Computadores", "redes-de-computadores"], pr: ["Projeto de Redes", "projeto-de-redes"],
+    si: ["Seguran\u00e7a da Informa\u00e7\u00e3o", "seguranca-da-informacao"] };
+  function L() { return Array.prototype.map.call(arguments, function (k) { return D[k]; }); }
+  /* Disciplinas de cada turma conforme os ement\u00e1rios (Integrado: TDS-INT, Subsequente: INF-SUB).
+     O nome do curso precisa come\u00e7ar com BASE_INT ou BASE_SUB e terminar com "\u00b7 1\u00ba ano" ou "\u00b7 1\u00ba per\u00edodo". */
   var CURSOS = [
-    { nome: "Subsequente em Inform\u00e1tica", disciplinas: [
-      ["Organiza\u00e7\u00e3o de Computadores", "organizacao-de-computadores"],
-      ["Fundamentos de Sistemas Operacionais", "sistemas-operacionais"],
-      ["Inform\u00e1tica B\u00e1sica", "informatica-basica"],
-      ["Banco de Dados", "banco-de-dados"],
-      ["Constru\u00e7\u00e3o de Sites 1", "construcao-de-sites-1"],
-      ["Engenharia de Software", "engenharia-de-software"],
-      ["Redes de Computadores", "redes-de-computadores"],
-      ["Projeto de Redes", "projeto-de-redes"],
-      ["Seguran\u00e7a da Informa\u00e7\u00e3o", "seguranca-da-informacao"],
-      ["Fundamentos para Sistemas de Informa\u00e7\u00e3o", "fundamentos-de-sistemas-de-informacao"],
-      ["Mapas Mentais de TI", "mapas-mentais"] ] },
-    { nome: "Integrado em Desenvolvimento de Sistemas \u00b7 1\u00ba ano", disciplinas: [
-      ["Constru\u00e7\u00e3o de Sites 1", "construcao-de-sites-1"],
-      ["Organiza\u00e7\u00e3o de Computadores", "organizacao-de-computadores"],
-      ["Fundamentos de Sistemas Operacionais", "sistemas-operacionais"],
-      ["Inform\u00e1tica B\u00e1sica", "informatica-basica"] ] },
-    { nome: "Integrado em Desenvolvimento de Sistemas \u00b7 2\u00ba ano", disciplinas: [
-      ["Banco de Dados", "banco-de-dados"],
-      ["Engenharia de Software", "engenharia-de-software"] ] },
-    { nome: "Integrado em Desenvolvimento de Sistemas \u00b7 3\u00ba ano", disciplinas: [
-      ["Redes de Computadores", "redes-de-computadores"],
-      ["Seguran\u00e7a da Informa\u00e7\u00e3o", "seguranca-da-informacao"],
-      ["Projeto de Redes", "projeto-de-redes"] ] },
-    { nome: "T\u00e9cnico em Inform\u00e1tica", disciplinas: [
-      ["Redes de Computadores", "redes-de-computadores"],
-      ["Projeto de Redes", "projeto-de-redes"],
-      ["Seguran\u00e7a da Informa\u00e7\u00e3o", "seguranca-da-informacao"],
-      ["Fundamentos para Sistemas de Informa\u00e7\u00e3o", "fundamentos-de-sistemas-de-informacao"],
-      ["Fundamentos de Sistemas Operacionais", "sistemas-operacionais"],
-      ["Mapas Mentais de TI", "mapas-mentais"] ] }
+    { nome: BASE_INT + " \u00b7 1\u00ba ano", disciplinas: L("p1", "cs1", "oc", "so", "ib") },
+    { nome: BASE_INT + " \u00b7 2\u00ba ano", disciplinas: L("pw", "bd", "es") },
+    { nome: BASE_INT + " \u00b7 3\u00ba ano", disciplinas: L("rc", "si", "pr") },
+    { nome: BASE_SUB + " \u00b7 1\u00ba per\u00edodo", disciplinas: L("p1", "oc", "so", "ib") },
+    { nome: BASE_SUB + " \u00b7 2\u00ba per\u00edodo", disciplinas: L("bd", "cs1") },
+    { nome: BASE_SUB + " \u00b7 3\u00ba per\u00edodo", disciplinas: L("pw", "es") },
+    { nome: BASE_SUB + " \u00b7 4\u00ba per\u00edodo", disciplinas: L("rc", "pr", "si") },
+    /* turma do Subsequente sem per\u00edodo no nome: enxerga as disciplinas de todos os per\u00edodos */
+    { nome: BASE_SUB, disciplinas: L("p1", "oc", "so", "ib", "bd", "cs1", "pw", "es", "rc", "pr", "si") },
+    { nome: "T\u00e9cnico em Inform\u00e1tica", disciplinas: L("rc", "pr", "si", "so") }
   ];
+  /* M\u00f3dulos comuns a todos os cursos: ficam ocultos at\u00e9 o professor liberar (painel > Liberar conte\u00fado). */
+  var COMUNS = [["Fundamentos para Sistemas de Informa\u00e7\u00e3o", "fundamentos-de-sistemas-de-informacao"], ["Mapas Mentais de TI", "mapas-mentais"], ["Laborat\u00f3rio 3D", "laboratorio-3d"], ["Recursos de aula", "recursos-de-aula"]];
+  function ehComum(p) { for (var i = 0; i < COMUNS.length; i++) if (COMUNS[i][1] === p) return true; return false; }
+  var NIVEIS = {}; NIVEIS[BASE_INT] = ["1\u00ba ano", "2\u00ba ano", "3\u00ba ano"]; NIVEIS[BASE_SUB] = ["1\u00ba per\u00edodo", "2\u00ba per\u00edodo", "3\u00ba per\u00edodo", "4\u00ba per\u00edodo"];
+  function baseDe(t) { t = String(t || ""); return /integrado/i.test(t) ? BASE_INT : /subsequente|t[e\u00e9]cnico em inform/i.test(t) ? BASE_SUB : ""; }
+  function nivelDe(t) { var m = /([1-4])\s*[\u00ba\u00b0o]?\s*(ano|per[i\u00ed]odo)/i.exec(String(t || "")); return m ? +m[1] : 0; }
   var TKEY = "pt-ultima-turma", LKEY = "pt-turmas-v2";
 
   var URL_ = String(window.RANKING_URL || "").trim();
@@ -61,6 +57,13 @@
   var root = document.documentElement;
 
   function cursoDe(nome) { for (var i = 0; i < CURSOS.length; i++) if (CURSOS[i].nome === nome) return CURSOS[i]; return null; }
+  /* Curso do aluno: pelo ano/per\u00edodo escrito no curso ou no nome da turma; sem isso, pelo nome exato do curso. */
+  function cursoDoPerfil(p) {
+    if (!p) return null;
+    var b = baseDe(p.curso) || baseDe(p.turma), n = nivelDe(p.curso) || nivelDe(p.turma), c = null;
+    if (b && n && NIVEIS[b][n - 1]) c = cursoDe(b + " \u00b7 " + NIVEIS[b][n - 1]);
+    return c || cursoDe(p.curso) || (b ? cursoDe(b) : null);
+  }
   function lerPerfil() {
     try { var p = JSON.parse(localStorage.getItem(PKEY) || "null"); return p && p.id && p.pin && p.nome ? p : null; } catch (e) { return null; }
   }
@@ -101,7 +104,7 @@
     ".pt-list{display:grid;gap:8px;margin-top:6px;max-height:min(52vh,460px);overflow:auto;padding:2px}" +
     ".pt-nomes{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}" +
     ".pt-opt{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;min-height:52px;padding:10px 14px;border:1px solid #D5DDDA;border-radius:12px;background:#fff;color:#16261C;font:600 16px/1.25 " + F + ";text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}" +
-    ".pt-opt[hidden]{display:none}.pt-opt:hover,.pt-opt:focus-visible{border-color:#1F5135;outline:none;background:rgba(31,81,53,.06)}" +
+    ".pt-opt[disabled]{opacity:.5;cursor:default}.pt-opt[hidden]{display:none}.pt-opt:hover,.pt-opt:focus-visible{border-color:#1F5135;outline:none;background:rgba(31,81,53,.06)}" +
     ".pt-opt small{font:400 13px/1.3 " + F + ";color:#5B6871}" +
     ".pt-back{border:0;background:none;padding:6px 0;margin:0 0 6px;color:#163D28;font:600 15px/1 " + F + ";cursor:pointer}" +
     ".pt-busca{margin-bottom:4px}" +
@@ -162,7 +165,6 @@
   }
   function avisar() { try { window.dispatchEvent(new CustomEvent("perfil:mudou", { detail: perfil })); } catch (e) {} }
   /* Restri\u00e7\u00e3o por turma: o aluno s\u00f3 abre as disciplinas do pr\u00f3prio curso. Recursos de aula e Laborat\u00f3rio 3D s\u00e3o de todos. */
-  var COMUNS = [["Recursos de aula", "recursos-de-aula"], ["Laborat\u00f3rio 3D", "laboratorio-3d"]];
   function todasDisc() {
     var m = {}; CURSOS.forEach(function (x) { x.disciplinas.forEach(function (d) { m[d[1]] = d; }); }); return m;
   }
@@ -177,6 +179,7 @@
     if (LIVRE || !perfil) return "v";
     if (VIS === null) VIS = lerVis() || {};
     var v = VIS[k];
+    if (v === undefined && ehComum(k.split("#")[0])) return "o";
     if (v === "o") return "o";
     if (/^\d{4}-\d{2}-\d{2}$/.test(v || "")) return dia() >= v ? "v" : v;
     return "v";
@@ -194,18 +197,20 @@
     }).catch(function () {});
   }
   function minhas() {
-    var c = perfil && cursoDe(perfil.curso); if (!c) return null;
+    var c = cursoDoPerfil(perfil); if (!c) return null;
     var o = window.DISCIPLINAS_POR_TURMA && window.DISCIPLINAS_POR_TURMA[perfil.turma];
     var l = c.disciplinas;
     if (o && o.length) { var t = todasDisc(); l = o.filter(function (f) { return t[f]; }).map(function (f) { return t[f]; }); }
-    return l.filter(function (d) { return regra(d[1]) !== "o"; });
+    return l.concat(comunsLiberados()).filter(function (d) { return regra(d[1]) !== "o"; });
   }
+  /* M\u00f3dulos comuns que o professor liberou para esta turma. */
+  function comunsLiberados() { return COMUNS.filter(function (d) { return regra(d[1]) !== "o"; }); }
   function permitida(pasta) {
     if (LIVRE || !perfil) return true;
     if (regra(pasta) === "o") return false;
     var ms = minhas(); if (!ms) return true;
     if (pasta === "office-visual-img") pasta = "informatica-basica";
-    for (var i = 0; i < COMUNS.length; i++) if (COMUNS[i][1] === pasta) return true;
+    if (ehComum(pasta)) return true;
     if (!todasDisc()[pasta]) return true;
     return ms.some(function (d) { return d[1] === pasta; });
   }
@@ -362,8 +367,9 @@
     "</section>" +
     '<section class="pt-side"><div class="pt-card">' +
       '<div class="pt-step" data-step="1">' +
+        '<button class="pt-back pt-back1" type="button" hidden>\u2190 Voltar</button>' +
         '<h2 id="pt-title">Entrar</h2>' +
-        '<p class="pt-sub">Escolha a sua turma.</p>' +
+        '<p class="pt-sub pt-sub1">Escolha o seu curso.</p>' +
         '<div class="pt-list pt-turmas"></div>' +
         '<div class="pt-msg" role="status" aria-live="polite"></div>' +
         '<p class="pt-note">Primeira vez? Veja o <a href="' + esc(BASE + "como-usar.html") + '">Como usar o portal</a>.</p>' +
@@ -428,19 +434,59 @@
       box1.appendChild(b);
     });
   }
+  /* Entrada em tr\u00eas toques: curso, depois ano/per\u00edodo, depois a turma (a lista vem da planilha). */
+  var nav = { curso: "", nivel: 0 }, listaTurmas = [];
+  function classe(t) { return { base: baseDe(t.curso) || baseDe(t.turma) || "", n: nivelDe(t.curso) || nivelDe(t.turma) || 0 }; }
+  function opcaoTurma(t) { return opcao("<b>" + esc(t.turma) + "</b><small>" + esc(t.curso) + (t.turno ? " \u00b7 " + esc(t.turno) : "") + "</small>", function () { nav.nivel = 0; escolherTurma(t); }); }
   function desenharTurmas(r) {
-    var box1 = q(".pt-turmas");
-    (function () {
-      box1.innerHTML = "";
-      if (!r.turmas.length) { gmsg("Nenhuma turma cadastrada ainda. Avise o professor.", "bad"); return; }
-      r.turmas.forEach(function (t) {
-        box1.appendChild(opcao("<b>" + esc(t.turma) + "</b><small>" + esc(t.curso) + (t.turno ? " \u00b7 " + esc(t.turno) : "") + "</small>", function () { escolherTurma(t); }));
+    listaTurmas = r.turmas || [];
+    var ult = null; try { ult = localStorage.getItem(TKEY); } catch (e) {}
+    var achou = listaTurmas.filter(function (t) { return t.turma === ult; })[0];
+    if (!listaTurmas.length) { q(".pt-turmas").innerHTML = ""; gmsg("Nenhuma turma cadastrada ainda. Avise o professor.", "bad"); return; }
+    if (achou && passo === 1 && !turmaSel && !autoFeito) { autoFeito = true; nav = { curso: classe(achou).base || "outras", nivel: 0 }; escolherTurma(achou); return; }
+    autoFeito = true;
+    desenharEscolha();
+  }
+  function desenharEscolha() {
+    var box1 = q(".pt-turmas"), sub = q(".pt-sub1"), voltar = q(".pt-back1");
+    box1.innerHTML = "";
+    var cl = listaTurmas.map(function (t) { return { t: t, c: classe(t) }; });
+    voltar.hidden = !nav.curso;
+    voltar.onclick = function () { if (nav.nivel) nav.nivel = 0; else nav.curso = ""; desenharEscolha(); };
+    if (!nav.curso) {
+      sub.textContent = "Escolha o seu curso.";
+      [BASE_INT, BASE_SUB].forEach(function (b) {
+        var n = cl.filter(function (x) { return x.c.base === b; }).length;
+        box1.appendChild(opcao("<b>" + esc(b) + "</b><small>" + (b === BASE_INT ? "1\u00ba, 2\u00ba e 3\u00ba ano" : "1\u00ba ao 4\u00ba per\u00edodo") + "</small>", function () { nav.curso = b; desenharEscolha(); }));
       });
-      var ult = null; try { ult = localStorage.getItem(TKEY); } catch (e) {}
-      var achou = r.turmas.filter(function (t) { return t.turma === ult; })[0];
-      if (achou && passo === 1 && !turmaSel && !autoFeito) { autoFeito = true; escolherTurma(achou); }
-      autoFeito = true;
-    })();
+      var outras = cl.filter(function (x) { return !x.c.base; });
+      if (outras.length) box1.appendChild(opcao("<b>Outras turmas</b><small>" + outras.length + " turma(s)</small>", function () { nav.curso = "outras"; desenharEscolha(); }));
+      return;
+    }
+    if (nav.curso === "outras") {
+      sub.textContent = "Escolha a sua turma.";
+      cl.filter(function (x) { return !x.c.base; }).forEach(function (x) { box1.appendChild(opcaoTurma(x.t)); });
+      return;
+    }
+    var daBase = cl.filter(function (x) { return x.c.base === nav.curso; });
+    if (!nav.nivel) {
+      sub.textContent = nav.curso === BASE_INT ? "Escolha o seu ano." : "Escolha o seu per\u00edodo.";
+      NIVEIS[nav.curso].forEach(function (rot, i) {
+        var n = daBase.filter(function (x) { return x.c.n === i + 1; }).length;
+        var b = opcao("<b>" + esc(rot) + "</b><small>" + esc(nav.curso) + (n ? "" : " \u00b7 sem turma cadastrada") + "</small>", function () {
+          var ts = daBase.filter(function (x) { return x.c.n === i + 1; });
+          if (ts.length === 1) { escolherTurma(ts[0].t); return; }
+          nav.nivel = i + 1; desenharEscolha();
+        });
+        if (!n) { b.disabled = true; b.onclick = null; }
+        box1.appendChild(b);
+      });
+      var sem = daBase.filter(function (x) { return !x.c.n; });
+      if (sem.length) box1.appendChild(opcao("<b>Outras turmas deste curso</b><small>" + sem.length + " turma(s) sem ano/per\u00edodo no nome</small>", function () { nav.nivel = -1; desenharEscolha(); }));
+      return;
+    }
+    sub.textContent = "Escolha a sua turma.";
+    daBase.filter(function (x) { return nav.nivel === -1 ? !x.c.n : x.c.n === nav.nivel; }).forEach(function (x) { box1.appendChild(opcaoTurma(x.t)); });
   }
   function escolherTurma(t) {
     turmaSel = t;
@@ -487,7 +533,7 @@
     if (matchMedia("(pointer: fine)").matches) setTimeout(function () { q("#pt-p").focus({ preventScroll: true }); }, 30);
   }
   Array.prototype.forEach.call(screen.querySelectorAll(".pt-back"), function (b) {
-    b.onclick = function () { var n = +b.getAttribute("data-volta"); if (n === 1) { turmaSel = null; irPara(1); carregarTurmas(); } else irPara(n); };
+    b.onclick = function () { var n = +b.getAttribute("data-volta"); if (n === 1) { turmaSel = null; nav.nivel = 0; irPara(1); carregarTurmas(); } else irPara(n); };
   });
 
   function setInert(on) {
@@ -562,7 +608,7 @@
   function bmsg(t, cl) { var m = box.querySelector(".pt-msg"); if (m) { m.textContent = t; m.className = "pt-msg " + (cl || ""); } }
 
   function painel() {
-    var d = dados(), c = cursoDe(perfil.curso) ? { disciplinas: minhas() || cursoDe(perfil.curso).disciplinas } : { disciplinas: [].concat.apply([], CURSOS.map(function (x) { return x.disciplinas; })).filter(function (x, i, a) { return a.map(function (y) { return y[1]; }).indexOf(x[1]) === i; }) }, atual = pastaAtual();
+    var d = dados(), c = cursoDoPerfil(perfil) ? { disciplinas: (minhas() || cursoDoPerfil(perfil).disciplinas).filter(function (x) { return !ehComum(x[1]); }) } : { disciplinas: [].concat.apply([], CURSOS.map(function (x) { return x.disciplinas; })).filter(function (x, i, a) { return a.map(function (y) { return y[1]; }).indexOf(x[1]) === i; }) }, atual = pastaAtual();
     box.innerHTML =
       '<button class="pt-close" id="pt-x" type="button" aria-label="Fechar">\u00d7</button>' +
       "<h3>Ol\u00e1, " + esc(primeiroNome()) + "</h3>" +
@@ -572,8 +618,8 @@
         return '<li><a href="' + esc(BASE + x[1] + "/") + '"' + (atual === x[1] ? ' aria-current="page"' : "") + ">" + esc(x[0]) + "<span>\u2192</span></a></li>";
       }).join("") + "</ul>" +
       (relAtual().indexOf("/") > 0 ? '<h4>Minhas anota\u00e7\u00f5es desta p\u00e1gina</h4><label for="pt-nota" class="pt-sr">Anota\u00e7\u00f5es desta p\u00e1gina</label><textarea id="pt-nota" rows="4" placeholder="Escreva aqui o que quiser lembrar."></textarea><p class="pt-note" id="pt-nota-st">Fica salvo s\u00f3 neste aparelho, tamb\u00e9m sem internet.</p>' : "") +
-      "<h4>Para todos</h4>" +
-      '<ul class="pt-menu">' + COMUNS.map(function (x) {
+      (comunsLiberados().length ? "<h4>Liberados pelo professor</h4>" : "") +
+      '<ul class="pt-menu">' + comunsLiberados().map(function (x) {
         return '<li><a href="' + esc(BASE + x[1] + "/") + '"' + (atual === x[1] ? ' aria-current="page"' : "") + ">" + esc(x[0]) + "<span>\u2192</span></a></li>";
       }).join("") + "</ul>" +
       (d ? "<h4>Este material</h4>" + '<p class="pt-stat">' + d.feitas + " de " + d.total + " feitas \u00b7 " + d.pontos + " pontos</p>" +
@@ -635,7 +681,7 @@
   });
 
   // Para a p\u00e1gina inicial organizar as disciplinas pelo curso do aluno
-  window.PORTAL_ALUNO = { perfil: function () { return perfil; }, cursos: CURSOS, comuns: COMUNS, permitida: permitida, ultima: ultima, sequencia: sequencia, minhas: minhas, entrar: mostrarEntrada,
+  window.PORTAL_ALUNO = { perfil: function () { return perfil; }, cursos: CURSOS, comuns: COMUNS, meuCurso: function () { return cursoDoPerfil(perfil); }, comunsLiberados: comunsLiberados, permitida: permitida, ultima: ultima, sequencia: sequencia, minhas: minhas, entrar: mostrarEntrada,
     dias: dias, visitas: visitas, codigo: codigo, materiais: materiais, jornada: jornada, regra: regra };
 
   // Quem entrou quando o envio ainda n\u00e3o estava ligado \u00e9 cadastrado na planilha agora (uma vez por visita).
