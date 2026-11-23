@@ -3,25 +3,104 @@
 <head>
 <meta charset="utf-8">
 <script>try{var pa=JSON.parse(localStorage.getItem("perfil:aluno")||"null");if(!(pa&&pa.id&&pa.pin)&&!/[?&]professor\b/.test(location.search))document.documentElement.classList.add("pt-gate")}catch(e){}</script><style>html.pt-gate body>*:not(.pt-screen){visibility:hidden}
-header{background:linear-gradient(125deg,#0B1F3B 0%,#0E2A4F 60%,#0B3A2A 100%)!important;color:#E2E8F0!important;border-bottom:3px solid #00C853;position:relative;overflow:hidden}
-header::after{content:"";position:absolute;right:-90px;bottom:-140px;width:420px;height:300px;border-radius:50%;border:34px solid rgba(0,200,83,.16);pointer-events:none}
-header .wrap{position:relative;z-index:1}
-.marca{display:flex;align-items:center;gap:14px}
-.marca svg{flex:none;width:64px;height:64px}
-header h1{color:#FFFFFF}
-header .eyebrow{color:#3BE37A!important}
-header p{color:#CBD5E1}
-.dois{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin:28px 0 32px}
-.dois a.card{display:block;border:2px solid var(--accent);margin:0}
-a.card.jogos{border-color:#0B1F3B;background:linear-gradient(125deg,#0B1F3B,#0E2A4F 70%,#0B3A2A);color:#E2E8F0}
-a.card.jogos h2{color:#3BE37A}a.card.jogos p{color:#CBD5E1}a.card.jogos .meta{color:#93C5A8}a.card.jogos .go{color:#3BE37A}
-a.card.jogos:hover,a.card.jogos:focus-visible{border-color:#3BE37A}
+/* ===== Trilha Rali HUB ===== */
+.skip{position:absolute;left:-999px;top:8px;z-index:10000;background:#0B1F3B;color:#fff;padding:10px 14px;border-radius:8px}.skip:focus{left:8px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hub{display:grid;grid-template-columns:292px 1fr;min-height:100vh}
+.hub-side{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;background:var(--panel);border-right:1px solid var(--line);padding:22px 16px 0;overflow:hidden auto}
+.hub-logo{display:block;color:var(--ink);text-decoration:none;margin:0 6px 26px}
+.hub-logo svg{display:block;width:100%;max-width:230px;height:auto}
+.hub-nav ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.hub-nav a{display:flex;align-items:center;gap:14px;min-height:48px;padding:0 16px;border-radius:12px;color:var(--ink);text-decoration:none;font-weight:600;font-size:16.5px;white-space:nowrap}
+.hub-nav a svg{flex:none;width:24px;height:24px}
+.hub-nav a:hover{background:var(--accent-soft,#DDF5E6)}
+.hub-nav a:focus-visible{outline:3px solid var(--a11y-focus,#0B6BCB);outline-offset:2px}
+.hub-nav a[aria-current="page"]{background:linear-gradient(90deg,#00A844,#22C55E);color:#fff;box-shadow:0 6px 14px rgba(0,168,68,.28)}
+.hub-ifs{margin-top:auto;position:relative;padding:22px 6px 70px;border-top:1px solid var(--line);display:flex;align-items:center;gap:12px;font-size:14px;line-height:1.25}
+.hub-ifs img{width:52px;height:auto}
+.hub-ifs b{display:block;font-size:15px;letter-spacing:.02em}
+.hub-ifs::after{content:"";position:absolute;left:-16px;right:-16px;bottom:-30px;height:90px;background:linear-gradient(90deg,#00A844,#3BE37A);border-radius:50% 50% 0 0/100% 70% 0 0;opacity:.9}
+.hub-main{min-width:0;display:flex;flex-direction:column}
+.hub-top{display:flex;align-items:center;gap:18px;padding:16px clamp(16px,3vw,36px);background:var(--bg)}
+.hub-ola{min-width:0}
+.hub-ola b{display:block;font:800 26px/1.15 "Source Sans 3",system-ui,sans-serif;color:var(--ink)}
+.hub-ola span{display:block;color:var(--ink-2);font-size:16px}
+.hub-top .busca{flex:1;max-width:560px;margin-left:auto}
+.hub-top .busca input{border-radius:999px;padding-left:46px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(15,23,42,.06);background:var(--panel) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%235D6B7E' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='M21 21l-4.3-4.3'/%3E%3C/svg%3E") no-repeat 16px 50%}
+.hub-top .busca-res{position:absolute;left:0;right:0;z-index:50;box-shadow:0 12px 30px rgba(0,0,0,.18)}
+.hub-avatar{flex:none;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;border:3px solid #00A844;background:var(--panel);color:#0B1F3B;cursor:pointer}
+.hub-avatar svg{width:28px;height:28px}
+.hub-avatar:focus-visible,.hub-burger:focus-visible{outline:3px solid var(--a11y-focus,#0B6BCB);outline-offset:2px}
+.hub-burger{display:none;flex:none;width:46px;height:46px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.hub main{padding:8px clamp(16px,3vw,36px) 40px}
+.hub main .wrap{max-width:1180px;margin:0}
+.hero{position:relative;overflow:hidden;display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:8px;border-radius:22px;padding:28px 0 28px clamp(20px,3vw,40px);background:linear-gradient(115deg,#F2FBF4 0%,#E3F7E8 48%,#7EE2A0 75%,#22C55E 100%);box-shadow:0 8px 24px rgba(0,120,53,.14)}
+.hero::before{content:"";position:absolute;right:-6%;bottom:-40%;width:70%;height:90%;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.35) 30%,rgba(255,255,255,.35) 34%,transparent 34%,transparent 52%,rgba(255,255,255,.25) 52%,rgba(255,255,255,.25) 55%,transparent 55%);pointer-events:none}
+.hero h1{margin:0;font:900 italic clamp(38px,5vw,64px)/1 "Source Sans 3",system-ui,sans-serif;color:#0F172A;letter-spacing:-.01em;display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.pill{display:inline-block;padding:2px 14px 4px;border-radius:10px;background:linear-gradient(90deg,#00A844,#22C55E);color:#fff;font-style:italic;transform:skewX(-8deg)}
+.hero p{margin:14px 0 22px;max-width:34ch;font-size:clamp(17px,1.7vw,22px);line-height:1.35;color:#1E293B}
+.btn-hub{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 26px;border-radius:999px;background:linear-gradient(90deg,#008A3A,#00A844);color:#fff;font-weight:800;font-size:19px;text-decoration:none;box-shadow:0 8px 18px rgba(0,138,58,.35)}
+.btn-hub svg{width:18px;height:18px;fill:#FACC15}
+.btn-hub:hover{filter:brightness(1.07)}.btn-hub:focus-visible{outline:3px solid #0B1F3B;outline-offset:3px}
+.hero img{position:relative;width:100%;height:auto;max-height:300px;object-fit:contain;object-position:right center}
+.sec-hub{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:30px 0 14px}
+.sec-hub h2{display:flex;align-items:center;gap:12px;margin:0;font:800 clamp(22px,2.3vw,28px)/1.2 "Source Sans 3",system-ui,sans-serif;color:var(--ink)}
+.sec-hub h2 svg{width:34px;height:34px;color:#00A844}
+.sec-hub a{color:var(--accent);font-weight:700;text-decoration:none;white-space:nowrap}.sec-hub a:hover{text-decoration:underline}
+.jogos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.jogo{--c:#00A844;--f:#EAF9EF;position:relative;display:flex;gap:14px;align-items:flex-start;min-height:128px;padding:18px 18px 18px 16px;border-radius:18px;background:var(--f);border:1px solid color-mix(in srgb,var(--c) 18%,transparent);color:#0F172A;text-decoration:none;box-shadow:0 4px 14px rgba(15,23,42,.06);transition:transform .15s ease,box-shadow .15s ease}
+.jogo:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(15,23,42,.12)}
+.jogo:focus-visible{outline:3px solid var(--c);outline-offset:3px}
+.jogo>svg{flex:none;width:52px;height:52px;color:var(--c)}
+.jogo b{display:block;font-size:21px;line-height:1.15;margin-bottom:4px}
+.jogo span{display:block;font-size:16px;line-height:1.3;color:#334155;padding-right:34px}
+.jogo i{position:absolute;right:14px;bottom:14px;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#fff;color:var(--c);box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.jogo i svg{width:18px;height:18px}
+.jogo.nfc{--c:#0E9F45;--f:#E6F8EC}.jogo.ctf{--c:#E8590C;--f:#FFF1E2}.jogo.cruz{--c:#1D6FE0;--f:#E4F0FF}.jogo.desv{--c:#7C3AED;--f:#F1EAFF}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:18px}
+.atal{display:flex;align-items:center;gap:16px;min-height:104px;padding:16px 18px;border-radius:18px;background:var(--panel);border:1px solid var(--line);color:var(--ink);text-decoration:none;box-shadow:0 4px 14px rgba(15,23,42,.05);transition:transform .15s ease}
+.atal:hover{transform:translateY(-2px)}.atal:focus-visible{outline:3px solid var(--a11y-focus,#0B6BCB);outline-offset:3px}
+.atal>svg{flex:none;width:58px;height:58px}
+.atal div{flex:1;min-width:0}.atal b{display:block;font-size:20px;line-height:1.2}.atal span{display:block;color:var(--ink-2);font-size:15.5px;line-height:1.3}
+.atal .seta{width:22px;height:22px;flex:none;color:var(--ink-2)}
+.faixa{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-top:34px;padding:22px clamp(18px,3vw,36px);border-radius:20px;background:linear-gradient(100deg,#0B3A2A 0%,#0E5A3A 55%,#0B3A2A 100%);color:#fff;position:relative;overflow:hidden}
+.faixa>svg{flex:none;width:76px;height:76px}
+.faixa h2{margin:0;font:900 clamp(22px,2.4vw,30px)/1.1 "Source Sans 3",system-ui,sans-serif;color:#fff;padding-right:20px;border-right:1px solid rgba(255,255,255,.25)}
+.faixa ul{display:flex;flex-wrap:wrap;gap:10px 24px;margin:0;padding:0;list-style:none;font-weight:700;font-size:17px;color:#fff}
+.faixa li::before{content:"✓";color:#3BE37A;font-weight:900;margin-right:8px}
+.faixa .graf{margin-left:auto;width:90px;height:76px}
+#trilhas,#biblioteca{scroll-margin-top:16px}
+@media (prefers-color-scheme:dark){
+  .hub-avatar{color:#E2E8F0}
+  .hero{background:linear-gradient(115deg,#0F2A1F 0%,#0E3A27 50%,#0E6B3A 80%,#16A34A 100%)}
+  .hero h1,.hero p{color:#F1F5F9}
+  .jogo{background:color-mix(in srgb,var(--c) 14%,var(--panel));color:var(--ink)}.jogo span{color:var(--ink-2)}.jogo i{background:var(--panel)}
+  .jogo.ctf{--c:#FB923C}.jogo.cruz{--c:#60A5FA}.jogo.desv{--c:#A78BFA}.jogo.nfc{--c:#3BE37A}
+}
+@media (max-width:1180px){.jogos{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:1000px){
+  .hub{grid-template-columns:1fr}
+  .hub-side{position:fixed;left:0;top:0;bottom:0;width:min(300px,86vw);z-index:9000;transform:translateX(-105%);transition:transform .2s ease;box-shadow:0 0 40px rgba(0,0,0,.3)}
+  .hub-side.aberto{transform:none}
+  .hub-burger{display:grid;place-items:center}
+  .hub-veu{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:8999}
+  .hub-veu[hidden]{display:none}
+  .trio{grid-template-columns:1fr}
+  .hero{grid-template-columns:1fr;padding-right:20px}.hero img{max-height:220px;object-position:center}
+}
+@media (max-width:640px){
+  .hub-top{flex-wrap:wrap;gap:12px}.hub-ola{flex:1}.hub-ola b{font-size:21px}.hub-ola span{font-size:14px}
+  .hub-top .busca{order:3;flex-basis:100%;max-width:none}
+  .jogos{grid-template-columns:1fr}
+  .faixa h2{border:0;padding:0}.faixa .graf{display:none}
+}
+@media (prefers-reduced-motion:reduce){.jogo,.atal,.hub-side{transition:none}}
 .rodape{background:#0B1F3B;color:#E2E8F0;border-top:3px solid #00C853;margin-top:40px;padding:18px clamp(16px,5vw,64px);font-size:14px}
 .rodape b{color:#FFFFFF}.rodape span{color:#3BE37A}
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Disciplinas do Prof. Eber</title>
-<meta name="description" content="Escolha a sua disciplina. Os materiais são interativos e funcionam no computador e no celular.">
+<title>Trilha Rali HUB · Prof. Eber Santana</title>
+<meta name="description" content="Trilha Rali HUB: estude e jogue. Disciplinas interativas e jogos de aprendizagem do Prof. Eber Santana, IFS Campus Tobias Barreto.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400&display=swap">
@@ -102,25 +181,76 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
 <script src="offline.js" defer></script>
 </head>
 <body>
-<header><div class="wrap">
-  <span class="eyebrow">Prof. Eber Santana · IFS</span>
-  <div class="marca"><svg viewBox="0 0 128 128" aria-hidden="true"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3BE37A"/><stop offset="1" stop-color="#00A844"/></linearGradient></defs><path d="M8 116 C 34 92, 92 130, 122 98" fill="none" stroke="url(#mg)" stroke-width="11" stroke-linecap="round"/><path d="M64 60 C 50 50, 30 48, 14 52 v46 c16-4 36-2 50 8 c14-10 34-12 50-8 V52 c-16-4-36-2-50 8z" fill="#0B1F3B" stroke="url(#mg)" stroke-width="3.5" stroke-linejoin="round"/><path d="M64 60 v46" stroke="url(#mg)" stroke-width="3"/><path d="M24 66 c10-2 22-1 32 4 M24 78 c10-2 22-1 32 4 M104 66 c-10-2-22-1-32 4 M104 78 c-10-2-22-1-32 4" stroke="#E2E8F0" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M64 8 L102 23 L64 38 L26 23 Z" fill="#0B1F3B" stroke="url(#mg)" stroke-width="2.5" stroke-linejoin="round"/><path d="M44 30 v8 c0 6 40 6 40 0 v-8 L64 38z" fill="#0B1F3B" stroke="url(#mg)" stroke-width="2.5" stroke-linejoin="round"/><path d="M64 23 L96 28 v12" fill="none" stroke="#FACC15" stroke-width="2.2" stroke-linecap="round"/><path d="M93 39 h6 l1.5 8 h-9z" fill="#FACC15"/></svg><h1>Ambientes de estudo</h1></div>
-  <p>Escolha a sua disciplina. Os materiais são interativos e funcionam no computador e no celular. <a href="como-usar.html" style="color:#3BE37A">Como usar o portal</a></p>
-</div></header>
-<main><div class="wrap">
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<div class="hub">
+<aside class="hub-side" id="hub-side" aria-label="Menu principal">
+  <a class="hub-logo" href="./" aria-label="Trilha Rali HUB, página inicial">
+    <svg viewBox="0 0 250 70" aria-hidden="true"><defs><linearGradient id="trg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3BE37A"/><stop offset="1" stop-color="#00A844"/></linearGradient></defs>
+      <text x="0" y="60" font-family="'Arial Black','Source Sans 3',sans-serif" font-weight="900" font-style="italic" font-size="68" letter-spacing="-6" fill="url(#trg)">TR</text>
+      <text x="104" y="32" font-family="'Source Sans 3',sans-serif" font-weight="800" font-style="italic" font-size="29" fill="currentColor">Trilha Rali</text>
+      <g transform="skewX(-12)"><rect x="118" y="38" width="70" height="28" rx="6" fill="#00A844"/></g>
+      <text x="113" y="60" font-family="'Arial Black','Source Sans 3',sans-serif" font-weight="900" font-style="italic" font-size="22" fill="#fff">HUB</text>
+    </svg>
+  </a>
+  <nav class="hub-nav" aria-label="Seções do HUB"><ul>
+    <li><a href="./" aria-current="page"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 2 11.5h3V21h5.5v-6h3v6H19v-9.5h3z"/></svg>Início</a></li>
+    <li><a href="../TrilhaRali/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="12" rx="6"/><path d="M6.5 13h4M8.5 11v4"/><circle cx="15.5" cy="12" r=".8" fill="currentColor"/><circle cx="17.5" cy="14" r=".8" fill="currentColor"/></svg>Jogos e Desafios</a></li>
+    <li><a href="#trilhas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 12 10 5 10-5M2 17l10 5 10-5"/></svg>Trilhas de Aprendizagem</a></li>
+    <li><a href="#" id="nav-ranking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20v-5M10 20V9M15 20v-8M20 20V4"/></svg>Ranking</a></li>
+    <li><a href="../startnosestudos/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.5 13.8-1.5 7.7 5-2.7 5 2.7-1.5-7.7"/></svg>Conquistas</a></li>
+    <li><a href="#biblioteca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>Biblioteca</a></li>
+    <li><a href="professor.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M22 9 12 4 2 9l10 5z"/><path d="M6 11v5c3 2.7 9 2.7 12 0v-5M22 9v5"/></svg>Área do Professor</a></li>
+  </ul></nav>
+  <div class="hub-ifs"><img src="img/ifs-mark.png" alt="Logotipo do Instituto Federal" width="52" height="70"><div><b>INSTITUTO FEDERAL</b>Sergipe<br>Campus Tobias Barreto</div></div>
+</aside>
+<div class="hub-veu" id="hub-veu" hidden></div>
+<div class="hub-main">
+  <div class="hub-top">
+    <button class="hub-burger" id="hub-burger" type="button" aria-controls="hub-side" aria-expanded="false" aria-label="Abrir menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="hub-ola"><b id="hub-ola">Olá, estudante! 👋</b><span>Que bom te ver no Trilha Rali HUB.</span></div>
+    <div class="busca" role="search">
+      <label for="busca-q" class="sr-only">Buscar no portal</label>
+      <input id="busca-q" type="search" autocomplete="off" placeholder="Buscar disciplinas, laboratórios, conteúdos…" aria-controls="busca-res">
+      <ul class="busca-res" id="busca-res" hidden></ul>
+      <p class="sr-only" id="busca-n" role="status" aria-live="polite"></p>
+    </div>
+    <button class="hub-avatar" id="hub-avatar" type="button" aria-label="Meu perfil e progresso"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.2"/><path d="M3.5 21c.8-4.6 4.4-7 8.5-7s7.7 2.4 8.5 7z"/></svg></button>
+  </div>
+<main id="conteudo"><div class="wrap">
+  <section class="hero" aria-labelledby="hero-t">
+    <div>
+      <h1 id="hero-t">Trilha Rali <span class="pill">HUB</span></h1>
+      <p>Aprenda, pratique e evolua com desafios gamificados de tecnologia.</p>
+      <a class="btn-hub" href="../TrilhaRali/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v16l14-8z"/></svg>Explorar Jogos</a>
+    </div>
+    <img src="img/hub-hero.webp" alt="" width="900" height="458">
+  </section>
+
+  <div class="sec-hub">
+    <h2><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 6h10a6 6 0 0 1 0 12c-1.7 0-2.6-1.4-3.4-2.4h-3.2C9.6 16.6 8.7 18 7 18A6 6 0 0 1 7 6zm-.5 3.5v2h-2v1.5h2v2H8v-2h2v-1.5H8v-2zm9.5 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm2 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>Nossos Jogos e Desafios</h2>
+    <a href="../TrilhaRali/">Ver todos →</a>
+  </div>
+  <div class="jogos">
+    <a class="jogo nfc" href="../TrilhaRali/#/rali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="2.2" fill="currentColor"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19 5a10 10 0 0 1 0 14M5 19A10 10 0 0 1 5 5"/></svg><div><b>Rali NFC</b><span>Desafios com tecnologia NFC</span></div><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+    <a class="jogo ctf" href="../TrilhaRali/#/ctf"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h1.8v18H5z"/><path fill="currentColor" d="M7 4c3-1.6 5.5 1.8 9 .4 1.3-.5 3-.4 4 .2-1 2.1-1 4.5 0 6.6-2.6-1.2-5.6 1.2-9 .2-1.6-.5-3-.4-4 .2z"/></svg><div><b>CTF Online</b><span>Capture as bandeiras</span></div><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+    <a class="jogo cruz" href="../TrilhaRali/#/cruzada"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 2.5a2.5 2.5 0 0 1 2.5 2.5v1H15a1.5 1.5 0 0 1 1.5 1.5V11h1a2.5 2.5 0 1 1 0 5h-1v3.5A1.5 1.5 0 0 1 15 21h-3.5v-1a2.5 2.5 0 1 0-5 0v1H3a1.5 1.5 0 0 1-1.5-1.5V16H3a2.5 2.5 0 1 0 0-5H1.5V7.5A1.5 1.5 0 0 1 3 6h3.5V5A2.5 2.5 0 0 1 9 2.5z"/></svg><div><b>Cruzada Online</b><span>Conhecimento de forma divertida</span></div><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+    <a class="jogo desv" href="../TrilhaRali/#/desvendando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 6 6"/></svg><div><b>Desvendando</b><span>Investigue, analise e resolva</span></div><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+  </div>
+
+  <div class="trio">
+    <a class="atal" href="../startnosestudos/"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 10h24v14a12 12 0 0 1-24 0z" fill="#FACC15"/><path d="M20 14h-8c0 9 4 14 10 15M44 14h8c0 9-4 14-10 15" fill="none" stroke="#EAB308" stroke-width="4"/><path d="M28 35h8v9h-8z" fill="#EAB308"/><rect x="21" y="44" width="22" height="7" rx="2" fill="#CA8A04"/><path d="m32 14 2.5 5 5.5.8-4 3.9 1 5.4-5-2.6-5 2.6 1-5.4-4-3.9 5.5-.8z" fill="#FEF08A"/><path d="M8 26c0 12 6 20 14 22M56 26c0 12-6 20-14 22" fill="none" stroke="#22C55E" stroke-width="3" stroke-linecap="round"/></svg><div><b>Conquistas</b><span>Desbloqueie badges e registre sua evolução.</span></div><svg class="seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></a>
+    <a class="atal" href="#trilhas"><svg viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="#00A844" stroke-width="5" stroke-linejoin="round"><path d="M32 8 6 21l26 13 26-13z" fill="#DDF5E6"/><path d="m6 32 26 13 26-13M6 43l26 13 26-13"/></svg><div><b>Trilhas de Aprendizagem</b><span>Roteiros de estudo com atividades práticas.</span></div><svg class="seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></a>
+    <a class="atal" href="#biblioteca"><svg viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="#00A844" stroke-width="5" stroke-linejoin="round"><path d="M6 12h18a8 8 0 0 1 8 8v34a6 6 0 0 0-6-6H6zM58 12H40a8 8 0 0 0-8 8v34a6 6 0 0 1 6-6h20z"/></svg><div><b>Biblioteca</b><span>Materiais, guias e referências de apoio.</span></div><svg class="seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></a>
+  </div>
+
   <div class="painel-estudo" id="painel-estudo" hidden>
     <div class="continuar" id="continuar" hidden>
       <div><small>Continuar de onde parou</small><b id="continuar-t"></b></div>
       <a id="continuar-a" href="#">Continuar</a>
     </div>
     <p class="seq" id="seq" role="status"></p>
-    <div class="busca" role="search">
-      <label for="busca-q">Buscar no portal</label>
-      <input id="busca-q" type="search" autocomplete="off" placeholder="Ex.: subnetting, SQL, requisitos" aria-controls="busca-res">
-      <ul class="busca-res" id="busca-res" hidden></ul>
-      <p class="sr-only" id="busca-n" role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"></p>
-    </div>
   </div>
+  <div id="trilhas"></div>
   <section id="meu-curso" hidden>
     <h2 class="sec" style="margin-bottom:2px">Suas disciplinas</h2>
     <p class="meta" id="meu-curso-titulo" style="margin:0 0 12px"></p>
@@ -130,22 +260,10 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
     <p><b>Entre no portal</b> para ver as disciplinas do seu curso e salvar o seu progresso.</p>
     <button type="button" id="entrar-btn">Entrar</button>
   </div>
-<div class="dois">
-  <a class="card" href="../startnosestudos/" aria-label="Abrir Start nos Estudos: jornadas de aprendizado">
-    <span class="meta">Novo · pontos, níveis e conquistas</span>
-    <h2>Start nos Estudos</h2>
-    <p>Explore o mundo das disciplinas em trilhas, cumpra missões e acompanhe a sua evolução.</p>
-    <span class="go" aria-hidden="true">Explorar →</span>
-  </a>
-  <a class="card jogos" href="../TrilhaRali/" aria-label="Abrir Trilha Rali: jogos para fixar o conteúdo">
-    <span class="meta">Jogos · Rali NFC, CTF, Cruzada e Desvendando</span>
-    <h2>Trilha Rali</h2>
-    <p>Fixe o que estudou jogando: capture bandeiras, resolva cruzadas e desvende casos com a turma.</p>
-    <span class="go" aria-hidden="true">Jogar →</span>
-  </a>
-  </div>
+
   <section id="por-curso" aria-labelledby="pc-titulo">
-    <h2 class="sec" id="pc-titulo">Disciplinas por curso</h2>
+    <div id="biblioteca"></div>
+    <h2 class="sec" id="pc-titulo">Biblioteca · disciplinas por curso</h2>
     <div class="pc-tabs" role="tablist" aria-label="Cursos" id="pc-tabs"></div>
     <p class="pc-ato" id="pc-ato"></p>
     <p class="pc-leg"><span><i class="pc-st int"></i> Interativa (pontos, laboratórios e missões)</span><span><i class="pc-st mat"></i> Materiais (apostila e laboratórios)</span><span><i class="pc-st breve"></i> Em produção</span></p>
@@ -250,9 +368,17 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
       <span class="go" aria-hidden="true">Abrir<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
     </a>
   </div>
+
+  <section class="faixa" aria-label="Desenvolva suas habilidades">
+    <svg viewBox="0 0 80 80" aria-hidden="true"><rect x="10" y="14" width="60" height="40" rx="5" fill="none" stroke="#E2E8F0" stroke-width="4"/><path d="M4 60h72l-6 8H10z" fill="#E2E8F0"/><path d="m30 27-7 7 7 7M50 27l7 7-7 7M43 24l-6 20" fill="none" stroke="#3BE37A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <h2>Desenvolva suas<br>habilidades em Tecnologia</h2>
+    <ul><li>Prática</li><li>Desafios</li><li>Conhecimento</li><li>Evolução</li></ul>
+    <svg class="graf" viewBox="0 0 90 76" aria-hidden="true"><rect x="6" y="50" width="16" height="22" rx="3" fill="#22C55E"/><rect x="30" y="38" width="16" height="34" rx="3" fill="#22C55E"/><rect x="54" y="24" width="16" height="48" rx="3" fill="#3BE37A"/><path d="M6 40 36 22l12 8 30-22" fill="none" stroke="#3BE37A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="m66 6 14 1-3 13" fill="none" stroke="#3BE37A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </section>
   <footer>O progresso fica salvo no navegador do aparelho que você usar.</footer>
 </div></main>
 <div class="rodape"><div class="wrap"><b>Instituto Federal de Sergipe (IFS) · Campus Tobias Barreto</b><br><span>Desenvolvido e supervisionado pelo Professor Eber Santana</span></div></div>
+</div></div>
 <script src="config.js"></script>
 <script src="progresso-turma.js"></script>
 <script>
@@ -359,6 +485,21 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
   }
   window.addEventListener("perfil:mudou", function () { doAluno(); desenha(); });
   doAluno(); desenha();
+})();
+</script>
+<script>
+(function () {
+  var P = window.PORTAL_ALUNO, side = document.getElementById("hub-side"), veu = document.getElementById("hub-veu"), bur = document.getElementById("hub-burger");
+  function menu(abrir) { side.classList.toggle("aberto", abrir); veu.hidden = !abrir; bur.setAttribute("aria-expanded", abrir ? "true" : "false"); if (abrir) { var f = side.querySelector("a"); if (f) f.focus(); } }
+  bur.onclick = function () { menu(!side.classList.contains("aberto")); };
+  veu.onclick = function () { menu(false); };
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && side.classList.contains("aberto")) { menu(false); bur.focus(); } });
+  side.addEventListener("click", function (e) { if (e.target.closest("a") && side.classList.contains("aberto")) menu(false); });
+  function painel() { var f = document.querySelector(".pt-fab"); if (P && P.perfil() && f) f.click(); else if (P) P.entrar(); }
+  document.getElementById("hub-avatar").onclick = function (e) { e.stopPropagation(); painel(); };
+  document.getElementById("nav-ranking").onclick = function (e) { e.preventDefault(); e.stopPropagation(); painel(); };
+  function ola() { var p = P && P.perfil(), n = p ? (p.apelido || String(p.nome || "").split(" ")[0]) : ""; document.getElementById("hub-ola").textContent = "Ol\u00e1, " + (n || "estudante") + "! \ud83d\udc4b"; }
+  window.addEventListener("perfil:mudou", ola); ola();
 })();
 </script>
 <script src="acessibilidade.js" defer></script>
