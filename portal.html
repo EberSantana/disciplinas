@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trilha Rali HUB · Estudar e jogar</title>
+<meta name="description" content="Trilha Rali HUB do Prof. Eber Santana (IFS Campus Tobias Barreto): Ambientes de Estudo e Trilha Rali, os jogos de aprendizagem.">
+<meta name="theme-color" content="#0B1F3B">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>
+:root{--bg:#F4F6F8;--panel:#FFFFFF;--ink:#0F172A;--ink2:#475569;--line:#D5DBE3;--chip:#F1F5F9}
+@media (prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#071225;--panel:#0F1E36;--ink:#F1F5F9;--ink2:#B8C4D6;--line:#22324D;--chip:#132743}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:radial-gradient(1200px 600px at 50% -10%,rgba(34,197,94,.18),transparent 70%),var(--bg);color:var(--ink);font-family:"Source Sans 3","Segoe UI",system-ui,sans-serif;font-size:17px;line-height:1.5}
+.topo{text-align:center;padding:clamp(32px,6vw,64px) 20px 10px}
+.topo img.logo{width:min(380px,82vw);height:auto}
+.risco{width:84px;height:5px;border-radius:9px;margin:18px auto 22px;background:linear-gradient(90deg,#00A844,#22C55E)}
+.topo h1{margin:0;font:900 italic clamp(28px,4.2vw,46px)/1.1 "Source Sans 3",system-ui,sans-serif;color:#00873A}
+@media (prefers-color-scheme:dark){.topo h1{color:#3BE37A}}
+.topo p{max-width:60ch;margin:14px auto 0;color:var(--ink2);font-size:clamp(16px,1.6vw,19px)}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;width:min(1080px,100%);margin:34px auto 0;padding:0 20px}
+.card{display:flex;flex-direction:column;align-items:center;text-align:center;padding:36px 32px 30px;border-radius:24px;background:var(--panel);border:1px solid var(--line);box-shadow:0 12px 32px rgba(15,23,42,.08)}
+.ico{display:grid;place-items:center;width:96px;height:96px;border-radius:50%;color:#fff;margin-bottom:20px}
+.ico svg{width:46px;height:46px}
+.est .ico{background:linear-gradient(135deg,#22C55E,#007A35);box-shadow:0 10px 28px rgba(0,168,68,.4)}
+.jog .ico{background:linear-gradient(135deg,#7C3AED,#2563EB);box-shadow:0 10px 28px rgba(99,102,241,.4)}
+.card h2{margin:0;font:800 clamp(26px,2.6vw,32px)/1.15 "Source Sans 3",system-ui,sans-serif}
+.card>p{margin:12px 0 18px;color:var(--ink2);max-width:36ch}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 0 24px;padding:0;list-style:none}
+.chips li{padding:5px 14px;border-radius:999px;border:1px solid var(--line);background:var(--chip);color:var(--ink2);font-size:15px;font-weight:600}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:58px;margin-top:auto;border-radius:14px;color:#fff;font-weight:800;font-size:20px;text-decoration:none;transition:filter .15s,transform .15s}
+.btn svg{width:22px;height:22px}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn:focus-visible{outline:3px solid #0B6BCB;outline-offset:3px}
+.est .btn{background:linear-gradient(90deg,#008A3A,#00A844);box-shadow:0 10px 22px rgba(0,138,58,.32)}
+.jog .btn{background:linear-gradient(90deg,#6D28D9,#2563EB);box-shadow:0 10px 22px rgba(79,70,229,.32)}
+.nota{margin:14px 0 0;font-size:15px;color:var(--ink2)}
+.prof{text-align:center;margin:30px 20px 0;color:var(--ink2);font-size:16px}
+.prof a{color:#00873A;font-weight:700}
+@media (prefers-color-scheme:dark){.prof a{color:#3BE37A}}
+footer{margin-top:auto;padding-top:40px}
+.rodape{background:#0B1F3B;color:#E2E8F0;border-top:3px solid #00C853;padding:16px 20px;display:flex;align-items:center;justify-content:center;gap:14px;font-size:14px}
+.rodape img{width:40px;height:auto}.rodape b{display:block;color:#fff}.rodape span{color:#3BE37A}
+@media (max-width:760px){.cards{grid-template-columns:1fr;gap:18px}.card{padding:28px 20px 24px}}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}}
+</style>
+</head>
+<body>
+<header class="topo">
+  <picture><source srcset="img/logo-hub-escuro.png" media="(prefers-color-scheme: dark)"><img class="logo" src="img/logo-hub.png" alt="Trilha Rali HUB" width="520" height="172"></picture>
+  <div class="risco" aria-hidden="true"></div>
+  <h1>Onde estudar e jogar se encontram</h1>
+  <p>Estude com materiais interativos e fixe o conteúdo com jogos em sala. Um só acesso, o mesmo progresso.</p>
+</header>
+<main class="cards">
+  <section class="card est" aria-labelledby="t-est">
+    <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg></span>
+    <h2 id="t-est">Ambientes de Estudo</h2>
+    <p>Acesse as disciplinas do seu curso, as trilhas de aprendizagem e acompanhe o seu progresso.</p>
+    <ul class="chips"><li>Materiais</li><li>Laboratórios</li><li>Exercícios</li></ul>
+    <a class="btn" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M22 9 12 4 2 9l10 5z"/><path d="M6 11v5c3 2.7 9 2.7 12 0v-5"/></svg>Estudar</a>
+    <p class="nota">Entre com o seu curso, turma e nome</p>
+  </section>
+  <section class="card jog" aria-labelledby="t-jog">
+    <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="12" rx="6"/><path d="M6.5 13h4M8.5 11v4"/><circle cx="15.5" cy="12" r=".9" fill="currentColor"/><circle cx="17.8" cy="14.2" r=".9" fill="currentColor"/></svg></span>
+    <h2 id="t-jog">Trilha Rali</h2>
+    <p>Jogos e desafios para fixar o conteúdo, sozinho, em dupla ou com a turma.</p>
+    <ul class="chips"><li>Rali NFC</li><li>CTF</li><li>Cruzada</li><li>Desvendando</li></ul>
+    <a class="btn" href="../TrilhaRali/"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4v16l13-8z"/></svg>Jogar</a>
+    <p class="nota">Use o mesmo acesso dos Ambientes de Estudo</p>
+  </section>
+</main>
+<p class="prof">É professor? Acesse a <a href="professor.html">área do professor do portal</a> ou a <a href="../TrilhaRali/#/professor">área do professor dos jogos</a>.</p>
+<footer><div class="rodape"><img src="img/ifs-mark.png" alt="Logotipo do Instituto Federal" width="40" height="54"><div><b>Instituto Federal de Sergipe (IFS) · Campus Tobias Barreto</b><span>Desenvolvido e supervisionado pelo Professor Eber Santana</span></div></div></footer>
+</body>
+</html>
