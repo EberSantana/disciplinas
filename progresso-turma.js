@@ -509,6 +509,7 @@
   function desenharNomes(t) {
     var lista = q(".pt-nomes"), busca = q(".pt-busca");
     lista.innerHTML = "";
+    if (!t.lista.length) { lista.innerHTML = '<p class="pt-note">Nenhum aluno cadastrado nesta turma ainda. Avise o professor.</p>'; busca.hidden = true; return; }
     t.lista.forEach(function (a) {
       var b = opcao("<b>" + esc(a.nome) + "</b>", function () { escolherAluno(a); });
       b.setAttribute("data-nome", a.nome.toLowerCase());
