@@ -268,7 +268,7 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
     <h2 class="sec">Selos</h2>
     <ul class="cq-selos" id="cq-selos"></ul>
     <h2 class="sec">Ranking da turma</h2>
-    <p class="meta" style="margin:0 0 10px">Pontos das disciplinas e do PyNetSec registrados na planilha da turma.</p>
+    <p class="meta" style="margin:0 0 10px">XP total de cada colega (estudos, PyNetSec e jogos), atualizado quando ele abre Conquistas.</p>
     <ol class="cq-rank" id="cq-rank"><li class="cq-vazio">Carregando…</li></ol>
   </section>
   <div class="painel-estudo" id="painel-estudo" hidden>
@@ -497,11 +497,11 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
   var $ = function (i) { return document.getElementById(i); };
   var cq = $("conquistas"), outros = ["painel-estudo", "meu-curso", "modulos", "entrar-aviso"].map($).concat([document.querySelector(".hero")]);
   function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-  function jogos(p) { try { return (JSON.parse(localStorage.getItem("hub-jogos:" + p.id) || "null") || {}).salas || {}; } catch (e) { return {}; } }
+  function jogos() { return P.jogos ? P.jogos() : {}; }
   function calcula() {
     var p = P.perfil(), m = P.materiais(), est = 0, nDisc = 0, meia = 0, completa = 0, py = m.pynetsec || { f: 0, t: 50, p: 0 };
     Object.keys(m).forEach(function (k) { if (k === "pynetsec") return; var x = m[k] || {}; est += x.p || 0; if ((x.f || 0) > 0) nDisc++; if (x.t && x.f / x.t >= 0.5) meia++; if (x.t && x.f >= x.t) completa++; });
-    var sl = jogos(p), jxp = 0, nSalas = 0, casos = 0, ctfAc = 0;
+    var sl = jogos(), jxp = 0, nSalas = 0, casos = 0, ctfAc = 0;
     Object.keys(sl).forEach(function (k) { var s = sl[k]; jxp += s.xp || 0; nSalas++; if (s.tipo === "desv") casos += s.acertos || 0; if (s.tipo === "ctf") ctfAc += s.acertos || 0; });
     var seq = P.sequencia();
     return { est: est, nDisc: nDisc, meia: meia, completa: completa, py: py, jxp: jxp, nSalas: nSalas, casos: casos, ctfAc: ctfAc, seq: seq, total: est + (py.p || 0) + jxp };
@@ -540,9 +540,9 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
     var p = P.perfil(), u = String(window.RANKING_URL || "").trim(), ol = $("cq-rank");
     if (!p || !u) { ol.innerHTML = '<li class="cq-vazio">Ranking indisponível.</li>'; return; }
     if (rankFeito) return; rankFeito = true;
-    fetch(u + (u.indexOf("?") >= 0 ? "&" : "?") + "disciplina=&turma=" + encodeURIComponent(p.turma)).then(function (r) { return r.json(); }).then(function (v) {
+    fetch(u + (u.indexOf("?") >= 0 ? "&" : "?") + "acao=ranking&turma=" + encodeURIComponent(p.turma)).then(function (r) { return r.json(); }).then(function (v) {
       if (!v.ok || !v.lista || !v.lista.length) { ol.innerHTML = '<li class="cq-vazio">Ainda não há pontos registrados na sua turma.</li>'; return; }
-      ol.innerHTML = v.lista.slice(0, 15).map(function (x, i) { var eu = String(x.apelido).toLowerCase() === String(p.apelido || "").toLowerCase(); return '<li class="' + (eu ? "me" : "") + '"><span>' + (i + 1) + "º " + esc(x.apelido) + (eu ? " (você)" : "") + "</span><span>" + x.pontos + " pts</span></li>"; }).join("");
+      ol.innerHTML = v.lista.slice(0, 15).map(function (x, i) { var eu = String(x.apelido).toLowerCase() === String(p.apelido || "").toLowerCase(); return '<li class="' + (eu ? "me" : "") + '"><span>' + (i + 1) + "º " + esc(x.apelido) + (eu ? " (você)" : "") + "</span><span>" + Number(x.xp != null ? x.xp : x.pontos || 0).toLocaleString("pt-BR") + " XP</span></li>"; }).join("");
     }).catch(function () { rankFeito = false; ol.innerHTML = '<li class="cq-vazio">Sem conexão para carregar o ranking.</li>'; });
   }
   function rota() {
@@ -553,7 +553,7 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
       var alvo = a.getAttribute("href"), atual = on ? alvo === location.hash : alvo === "./";
       if (atual) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
     });
-    if (on) { desenha(); rank(); P.jornada().then(desenha); if (aRank) setTimeout(function () { $("cq-rank").scrollIntoView({ block: "start" }); }, 50); else window.scrollTo(0, 0); }
+    if (on) { desenha(); rank(); var antes = calcula().total; P.jornada({ xp: antes }).then(function () { desenha(); var t = calcula().total; if (t !== antes) P.jornada({ xp: t }); }); if (aRank) setTimeout(function () { $("cq-rank").scrollIntoView({ block: "start" }); }, 50); else window.scrollTo(0, 0); }
   }
   window.addEventListener("hashchange", rota);
   window.addEventListener("perfil:mudou", function () { rankFeito = false; rota(); });

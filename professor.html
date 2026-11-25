@@ -185,6 +185,24 @@ tr.det td{background:var(--line-2);padding:14px 18px 16px 66px}
 .lc-salvar .btn[disabled]{opacity:.55;cursor:not-allowed}
 @media (max-width:720px){.lc-row{grid-template-columns:14px minmax(0,1fr)}.lc-row select,.lc-row input[type=date]{grid-column:2}.lc-row.breve{grid-template-columns:14px minmax(0,1fr) auto}}
 a.btn{text-decoration:none}
+
+/* Ficha do aluno e gestão */
+.ficha{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.ficha section{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.ficha h3{margin:0 0 8px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ficha dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:0;font-size:14.5px}.ficha dt{color:var(--muted)}.ficha dd{margin:0;font-weight:600}
+.ficha .xp{font-size:28px;font-weight:800;color:var(--accent);line-height:1}
+.ficha ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:14px}.ficha li{display:flex;justify-content:space-between;gap:10px}
+.ficha .acoes{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.ficha .vz{color:var(--muted);font-size:14px}
+.barra-f #novo-aluno{margin-left:auto}
+dialog#dlg-aluno{border:1px solid var(--line);border-radius:16px;padding:22px;max-width:560px;width:calc(100% - 32px);background:var(--panel);color:var(--ink)}
+dialog#dlg-aluno::backdrop{background:rgba(11,31,59,.55)}
+dialog#dlg-aluno h2{margin:0 0 4px}
+.grade-f{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.grade-f .cp:first-child{grid-column:1/-1}
+.cp{display:grid;gap:4px;font-size:14px;font-weight:600}.cp input,.cp select{min-height:42px;border:1px solid var(--line);border-radius:10px;padding:0 12px;font:inherit;font-weight:400;background:var(--bg);color:var(--ink)}
+.acoes-f{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+@media (max-width:560px){.grade-f{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -236,6 +254,7 @@ a.btn{text-decoration:none}
     <div class="barra-f">
       <div class="busca"><label for="f-busca" class="sr">Buscar aluno</label><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="f-busca" type="search" placeholder="Buscar por nome ou matrícula" autocomplete="off"></div>
       <div><label for="f-turma" class="sr">Turma</label><select id="f-turma" class="turma-sel"></select></div>
+      <button type="button" class="btn pri" id="novo-aluno"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Novo aluno</button>
     </div>
     <div class="chips" id="chips" role="group" aria-label="Filtrar por situação"></div>
     <p class="sr" id="contagem" role="status" aria-live="polite"></p>
@@ -248,6 +267,23 @@ a.btn{text-decoration:none}
     <div class="rodape"><span id="rod"></span><span>Este painel mostra nomes e matrículas. Não deixe aberto em tela compartilhada e guarde o arquivo exportado fora do repositório.</span></div>
     </div>
     <div id="aba-lib" role="tabpanel" aria-labelledby="t-lib" hidden></div>
+  <dialog id="dlg-aluno" aria-labelledby="dlg-t">
+    <form id="f-aluno" method="dialog" novalidate>
+      <h2 id="dlg-t">Novo aluno</h2>
+      <p class="leg" id="dlg-leg">O aluno aparece na lista do login da turma e cria o PIN no primeiro acesso.</p>
+      <div class="grade-f">
+        <label class="cp">Nome completo<input id="a-nome" autocomplete="off" required maxlength="100"></label>
+        <label class="cp">Matrícula<input id="a-mat" autocomplete="off" inputmode="numeric" required maxlength="30"></label>
+        <label class="cp">Turma<input id="a-turma" list="l-turmas" autocomplete="off" required maxlength="60"></label>
+        <label class="cp">Curso<input id="a-curso" list="l-cursos" autocomplete="off" maxlength="80"></label>
+        <label class="cp">Turno<select id="a-turno"><option>Integral</option><option>Matutino</option><option>Vespertino</option><option>Noturno</option></select></label>
+      </div>
+      <datalist id="l-turmas"></datalist><datalist id="l-cursos"></datalist>
+      <p class="msg" id="dlg-msg" role="status"></p>
+      <div class="acoes-f"><button type="button" class="btn" id="dlg-cancelar">Cancelar</button><button type="submit" class="btn pri" id="dlg-salvar">Salvar</button></div>
+    </form>
+  </dialog>
+
   </div>
 </main>
 
@@ -347,17 +383,89 @@ a.btn{text-decoration:none}
     var l = filtrados();
     $("corpo").innerHTML = l.map(function (a) {
       var s = situ(a), p = pct(a), ab = !!abertos[a.matricula];
-      var det = a.materiais.length ? '<div class="mats">' + a.materiais.map(function (m) { var q = m.total ? Math.round(100 * m.feitas / m.total) : 0; return "<div><b>" + esc(m.material) + "</b>" + m.feitas + " de " + m.total + " · " + m.pontos + ' pontos<div class="barra" style="margin-top:6px" aria-hidden="true"><i style="width:' + q + '%"></i></div></div>'; }).join("") + "</div>" : "<span>Nenhum material enviado ainda.</span>";
+      var det = ab ? ficha(a) : "";
       return '<tr class="a"><th scope="row"><div class="aluno"><span class="av" style="background:' + cor(a.nome) + '" aria-hidden="true">' + esc(iniciais(a.nome)) + '</span><div><div class="nome">' + esc(a.nome) + '</div><div class="mat">' + esc(a.matricula) + (a.semPin ? " · sem PIN" : "") + "</div></div></div></th>" +
         '<td data-l="Turma"><span class="pill">' + esc(a.turma) + '</span></td><td data-l="Último acesso"><span class="st s-' + s + '"><i aria-hidden="true"></i>' + ROT[s] + '</span><span class="quando">' + quando(a.acesso) + "</span></td>" +
         "<td data-l=\"Aparelho\">" + esc(a.aparelho || "—") + '</td><td class="prog" data-l="Progresso"><div class="n"><span>' + a.feitas + " de " + a.total + "</span><b>" + p + '%</b></div><div class="barra" aria-hidden="true"><i style="width:' + p + '%"></i></div></td>' +
-        '<td data-l="Pontos"><span class="pts">' + a.pontos + '</span></td><td><button type="button" class="exp" data-m="' + esc(a.matricula) + '" aria-expanded="' + ab + '" aria-label="Detalhes de ' + esc(a.nome) + '">' + ic(I.chev, 16) + "</button></td></tr>" +
+        '<td data-l="Pontos"><span class="pts">' + a.pontos + '</span></td><td><button type="button" class="exp" data-m="' + esc(a.matricula) + '" aria-expanded="' + ab + '" aria-label="Ficha de ' + esc(a.nome) + '" title="Ficha do aluno">' + ic(I.chev, 16) + "</button></td></tr>" +
         (ab ? '<tr class="det"><td colspan="7">' + det + "</td></tr>" : "");
     }).join("");
     $("vazio").hidden = l.length > 0;
     $("contagem").textContent = l.length + " de " + D.alunos.length + " alunos";
     $("rod").textContent = "Mostrando " + l.length + " de " + D.alunos.length + " alunos";
   }
+
+  /* ---------- ficha do aluno ---------- */
+  var NOME_JOGO = { ctf: "CTF Online", cruz: "Cruzada", desv: "Desvendando", rali: "Rali NFC" };
+  function nomeMat(id) { var t = { pynetsec: "PyNetSec" }; return t[id] || String(id).replace(/-/g, " ").replace(/^./, function (x) { return x.toUpperCase(); }); }
+  function ficha(a) {
+    var est = a.materiais.filter(function (m) { return m.material !== "pynetsec"; }), py = a.materiais.filter(function (m) { return m.material === "pynetsec"; })[0];
+    var jg = (a.jogos || []).slice().sort(function (x, y) { return (y.em || 0) - (x.em || 0); }), jxp = jg.reduce(function (t, x) { return t + (x.xp || 0); }, 0);
+    var barra = function (f, t) { var q = t ? Math.round(100 * f / t) : 0; return '<div class="barra" style="margin-top:4px" aria-hidden="true"><i style="width:' + q + '%"></i></div>'; };
+    return '<div class="ficha">' +
+      '<section aria-label="Resumo"><h3>Resumo</h3><p class="xp">' + Number(a.xp || 0).toLocaleString("pt-BR") + ' <small style="font-size:14px">XP em Conquistas</small></p><dl style="margin-top:10px">' +
+        "<dt>Curso</dt><dd>" + esc(a.curso || "—") + "</dd><dt>Dias de estudo</dt><dd>" + (a.diasEstudo || 0) + (a.ultimoDia ? " · último " + esc(a.ultimoDia.split("-").reverse().join("/")) : "") + "</dd>" +
+        "<dt>Aparelho</dt><dd>" + esc(a.aparelho || "—") + "</dd><dt>PIN</dt><dd>" + (a.semPin ? "Ainda não criado" : a.bloqueado ? "Bloqueado por tentativas erradas" : "Criado") + "</dd></dl>" +
+        '<div class="acoes"><button type="button" class="btn" data-acao="pin" data-m="' + esc(a.matricula) + '"' + (a.semPin && !a.bloqueado ? " disabled" : "") + ">Zerar PIN</button>" +
+        '<button type="button" class="btn" data-acao="editar" data-m="' + esc(a.matricula) + '">Editar aluno</button></div></section>' +
+      '<section aria-label="Estudos"><h3>Estudos</h3>' + (est.length ? "<ul>" + est.map(function (m) { return "<li style=\"display:block\"><span style=\"display:flex;justify-content:space-between\"><b>" + esc(nomeMat(m.material)) + "</b><span>" + m.feitas + "/" + m.total + " · " + m.pontos + " pts</span></span>" + barra(m.feitas, m.total) + "</li>"; }).join("") + "</ul>" : '<p class="vz">Nenhuma disciplina com progresso ainda.</p>') + "</section>" +
+      '<section aria-label="PyNetSec"><h3>PyNetSec</h3>' + (py ? "<dl><dt>Missões</dt><dd>" + py.feitas + " de " + py.total + "</dd><dt>Pontos</dt><dd>" + py.pontos + "</dd></dl>" + barra(py.feitas, py.total) : '<p class="vz">Ainda não começou o laboratório.</p>') + "</section>" +
+      '<section aria-label="Jogos da Trilha Rali"><h3>Jogos · Trilha Rali</h3>' + (jg.length ? '<p style="margin:0 0 8px;font-weight:700">' + jxp.toLocaleString("pt-BR") + " XP em " + jg.length + " sala(s)</p><ul>" + jg.slice(0, 8).map(function (x) { return "<li><span>" + esc(NOME_JOGO[x.tipo] || "Jogo") + (x.sala ? " · " + esc(x.sala) : "") + "</span><b>" + (x.xp || 0) + " XP" + (x.acertos ? " · " + x.acertos + " acerto(s)" : "") + "</b></li>"; }).join("") + "</ul>" : '<p class="vz">Ainda não jogou (ou não abriu Conquistas depois de jogar).</p>') + "</section>" +
+    "</div>";
+  }
+  /* ---------- gestão de alunos ---------- */
+  function chaveAtual() { try { return sessionStorage.getItem(KEY) || ""; } catch (e) { return ""; } }
+  function enviar(o) {
+    if (DEMO) return Promise.resolve({ ok: true, demo: true });
+    o.chave = chaveAtual();
+    return fetch(URL_, { method: "POST", body: JSON.stringify(o) }).then(function (r) { return r.json(); }).catch(function () { return { ok: false, erro: "Sem conexão com a planilha." }; });
+  }
+  function aviso(t) { var el = $("aviso-g"); if (!el) { el = document.createElement("p"); el.id = "aviso-g"; el.setAttribute("role", "status"); el.className = "msg"; el.style.cssText = "margin:8px 0"; $("chips").parentNode.insertBefore(el, $("chips")); } el.textContent = t; }
+  var editando = null;
+  function abrirDialogo(a) {
+    editando = a || null;
+    $("dlg-t").textContent = a ? "Editar aluno" : "Novo aluno";
+    $("dlg-leg").textContent = a ? "Mude o nome ou passe o aluno para outra turma. O progresso dele continua o mesmo." : "O aluno aparece na lista do login da turma e cria o PIN no primeiro acesso.";
+    var tm = {}, cs = {}; D.alunos.forEach(function (x) { tm[x.turma] = x; cs[x.curso] = 1; });
+    $("l-turmas").innerHTML = Object.keys(tm).sort().map(function (t) { return '<option value="' + esc(t) + '">'; }).join("");
+    $("l-cursos").innerHTML = Object.keys(cs).filter(Boolean).sort().map(function (c) { return '<option value="' + esc(c) + '">'; }).join("");
+    var t0 = a ? a.turma : $("f-turma").value, ref = tm[t0];
+    $("a-nome").value = a ? a.nome : ""; $("a-mat").value = a ? a.matricula : ""; $("a-mat").disabled = !!a;
+    $("a-turma").value = t0 || ""; $("a-curso").value = a ? a.curso : ref ? ref.curso : ""; $("a-turno").value = (a || ref || {}).turno || "Integral";
+    $("dlg-msg").textContent = ""; $("dlg-msg").className = "msg";
+    $("dlg-aluno").showModal(); $("a-nome").focus();
+  }
+  $("a-turma").addEventListener("change", function () { var t = this.value, r = D && D.alunos.filter(function (x) { return x.turma === t; })[0]; if (r && !editando) { $("a-curso").value = r.curso; $("a-turno").value = r.turno || "Integral"; } });
+  $("novo-aluno").onclick = function () { if (D) abrirDialogo(null); };
+  $("dlg-cancelar").onclick = function () { $("dlg-aluno").close(); };
+  $("f-aluno").onsubmit = function (e) {
+    e.preventDefault();
+    var o = { acao: editando ? "alunoEditar" : "alunoNovo", matricula: editando ? editando.matricula : $("a-mat").value.trim(), nome: $("a-nome").value.trim().replace(/\s+/g, " "), turma: $("a-turma").value.trim(), curso: $("a-curso").value.trim(), turno: $("a-turno").value };
+    var m = $("dlg-msg");
+    if (o.nome.split(" ").length < 2) { m.textContent = "Escreva nome e sobrenome."; m.className = "msg bad"; $("a-nome").focus(); return; }
+    if (!/^[A-Za-z0-9.-]{3,30}$/.test(o.matricula)) { m.textContent = "Confira a matrícula (só números, letras, ponto ou hífen)."; m.className = "msg bad"; $("a-mat").focus(); return; }
+    if (!o.turma) { m.textContent = "Escolha ou escreva a turma."; m.className = "msg bad"; $("a-turma").focus(); return; }
+    m.textContent = "Salvando…"; m.className = "msg"; $("dlg-salvar").disabled = true;
+    enviar(o).then(function (r) {
+      $("dlg-salvar").disabled = false;
+      if (!r.ok) { m.textContent = r.erro && /desconhecida/.test(r.erro) ? "Atualize o Apps Script da planilha (nova versão) para usar esta função." : (r.erro || "Não foi possível salvar."); m.className = "msg bad"; return; }
+      $("dlg-aluno").close();
+      if (r.demo) { if (editando) { editando.nome = o.nome; editando.turma = o.turma; editando.curso = o.curso; editando.turno = o.turno; } else D.alunos.push({ turma: o.turma, curso: o.curso, turno: o.turno, nome: o.nome, matricula: o.matricula, aparelho: "", acesso: null, dias: null, feitas: 0, total: 0, pontos: 0, materiais: [], semPin: true, xp: 0, jogos: [] }); preenche(); desenha(); }
+      else carregar(chaveAtual());
+      aviso(editando ? "Dados de " + o.nome + " atualizados." : o.nome + " incluído(a) na turma " + o.turma + ".");
+    });
+  };
+  $("corpo").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-acao]"); if (!b) return;
+    var mt = b.getAttribute("data-m"), a = D.alunos.filter(function (x) { return String(x.matricula) === mt; })[0]; if (!a) return;
+    if (b.getAttribute("data-acao") === "editar") { abrirDialogo(a); return; }
+    if (!window.confirm("Zerar o PIN de " + a.nome + "? No próximo acesso o aluno cria um PIN novo. O progresso não é apagado.")) return;
+    b.disabled = true;
+    enviar({ acao: "alunoPin", matricula: a.matricula }).then(function (r) {
+      if (!r.ok) { b.disabled = false; aviso(r.erro && /desconhecida/.test(r.erro) ? "Atualize o Apps Script da planilha (nova versão) para zerar PIN pelo painel." : (r.erro || "Não foi possível zerar o PIN.")); return; }
+      a.semPin = true; a.bloqueado = false; linhas(); aviso("PIN de " + a.nome + " zerado. Avise o aluno para criar um novo no próximo acesso.");
+    });
+  });
   function desenha() { kpis(); graficos(); chips(); cabecalho(); linhas(); }
   function preenche() {
     var ts = {}; D.alunos.forEach(function (a) { ts[a.turma] = 1; }); var atual = $("f-turma").value;
@@ -385,12 +493,14 @@ a.btn{text-decoration:none}
   /* ---------- dados ---------- */
   function demo() {
     var now = Date.now(), nomes = ["Ana Beatriz Santos", "Bruno Henrique Lima", "Camila Oliveira Souza", "Daniel Ferreira Costa", "Eduarda Ribeiro Alves", "Felipe Gomes Barbosa", "Gabriela Martins Rocha", "Hugo Carvalho Dias", "Isabela Nunes Teixeira", "João Pedro Cardoso", "Karina Melo Araújo", "Lucas Almeida Pinto", "Mariana Lopes Freitas", "Nicolas Ramos Moreira", "Olívia Castro Batista", "Pedro Augusto Cunha", "Rafaela Mendes Correia", "Samuel Vieira Monteiro", "Tainá Duarte Campos", "Vinícius Azevedo Reis", "Yasmin Cavalcante Neves", "Zeca Fonseca Lima"], ap = ["Android · Chrome", "Windows · Edge", "iOS · Safari", "Windows · Chrome", "Android · Samsung", "Mac · Safari", "Linux · Firefox"], turmas = ["Integrado Des. Sistemas · 1º ano", "Integrado Des. Sistemas · 2º ano", "Subsequente em Informática 2026.2"], cursos = ["Integrado em Desenvolvimento de Sistemas · 1º ano", "Integrado em Desenvolvimento de Sistemas · 2º ano", "Subsequente em Informática · 1º período"];
-    var mats = ["Redes de Computadores", "Banco de Dados", "Engenharia de Software", "Informática Básica"];
+    var mats = ["redes-de-computadores", "banco-de-dados", "engenharia-de-software", "informatica-basica"];
     return { ok: true, agora: now, diasAlerta: 7, alunos: nomes.map(function (n, i) {
       var h = (i * 37 + 11) % 100, ac = i === 4 ? null : i % 11 === 0 ? now - 9 * 864e5 : i % 7 === 0 ? now - 12 * 864e5 : i % 5 === 0 ? now - 3 * 864e5 : i < 3 ? now - 4 * 60000 : now - (h % 30) * 36e5 * 2 - 6e5;
       var tot = ac ? 20 + (i % 3) * 10 : 0, fe = ac ? Math.round(tot * ((h % 80) + 10) / 100) : 0;
       return { turma: turmas[i % 3], curso: cursos[i % 3], turno: i % 3 === 2 ? "Noturno" : "Integral", nome: n, matricula: String(202600100 + i * 7), aparelho: ac ? ap[i % ap.length] : "", acesso: ac, dias: ac ? Math.floor((now - ac) / 864e5) : null, feitas: fe, total: tot, pontos: fe * 12 + (i % 4) * 5,
-        materiais: ac ? mats.slice(0, 1 + (i % 3)).map(function (m, j) { var t = Math.round(tot / (1 + (i % 3))); return { material: m, feitas: Math.min(t, Math.round(fe / (1 + (i % 3))) + j), total: t, pontos: 30 + j * 20, em: ac }; }) : [], semPin: !ac && i % 2 === 0 };
+        materiais: ac ? mats.slice(0, 1 + (i % 3)).map(function (m, j) { var t = Math.round(tot / (1 + (i % 3))); return { material: m, feitas: Math.min(t, Math.round(fe / (1 + (i % 3))) + j), total: t, pontos: 30 + j * 20, em: ac }; }).concat(i % 2 ? [{ material: "pynetsec", feitas: 5 + i, total: 50, pontos: (5 + i) * 20, em: ac }] : []) : [], semPin: !ac && i % 2 === 0,
+        bloqueado: i === 9, xp: ac ? fe * 12 + (i % 2 ? (5 + i) * 20 : 0) + (i % 3) * 90 : 0, diasEstudo: ac ? 1 + (h % 12) : 0, ultimoDia: ac ? new Date(ac).toISOString().slice(0, 10) : "",
+        jogos: ac && i % 3 ? [{ token: "CTF" + i, tipo: "ctf", sala: "Banco de Dados · SQL", xp: 60 + i * 10, acertos: 2 + (i % 5), em: ac }, { token: "DSV" + i, tipo: "desv", sala: "Casos da turma", xp: 40, acertos: 1, em: ac - 864e5 }] : [] };
     }) };
   }
   function carregar(chave) {
@@ -411,7 +521,7 @@ a.btn{text-decoration:none}
   $("f-turma").addEventListener("change", function () { if (D) desenha(); });
   $("chips").addEventListener("click", function (e) { var b = e.target.closest("button[data-s]"); if (!b) return; sit = b.getAttribute("data-s"); chips(); linhas(); var n = $("chips").querySelector('[data-s="' + sit + '"]'); if (n) n.focus(); });
   $("cab").addEventListener("click", function (e) { var b = e.target.closest("button[data-o]"); if (!b) return; var k = b.getAttribute("data-o"); if (ord.k === k) ord.d = -ord.d; else { ord.k = k; ord.d = (k === "acesso" || k === "prog" || k === "pts") ? -1 : 1; } cabecalho(); linhas(); var n = $("cab").querySelector('[data-o="' + k + '"]'); if (n) n.focus(); });
-  $("corpo").addEventListener("click", function (e) { var b = e.target.closest("button[data-m]"); if (!b) return; var m = b.getAttribute("data-m"); abertos[m] = !abertos[m]; linhas(); var n = $("corpo").querySelector('[data-m="' + m + '"]'); if (n) n.focus(); });
+  $("corpo").addEventListener("click", function (e) { var b = e.target.closest("button.exp[data-m]"); if (!b) return; var m = b.getAttribute("data-m"); abertos[m] = !abertos[m]; linhas(); var n = $("corpo").querySelector('[data-m="' + m + '"]'); if (n) n.focus(); });
   $("atualizar").onclick = function () { var k = ""; try { k = sessionStorage.getItem(KEY) || ""; } catch (e) {} carregar(k); };
   $("sair").onclick = function () { try { sessionStorage.removeItem(KEY); } catch (e) {} D = null; $("painel").hidden = true; $("entrada").hidden = false; ["atualizar", "sair", "atual"].forEach(function (i) { $(i).hidden = true; }); $("menu-exp").hidden = true; $("chave").value = ""; $("chave").focus(); };
   function fechaMenu() { $("exp-lista").hidden = true; $("exp-btn").setAttribute("aria-expanded", "false"); }
