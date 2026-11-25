@@ -651,12 +651,20 @@
   }
   function bmsg(t, cl) { var m = box.querySelector(".pt-msg"); if (m) { m.textContent = t; m.className = "pt-msg " + (cl || ""); } }
 
+  /* Curso e turma costumam dizer a mesma coisa (ex.: "Integrado em Desenvolvimento de Sistemas \u00b7 1\u00ba ano" e "Integrado Des. Sistemas \u00b7 1\u00ba ano"). Mostra s\u00f3 uma vez. */
+  function linhaPerfil() {
+    var c = String(perfil.curso || ""), t = String(perfil.turma || ""), u = String(perfil.turno || "");
+    var igual = !c || !t || c.toLowerCase() === t.toLowerCase() || (baseDe(c) && baseDe(c) === baseDe(t) && nivelDe(c) && nivelDe(c) === nivelDe(t));
+    var l1 = esc(c || t);
+    return igual ? l1 + (u ? " \u00b7 " + esc(u) : "") : l1 + "<br>" + esc(t) + (u ? " \u00b7 " + esc(u) : "");
+  }
+
   function painel() {
     var d = dados(), c = cursoDoPerfil(perfil) ? { disciplinas: (minhas() || cursoDoPerfil(perfil).disciplinas).filter(function (x) { return !ehComum(x[1]); }) } : { disciplinas: [].concat.apply([], CURSOS.map(function (x) { return x.disciplinas; })).filter(function (x, i, a) { return a.map(function (y) { return y[1]; }).indexOf(x[1]) === i; }) }, atual = pastaAtual();
     box.innerHTML =
       '<button class="pt-close" id="pt-x" type="button" aria-label="Fechar">\u00d7</button>' +
       "<h3>Ol\u00e1, " + esc(primeiroNome()) + "</h3>" +
-      '<p class="pt-stat">' + esc(perfil.curso) + "<br>" + esc(perfil.turma) + " \u00b7 " + esc(perfil.turno) + "</p>" +
+      '<p class="pt-stat">' + linhaPerfil() + "</p>" +
       "<h4>Suas disciplinas</h4>" +
       '<ul class="pt-menu">' + c.disciplinas.map(function (x) {
         return '<li><a href="' + esc(urlPasta(x[1])) + '"' + (atual === x[1] ? ' aria-current="page"' : "") + ">" + esc(x[0]) + "<span>\u2192</span></a></li>";
