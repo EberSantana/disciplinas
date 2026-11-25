@@ -152,10 +152,11 @@ function doGet(e) {
       const alunos = lerTurmas_().filter(a => chave_(a.turma) === t);
       const curtos = nomesCurtos_(alunos.map(a => a.nome)), ap = {};
       alunos.forEach((a, i) => { ap[a.matricula] = curtos[i]; });
+      // XP = pontos das disciplinas e do PyNetSec (aba Progresso) + XP dos jogos (aba Jornadas): mesma conta da página Conquistas,
+      // calculada aqui para o ranking ficar em dia mesmo que o aluno não abra Conquistas.
       lista = jv.map(r => {
-        const m = String(r[0]).trim(), rel = Number(r[6]) || 0;
-        const est = (pts[m] || 0) + 10 * String(r[3] || "").split(" ").filter(Boolean).length + 5 * String(r[4] || "").split(" ").filter(Boolean).length;
-        return { apelido: ap[m] || "", xp: rel > 0 ? rel : est };
+        const m = String(r[0]).trim();
+        return { apelido: ap[m] || "", xp: (pts[m] || 0) + xpJogos_(lerJogos_(r[7])) };
       }).filter(x => x.apelido && x.xp > 0).sort((x, y) => y.xp - x.xp).slice(0, 10);
       cache.put(ck, JSON.stringify(lista), 60);
     }
@@ -230,6 +231,7 @@ function jornada_(a, d, perfil) {
 
 
 // Jogos: { token: { tipo, sala, xp, acertos, em } }, no máximo 80 salas por aluno.
+const xpJogos_ = j => Object.keys(j || {}).reduce((t, k) => t + (Number(j[k].xp) || 0), 0);
 function lerJogos_(v) { try { const o = JSON.parse(v || "{}"); return o && typeof o === "object" && !Array.isArray(o) ? o : {}; } catch (e) { return {}; } }
 function juntaJogos_(base, novos) {
   const out = {};
@@ -281,7 +283,7 @@ function painel_(d) {
       acesso: acesso || null, dias: acesso ? Math.floor((agora.getTime() - acesso) / 86400000) : null,
       feitas: ms.reduce((s, x) => s + x.feitas, 0), total: ms.reduce((s, x) => s + x.total, 0), pontos: ms.reduce((s, x) => s + x.pontos, 0),
       materiais: ms.map(x => ({ material: x.material, feitas: x.feitas, total: x.total, pontos: x.pontos, em: x.em })), semPin: !a.pin,
-      bloqueado: !!(a.bloqueio && a.bloqueio > agora), pediuPin: a.pedido && a.pin ? a.pedido.getTime() : null, xp: j.xp, diasEstudo: j.dias.length, ultimoDia: j.dias[j.dias.length - 1] || "",
+      bloqueado: !!(a.bloqueio && a.bloqueio > agora), pediuPin: a.pedido && a.pin ? a.pedido.getTime() : null, xp: ms.reduce((t, x) => t + x.pontos, 0) + xpJogos_(j.jogos), diasEstudo: j.dias.length, ultimoDia: j.dias[j.dias.length - 1] || "",
       jogos: Object.keys(j.jogos).map(k => Object.assign({ token: k }, j.jogos[k])) };
   });
   return { ok: true, agora: agora.getTime(), diasAlerta: DIAS_ALERTA, alunos: lista, visibilidade: lerVis_() };
