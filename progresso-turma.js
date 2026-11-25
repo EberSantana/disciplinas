@@ -509,7 +509,6 @@
         if (!n) { b.disabled = true; b.onclick = null; }
         box1.appendChild(b);
       });
-      if (sem.length) box1.appendChild(opcao("<b>Outras turmas deste curso</b><small>" + sem.length + " turma(s) sem ano/per\u00edodo no nome</small>", function () { nav.nivel = -1; desenharEscolha(); }));
       return;
     }
     sub.textContent = "Escolha a sua turma.";
