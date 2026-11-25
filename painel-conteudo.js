@@ -2,7 +2,7 @@
  * O professor escolhe, para todas as turmas ou para uma turma, quais disciplinas e quais módulos das
  * disciplinas interativas aparecem para os alunos: visível, oculto ou liberado a partir de uma data.
  * As regras ficam na aba "Visibilidade" da planilha (Apps Script, ação "visibilidade") e são lidas pelo
- * progresso-turma.js (portal e apostilas), pelo motor das disciplinas interativas e pelo Start nos Estudos.
+ * progresso-turma.js (portal e apostilas) e pelo motor das disciplinas interativas.
  * Formato: { "pasta": "o" | "v" | "aaaa-mm-dd", "pasta#n": ... }. Sem chave = segue o padrão. */
 (function () {
   var PPC = window.PPC, URL_ = String(window.RANKING_URL || "").trim();
@@ -115,7 +115,7 @@
     host.innerHTML =
       '<div class="lc-topo cartao"><div class="lc-esc"><label for="lc-escopo">Aplicar a</label><select id="lc-escopo">' + opts.replace('value="*">', 'value="*"' + (S.escopo === "*" ? " selected" : "") + ">") + "</select></div>" +
       '<p class="lc-dica">' + (S.escopo === "*" ? "Estas regras valem para <b>todas as turmas</b>. Para ajustar uma turma específica, escolha-a acima: o que você definir para ela vale por cima destas regras." : "Regras só da turma <b>" + esc(S.escopo) + "</b>. “Igual a todas as turmas” segue o que foi definido para todas. Aparecem só as disciplinas do curso dessa turma.") +
-      " Itens <b>ocultos</b> somem do portal, do Start nos Estudos e da disciplina; itens com <b>data</b> aparecem com cadeado até o dia escolhido.</p>" +
+      " Itens <b>ocultos</b> somem do portal e da disciplina; itens com <b>data</b> aparecem com cadeado até o dia escolhido.</p>" +
       '<p class="lc-res"><span><i class="lc-st v"></i>Visível</span><span><i class="lc-st o"></i>Oculta · ' + ocultas + '</span><span><i class="lc-st d"></i>Agendada · ' + agend + "</span></p>" +
       '<div class="lc-acoes"><button type="button" class="btn" data-tudo="">Voltar tudo ao padrão</button><button type="button" class="btn" data-tudo="o">Ocultar todas as disciplinas</button></div></div>' +
       '<div class="lc-lista">' + corpo + "</div>" +
