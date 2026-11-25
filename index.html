@@ -333,6 +333,12 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
       <p>Cronômetro com ranking de equipes, Linha do Tempo Tecnológica e códigos para aprender com IA.</p>
       <span class="go" aria-hidden="true">Abrir<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
     </a>
+    <a class="card" href="../PyNetSec/" data-pasta="pynetsec" aria-label="Abrir PyNetSec">
+      <span class="meta">Laboratório · Python, Redes, Linux e Segurança · 50 missões</span>
+      <h2>PyNetSec</h2>
+      <p>Missões práticas no navegador: Python, terminal Linux, redes e segurança, com o seu progresso individual.</p>
+      <span class="go" aria-hidden="true">Abrir<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    </a>
     <a class="card" href="laboratorio-3d/" aria-label="Abrir Laboratório 3D">
       <span class="meta">3 laboratórios</span>
       <h2>Laboratório 3D</h2>
@@ -352,7 +358,7 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
   var todas = document.getElementById("todas-grid"), meu = document.getElementById("meu-curso"),
       meuGrid = document.getElementById("meu-curso-grid"), aviso = document.getElementById("entrar-aviso");
   var cards = Array.prototype.slice.call(todas.querySelectorAll("a.card"));
-  function pasta(a) { return a.getAttribute("href").replace(/\/$/, ""); }
+  function pasta(a) { return a.getAttribute("data-pasta") || a.getAttribute("href").replace(/\/$/, ""); }
   var modW = document.getElementById("modulos"), modGrid = document.getElementById("modulos-grid");
   var comuns = (P.comuns || []).map(function (d) { return d[1]; });
   function render() {

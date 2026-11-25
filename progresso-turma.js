@@ -40,7 +40,7 @@
     { nome: "T\u00e9cnico em Inform\u00e1tica", disciplinas: L("rc", "pr", "si", "so") }
   ];
   /* M\u00f3dulos comuns a todos os cursos: ficam ocultos at\u00e9 o professor liberar (painel > Liberar conte\u00fado). */
-  var COMUNS = [["Fundamentos para Sistemas de Informa\u00e7\u00e3o", "fundamentos-de-sistemas-de-informacao"], ["Mapas Mentais de TI", "mapas-mentais"], ["Laborat\u00f3rio 3D", "laboratorio-3d"], ["Recursos de aula", "recursos-de-aula"]];
+  var COMUNS = [["PyNetSec \u00b7 Python, Redes e Seguran\u00e7a", "pynetsec"], ["Fundamentos para Sistemas de Informa\u00e7\u00e3o", "fundamentos-de-sistemas-de-informacao"], ["Mapas Mentais de TI", "mapas-mentais"], ["Laborat\u00f3rio 3D", "laboratorio-3d"], ["Recursos de aula", "recursos-de-aula"]];
   function ehComum(p) { for (var i = 0; i < COMUNS.length; i++) if (COMUNS[i][1] === p) return true; return false; }
   var NIVEIS = {}; NIVEIS[BASE_INT] = ["1\u00ba ano", "2\u00ba ano", "3\u00ba ano"]; NIVEIS[BASE_SUB] = ["1\u00ba per\u00edodo", "2\u00ba per\u00edodo", "3\u00ba per\u00edodo", "4\u00ba per\u00edodo"];
   function baseDe(t) { t = String(t || ""); return /integrado/i.test(t) ? BASE_INT : /subsequente|t[e\u00e9]cnico em inform/i.test(t) ? BASE_SUB : ""; }
@@ -196,7 +196,7 @@
       var antes = JSON.stringify(lerVis() || {}), agora = JSON.stringify(m);
       try { localStorage.setItem(VKEY, JSON.stringify({ turma: perfil.turma, r: m, ts: Date.now() })); } catch (e) {}
       VIS = m;
-      if (antes !== agora) { avisar(); try { window.dispatchEvent(new CustomEvent("visib:mudou")); } catch (e) {} bloquear(); }
+      if (antes !== agora) { avisar(); try { window.dispatchEvent(new CustomEvent("visib:mudou")); } catch (e) {} var bq = document.getElementById("pt-bloq"); if (bq) { bq.remove(); root.style.overflow = ""; } bloquear(); }
     }).catch(function () {});
   }
   function minhas() {
@@ -316,7 +316,11 @@
     var d = aindaFechada(rel);
     if (d) tela("Ainda n\u00e3o est\u00e1 dispon\u00edvel", "Este material abre em <b>" + d + "</b>. Volte nessa data para estudar.");
   }
+  /* Endereço de cada pasta; ambientes externos ao portal têm o seu. */
+  var EXTERNOS = { pynetsec: "../PyNetSec/" };
+  function urlPasta(p) { return BASE + (EXTERNOS[p] || p + "/"); }
   function pastaAtual() {
+    if (window.PORTAL_PASTA) return String(window.PORTAL_PASTA); /* ambiente fora da pasta do portal (ex.: PyNetSec) */
     if (!BASE || location.href.indexOf(BASE) !== 0) return "";
     return location.href.slice(BASE.length).split(/[\/?#]/)[0];
   }
@@ -627,12 +631,12 @@
       '<p class="pt-stat">' + esc(perfil.curso) + "<br>" + esc(perfil.turma) + " \u00b7 " + esc(perfil.turno) + "</p>" +
       "<h4>Suas disciplinas</h4>" +
       '<ul class="pt-menu">' + c.disciplinas.map(function (x) {
-        return '<li><a href="' + esc(BASE + x[1] + "/") + '"' + (atual === x[1] ? ' aria-current="page"' : "") + ">" + esc(x[0]) + "<span>\u2192</span></a></li>";
+        return '<li><a href="' + esc(urlPasta(x[1])) + '"' + (atual === x[1] ? ' aria-current="page"' : "") + ">" + esc(x[0]) + "<span>\u2192</span></a></li>";
       }).join("") + "</ul>" +
       (relAtual().indexOf("/") > 0 ? '<h4>Minhas anota\u00e7\u00f5es desta p\u00e1gina</h4><label for="pt-nota" class="pt-sr">Anota\u00e7\u00f5es desta p\u00e1gina</label><textarea id="pt-nota" rows="4" placeholder="Escreva aqui o que quiser lembrar."></textarea><p class="pt-note" id="pt-nota-st">Fica salvo s\u00f3 neste aparelho, tamb\u00e9m sem internet.</p>' : "") +
       (comunsLiberados().length ? "<h4>Liberados pelo professor</h4>" : "") +
       '<ul class="pt-menu">' + comunsLiberados().map(function (x) {
-        return '<li><a href="' + esc(BASE + x[1] + "/") + '"' + (atual === x[1] ? ' aria-current="page"' : "") + ">" + esc(x[0]) + "<span>\u2192</span></a></li>";
+        return '<li><a href="' + esc(urlPasta(x[1])) + '"' + (atual === x[1] ? ' aria-current="page"' : "") + ">" + esc(x[0]) + "<span>\u2192</span></a></li>";
       }).join("") + "</ul>" +
       (d ? "<h4>Este material</h4>" + '<p class="pt-stat">' + d.feitas + " de " + d.total + " feitas \u00b7 " + d.pontos + " pontos</p>" +
         (URL_ ? "<p>O progresso \u00e9 enviado sozinho enquanto voc\u00ea estuda.</p>" : "<p>O envio para o professor ainda n\u00e3o foi ativado. Seu progresso fica salvo neste aparelho.</p>") : "") +
