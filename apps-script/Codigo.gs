@@ -8,7 +8,9 @@
  *   A coluna "pin" começa vazia: o aluno cria o PIN no primeiro acesso.
  *   Para o aluno criar um PIN novo (esqueceu), apague a célula do PIN dele.
  * Aba "Progresso" (criada sozinha): uma linha por aluno e por material.
- * Aba "Jornadas" (criada sozinha): páginas visitadas e dias de estudo de cada aluno, para a página de jornadas.
+ * Aba "Jornadas" (criada sozinha): páginas visitadas, dias de estudo, XP total (Conquistas) e melhor resultado
+ *   em cada sala dos jogos da Trilha Rali, de cada aluno.
+ * Painel do professor: ficha do aluno, incluir aluno, editar nome/turma e zerar o PIN (com a senha PROFESSOR_CHAVE).
  * Aba "Visibilidade" (criada sozinha): o que cada turma vê, definido no painel do professor (Liberar conteúdo).
  *   escopo ("*" = todas as turmas, ou o nome da turma) | regras (JSON) | atualizado
  *
@@ -44,7 +46,7 @@ function aba_(nome, cab) {
 const turmas_ = () => aba_(ABA_TURMAS, CAB_TURMAS);
 const prog_ = () => aba_(ABA_PROG, CAB_PROG);
 const ABA_JORN = "Jornadas";
-const CAB_JORN = ["matricula", "nome", "turma", "visitas", "dias", "atualizado", "xp"];
+const CAB_JORN = ["matricula", "nome", "turma", "visitas", "dias", "atualizado", "xp", "jogos"];
 const jorn_ = () => aba_(ABA_JORN, CAB_JORN);
 const ABA_VIS = "Visibilidade";
 const CAB_VIS = ["escopo", "regras", "atualizado"];
@@ -137,10 +139,10 @@ function doGet(e) {
     return json_({ ok: true, alunos: lista.map((a, i) => ({ id: idDe_(a.matricula), nome: curtos[i], temPin: !!a.pin })) });
   }
   if (acao === "ranking") {
-    // Top 10 da turma no Start nos Estudos: só o nome curto e os pontos.
+    // Top 10 da turma em Conquistas (XP de estudos + PyNetSec + jogos): só o nome curto e os pontos.
     const t = chave_(p.turma);
     if (!t) return json_({ ok: true, lista: [] });
-    const cache = CacheService.getScriptCache(), ck = "rk:" + t;
+    const cache = CacheService.getScriptCache(), ck = "rk2:" + t;
     let lista = null; try { lista = JSON.parse(cache.get(ck) || "null"); } catch (err) {}
     if (!lista) {
       const pts = {};
@@ -213,14 +215,36 @@ function jornada_(a, d, perfil) {
   }
   const uv = Array.from(new Set(vis.concat(lista_(d.visitas, /^[a-z0-9]{1,8}$/, 500)))).slice(0, 500);
   const ud = Array.from(new Set(dias.concat(lista_(d.dias, /^\d{4}-\d{2}-\d{2}$/, 400)))).sort().slice(-366);
-  // Pontos do Start nos Estudos, calculados no aparelho do aluno (se não vierem, mantém o que já estava).
+  // XP total da página Conquistas, calculado no aparelho do aluno (se não vier, mantém o que já estava).
   const xpAnt = linha ? Number(v[linha - 1][6]) || 0 : 0;
   const xp = d.xp != null && isFinite(Number(d.xp)) ? Math.max(0, Math.min(200000, Math.floor(Number(d.xp)))) : xpAnt;
-  const row = [a.matricula, a.nome, a.turma, uv.join(" "), ud.join(" "), new Date(), xp];
-  if (linha) sh.getRange(linha, 1, 1, 7).setValues([row]); else sh.appendRow(row);
+  // Jogos da Trilha Rali: melhor resultado de cada sala, somando o que veio de todos os aparelhos.
+  const jogos = juntaJogos_(linha ? lerJogos_(v[linha - 1][7]) : {}, d.jogos);
+  const row = [a.matricula, a.nome, a.turma, uv.join(" "), ud.join(" "), new Date(), xp, JSON.stringify(jogos)];
+  if (linha) sh.getRange(linha, 1, 1, 8).setValues([row]); else sh.appendRow(row);
   const materiais = prog_().getDataRange().getValues().slice(1).filter(r => String(r[2]).trim() === a.matricula)
     .map(r => ({ m: String(r[0]), f: Number(r[6]) || 0, t: Number(r[7]) || 0, p: Number(r[8]) || 0, em: r[9] ? new Date(r[9]).getTime() : 0 }));
-  return { ok: true, perfil: perfil, jornada: { visitas: uv, dias: ud, materiais: materiais } };
+  return { ok: true, perfil: perfil, jornada: { visitas: uv, dias: ud, materiais: materiais, jogos: jogos, xp: xp } };
+}
+
+
+// Jogos: { token: { tipo, sala, xp, acertos, em } }, no máximo 80 salas por aluno.
+function lerJogos_(v) { try { const o = JSON.parse(v || "{}"); return o && typeof o === "object" && !Array.isArray(o) ? o : {}; } catch (e) { return {}; } }
+function juntaJogos_(base, novos) {
+  const out = {};
+  Object.keys(base || {}).forEach(k => { out[k] = base[k]; });
+  if (novos && typeof novos === "object" && !Array.isArray(novos)) {
+    Object.keys(novos).slice(0, 80).forEach(k => {
+      if (!/^[A-Za-z0-9_-]{2,40}$/.test(k)) return;
+      const n = novos[k] || {}, x = Math.max(0, Math.min(100000, Math.floor(Number(n.xp) || 0)));
+      const tipo = /^(ctf|cruz|desv|rali)$/.test(String(n.tipo)) ? String(n.tipo) : "jogo";
+      const item = { tipo: tipo, sala: txt_(n.sala, 60), xp: x, acertos: Math.max(0, Math.min(1000, Math.floor(Number(n.acertos) || 0))), em: Number(n.em) || Date.now() };
+      if (!out[k] || item.xp >= (Number(out[k].xp) || 0)) out[k] = item;
+    });
+  }
+  const ks = Object.keys(out).sort((x, y) => (Number(out[y].em) || 0) - (Number(out[x].em) || 0)).slice(0, 80), r = {};
+  ks.forEach(k => { r[k] = out[k]; });
+  return r;
 }
 
 // Aparelho em linhas gerais ("Android · Chrome"). Só o tipo de aparelho e o navegador, nada que identifique a pessoa.
@@ -244,16 +268,59 @@ function painel_(d) {
   const agora = new Date();
   const porMat = {};
   prog.forEach(r => { (porMat[String(r[2]).trim()] = porMat[String(r[2]).trim()] || []).push({ material: r[0], feitas: Number(r[6]) || 0, total: Number(r[7]) || 0, pontos: Number(r[8]) || 0, em: r[9] ? new Date(r[9]).getTime() : 0 }); });
+  const jor = {};
+  jorn_().getDataRange().getValues().slice(1).forEach(r => {
+    jor[String(r[0]).trim()] = { xp: Number(r[6]) || 0, dias: String(r[4] || "").split(" ").filter(Boolean), jogos: lerJogos_(r[7]) };
+  });
   const lista = alunos.map(a => {
-    const ms = porMat[a.matricula] || [];
+    const ms = porMat[a.matricula] || [], j = jor[a.matricula] || { xp: 0, dias: [], jogos: {} };
     const ultimoEnvio = ms.reduce((m, x) => Math.max(m, x.em), 0);
     const acesso = Math.max(a.acesso ? a.acesso.getTime() : 0, ultimoEnvio);
     return { turma: a.turma, curso: a.curso, turno: a.turno, nome: a.nome, matricula: a.matricula, aparelho: a.aparelho,
       acesso: acesso || null, dias: acesso ? Math.floor((agora.getTime() - acesso) / 86400000) : null,
       feitas: ms.reduce((s, x) => s + x.feitas, 0), total: ms.reduce((s, x) => s + x.total, 0), pontos: ms.reduce((s, x) => s + x.pontos, 0),
-      materiais: ms.map(x => ({ material: x.material, feitas: x.feitas, total: x.total, pontos: x.pontos, em: x.em })), semPin: !a.pin };
+      materiais: ms.map(x => ({ material: x.material, feitas: x.feitas, total: x.total, pontos: x.pontos, em: x.em })), semPin: !a.pin,
+      bloqueado: !!(a.bloqueio && a.bloqueio > agora), xp: j.xp, diasEstudo: j.dias.length, ultimoDia: j.dias[j.dias.length - 1] || "",
+      jogos: Object.keys(j.jogos).map(k => Object.assign({ token: k }, j.jogos[k])) };
   });
   return { ok: true, agora: agora.getTime(), diasAlerta: DIAS_ALERTA, alunos: lista, visibilidade: lerVis_() };
+}
+
+
+// Gestão de alunos pelo painel do professor (todas exigem a senha do painel).
+function linhaDaMatricula_(sh, m) {
+  const v = sh.getDataRange().getValues();
+  for (let i = 1; i < v.length; i++) if (String(v[i][3]).trim() === m) return i + 1;
+  return 0;
+}
+function gerenciar_(d) {
+  const erro = chaveErro_(d); if (erro) return { ok: false, erro: erro };
+  const sh = turmas_(), m = txt_(d.matricula, 30);
+  if (!/^[A-Za-z0-9.-]{3,30}$/.test(m)) return { ok: false, erro: "Matrícula inválida." };
+  const linha = linhaDaMatricula_(sh, m);
+  if (d.acao === "alunoNovo") {
+    if (linha) return { ok: false, erro: "Já existe um aluno com essa matrícula." };
+    const nome = txt_(d.nome, 100), turma = txt_(d.turma, 60);
+    if (nome.split(" ").length < 2) return { ok: false, erro: "Escreva nome e sobrenome." };
+    if (!turma) return { ok: false, erro: "Escolha a turma." };
+    sh.appendRow([turma, txt_(d.curso, 80), txt_(d.turno, 20), "'" + m, nome, "", "", 0, "", ""]);
+    return { ok: true };
+  }
+  if (!linha) return { ok: false, erro: "Aluno não encontrado na planilha." };
+  if (d.acao === "alunoPin") {
+    // Zera o PIN e o bloqueio: no próximo acesso o aluno cria um PIN novo.
+    sh.getRange(linha, 6, 1, 4).setValues([["", sh.getRange(linha, 7).getValue(), 0, ""]]);
+    return { ok: true };
+  }
+  if (d.acao === "alunoEditar") {
+    const nome = txt_(d.nome, 100), turma = txt_(d.turma, 60);
+    if (nome.split(" ").length < 2) return { ok: false, erro: "Escreva nome e sobrenome." };
+    if (!turma) return { ok: false, erro: "Escolha a turma." };
+    sh.getRange(linha, 1, 1, 3).setValues([[turma, txt_(d.curso, 80), txt_(d.turno, 20)]]);
+    sh.getRange(linha, 5).setValue(nome);
+    return { ok: true };
+  }
+  return { ok: false, erro: "Ação desconhecida." };
 }
 
 function doPost(e) {
@@ -263,6 +330,7 @@ function doPost(e) {
     const d = JSON.parse(e.postData.contents);
     if (d.acao === "painel") return json_(painel_(d));
     if (d.acao === "visibilidade") return json_(salvarVis_(d));
+    if (d.acao === "alunoNovo" || d.acao === "alunoPin" || d.acao === "alunoEditar") return json_(gerenciar_(d));
     const sh = turmas_();
     const r = autenticar_(d, sh);
     if (r.erro) return json_({ ok: false, erro: r.erro });

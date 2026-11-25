@@ -275,16 +275,26 @@
     if (!v || (m.f || 0) >= (v.f || 0) || (m.em || 0) > (v.em || 0)) gravarLS(k, JSON.stringify({ f: m.f || 0, t: m.t || 0, p: m.p || 0, em: m.em || Date.now() }));
   }
   /* Junta o que est\u00e1 neste aparelho com o que est\u00e1 na planilha (outros aparelhos) e devolve tudo. */
-  function jornada() {
-    var local = function (sync) { return { visitas: visitas(), dias: dias(), materiais: materiais(), sync: sync }; };
+  /* Jogos da Trilha Rali neste aparelho: melhor resultado de cada sala (gravado pelos jogos em hub-jogos:<id>). */
+  function jogos() { try { return (JSON.parse(lerLS("hub-jogos:" + uid()) || "null") || {}).salas || {}; } catch (e) { return {}; } }
+  function guardarJogos(srv) {
+    if (!srv || typeof srv !== "object") return; var sl = jogos(), mudou = false;
+    Object.keys(srv).forEach(function (k) { var n = srv[k] || {}; if (!sl[k] || (n.xp || 0) > (sl[k].xp || 0)) { sl[k] = n; mudou = true; } });
+    if (mudou) gravarLS("hub-jogos:" + uid(), JSON.stringify({ salas: sl }));
+  }
+  /* extra (opcional): { xp } com o XP total calculado na página Conquistas. */
+  function jornada(extra) {
+    var local = function (sync) { return { visitas: visitas(), dias: dias(), materiais: materiais(), jogos: jogos(), sync: sync }; };
     if (!URL_ || !perfil) return Promise.resolve(local("sem-conta"));
     if (navigator.onLine === false) return Promise.resolve(local("offline"));
-    var c = { acao: "jornada", aparelho: aparelhoGeral(), turma: perfil.turma, id: perfil.id, pin: perfil.pin, visitas: visitas(), dias: dias() };
+    var c = { acao: "jornada", aparelho: aparelhoGeral(), turma: perfil.turma, id: perfil.id, pin: perfil.pin, visitas: visitas(), dias: dias(), jogos: jogos() };
+    if (extra && isFinite(extra.xp)) c.xp = Math.max(0, Math.floor(extra.xp));
     return fetch(URL_, { method: "POST", body: JSON.stringify(c) }).then(function (r) { return r.json(); }).then(function (r) {
       var j = r && r.ok && r.jornada; if (!j) return local(r && r.ok ? "servidor-antigo" : "erro");
       var vs = visitas(); (j.visitas || []).forEach(function (x) { if (vs.indexOf(x) < 0) vs.push(x); }); gravarLS("pt-vis:" + uid(), JSON.stringify(vs.slice(-500)));
       var ds = dias(); (j.dias || []).forEach(function (x) { if (ds.indexOf(x) < 0) ds.push(x); }); ds.sort(); gravarLS("pt-dias:" + uid(), JSON.stringify(ds.slice(-366)));
       (j.materiais || []).forEach(function (m) { guardarMat(m.m, m); });
+      guardarJogos(j.jogos);
       return local("ok");
     }).catch(function () { return local("erro"); });
   }
@@ -698,7 +708,7 @@
 
   // Para a p\u00e1gina inicial organizar as disciplinas pelo curso do aluno
   window.PORTAL_ALUNO = { perfil: function () { return perfil; }, cursos: CURSOS, comuns: COMUNS, meuCurso: function () { return cursoDoPerfil(perfil); }, comunsLiberados: comunsLiberados, permitida: permitida, ultima: ultima, sequencia: sequencia, minhas: minhas, entrar: mostrarEntrada,
-    dias: dias, visitas: visitas, codigo: codigo, materiais: materiais, jornada: jornada, regra: regra };
+    dias: dias, visitas: visitas, codigo: codigo, materiais: materiais, jogos: jogos, jornada: jornada, regra: regra };
 
   // Quem entrou quando o envio ainda n\u00e3o estava ligado \u00e9 cadastrado na planilha agora (uma vez por visita).
   function sincronizar() {
