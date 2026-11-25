@@ -16,7 +16,8 @@
 .hub-nav a:hover{background:var(--accent-soft,#DDF5E6)}
 .hub-nav a:focus-visible{outline:3px solid var(--a11y-focus,#0B6BCB);outline-offset:2px}
 .hub-nav a[aria-current="page"]{background:linear-gradient(90deg,#00A844,#22C55E);color:#fff;box-shadow:0 6px 14px rgba(0,168,68,.28)}
-.hub-ifs{margin-top:auto;position:relative;padding:22px 6px 70px;border-top:1px solid var(--line);display:flex;align-items:center;gap:12px;font-size:14px;line-height:1.25}
+.hub-prof{margin:auto 6px 0;padding-top:14px;font-size:12.5px;color:var(--ink-2)}.hub-prof a{color:inherit;text-decoration:underline}
+.hub-ifs{margin-top:14px;position:relative;padding:22px 6px 70px;border-top:1px solid var(--line);display:flex;align-items:center;gap:12px;font-size:14px;line-height:1.25}
 .hub-ifs img{width:52px;height:auto}
 .hub-ifs b{display:block;font-size:15px;letter-spacing:.02em}
 .hub-ifs::after{content:"";position:absolute;left:-16px;right:-16px;bottom:-30px;height:90px;background:linear-gradient(90deg,#00A844,#3BE37A);border-radius:50% 50% 0 0/100% 70% 0 0;opacity:.9}
@@ -213,16 +214,16 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
   <nav class="hub-nav" aria-label="Seções do HUB"><ul>
     <li><a href="./" aria-current="page"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 2 11.5h3V21h5.5v-6h3v6H19v-9.5h3z"/></svg>Início</a></li>
     <li><a href="#minhas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 4h12a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><path d="M4 17a3 3 0 0 1 3-3h12"/></svg>Minhas disciplinas</a></li>
-        <li><a href="#conquistas-ranking" id="nav-ranking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20v-5M10 20V9M15 20v-8M20 20V4"/></svg>Ranking</a></li>
+        <li><a href="#ranking" id="nav-ranking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20v-5M10 20V9M15 20v-8M20 20V4"/></svg>Ranking</a></li>
     <li><a href="#conquistas" id="nav-conq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.5 13.8-1.5 7.7 5-2.7 5 2.7-1.5-7.7"/></svg>Conquistas</a></li>
     <li><a href="#modulos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>Módulos liberados</a></li>
-    <li><a href="professor.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M22 9 12 4 2 9l10 5z"/><path d="M6 11v5c3 2.7 9 2.7 12 0v-5M22 9v5"/></svg>Área do Professor</a></li>
   </ul>
   <p class="hub-sep">Outros ambientes</p>
   <ul>
     <li><a href="../TrilhaRali/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="12" rx="6"/><path d="M6.5 13h4M8.5 11v4"/><circle cx="15.5" cy="12" r=".8" fill="currentColor"/><circle cx="17.5" cy="14" r=".8" fill="currentColor"/></svg>Jogos · Trilha Rali</a></li>
     <li><a href="portal.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Voltar ao portal</a></li>
   </ul></nav>
+  <p class="hub-prof">É professor? <a href="professor.html">Acessar a área do professor</a></p>
   <div class="hub-ifs"><img src="img/ifs-mark.png" alt="Logotipo do Instituto Federal" width="52" height="70"><div><b>INSTITUTO FEDERAL</b>Sergipe<br>Campus Tobias Barreto</div></div>
 </aside>
 <div class="hub-veu" id="hub-veu" hidden></div>
@@ -267,8 +268,10 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
     </div>
     <h2 class="sec">Selos</h2>
     <ul class="cq-selos" id="cq-selos"></ul>
-    <h2 class="sec">Ranking da turma</h2>
-    <p class="meta" style="margin:0 0 10px">XP total de cada colega: disciplinas, PyNetSec e jogos da Trilha Rali, somados na planilha da turma.</p>
+  </section>
+  <section id="ranking" hidden aria-labelledby="rk-t">
+    <h1 id="rk-t">Ranking da turma</h1>
+    <p class="meta" style="margin:0 0 10px">Quem mais pontuou na sua turma: XP de disciplinas, PyNetSec e jogos da Trilha Rali, somados na planilha da turma. Veja seus selos e nível em Conquistas.</p>
     <ol class="cq-rank" id="cq-rank"><li class="cq-vazio">Carregando…</li></ol>
   </section>
   <div class="painel-estudo" id="painel-estudo" hidden>
@@ -496,7 +499,7 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
   var NIVEIS = [0, 100, 250, 450, 700, 1000, 1400, 1900, 2500, 3200, 4000];
   var TITULOS = ["Explorador", "Aprendiz", "Praticante", "Dedicado", "Especialista", "Veterano", "Mestre", "Grão-mestre", "Lenda", "Lenda II", "Lenda III"];
   var $ = function (i) { return document.getElementById(i); };
-  var cq = $("conquistas"), outros = ["painel-estudo", "meu-curso", "modulos", "entrar-aviso"].map($).concat([document.querySelector(".hero")]);
+  var cq = $("conquistas"), rk = $("ranking"), outros = ["painel-estudo", "meu-curso", "modulos", "entrar-aviso"].map($).concat([document.querySelector(".hero")]);
   function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function jogos() { return P.jogos ? P.jogos() : {}; }
   function calcula() {
@@ -547,14 +550,15 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
     }).catch(function () { rankFeito = false; ol.innerHTML = '<li class="cq-vazio">Sem conexão para carregar o ranking.</li>'; });
   }
   function rota() {
-    var on = location.hash.indexOf("#conquistas") === 0 && !!P.perfil(), aRank = location.hash === "#conquistas-ranking";
-    cq.hidden = !on;
+    var h = location.hash === "#conquistas-ranking" ? "#ranking" : location.hash;
+    var logado = !!P.perfil(), aRank = logado && h === "#ranking", aConq = logado && h.indexOf("#conquistas") === 0, on = aRank || aConq;
+    cq.hidden = !aConq; rk.hidden = !aRank;
     outros.forEach(function (el) { if (el) el.style.display = on ? "none" : ""; });
     document.querySelectorAll(".hub-nav a").forEach(function (a) {
-      var alvo = a.getAttribute("href"), atual = on ? alvo === location.hash : alvo === "./";
+      var alvo = a.getAttribute("href"), atual = on ? alvo === (aRank ? "#ranking" : "#conquistas") : alvo === "./";
       if (atual) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
     });
-    if (on) { desenha(); rank(); var antes = calcula().total; P.jornada({ xp: antes }).then(function () { desenha(); var t = calcula().total; if (t !== antes) P.jornada({ xp: t }); }); if (aRank) setTimeout(function () { $("cq-rank").scrollIntoView({ block: "start" }); }, 50); else window.scrollTo(0, 0); }
+    if (on) { desenha(); if (aRank) rank(); var antes = calcula().total; P.jornada({ xp: antes }).then(function () { desenha(); var t = calcula().total; if (t !== antes) P.jornada({ xp: t }); }); window.scrollTo(0, 0); }
   }
   window.addEventListener("hashchange", rota);
   window.addEventListener("perfil:mudou", function () { rankFeito = false; rota(); });
