@@ -468,10 +468,7 @@
   function opcaoTurma(t) { return opcao("<b>" + esc(t.turma) + "</b><small>" + esc(t.curso) + (t.turno ? " \u00b7 " + esc(t.turno) : "") + "</small>", function () { nav.nivel = 0; escolherTurma(t); }); }
   function desenharTurmas(r) {
     listaTurmas = r.turmas || [];
-    var ult = null; try { ult = localStorage.getItem(TKEY); } catch (e) {}
-    var achou = listaTurmas.filter(function (t) { return t.turma === ult; })[0];
     if (!listaTurmas.length) { q(".pt-turmas").innerHTML = ""; gmsg("Nenhuma turma cadastrada ainda. Avise o professor.", "bad"); return; }
-    if (achou && passo === 1 && !turmaSel && !autoFeito) { autoFeito = true; nav = { curso: classe(achou).base || "outras", nivel: 0 }; escolherTurma(achou); return; }
     autoFeito = true;
     desenharEscolha();
   }
