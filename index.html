@@ -98,6 +98,30 @@
 .rodape{background:#0B1F3B;color:#E2E8F0;border-top:3px solid #00C853;margin-top:40px;padding:18px clamp(16px,5vw,64px);font-size:14px}
 .rodape b{color:#FFFFFF}.rodape span{color:#3BE37A}
 html[data-a11y-esq="escuro"] .hub-logo img{content:url(img/logo-hub-escuro.png)}html[data-a11y-esq="claro"] .hub-logo img{content:url(img/logo-hub.png)}
+
+.cq-topo{display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;padding:26px clamp(18px,3vw,34px);border-radius:22px;background:linear-gradient(115deg,#F2FBF4 0%,#E3F7E8 55%,#9BE8B6 100%);box-shadow:0 8px 24px rgba(0,120,53,.14);color:#0F172A}
+.cq-nivel{display:grid;place-items:center;width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,#22C55E,#007A35);color:#fff;box-shadow:0 10px 24px rgba(0,122,53,.35);text-align:center;line-height:1}
+.cq-nivel b{font:900 40px/1 "Source Sans 3",system-ui,sans-serif}.cq-nivel small{display:block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-top:-18px}
+.cq-info h1{margin:0;font:900 italic clamp(30px,3.6vw,42px)/1 "Source Sans 3",system-ui,sans-serif;color:#0F172A}
+.cq-tit{margin:4px 0 12px;font-weight:800;color:#007A35;font-size:18px}
+.cq-barra{height:12px;border-radius:9px;background:rgba(15,23,42,.1);overflow:hidden;max-width:520px}.cq-barra i{display:block;height:100%;width:0;border-radius:9px;background:linear-gradient(90deg,#00A844,#3BE37A);transition:width .6s ease}
+.cq-prox{margin:8px 0 0;font-size:15px;color:#334155}
+.cq-xp{text-align:right}.cq-xp b{display:block;font:900 clamp(32px,4vw,46px)/1 "Source Sans 3",system-ui,sans-serif;color:#007A35}.cq-xp small{font-weight:700;color:#334155}
+.cq-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:18px}
+.cq-stat{padding:16px 18px;border-radius:16px;background:var(--panel);border:1px solid var(--line)}
+.cq-stat span{display:block;font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.cq-stat b{display:block;margin:6px 0 2px;font:900 30px/1 "Source Sans 3",system-ui,sans-serif;color:var(--ink)}.cq-stat small{color:var(--ink-2);font-size:14px}
+.cq-selos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.cq-selos li{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:16px 12px;border-radius:16px;background:var(--panel);border:1px solid var(--line)}
+.cq-selos li i{display:grid;place-items:center;width:58px;height:58px;border-radius:50%;font-style:normal;font-size:28px;background:linear-gradient(135deg,#FDE68A,#F59E0B);box-shadow:0 6px 14px rgba(245,158,11,.3)}
+.cq-selos li b{font-size:15.5px;color:var(--ink)}.cq-selos li small{font-size:13px;color:var(--ink-2);line-height:1.3}
+.cq-selos li.off{opacity:.55}.cq-selos li.off i{background:var(--line);box-shadow:none;filter:grayscale(1)}
+.cq-rank{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-width:640px}
+.cq-rank li{display:flex;justify-content:space-between;gap:12px;padding:10px 16px;border-radius:12px;background:var(--panel);border:1px solid var(--line);font-weight:600;color:var(--ink)}
+.cq-rank li.me{border-color:#00A844;background:color-mix(in srgb,#00A844 10%,var(--panel))}.cq-rank li.cq-vazio{color:var(--ink-2);font-weight:400}
+@media (prefers-color-scheme:dark){.cq-topo{background:linear-gradient(115deg,#0F2A1F 0%,#0E3A27 55%,#16A34A 100%);color:#F1F5F9}.cq-info h1{color:#F1F5F9}.cq-tit{color:#3BE37A}.cq-prox,.cq-xp small{color:#CBD5E1}.cq-xp b{color:#3BE37A}.cq-barra{background:rgba(255,255,255,.15)}}
+@media (max-width:900px){.cq-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.cq-topo{grid-template-columns:auto 1fr}.cq-xp{grid-column:1/-1;text-align:left}}
+@media (max-width:520px){.cq-topo{grid-template-columns:1fr;text-align:center}.cq-nivel{margin:0 auto}.cq-barra{margin:0 auto}.cq-xp{text-align:center}}
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ambiente de Estudos · Trilha Rali HUB</title>
@@ -189,8 +213,8 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
   <nav class="hub-nav" aria-label="Seções do HUB"><ul>
     <li><a href="./" aria-current="page"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 2 11.5h3V21h5.5v-6h3v6H19v-9.5h3z"/></svg>Início</a></li>
     <li><a href="#minhas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 4h12a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><path d="M4 17a3 3 0 0 1 3-3h12"/></svg>Minhas disciplinas</a></li>
-        <li><a href="#" id="nav-ranking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20v-5M10 20V9M15 20v-8M20 20V4"/></svg>Ranking</a></li>
-    <li><a href="../startnosestudos/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.5 13.8-1.5 7.7 5-2.7 5 2.7-1.5-7.7"/></svg>Conquistas</a></li>
+        <li><a href="#conquistas-ranking" id="nav-ranking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20v-5M10 20V9M15 20v-8M20 20V4"/></svg>Ranking</a></li>
+    <li><a href="#conquistas" id="nav-conq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.5 13.8-1.5 7.7 5-2.7 5 2.7-1.5-7.7"/></svg>Conquistas</a></li>
     <li><a href="#modulos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>Módulos liberados</a></li>
     <li><a href="professor.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M22 9 12 4 2 9l10 5z"/><path d="M6 11v5c3 2.7 9 2.7 12 0v-5M22 9v5"/></svg>Área do Professor</a></li>
   </ul>
@@ -224,6 +248,29 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
     <img src="img/hub-hero.webp" alt="" width="900" height="458">
   </section>
 
+  <section id="conquistas" hidden aria-labelledby="cq-t">
+    <div class="cq-topo">
+      <div class="cq-nivel" aria-hidden="true"><b id="cq-n">1</b><small>nível</small></div>
+      <div class="cq-info">
+        <h1 id="cq-t">Conquistas</h1>
+        <p id="cq-titulo" class="cq-tit">Explorador</p>
+        <div class="cq-barra" role="progressbar" aria-labelledby="cq-prox" aria-valuemin="0" aria-valuemax="100" id="cq-barra"><i id="cq-fill"></i></div>
+        <p class="cq-prox" id="cq-prox"></p>
+      </div>
+      <div class="cq-xp"><b id="cq-total">0</b><small>XP total</small></div>
+    </div>
+    <div class="cq-stats">
+      <div class="cq-stat"><span>Estudos</span><b id="cq-est">0</b><small id="cq-est-d"></small></div>
+      <div class="cq-stat"><span>PyNetSec</span><b id="cq-py">0</b><small id="cq-py-d"></small></div>
+      <div class="cq-stat"><span>Jogos · Trilha Rali</span><b id="cq-jg">0</b><small id="cq-jg-d"></small></div>
+      <div class="cq-stat"><span>Sequência de estudo</span><b id="cq-seq">0</b><small id="cq-seq-d"></small></div>
+    </div>
+    <h2 class="sec">Selos</h2>
+    <ul class="cq-selos" id="cq-selos"></ul>
+    <h2 class="sec">Ranking da turma</h2>
+    <p class="meta" style="margin:0 0 10px">Pontos das disciplinas e do PyNetSec registrados na planilha da turma.</p>
+    <ol class="cq-rank" id="cq-rank"><li class="cq-vazio">Carregando…</li></ol>
+  </section>
   <div class="painel-estudo" id="painel-estudo" hidden>
     <div class="continuar" id="continuar" hidden>
       <div><small>Continuar de onde parou</small><b id="continuar-t"></b></div>
@@ -430,7 +477,6 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
   side.addEventListener("click", function (e) { if (e.target.closest("a") && side.classList.contains("aberto")) menu(false); });
   function painel() { var f = document.querySelector(".pt-fab"); if (P && P.perfil() && f) f.click(); else if (P) P.entrar(); }
   document.getElementById("hub-avatar").onclick = function (e) { e.stopPropagation(); painel(); };
-  document.getElementById("nav-ranking").onclick = function (e) { e.preventDefault(); e.stopPropagation(); painel(); };
   function ola() { var p = P && P.perfil(), n = p ? (p.apelido || String(p.nome || "").split(" ")[0]) : ""; document.getElementById("hub-ola").textContent = "Ol\u00e1, " + (n || "estudante") + "! \ud83d\udc4b"; }
   window.addEventListener("perfil:mudou", ola); ola();
   /* ?volta=<endereço do jogo>: depois de entrar (curso, ano, turma e nome na lista), o aluno volta para o jogo. */
@@ -440,6 +486,78 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
     var ir = function () { if (P && P.perfil()) location.replace(volta); };
     if (ok) { if (P && P.perfil()) ir(); else { window.addEventListener("perfil:mudou", ir); if (P) P.entrar(); } }
   }
+})();
+</script>
+<script>
+/* Conquistas: XP de estudos (disciplinas), do PyNetSec e dos jogos da Trilha Rali, nível, selos e ranking da turma. */
+(function () {
+  var P = window.PORTAL_ALUNO; if (!P) return;
+  var NIVEIS = [0, 100, 250, 450, 700, 1000, 1400, 1900, 2500, 3200, 4000];
+  var TITULOS = ["Explorador", "Aprendiz", "Praticante", "Dedicado", "Especialista", "Veterano", "Mestre", "Grão-mestre", "Lenda", "Lenda II", "Lenda III"];
+  var $ = function (i) { return document.getElementById(i); };
+  var cq = $("conquistas"), outros = ["painel-estudo", "meu-curso", "modulos", "entrar-aviso"].map($).concat([document.querySelector(".hero")]);
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function jogos(p) { try { return (JSON.parse(localStorage.getItem("hub-jogos:" + p.id) || "null") || {}).salas || {}; } catch (e) { return {}; } }
+  function calcula() {
+    var p = P.perfil(), m = P.materiais(), est = 0, nDisc = 0, meia = 0, completa = 0, py = m.pynetsec || { f: 0, t: 50, p: 0 };
+    Object.keys(m).forEach(function (k) { if (k === "pynetsec") return; var x = m[k] || {}; est += x.p || 0; if ((x.f || 0) > 0) nDisc++; if (x.t && x.f / x.t >= 0.5) meia++; if (x.t && x.f >= x.t) completa++; });
+    var sl = jogos(p), jxp = 0, nSalas = 0, casos = 0, ctfAc = 0;
+    Object.keys(sl).forEach(function (k) { var s = sl[k]; jxp += s.xp || 0; nSalas++; if (s.tipo === "desv") casos += s.acertos || 0; if (s.tipo === "ctf") ctfAc += s.acertos || 0; });
+    var seq = P.sequencia();
+    return { est: est, nDisc: nDisc, meia: meia, completa: completa, py: py, jxp: jxp, nSalas: nSalas, casos: casos, ctfAc: ctfAc, seq: seq, total: est + (py.p || 0) + jxp };
+  }
+  function selos(d) {
+    return [
+      ["📚", "Primeiro passo", "Estudou o primeiro dia", d.seq.total >= 1],
+      ["🔥", "Embalado", "3 dias seguidos de estudo", d.seq.dias >= 3],
+      ["⚡", "Imparável", "7 dias seguidos de estudo", d.seq.dias >= 7],
+      ["🧭", "Meio caminho", "Metade de uma disciplina", d.meia >= 1],
+      ["🎓", "Disciplina completa", "Concluiu uma disciplina", d.completa >= 1],
+      ["🐍", "Script kiddie", "10 missões no PyNetSec", (d.py.f || 0) >= 10],
+      ["🛡️", "Defensor", "25 missões no PyNetSec", (d.py.f || 0) >= 25],
+      ["🏴", "Hacker do bem", "Todas as missões do PyNetSec", d.py.t && d.py.f >= d.py.t],
+      ["🎮", "Entrou no jogo", "Primeira sala na Trilha Rali", d.nSalas >= 1],
+      ["🚩", "Caçador de bandeiras", "5 bandeiras no CTF", d.ctfAc >= 5],
+      ["🔎", "Detetive", "Resolveu um caso no Desvendando", d.casos >= 1],
+      ["🏆", "Mil XP", "Somou 1.000 XP no total", d.total >= 1000]
+    ];
+  }
+  function desenha() {
+    var p = P.perfil(); if (!p) return;
+    var d = calcula(), n = 0; while (n + 1 < NIVEIS.length && d.total >= NIVEIS[n + 1]) n++;
+    var base = NIVEIS[n], prox = NIVEIS[n + 1], pct = prox ? Math.round((d.total - base) * 100 / (prox - base)) : 100;
+    $("cq-n").textContent = n + 1; $("cq-titulo").textContent = TITULOS[n]; $("cq-total").textContent = d.total.toLocaleString("pt-BR");
+    $("cq-fill").style.width = pct + "%"; $("cq-barra").setAttribute("aria-valuenow", pct);
+    $("cq-prox").textContent = prox ? "Faltam " + (prox - d.total).toLocaleString("pt-BR") + " XP para o nível " + (n + 2) + " (" + TITULOS[n + 1] + ")." : "Nível máximo. Parabéns!";
+    $("cq-est").textContent = d.est.toLocaleString("pt-BR"); $("cq-est-d").textContent = d.nDisc + " disciplina(s) iniciada(s)";
+    $("cq-py").textContent = (d.py.p || 0).toLocaleString("pt-BR"); $("cq-py-d").textContent = (d.py.f || 0) + " de " + (d.py.t || 50) + " missões";
+    $("cq-jg").textContent = d.jxp.toLocaleString("pt-BR"); $("cq-jg-d").textContent = d.nSalas + " sala(s) jogada(s)";
+    $("cq-seq").textContent = d.seq.dias; $("cq-seq-d").textContent = d.seq.dias === 1 ? "dia seguido" : "dias seguidos";
+    $("cq-selos").innerHTML = selos(d).map(function (s) { return '<li class="' + (s[3] ? "" : "off") + '"><i aria-hidden="true">' + s[0] + "</i><b>" + esc(s[1]) + "</b><small>" + esc(s[2]) + (s[3] ? "" : " · bloqueado") + "</small></li>"; }).join("");
+  }
+  var rankFeito = false;
+  function rank() {
+    var p = P.perfil(), u = String(window.RANKING_URL || "").trim(), ol = $("cq-rank");
+    if (!p || !u) { ol.innerHTML = '<li class="cq-vazio">Ranking indisponível.</li>'; return; }
+    if (rankFeito) return; rankFeito = true;
+    fetch(u + (u.indexOf("?") >= 0 ? "&" : "?") + "disciplina=&turma=" + encodeURIComponent(p.turma)).then(function (r) { return r.json(); }).then(function (v) {
+      if (!v.ok || !v.lista || !v.lista.length) { ol.innerHTML = '<li class="cq-vazio">Ainda não há pontos registrados na sua turma.</li>'; return; }
+      ol.innerHTML = v.lista.slice(0, 15).map(function (x, i) { var eu = String(x.apelido).toLowerCase() === String(p.apelido || "").toLowerCase(); return '<li class="' + (eu ? "me" : "") + '"><span>' + (i + 1) + "º " + esc(x.apelido) + (eu ? " (você)" : "") + "</span><span>" + x.pontos + " pts</span></li>"; }).join("");
+    }).catch(function () { rankFeito = false; ol.innerHTML = '<li class="cq-vazio">Sem conexão para carregar o ranking.</li>'; });
+  }
+  function rota() {
+    var on = location.hash.indexOf("#conquistas") === 0 && !!P.perfil(), aRank = location.hash === "#conquistas-ranking";
+    cq.hidden = !on;
+    outros.forEach(function (el) { if (el) el.style.display = on ? "none" : ""; });
+    document.querySelectorAll(".hub-nav a").forEach(function (a) {
+      var alvo = a.getAttribute("href"), atual = on ? alvo === location.hash : alvo === "./";
+      if (atual) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    if (on) { desenha(); rank(); P.jornada().then(desenha); if (aRank) setTimeout(function () { $("cq-rank").scrollIntoView({ block: "start" }); }, 50); else window.scrollTo(0, 0); }
+  }
+  window.addEventListener("hashchange", rota);
+  window.addEventListener("perfil:mudou", function () { rankFeito = false; rota(); });
+  rota();
 })();
 </script>
 <script src="acessibilidade.js" defer></script>
