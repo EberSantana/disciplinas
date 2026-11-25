@@ -115,6 +115,7 @@
     ".pt-go{width:100%;min-height:50px;margin-top:20px;border:0;border-radius:10px;background:#007A35;color:#fff;font:700 17px/1 " + F + ";cursor:pointer}" +
     ".pt-go:hover{background:#00662B}.pt-go:focus-visible{outline:3px solid #0B1F3B;outline-offset:2px}.pt-go[disabled]{opacity:.7;cursor:wait}" +
     ".pt-note{margin:12px 0 0;font-size:13px;color:#5B6871}" +
+      ".pt-esqueci{display:block;margin:14px auto 0;padding:8px 12px;border:0;background:none;color:#007A35;font:inherit;font-size:15px;font-weight:700;text-decoration:underline;cursor:pointer}.pt-esqueci:disabled{opacity:.5;cursor:default}" +
     ".pt-priv{margin:12px 0 0;font-size:14px}.pt-priv summary{cursor:pointer;font-weight:600;color:#00662B;min-height:24px}.pt-priv p{margin:8px 0 0;color:#3F4F5B;font-size:14px}" +
     ".pt-msg{margin-top:10px;font-size:14px}.pt-msg:empty{margin:0}" +
     ".pt-msg.bad{color:#B3261E}.pt-msg.good{color:#0B7A49}" +
@@ -126,6 +127,7 @@
     ".pt-fab[hidden]{display:none}" +
     "@media (min-width:1025px){.pt-fab{height:36px;padding:0 14px;border-radius:10px;font-size:13px;display:inline-flex;align-items:center;box-shadow:0 1px 2px rgba(0,0,0,.12),0 6px 18px rgba(0,0,0,.14)}.pt-fab .pt-dot{width:7px;height:7px;margin-right:7px}}" +
     "@media (max-width:1024px){.pt-fab{bottom:calc(20px + env(safe-area-inset-bottom,0px))}}" +
+    "html.pt-logado .a11y-ap-dock{display:none!important}html.pt-sem-fab .pt-fab{display:none!important}" +
     ".pt-fab:focus-visible{outline:3px solid #0B1F3B;outline-offset:2px}" +
     ".pt-fab .pt-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;background:#7CF0B0;vertical-align:middle}" +
     ".pt-box{position:fixed;right:16px;bottom:72px;z-index:9999;width:min(380px,calc(100vw - 32px));max-height:calc(100vh - 100px);overflow:auto;border-radius:14px;padding:18px;font:15px/1.5 " + F + ";background:#fff;color:#0B1F3B;border:1px solid #D5DBE3;box-shadow:0 10px 30px rgba(0,0,0,.25);text-align:left}" +
@@ -140,7 +142,7 @@
     ".pt-btn{display:inline-flex;align-items:center;min-height:38px;border:1px solid #007A35;background:#007A35;color:#fff;border-radius:8px;padding:0 14px;font:600 14px/1 " + F + ";cursor:pointer;text-decoration:none}" +
     ".pt-btn.sec{background:transparent;color:#00662B}" +
     ".pt-menu{display:grid;gap:6px;margin:0;padding:0;list-style:none}" +
-    ".pt-menu a{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:44px;padding:0 12px;border:1px solid #D5DBE3;border-radius:10px;color:inherit;text-decoration:none;font-weight:600}" +
+    ".pt-menu a,.pt-menu button{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;min-height:44px;padding:0 12px;border:1px solid #D5DBE3;border-radius:10px;background:none;color:inherit;text-decoration:none;font:inherit;font-weight:600;cursor:pointer}.pt-atalhos{margin-top:14px}" +
     ".pt-menu a:hover,.pt-menu a:focus-visible{border-color:#007A35;outline:none}" +
     ".pt-menu a[aria-current]{border-color:#007A35;background:rgba(0,122,53,.08)}" +
     ".pt-menu a span{color:#007A35}" +
@@ -154,8 +156,8 @@
       ".pt-card input,.pt-card select{background:#071225;color:#E4ECEF;border-color:#3A4C58}" +
       ".pt-opt{background:#071225;color:#E4ECEF;border-color:#22324D}.pt-opt small{color:#8699A4}.pt-back{color:#3BE37A}" +
       ".pt-box textarea{background:#071225;color:#E4ECEF;border-color:#5C7280}.pt-box{background:#0F1E36;color:#E4ECEF;border-color:#22324D}.pt-box p{color:#B8C6CD}.pt-box h4{color:#3BE37A}" +
-      ".pt-btn.sec{color:#3BE37A;border-color:#3BE37A}.pt-menu a{border-color:#22324D}.pt-menu a span{color:#3BE37A}.pt-rank li{border-color:#22324D}" +
-      ".pt-msg.bad{color:#FF8174}.pt-msg.good{color:#4FD899}}" +
+      ".pt-btn.sec{color:#3BE37A;border-color:#3BE37A}.pt-menu a,.pt-menu button{border-color:#22324D}.pt-menu a span,.pt-menu button span{color:#3BE37A}.pt-rank li{border-color:#22324D}" +
+      ".pt-msg.bad{color:#FF8174}.pt-msg.good{color:#4FD899}.pt-esqueci{color:#3BE37A}}" +
     "@media print{.pt-fab,.pt-box,.pt-screen{display:none}}";
   document.head.appendChild(css);
 
@@ -418,6 +420,7 @@
         '<button class="pt-go" type="submit">Entrar</button>' +
         '<div class="pt-msg" role="status" aria-live="polite"></div>' +
         '<p class="pt-note pt-pin-nota"></p>' +
+        '<button class="pt-esqueci" type="button" hidden>Esqueci o PIN</button>' +
       "</form>" +
     "</div></section>";
   document.body.appendChild(screen);
@@ -555,9 +558,22 @@
     q(".pt-p2").hidden = a.temPin;
     q(".pt-pin-dica").textContent = a.temPin ? "Digite o seu PIN para entrar." : "\u00c9 o seu primeiro acesso. Crie um PIN de 4 n\u00fameros e guarde: voc\u00ea vai usar sempre para entrar.";
     q(".pt-go").textContent = a.temPin ? "Entrar" : "Criar PIN e entrar";
-    q(".pt-pin-nota").textContent = a.temPin ? "Esqueceu o PIN? Pe\u00e7a ao professor para liberar um novo." : "N\u00e3o use datas f\u00e1ceis, como o seu anivers\u00e1rio.";
+    q(".pt-pin-nota").textContent = a.temPin ? "" : "N\u00e3o use datas f\u00e1ceis, como o seu anivers\u00e1rio.";
+    q(".pt-pin-nota").hidden = a.temPin; q(".pt-esqueci").hidden = !a.temPin; q(".pt-esqueci").disabled = false;
     if (matchMedia("(pointer: fine)").matches) setTimeout(function () { q("#pt-p").focus({ preventScroll: true }); }, 30);
   }
+  /* Esqueci o PIN: o pedido vai para o painel do professor, que zera o PIN; depois o aluno cria um novo aqui. */
+  q(".pt-esqueci").onclick = function () {
+    var b = this; if (!alunoSel || !turmaSel) return;
+    b.disabled = true; gmsg("Enviando o pedido\u2026");
+    fetch(URL_, { method: "POST", body: JSON.stringify({ acao: "pedirPin", turma: turmaSel.turma, id: alunoSel.id }) })
+      .then(function (r) { return r.json(); }).catch(function () { return { ok: false, erro: "Sem conex\u00e3o com a internet. Tente de novo." }; })
+      .then(function (r) {
+        if (r && r.ok && r.semPin) { alunoSel.temPin = false; escolherAluno(alunoSel); return gmsg("Seu PIN j\u00e1 foi liberado. Crie um PIN novo: digite duas vezes.", "good"); }
+        if (!r || !r.ok) { b.disabled = false; return gmsg(/desconhecid|servidor/i.test((r && r.erro) || "") || !r ? "Pe\u00e7a ao professor para liberar um PIN novo." : r.erro, "bad"); }
+        gmsg("Pedido enviado ao professor. Quando ele liberar, volte aqui, toque no seu nome e crie um PIN novo.", "good");
+      });
+  };
   Array.prototype.forEach.call(screen.querySelectorAll(".pt-back"), function (b) {
     b.onclick = function () { var n = +b.getAttribute("data-volta"); if (n === 1) { turmaSel = null; nav.nivel = 0; irPara(1); carregarTurmas(); } else irPara(n); };
   });
@@ -572,6 +588,7 @@
     root.classList.add("pt-gate");
     screen.hidden = false;
     fab.hidden = true; box.hidden = true;
+    root.classList.remove("pt-logado");
     setInert(true);
     turmaSel = null; alunoSel = null;
     irPara(1);
@@ -582,6 +599,9 @@
     screen.hidden = true;
     setInert(false);
     fab.hidden = false;
+    /* Menu \u00fanico: logado, os ajustes de apar\u00eancia ficam dentro deste menu (sem um segundo bal\u00e3o flutuante). */
+    root.classList.add("pt-logado");
+    if (window.PORTAL_SEM_FAB) root.classList.add("pt-sem-fab");
   }
 
   q('form.pt-step').addEventListener("submit", function (ev) {
@@ -650,11 +670,14 @@
       }).join("") + "</ul>" +
       (d ? "<h4>Este material</h4>" + '<p class="pt-stat">' + d.feitas + " de " + d.total + " feitas \u00b7 " + d.pontos + " pontos</p>" +
         (URL_ ? "<p>O progresso \u00e9 enviado sozinho enquanto voc\u00ea estuda.</p>" : "<p>O envio para o professor ainda n\u00e3o foi ativado. Seu progresso fica salvo neste aparelho.</p>") : "") +
+      '<ul class="pt-menu pt-atalhos"><li><a href="' + esc(BASE + "#conquistas") + '">Conquistas e ranking<span>\u2192</span></a></li>' +
+      (window.A11Y_AP ? '<li><button type="button" id="pt-ap">Apar\u00eancia e acessibilidade<span>\u2192</span></button></li>' : "") + "</ul>" +
       '<div class="pt-row">' + (d && URL_ ? '<button class="pt-btn" id="pt-s" type="button">Enviar agora</button>' : "") +
       '<a class="pt-btn sec" href="' + esc(BASE) + '">P\u00e1gina inicial</a>' +
       '<button class="pt-btn sec" id="pt-out" type="button">Sair</button></div>' +
       '<div class="pt-msg" role="status"></div>' + (d && URL_ ? '<ol class="pt-rank" aria-label="Ranking da turma"></ol>' : "");
     box.querySelector("#pt-x").onclick = fechar;
+    var ap = box.querySelector("#pt-ap"); if (ap) ap.onclick = function () { fechar(); window.A11Y_AP.abrir(); };
     var nt = box.querySelector("#pt-nota"), nst = box.querySelector("#pt-nota-st"), tn = null;
     if (nt) {
       nt.value = lerLS(notaChave()) || "";

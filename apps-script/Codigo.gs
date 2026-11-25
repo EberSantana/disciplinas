@@ -6,7 +6,8 @@
  * Aba "Turmas" (você preenche, importando o Turmas.csv): um aluno por linha.
  *   turma | curso | turno | matricula | nome | pin | ultimo acesso | tentativas | bloqueado ate
  *   A coluna "pin" começa vazia: o aluno cria o PIN no primeiro acesso.
- *   Para o aluno criar um PIN novo (esqueceu), apague a célula do PIN dele.
+ *   Esqueceu o PIN: o aluno toca em "Esqueci o PIN" no login, o pedido vai para a coluna "pediu novo pin"
+ *   e aparece no painel do professor, que zera o PIN com um clique (ou apague a célula do PIN dele).
  * Aba "Progresso" (criada sozinha): uma linha por aluno e por material.
  * Aba "Jornadas" (criada sozinha): páginas visitadas, dias de estudo, XP total (Conquistas) e melhor resultado
  *   em cada sala dos jogos da Trilha Rali, de cada aluno.
@@ -19,7 +20,7 @@
  */
 const ABA_TURMAS = "Turmas";
 const ABA_PROG = "Progresso";
-const CAB_TURMAS = ["turma", "curso", "turno", "matricula", "nome", "pin", "ultimo acesso", "tentativas", "bloqueado ate", "aparelho"];
+const CAB_TURMAS = ["turma", "curso", "turno", "matricula", "nome", "pin", "ultimo acesso", "tentativas", "bloqueado ate", "aparelho", "pediu novo pin"];
 const CAB_PROG = ["material", "nome", "matricula", "curso", "turno", "turma", "feitas", "total", "pontos", "atualizado", "detalhe"];
 const MAX_TENTATIVAS = 5, BLOQUEIO_MIN = 15;
 // Painel do professor: defina a senha em Configurações do projeto > Propriedades do script > PROFESSOR_CHAVE.
@@ -113,7 +114,7 @@ function lerTurmas_() {
   const v = turmas_().getDataRange().getValues();
   return v.slice(1).map((r, i) => ({ linha: i + 2, turma: txt_(r[0], 60), curso: txt_(r[1], 80), turno: txt_(r[2], 20),
     matricula: String(r[3]).trim(), nome: txt_(r[4], 100), pin: String(r[5] || ""), tentativas: Number(r[7]) || 0,
-    bloqueio: r[8] ? new Date(r[8]) : null, acesso: r[6] ? new Date(r[6]) : null, aparelho: txt_(r[9], 40) })).filter(a => a.turma && a.nome && a.matricula);
+    bloqueio: r[8] ? new Date(r[8]) : null, acesso: r[6] ? new Date(r[6]) : null, aparelho: txt_(r[9], 40), pedido: r[10] ? new Date(r[10]) : null })).filter(a => a.turma && a.nome && a.matricula);
 }
 
 function doGet(e) {
@@ -185,7 +186,7 @@ function autenticar_(d, sh) {
   if (!a.pin) {
     if (!d.criarPin) return { erro: "Você ainda não tem PIN. Volte e crie o seu." };
     sh.getRange(a.linha, 6, 1, 4).setValues([["p" + pin, agora, 0, ""]]);
-    sh.getRange(a.linha, 10).setValue(aparelho_(d));
+    sh.getRange(a.linha, 10, 1, 2).setValues([[aparelho_(d), ""]]);
     return { aluno: a, novo: true };
   }
   if (a.pin !== "p" + pin) {
@@ -194,7 +195,7 @@ function autenticar_(d, sh) {
     return { erro: n >= MAX_TENTATIVAS ? "PIN errado. Por segurança, espere " + BLOQUEIO_MIN + " minutos para tentar de novo." : "PIN errado. Confira e tente de novo." };
   }
   sh.getRange(a.linha, 7, 1, 3).setValues([[agora, 0, ""]]);
-  sh.getRange(a.linha, 10).setValue(aparelho_(d));
+  sh.getRange(a.linha, 10, 1, 2).setValues([[aparelho_(d), ""]]);
   return { aluno: a };
 }
 
@@ -280,7 +281,7 @@ function painel_(d) {
       acesso: acesso || null, dias: acesso ? Math.floor((agora.getTime() - acesso) / 86400000) : null,
       feitas: ms.reduce((s, x) => s + x.feitas, 0), total: ms.reduce((s, x) => s + x.total, 0), pontos: ms.reduce((s, x) => s + x.pontos, 0),
       materiais: ms.map(x => ({ material: x.material, feitas: x.feitas, total: x.total, pontos: x.pontos, em: x.em })), semPin: !a.pin,
-      bloqueado: !!(a.bloqueio && a.bloqueio > agora), xp: j.xp, diasEstudo: j.dias.length, ultimoDia: j.dias[j.dias.length - 1] || "",
+      bloqueado: !!(a.bloqueio && a.bloqueio > agora), pediuPin: a.pedido && a.pin ? a.pedido.getTime() : null, xp: j.xp, diasEstudo: j.dias.length, ultimoDia: j.dias[j.dias.length - 1] || "",
       jogos: Object.keys(j.jogos).map(k => Object.assign({ token: k }, j.jogos[k])) };
   });
   return { ok: true, agora: agora.getTime(), diasAlerta: DIAS_ALERTA, alunos: lista, visibilidade: lerVis_() };
@@ -303,13 +304,14 @@ function gerenciar_(d) {
     const nome = txt_(d.nome, 100), turma = txt_(d.turma, 60);
     if (nome.split(" ").length < 2) return { ok: false, erro: "Escreva nome e sobrenome." };
     if (!turma) return { ok: false, erro: "Escolha a turma." };
-    sh.appendRow([turma, txt_(d.curso, 80), txt_(d.turno, 20), "'" + m, nome, "", "", 0, "", ""]);
+    sh.appendRow([turma, txt_(d.curso, 80), txt_(d.turno, 20), "'" + m, nome, "", "", 0, "", "", ""]);
     return { ok: true };
   }
   if (!linha) return { ok: false, erro: "Aluno não encontrado na planilha." };
   if (d.acao === "alunoPin") {
     // Zera o PIN e o bloqueio: no próximo acesso o aluno cria um PIN novo.
     sh.getRange(linha, 6, 1, 4).setValues([["", sh.getRange(linha, 7).getValue(), 0, ""]]);
+    sh.getRange(linha, 11).setValue("");
     return { ok: true };
   }
   if (d.acao === "alunoEditar") {
@@ -323,6 +325,17 @@ function gerenciar_(d) {
   return { ok: false, erro: "Ação desconhecida." };
 }
 
+// "Esqueci o PIN": público, só marca o pedido para o professor ver no painel (nenhum dado volta para o site).
+function pedirPin_(d) {
+  const t = chave_(d.turma), id = String(d.id || "");
+  const a = lerTurmas_().find(x => chave_(x.turma) === t && idDe_(x.matricula) === id);
+  if (!a) return { ok: false, erro: "Aluno não encontrado nesta turma." };
+  if (!a.pin) return { ok: true, semPin: true };
+  const cache = CacheService.getScriptCache(), ck = "pp:" + id;
+  if (!cache.get(ck)) { turmas_().getRange(a.linha, 11).setValue(new Date()); cache.put(ck, "1", 600); }
+  return { ok: true };
+}
+
 function doPost(e) {
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
@@ -331,6 +344,7 @@ function doPost(e) {
     if (d.acao === "painel") return json_(painel_(d));
     if (d.acao === "visibilidade") return json_(salvarVis_(d));
     if (d.acao === "alunoNovo" || d.acao === "alunoPin" || d.acao === "alunoEditar") return json_(gerenciar_(d));
+    if (d.acao === "pedirPin") return json_(pedirPin_(d));
     const sh = turmas_();
     const r = autenticar_(d, sh);
     if (r.erro) return json_({ ok: false, erro: r.erro });
