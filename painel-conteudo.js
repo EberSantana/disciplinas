@@ -26,7 +26,7 @@
     return cur ? { nome: nome, pastas: cur.disciplinas.map(function (d) { return d[1]; }) } : null;
   }
 
-  function ehComum(k) { return (PPC.complementares || []).indexOf(String(k).split("#")[0]) >= 0; }
+  function ehComum(k) { var b = String(k).split("#")[0]; return b !== "laboratorio-3d" && (PPC.complementares || []).indexOf(b) >= 0; } /* Laborat\u00f3rios j\u00e1 nascem liberados */
   function nivelTurma(t) { var m = /([1-4])\s*[\u00ba\u00b0o]?\s*(ano|per[i\u00ed]odo)/i.exec(cursoDaTurma(t) + " " + t); return m ? +m[1] : 0; }
   function rotulo(v) { return !v ? "" : v === "o" ? "Oculta" : v === "v" ? "Visível" : "Abre em " + br(v); }
   function efetivo(k) { var d = S.rascunho[S.escopo] || {}; if (d[k]) return d[k]; if (S.escopo !== "*") return (S.rascunho["*"] || {})[k] || ""; return ""; }

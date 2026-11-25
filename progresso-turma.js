@@ -184,7 +184,7 @@
     if (LIVRE || !perfil) return "v";
     if (VIS === null) VIS = lerVis() || {};
     var v = VIS[k];
-    if (v === undefined && ehComum(k.split("#")[0])) return "o";
+    if (v === undefined && ehComum(k.split("#")[0]) && k.split("#")[0] !== "laboratorio-3d") return "o"; /* Laborat\u00f3rios j\u00e1 nascem liberados */
     if (v === "o") return "o";
     if (/^\d{4}-\d{2}-\d{2}$/.test(v || "")) return dia() >= v ? "v" : v;
     return "v";
