@@ -60,5 +60,5 @@ window.PPC = {
         { cod: "TDS303", nome: "Projeto Integrador 2", ch: "133 h", temas: "Git/GitHub, banco e DAO/ORM, front-end acessível, back-end com CRUD, testes e apresentação pública.", p: ["projeto-integrador"] }] }
     ] }
   ],
-  complementares: ["fundamentos-de-sistemas-de-informacao", "mapas-mentais", "laboratorio-3d", "recursos-de-aula"]
+  complementares: ["pynetsec", "fundamentos-de-sistemas-de-informacao", "mapas-mentais", "laboratorio-3d", "recursos-de-aula"]
 };

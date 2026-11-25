@@ -13,7 +13,7 @@
   function hoje() { var d = new Date(); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
   function copia(o) { return JSON.parse(JSON.stringify(o || {})); }
   var NOMES = {}; /* nomes das pastas: cursos-ppc.js + complementares */
-  var COMPL = { "fundamentos-de-sistemas-de-informacao": "Fundamentos para Sistemas de Informação", "mapas-mentais": "Mapas Mentais de TI", "laboratorio-3d": "Laboratório 3D", "recursos-de-aula": "Recursos de aula" };
+  var COMPL = { "pynetsec": "PyNetSec · Python, Redes e Segurança (laboratório)", "fundamentos-de-sistemas-de-informacao": "Fundamentos para Sistemas de Informação", "mapas-mentais": "Mapas Mentais de TI", "laboratorio-3d": "Laboratório 3D", "recursos-de-aula": "Recursos de aula" };
   var MODS = {}; /* pasta -> [nomes dos módulos] (carregados sob demanda) */
   /* Disciplinas de cada curso e ano: a mesma lista que o portal usa (progresso-turma.js). */
   var PD = window.PORTAL_DADOS || { cursos: [], niveis: {}, base: function () { return ""; }, nivel: function () { return 0; } };
