@@ -63,7 +63,7 @@
   /* Curso do aluno: pelo ano/per\u00edodo escrito no curso ou no nome da turma; sem isso, pelo nome exato do curso. */
   function cursoDoPerfil(p) {
     if (!p) return null;
-    var b = baseDe(p.curso) || baseDe(p.turma), n = nivelDe(p.curso) || nivelDe(p.turma), c = null;
+    var b = baseDe(p.curso) || baseDe(p.turma), n = nivelDe(p.curso) || nivelDe(p.turma) || (b === BASE_SUB ? 1 : 0), c = null;
     if (b && n && NIVEIS[b][n - 1]) c = cursoDe(b + " \u00b7 " + NIVEIS[b][n - 1]);
     return c || cursoDe(p.curso) || (b ? cursoDe(b) : null);
   }
@@ -464,7 +464,7 @@
   }
   /* Entrada em tr\u00eas toques: curso, depois ano/per\u00edodo, depois a turma (a lista vem da planilha). */
   var nav = { curso: "", nivel: 0 }, listaTurmas = [];
-  function classe(t) { return { base: baseDe(t.curso) || baseDe(t.turma) || "", n: nivelDe(t.curso) || nivelDe(t.turma) || 0 }; }
+  function classe(t) { return { base: baseDe(t.curso) || baseDe(t.turma) || "", n: nivelDe(t.curso) || nivelDe(t.turma) || (baseDe(t.curso) === BASE_SUB || baseDe(t.turma) === BASE_SUB ? 1 : 0) }; }
   function opcaoTurma(t) { return opcao("<b>" + esc(t.turma) + "</b><small>" + esc(t.curso) + (t.turno ? " \u00b7 " + esc(t.turno) : "") + "</small>", function () { nav.nivel = 0; escolherTurma(t); }); }
   function desenharTurmas(r) {
     listaTurmas = r.turmas || [];
@@ -509,7 +509,6 @@
         if (!n) { b.disabled = true; b.onclick = null; }
         box1.appendChild(b);
       });
-      var sem = daBase.filter(function (x) { return !x.c.n; });
       if (sem.length) box1.appendChild(opcao("<b>Outras turmas deste curso</b><small>" + sem.length + " turma(s) sem ano/per\u00edodo no nome</small>", function () { nav.nivel = -1; desenharEscolha(); }));
       return;
     }
