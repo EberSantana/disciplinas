@@ -10,7 +10,7 @@
 .hub-side{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;background:var(--panel);border-right:1px solid var(--line);padding:22px 16px 0;overflow:hidden auto}
 .hub-logo{display:block;color:var(--ink);text-decoration:none;margin:0 6px 26px}
 .hub-logo img{display:block;width:100%;max-width:236px;height:auto}
-.hub-nav ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.hub-nav ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}.hub-sep{margin:18px 16px 6px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .hub-nav a{display:flex;align-items:center;gap:14px;min-height:48px;padding:0 16px;border-radius:12px;color:var(--ink);text-decoration:none;font-weight:600;font-size:16.5px;white-space:nowrap}
 .hub-nav a svg{flex:none;width:24px;height:24px}
 .hub-nav a:hover{background:var(--accent-soft,#DDF5E6)}
@@ -69,7 +69,7 @@
 .faixa ul{display:flex;flex-wrap:wrap;gap:10px 24px;margin:0;padding:0;list-style:none;font-weight:700;font-size:17px;color:#fff}
 .faixa li::before{content:"✓";color:#3BE37A;font-weight:900;margin-right:8px}
 .faixa .graf{margin-left:auto;width:90px;height:76px}
-#trilhas,#biblioteca{scroll-margin-top:16px}
+#minhas,#modulos{scroll-margin-top:16px}
 @media (prefers-color-scheme:dark){
   .hub-avatar{color:#E2E8F0}
   .hero{background:linear-gradient(115deg,#0F2A1F 0%,#0E3A27 50%,#0E6B3A 80%,#16A34A 100%)}
@@ -100,7 +100,7 @@
 html[data-a11y-esq="escuro"] .hub-logo img{content:url(img/logo-hub-escuro.png)}html[data-a11y-esq="claro"] .hub-logo img{content:url(img/logo-hub.png)}
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Trilha Rali HUB · Prof. Eber Santana</title>
+<title>Ambiente de Estudos · Trilha Rali HUB</title>
 <meta name="description" content="Trilha Rali HUB: estude e jogue. Disciplinas interativas e jogos de aprendizagem do Prof. Eber Santana, IFS Campus Tobias Barreto.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -185,15 +185,19 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
 <div class="hub">
 <aside class="hub-side" id="hub-side" aria-label="Menu principal">
-  <a class="hub-logo" href="./"><picture><source srcset="img/logo-hub-escuro.png" media="(prefers-color-scheme: dark)"><img src="img/logo-hub.png" alt="Trilha Rali HUB, página inicial" width="520" height="172"></picture></a>
+  <a class="hub-logo" href="portal.html" title="Portal Trilha Rali HUB"><picture><source srcset="img/logo-hub-escuro.png" media="(prefers-color-scheme: dark)"><img src="img/logo-hub.png" alt="Trilha Rali HUB, página inicial" width="520" height="172"></picture></a>
   <nav class="hub-nav" aria-label="Seções do HUB"><ul>
     <li><a href="./" aria-current="page"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 2 11.5h3V21h5.5v-6h3v6H19v-9.5h3z"/></svg>Início</a></li>
-    <li><a href="../TrilhaRali/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="12" rx="6"/><path d="M6.5 13h4M8.5 11v4"/><circle cx="15.5" cy="12" r=".8" fill="currentColor"/><circle cx="17.5" cy="14" r=".8" fill="currentColor"/></svg>Jogos e Desafios</a></li>
-    <li><a href="#trilhas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 12 10 5 10-5M2 17l10 5 10-5"/></svg>Trilhas de Aprendizagem</a></li>
-    <li><a href="#" id="nav-ranking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20v-5M10 20V9M15 20v-8M20 20V4"/></svg>Ranking</a></li>
+    <li><a href="#minhas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 4h12a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><path d="M4 17a3 3 0 0 1 3-3h12"/></svg>Minhas disciplinas</a></li>
+        <li><a href="#" id="nav-ranking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20v-5M10 20V9M15 20v-8M20 20V4"/></svg>Ranking</a></li>
     <li><a href="../startnosestudos/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.5 13.8-1.5 7.7 5-2.7 5 2.7-1.5-7.7"/></svg>Conquistas</a></li>
-    <li><a href="#biblioteca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>Biblioteca</a></li>
+    <li><a href="#modulos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>Módulos liberados</a></li>
     <li><a href="professor.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M22 9 12 4 2 9l10 5z"/><path d="M6 11v5c3 2.7 9 2.7 12 0v-5M22 9v5"/></svg>Área do Professor</a></li>
+  </ul>
+  <p class="hub-sep">Outros ambientes</p>
+  <ul>
+    <li><a href="../TrilhaRali/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="12" rx="6"/><path d="M6.5 13h4M8.5 11v4"/><circle cx="15.5" cy="12" r=".8" fill="currentColor"/><circle cx="17.5" cy="14" r=".8" fill="currentColor"/></svg>Jogos · Trilha Rali</a></li>
+    <li><a href="portal.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>Voltar ao portal</a></li>
   </ul></nav>
   <div class="hub-ifs"><img src="img/ifs-mark.png" alt="Logotipo do Instituto Federal" width="52" height="70"><div><b>INSTITUTO FEDERAL</b>Sergipe<br>Campus Tobias Barreto</div></div>
 </aside>
@@ -201,7 +205,7 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
 <div class="hub-main">
   <div class="hub-top">
     <button class="hub-burger" id="hub-burger" type="button" aria-controls="hub-side" aria-expanded="false" aria-label="Abrir menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
-    <div class="hub-ola"><b id="hub-ola">Olá, estudante! 👋</b><span>Que bom te ver no Trilha Rali HUB.</span></div>
+    <div class="hub-ola"><b id="hub-ola">Olá, estudante! 👋</b><span>Ambiente de Estudos · Trilha Rali HUB</span></div>
     <div class="busca" role="search">
       <label for="busca-q" class="sr-only">Buscar no portal</label>
       <input id="busca-q" type="search" autocomplete="off" placeholder="Buscar disciplinas, laboratórios, conteúdos…" aria-controls="busca-res">
@@ -213,29 +217,12 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
 <main id="conteudo"><div class="wrap">
   <section class="hero" aria-labelledby="hero-t">
     <div>
-      <h1 id="hero-t">Trilha Rali <span class="pill">HUB</span></h1>
-      <p>Aprenda, pratique e evolua com desafios gamificados de tecnologia.</p>
-      <a class="btn-hub" href="../TrilhaRali/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v16l14-8z"/></svg>Explorar Jogos</a>
+      <h1 id="hero-t">Ambiente de Estudos</h1>
+      <p>As disciplinas da sua turma, com apostilas, laboratórios, flashcards e atividades.</p>
+      <a class="btn-hub" id="hero-btn" href="#minhas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v16l14-8z"/></svg><span id="hero-btn-t">Ver minhas disciplinas</span></a>
     </div>
     <img src="img/hub-hero.webp" alt="" width="900" height="458">
   </section>
-
-  <div class="sec-hub">
-    <h2><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 6h10a6 6 0 0 1 0 12c-1.7 0-2.6-1.4-3.4-2.4h-3.2C9.6 16.6 8.7 18 7 18A6 6 0 0 1 7 6zm-.5 3.5v2h-2v1.5h2v2H8v-2h2v-1.5H8v-2zm9.5 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm2 2a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>Nossos Jogos e Desafios</h2>
-    <a href="../TrilhaRali/">Ver todos →</a>
-  </div>
-  <div class="jogos">
-    <a class="jogo nfc" href="../TrilhaRali/#/rali"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="2.2" fill="currentColor"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19 5a10 10 0 0 1 0 14M5 19A10 10 0 0 1 5 5"/></svg><div><b>Rali NFC</b><span>Desafios com tecnologia NFC</span></div><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
-    <a class="jogo ctf" href="../TrilhaRali/#/ctf"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3h1.8v18H5z"/><path fill="currentColor" d="M7 4c3-1.6 5.5 1.8 9 .4 1.3-.5 3-.4 4 .2-1 2.1-1 4.5 0 6.6-2.6-1.2-5.6 1.2-9 .2-1.6-.5-3-.4-4 .2z"/></svg><div><b>CTF Online</b><span>Capture as bandeiras</span></div><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
-    <a class="jogo cruz" href="../TrilhaRali/#/cruzada"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 2.5a2.5 2.5 0 0 1 2.5 2.5v1H15a1.5 1.5 0 0 1 1.5 1.5V11h1a2.5 2.5 0 1 1 0 5h-1v3.5A1.5 1.5 0 0 1 15 21h-3.5v-1a2.5 2.5 0 1 0-5 0v1H3a1.5 1.5 0 0 1-1.5-1.5V16H3a2.5 2.5 0 1 0 0-5H1.5V7.5A1.5 1.5 0 0 1 3 6h3.5V5A2.5 2.5 0 0 1 9 2.5z"/></svg><div><b>Cruzada Online</b><span>Conhecimento de forma divertida</span></div><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
-    <a class="jogo desv" href="../TrilhaRali/#/desvendando"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 6 6"/></svg><div><b>Desvendando</b><span>Investigue, analise e resolva</span></div><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
-  </div>
-
-  <div class="trio">
-    <a class="atal" href="../startnosestudos/"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 10h24v14a12 12 0 0 1-24 0z" fill="#FACC15"/><path d="M20 14h-8c0 9 4 14 10 15M44 14h8c0 9-4 14-10 15" fill="none" stroke="#EAB308" stroke-width="4"/><path d="M28 35h8v9h-8z" fill="#EAB308"/><rect x="21" y="44" width="22" height="7" rx="2" fill="#CA8A04"/><path d="m32 14 2.5 5 5.5.8-4 3.9 1 5.4-5-2.6-5 2.6 1-5.4-4-3.9 5.5-.8z" fill="#FEF08A"/><path d="M8 26c0 12 6 20 14 22M56 26c0 12-6 20-14 22" fill="none" stroke="#22C55E" stroke-width="3" stroke-linecap="round"/></svg><div><b>Conquistas</b><span>Desbloqueie badges e registre sua evolução.</span></div><svg class="seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></a>
-    <a class="atal" href="#trilhas"><svg viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="#00A844" stroke-width="5" stroke-linejoin="round"><path d="M32 8 6 21l26 13 26-13z" fill="#DDF5E6"/><path d="m6 32 26 13 26-13M6 43l26 13 26-13"/></svg><div><b>Trilhas de Aprendizagem</b><span>Roteiros de estudo com atividades práticas.</span></div><svg class="seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></a>
-    <a class="atal" href="#biblioteca"><svg viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="#00A844" stroke-width="5" stroke-linejoin="round"><path d="M6 12h18a8 8 0 0 1 8 8v34a6 6 0 0 0-6-6H6zM58 12H40a8 8 0 0 0-8 8v34a6 6 0 0 1 6-6h20z"/></svg><div><b>Biblioteca</b><span>Materiais, guias e referências de apoio.</span></div><svg class="seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m9 5 7 7-7 7"/></svg></a>
-  </div>
 
   <div class="painel-estudo" id="painel-estudo" hidden>
     <div class="continuar" id="continuar" hidden>
@@ -244,27 +231,24 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
     </div>
     <p class="seq" id="seq" role="status"></p>
   </div>
-  <div id="trilhas"></div>
   <section id="meu-curso" hidden>
-    <h2 class="sec" style="margin-bottom:2px">Suas disciplinas</h2>
+    <div id="minhas"></div>
+    <h2 class="sec" style="margin-bottom:2px">Minhas disciplinas</h2>
     <p class="meta" id="meu-curso-titulo" style="margin:0 0 12px"></p>
     <div class="grid" id="meu-curso-grid"></div>
+  </section>
+  <section id="modulos" hidden>
+    <h2 class="sec" style="margin-bottom:2px">Módulos liberados pelo professor</h2>
+    <p class="meta" style="margin:0 0 12px">Recursos extras que o professor abriu para a sua turma.</p>
+    <div class="grid" id="modulos-grid"></div>
   </section>
   <div class="entrar" id="entrar-aviso" hidden>
     <p><b>Entre no portal</b> para ver as disciplinas do seu curso e salvar o seu progresso.</p>
     <button type="button" id="entrar-btn">Entrar</button>
   </div>
 
-  <section id="por-curso" aria-labelledby="pc-titulo">
-    <div id="biblioteca"></div>
-    <h2 class="sec" id="pc-titulo">Biblioteca · disciplinas por curso</h2>
-    <div class="pc-tabs" role="tablist" aria-label="Cursos" id="pc-tabs"></div>
-    <p class="pc-ato" id="pc-ato"></p>
-    <p class="pc-leg"><span><i class="pc-st int"></i> Interativa (pontos, laboratórios e missões)</span><span><i class="pc-st mat"></i> Materiais (apostila e laboratórios)</span><span><i class="pc-st breve"></i> Em produção</span></p>
-    <div id="pc-corpo" role="tabpanel" aria-labelledby="pc-titulo"></div>
-  </section>
-  <h2 class="sec" id="todas-titulo">Disciplinas</h2>
-  <div class="grid" id="todas-grid">
+  <h2 class="sec" id="todas-titulo" style="display:none">Todas as disciplinas e módulos</h2>
+  <div class="grid" id="todas-grid" style="display:none">
     <a class="card" href="redes-de-computadores/" aria-label="Abrir Redes de Computadores">
       <span class="meta">Técnico em Informática · 3 materiais · 6 módulos interativos · 240 atividades</span>
       <h2>Redes de Computadores</h2>
@@ -343,18 +327,12 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
       <p>Simuladores de processos, escalonamento, memória e paginação, além de um terminal Linux para praticar comandos.</p>
       <span class="go" aria-hidden="true">Abrir<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
     </a>
-  </div>
-  <h2 class="sec">Recursos de aula</h2>
-  <div class="grid">
     <a class="card" href="recursos-de-aula/" aria-label="Abrir Recursos de aula">
       <span class="meta">3 recursos</span>
       <h2>Recursos de aula</h2>
       <p>Cronômetro com ranking de equipes, Linha do Tempo Tecnológica e códigos para aprender com IA.</p>
       <span class="go" aria-hidden="true">Abrir<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
     </a>
-  </div>
-  <h2 class="sec">Laboratório 3D <span style="font-weight:600;color:var(--muted)">(Vamos praticar?)</span></h2>
-  <div class="grid">
     <a class="card" href="laboratorio-3d/" aria-label="Abrir Laboratório 3D">
       <span class="meta">3 laboratórios</span>
       <h2>Laboratório 3D</h2>
@@ -362,13 +340,6 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
       <span class="go" aria-hidden="true">Abrir<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
     </a>
   </div>
-
-  <section class="faixa" aria-label="Desenvolva suas habilidades">
-    <svg viewBox="0 0 80 80" aria-hidden="true"><rect x="10" y="14" width="60" height="40" rx="5" fill="none" stroke="#E2E8F0" stroke-width="4"/><path d="M4 60h72l-6 8H10z" fill="#E2E8F0"/><path d="m30 27-7 7 7 7M50 27l7 7-7 7M43 24l-6 20" fill="none" stroke="#3BE37A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <h2>Desenvolva suas<br>habilidades em Tecnologia</h2>
-    <ul><li>Prática</li><li>Desafios</li><li>Conhecimento</li><li>Evolução</li></ul>
-    <svg class="graf" viewBox="0 0 90 76" aria-hidden="true"><rect x="6" y="50" width="16" height="22" rx="3" fill="#22C55E"/><rect x="30" y="38" width="16" height="34" rx="3" fill="#22C55E"/><rect x="54" y="24" width="16" height="48" rx="3" fill="#3BE37A"/><path d="M6 40 36 22l12 8 30-22" fill="none" stroke="#3BE37A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="m66 6 14 1-3 13" fill="none" stroke="#3BE37A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </section>
   <footer>O progresso fica salvo no navegador do aparelho que você usar.</footer>
 </div></main>
 <div class="rodape"><div class="wrap"><b>Instituto Federal de Sergipe (IFS) · Campus Tobias Barreto</b><br><span>Desenvolvido e supervisionado pelo Professor Eber Santana</span></div></div>
@@ -382,17 +353,19 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
       meuGrid = document.getElementById("meu-curso-grid"), aviso = document.getElementById("entrar-aviso");
   var cards = Array.prototype.slice.call(todas.querySelectorAll("a.card"));
   function pasta(a) { return a.getAttribute("href").replace(/\/$/, ""); }
+  var modW = document.getElementById("modulos"), modGrid = document.getElementById("modulos-grid");
+  var comuns = (P.comuns || []).map(function (d) { return d[1]; });
   function render() {
-    var p = P.perfil(), curso = null;
-    if (p) curso = P.meuCurso();
+    var p = P.perfil(), curso = p ? P.meuCurso() : null;
     cards.forEach(function (a) { todas.appendChild(a); });
-    todas.style.display = ""; document.getElementById("todas-titulo").style.display = "";
-    if (!curso) { meu.hidden = true; aviso.hidden = false; document.getElementById("todas-titulo").textContent = "Todas as disciplinas (A–Z)"; return; }
-    var minhas = (P.minhas() || curso.disciplinas).map(function (d) { return d[1]; });
-    minhas.forEach(function (f) { cards.forEach(function (a) { if (pasta(a) === f) meuGrid.appendChild(a); }); });
-    document.getElementById("meu-curso-titulo").textContent = curso.nome + " · " + p.turma + " · " + p.turno;
-    todas.style.display = "none"; document.getElementById("todas-titulo").style.display = "none"; /* cada turma v\u00ea s\u00f3 as suas disciplinas */
-    meu.hidden = false; aviso.hidden = true;
+    var livre = /[?&]professor\b/.test(location.search);
+    todas.style.display = livre ? "" : "none"; document.getElementById("todas-titulo").style.display = livre ? "" : "none";
+    if (!curso) { meu.hidden = true; modW.hidden = true; aviso.hidden = livre; return; }
+    var lista = (P.minhas() || curso.disciplinas).map(function (d) { return d[1]; });
+    var nMod = 0;
+    lista.forEach(function (f) { cards.forEach(function (a) { if (pasta(a) !== f) return; if (comuns.indexOf(f) >= 0) { modGrid.appendChild(a); nMod++; } else meuGrid.appendChild(a); }); });
+    document.getElementById("meu-curso-titulo").textContent = (p.curso || curso.nome) + " · " + p.turma + (p.turno ? " · " + p.turno : "");
+    meu.hidden = false; modW.hidden = !nMod; aviso.hidden = true;
   }
   document.getElementById("entrar-btn").onclick = P.entrar;
   window.addEventListener("perfil:mudou", render);
@@ -408,7 +381,7 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
     if (!P.perfil()) { painel.hidden = true; return; }
     painel.hidden = false;
     var ul = P.ultima(), box = document.getElementById("continuar");
-    if (ul && P.permitida(pasta(ul.u))) { document.getElementById("continuar-t").textContent = ul.t; document.getElementById("continuar-a").href = ul.u; box.hidden = false; } else box.hidden = true;
+    if (ul && P.permitida(pasta(ul.u))) { document.getElementById("continuar-t").textContent = ul.t; document.getElementById("continuar-a").href = ul.u; box.hidden = false; document.getElementById("hero-btn").href = ul.u; document.getElementById("hero-btn-t").textContent = "Continuar de onde parei"; } else box.hidden = true;
     var s = P.sequencia(), el = document.getElementById("seq");
     el.textContent = s.dias > 1 ? "Sequ\u00eancia de estudo: " + s.dias + " dias seguidos." + (s.hoje ? " Hoje j\u00e1 contou!" : " Estude hoje para continuar.") : s.hoje ? "Voc\u00ea estudou hoje. Volte amanh\u00e3 para come\u00e7ar uma sequ\u00eancia." : s.total ? "Estude hoje para come\u00e7ar uma nova sequ\u00eancia." : "";
   }
@@ -439,46 +412,6 @@ a.pc-l:focus-visible{outline:3px solid #0B6BCB;outline-offset:2px}
   document.getElementById("busca-q").addEventListener("keydown", function (e) { if (e.key === "Escape") { this.value = ""; busca(); } });
   window.addEventListener("perfil:mudou", inicio);
   inicio();
-})();
-</script>
-<script src="cursos-ppc.js"></script>
-<script>
-(function () {
-  var D = window.PPC; if (!D) return;
-  var tabs = document.getElementById("pc-tabs"), corpo = document.getElementById("pc-corpo"), ato = document.getElementById("pc-ato"), sel = 0;
-  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-  function link(slug) {
-    var d = D.disc[slug] || { nome: slug, st: "mat" };
-    if (d.st === "breve") return '<span class="pc-l breve"><i class="pc-st breve"></i>' + esc(d.nome) + " · em produção</span>";
-    return '<a class="pc-l" href="' + slug + '/"><i class="pc-st ' + d.st + '"></i>' + esc(d.nome) + "</a>";
-  }
-  function desenha() {
-    var c = D.cursos[sel];
-    ato.textContent = c.ato;
-    corpo.innerHTML = c.grupos.map(function (g) {
-      return '<h3 class="pc-per">' + esc(g.t) + '</h3><div class="pc-grid">' + g.c.map(function (x) {
-        return '<article class="pc-c"><span class="meta">' + esc(x.cod) + " · " + esc(x.ch) + "</span><h3>" + esc(x.nome) + "</h3><p>" + esc(x.temas) + '</p><div class="pc-links">' + x.p.map(link).join("") + "</div></article>";
-      }).join("") + "</div>";
-    }).join("") + '<h3 class="pc-per">Complementares</h3><div class="pc-links">' + D.complementares.map(function (s) {
-      var a = document.querySelector('#todas-grid a.card[href="' + s + '/"], a.card[href="' + s + '/"]'), n = a ? a.querySelector("h2").textContent : s;
-      return '<a class="pc-l" href="' + s + '/">' + esc(n) + "</a>";
-    }).join("") + "</div>";
-    Array.prototype.forEach.call(tabs.children, function (b, i) { b.setAttribute("aria-selected", i === sel ? "true" : "false"); b.tabIndex = i === sel ? 0 : -1; });
-  }
-  D.cursos.forEach(function (c, i) {
-    var b = document.createElement("button"); b.type = "button"; b.setAttribute("role", "tab"); b.textContent = c.curto;
-    b.onclick = function () { sel = i; desenha(); try { localStorage.setItem("pc-curso", c.id); } catch (e) {} };
-    b.onkeydown = function (e) { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { sel = (sel + (e.key === "ArrowRight" ? 1 : D.cursos.length - 1)) % D.cursos.length; desenha(); tabs.children[sel].focus(); } };
-    tabs.appendChild(b);
-  });
-  try { var g = localStorage.getItem("pc-curso"); D.cursos.forEach(function (c, i) { if (c.id === g) sel = i; }); } catch (e) {}
-  function doAluno() {
-    var P = window.PORTAL_ALUNO, p = P && P.perfil();
-    if (!p || !p.curso) { tabs.hidden = false; return; }
-    D.cursos.forEach(function (c, i) { if (p.curso.indexOf(c.curto) === 0) { sel = i; tabs.hidden = true; } });
-  }
-  window.addEventListener("perfil:mudou", function () { doAluno(); desenha(); });
-  doAluno(); desenha();
 })();
 </script>
 <script>
