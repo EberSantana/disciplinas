@@ -20,7 +20,7 @@
   var NOMEPD = {}; PD.cursos.forEach(function (c) { c.disciplinas.forEach(function (d) { NOMEPD[d[1]] = d[0]; }); });
   function cursoNivel(nome) { var m = /^(.*) \u00b7 (.+)$/.exec(nome); return m ? { base: m[1], nivel: m[2] } : null; }
   function ementarioDaTurma(t) {
-    var c = cursoDaTurma(t) || "", b = PD.base(c) || PD.base(t), n = PD.nivel(c) || PD.nivel(t);
+    var c = cursoDaTurma(t) || "", b = PD.base(c) || PD.base(t), n = PD.nivel(c) || PD.nivel(t) || (b && b === PD.BASE_SUB ? 1 : 0); /* Subsequente sem per\u00edodo no nome = 1\u00ba per\u00edodo */
     if (!b || !n || !PD.niveis[b] || !PD.niveis[b][n - 1]) return null;
     var nome = b + " \u00b7 " + PD.niveis[b][n - 1], cur = PD.cursos.filter(function (x) { return x.nome === nome; })[0];
     return cur ? { nome: nome, pastas: cur.disciplinas.map(function (d) { return d[1]; }) } : null;
