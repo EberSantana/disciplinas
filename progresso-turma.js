@@ -45,6 +45,9 @@
   var NIVEIS = {}; NIVEIS[BASE_INT] = ["1\u00ba ano", "2\u00ba ano", "3\u00ba ano"]; NIVEIS[BASE_SUB] = ["1\u00ba per\u00edodo", "2\u00ba per\u00edodo", "3\u00ba per\u00edodo", "4\u00ba per\u00edodo"];
   function baseDe(t) { t = String(t || ""); return /integrado/i.test(t) ? BASE_INT : /subsequente|t[e\u00e9]cnico em inform/i.test(t) ? BASE_SUB : ""; }
   function nivelDe(t) { var m = /([1-4])\s*[\u00ba\u00b0o]?\s*(ano|per[i\u00ed]odo)/i.exec(String(t || "")); return m ? +m[1] : 0; }
+  /* Dados para o painel do professor (professor.html carrega este arquivo com PORTAL_SO_DADOS = true). */
+  window.PORTAL_DADOS = { cursos: CURSOS, comuns: COMUNS, niveis: NIVEIS, base: baseDe, nivel: nivelDe, BASE_INT: BASE_INT, BASE_SUB: BASE_SUB };
+  if (window.PORTAL_SO_DADOS) return;
   var TKEY = "pt-ultima-turma", LKEY = "pt-turmas-v2";
 
   var URL_ = String(window.RANKING_URL || "").trim();
@@ -201,7 +204,14 @@
     var o = window.DISCIPLINAS_POR_TURMA && window.DISCIPLINAS_POR_TURMA[perfil.turma];
     var l = c.disciplinas;
     if (o && o.length) { var t = todasDisc(); l = o.filter(function (f) { return t[f]; }).map(function (f) { return t[f]; }); }
-    return l.concat(comunsLiberados()).filter(function (d) { return regra(d[1]) !== "o"; });
+    var tem = {}; l.forEach(function (d) { tem[d[1]] = 1; });
+    var extras = []; var t = todasDisc(); for (var f in t) if (!tem[f] && !ehComum(f) && liberadaPeloProfessor(f)) extras.push(t[f]);
+    return l.concat(extras, comunsLiberados()).filter(function (d) { return regra(d[1]) !== "o"; });
+  }
+  /* Disciplina fora do ementário da turma que o professor marcou como "Visível" (ou com data já alcançada). */
+  function liberadaPeloProfessor(p) {
+    if (VIS === null) VIS = lerVis() || {};
+    var v = VIS[p]; return v === "v" || (/^\d{4}-\d{2}-\d{2}$/.test(v || "") && dia() >= v);
   }
   /* M\u00f3dulos comuns que o professor liberou para esta turma. */
   function comunsLiberados() { return COMUNS.filter(function (d) { return regra(d[1]) !== "o"; }); }

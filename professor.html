@@ -250,6 +250,8 @@ tr.det td{background:var(--line-2);padding:14px 18px 16px 66px}
 
 <script src="config.js"></script>
 <script src="cursos-ppc.js"></script>
+<script>window.PORTAL_SO_DADOS = true;</script>
+<script src="progresso-turma.js"></script>
 <script src="painel-conteudo.js"></script>
 <script>
 (function () {
@@ -379,12 +381,12 @@ tr.det td{background:var(--line-2);padding:14px 18px 16px 66px}
 
   /* ---------- dados ---------- */
   function demo() {
-    var now = Date.now(), nomes = ["Ana Beatriz Santos", "Bruno Henrique Lima", "Camila Oliveira Souza", "Daniel Ferreira Costa", "Eduarda Ribeiro Alves", "Felipe Gomes Barbosa", "Gabriela Martins Rocha", "Hugo Carvalho Dias", "Isabela Nunes Teixeira", "João Pedro Cardoso", "Karina Melo Araújo", "Lucas Almeida Pinto", "Mariana Lopes Freitas", "Nicolas Ramos Moreira", "Olívia Castro Batista", "Pedro Augusto Cunha", "Rafaela Mendes Correia", "Samuel Vieira Monteiro", "Tainá Duarte Campos", "Vinícius Azevedo Reis", "Yasmin Cavalcante Neves", "Zeca Fonseca Lima"], ap = ["Android · Chrome", "Windows · Edge", "iOS · Safari", "Windows · Chrome", "Android · Samsung", "Mac · Safari", "Linux · Firefox"], turmas = ["2º A · Informática", "2º B · Informática", "1º A · Subsequente"];
+    var now = Date.now(), nomes = ["Ana Beatriz Santos", "Bruno Henrique Lima", "Camila Oliveira Souza", "Daniel Ferreira Costa", "Eduarda Ribeiro Alves", "Felipe Gomes Barbosa", "Gabriela Martins Rocha", "Hugo Carvalho Dias", "Isabela Nunes Teixeira", "João Pedro Cardoso", "Karina Melo Araújo", "Lucas Almeida Pinto", "Mariana Lopes Freitas", "Nicolas Ramos Moreira", "Olívia Castro Batista", "Pedro Augusto Cunha", "Rafaela Mendes Correia", "Samuel Vieira Monteiro", "Tainá Duarte Campos", "Vinícius Azevedo Reis", "Yasmin Cavalcante Neves", "Zeca Fonseca Lima"], ap = ["Android · Chrome", "Windows · Edge", "iOS · Safari", "Windows · Chrome", "Android · Samsung", "Mac · Safari", "Linux · Firefox"], turmas = ["Integrado Des. Sistemas · 1º ano", "Integrado Des. Sistemas · 2º ano", "Subsequente em Informática 2026.2"], cursos = ["Integrado em Desenvolvimento de Sistemas · 1º ano", "Integrado em Desenvolvimento de Sistemas · 2º ano", "Subsequente em Informática · 1º período"];
     var mats = ["Redes de Computadores", "Banco de Dados", "Engenharia de Software", "Informática Básica"];
     return { ok: true, agora: now, diasAlerta: 7, alunos: nomes.map(function (n, i) {
       var h = (i * 37 + 11) % 100, ac = i === 4 ? null : i % 11 === 0 ? now - 9 * 864e5 : i % 7 === 0 ? now - 12 * 864e5 : i % 5 === 0 ? now - 3 * 864e5 : i < 3 ? now - 4 * 60000 : now - (h % 30) * 36e5 * 2 - 6e5;
       var tot = ac ? 20 + (i % 3) * 10 : 0, fe = ac ? Math.round(tot * ((h % 80) + 10) / 100) : 0;
-      return { turma: turmas[i % 3], curso: "Técnico em Informática", turno: "N", nome: n, matricula: String(202600100 + i * 7), aparelho: ac ? ap[i % ap.length] : "", acesso: ac, dias: ac ? Math.floor((now - ac) / 864e5) : null, feitas: fe, total: tot, pontos: fe * 12 + (i % 4) * 5,
+      return { turma: turmas[i % 3], curso: cursos[i % 3], turno: i % 3 === 2 ? "Noturno" : "Integral", nome: n, matricula: String(202600100 + i * 7), aparelho: ac ? ap[i % ap.length] : "", acesso: ac, dias: ac ? Math.floor((now - ac) / 864e5) : null, feitas: fe, total: tot, pontos: fe * 12 + (i % 4) * 5,
         materiais: ac ? mats.slice(0, 1 + (i % 3)).map(function (m, j) { var t = Math.round(tot / (1 + (i % 3))); return { material: m, feitas: Math.min(t, Math.round(fe / (1 + (i % 3))) + j), total: t, pontos: 30 + j * 20, em: ac }; }) : [], semPin: !ac && i % 2 === 0 };
     }) };
   }

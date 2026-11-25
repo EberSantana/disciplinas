@@ -6,7 +6,7 @@
  * Formato: { "pasta": "o" | "v" | "aaaa-mm-dd", "pasta#n": ... }. Sem chave = segue o padrão. */
 (function () {
   var PPC = window.PPC, URL_ = String(window.RANKING_URL || "").trim();
-  var host = null, S = null;
+  var host = null, S = null, UID = 0;
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function chave() { try { return sessionStorage.getItem("pt-prof-chave") || ""; } catch (e) { return ""; } }
   function br(d) { return d.slice(8, 10) + "/" + d.slice(5, 7) + "/" + d.slice(0, 4); }
@@ -15,6 +15,16 @@
   var NOMES = {}; /* nomes das pastas: cursos-ppc.js + complementares */
   var COMPL = { "fundamentos-de-sistemas-de-informacao": "Fundamentos para Sistemas de Informação", "mapas-mentais": "Mapas Mentais de TI", "laboratorio-3d": "Laboratório 3D", "recursos-de-aula": "Recursos de aula" };
   var MODS = {}; /* pasta -> [nomes dos módulos] (carregados sob demanda) */
+  /* Disciplinas de cada curso e ano: a mesma lista que o portal usa (progresso-turma.js). */
+  var PD = window.PORTAL_DADOS || { cursos: [], niveis: {}, base: function () { return ""; }, nivel: function () { return 0; } };
+  var NOMEPD = {}; PD.cursos.forEach(function (c) { c.disciplinas.forEach(function (d) { NOMEPD[d[1]] = d[0]; }); });
+  function cursoNivel(nome) { var m = /^(.*) \u00b7 (.+)$/.exec(nome); return m ? { base: m[1], nivel: m[2] } : null; }
+  function ementarioDaTurma(t) {
+    var c = cursoDaTurma(t) || "", b = PD.base(c) || PD.base(t), n = PD.nivel(c) || PD.nivel(t);
+    if (!b || !n || !PD.niveis[b] || !PD.niveis[b][n - 1]) return null;
+    var nome = b + " \u00b7 " + PD.niveis[b][n - 1], cur = PD.cursos.filter(function (x) { return x.nome === nome; })[0];
+    return cur ? { nome: nome, pastas: cur.disciplinas.map(function (d) { return d[1]; }) } : null;
+  }
 
   function ehComum(k) { return (PPC.complementares || []).indexOf(String(k).split("#")[0]) >= 0; }
   function nivelTurma(t) { var m = /([1-4])\s*[\u00ba\u00b0o]?\s*(ano|per[i\u00ed]odo)/i.exec(cursoDaTurma(t) + " " + t); return m ? +m[1] : 0; }
@@ -30,10 +40,10 @@
   }
 
   /* ---------- controle de uma linha (disciplina ou módulo) ---------- */
-  function controle(k, nome, sub) {
+  function controle(k, nome, sub, oculto) {
     var d = S.rascunho[S.escopo] || {}, v = d[k] || "", her = S.escopo !== "*" ? (S.rascunho["*"] || {})[k] || "" : "";
-    var sel = v === "" ? "" : v === "o" ? "o" : v === "v" ? "v" : "d", id = "c-" + k.replace(/[^a-z0-9]/g, "-");
-    var cm = ehComum(k), pad = cm ? "Oculta" : "Vis\u00edvel";
+    var sel = v === "" ? "" : v === "o" ? "o" : v === "v" ? "v" : "d", id = "c-" + k.replace(/[^a-z0-9]/g, "-") + "-" + (++UID);
+    var cm = oculto === undefined ? ehComum(k) : oculto, pad = cm ? "Oculta" : "Vis\u00edvel";
     var padrao = S.escopo === "*" ? pad + " (padr\u00e3o)" : "Igual a todas as turmas" + (her ? " \u00b7 " + rotulo(her) : " \u00b7 " + pad);
     var ef = situacao(efetivo(k) || (cm ? "o" : ""));
     return '<div class="lc-row' + (sub ? " sub" : "") + '" data-k="' + esc(k) + '"><span class="lc-st ' + ef + '" aria-hidden="true"></span>' +
@@ -46,12 +56,12 @@
       '<input type="date" data-dt aria-label="Data de liberação de ' + esc(nome.replace(/<[^>]+>/g, "")) + '"' + (sel === "d" ? ' value="' + esc(v) + '"' : " hidden") + "></div>";
   }
 
-  function linhaPasta(p, vistos) {
+  function linhaPasta(p, vistos, oculto) {
     if (vistos[p]) return ""; vistos[p] = 1;
-    var d = PPC.disc[p] || { nome: COMPL[p] || p, st: "mat" }, nome = d.nome || COMPL[p] || p;
+    var d = PPC.disc[p] || { nome: COMPL[p] || NOMEPD[p] || p, st: "mat" }, nome = NOMEPD[p] || d.nome || COMPL[p] || p;
     NOMES[p] = nome;
     if (d.st === "breve") return '<div class="lc-row breve"><span class="lc-st b" aria-hidden="true"></span><span class="lc-nome">' + esc(nome) + '</span><span class="lc-tag">em produção</span></div>';
-    var h = controle(p, esc(nome) + (d.st === "int" ? ' <span class="lc-tag int">interativa</span>' : ""), false);
+    var h = controle(p, esc(nome) + (d.st === "int" ? ' <span class="lc-tag int">interativa</span>' : ""), false, oculto);
     if (d.st === "int") h += '<details class="lc-mods" data-p="' + esc(p) + '"' + (S.abertos[p] ? " open" : "") + '><summary>Módulos de ' + esc(nome) + "</summary><div data-ml>" + (MODS[p] ? modulos(p) : '<p class="lc-dica">Carregando módulos…</p>') + "</div></details>";
     return h;
   }
@@ -80,15 +90,26 @@
   function desenha() {
     var turmas = {}; S.alunos.forEach(function (a) { if (a.turma) turmas[a.turma] = a.curso || ""; });
     var opts = '<option value="*">Todas as turmas</option>' + Object.keys(turmas).sort().map(function (t) { return '<option value="' + esc(t) + '"' + (S.escopo === t ? " selected" : "") + ">" + esc(t) + (turmas[t] ? " · " + esc(turmas[t]) : "") + "</option>"; }).join("");
-    var nv = S.escopo === "*" ? 0 : nivelTurma(S.escopo);
-    var vistos = {}, corpo = cursos().map(function (c) {
-      return '<section class="lc-curso"><h3>' + esc(c.nome) + "</h3>" + c.grupos.filter(function (g) { return !nv || g.t.indexOf(nv + "\u00ba") === 0; }).map(function (g) {
-        var rows = g.c.map(function (x) { return x.p.map(function (p) { return linhaPasta(p, vistos); }).join(""); }).join("");
-        return rows ? '<h4 class="lc-per">' + esc(g.t) + "</h4>" + rows : "";
-      }).join("") + "</section>";
-    }).join("");
+    var vistos = {}, corpo = "";
+    if (S.escopo === "*") {
+      var porBase = {};
+      PD.cursos.forEach(function (c) { var cn = cursoNivel(c.nome); if (!cn || !PD.niveis[cn.base]) return; (porBase[cn.base] = porBase[cn.base] || []).push({ t: cn.nivel, c: c }); });
+      corpo = Object.keys(porBase).map(function (b) {
+        return '<section class="lc-curso"><h3>' + esc(b) + "</h3>" + porBase[b].map(function (g) {
+          var vis = {}; /* a mesma disciplina pode estar em dois anos: mostra nos dois */
+          return '<h4 class="lc-per">' + esc(g.t) + "</h4>" + g.c.disciplinas.map(function (d) { return linhaPasta(d[1], vis); }).join("");
+        }).join("") + "</section>";
+      }).join("");
+    } else {
+      var em = ementarioDaTurma(S.escopo);
+      if (em) {
+        corpo += '<section class="lc-curso"><h3>Disciplinas de ' + esc(em.nome) + '</h3><p class="lc-dica">Do ementário: ficam <b>visíveis</b> por padrão. Escolha “Oculta” para bloquear.</p>' + em.pastas.map(function (p) { return linhaPasta(p, vistos, false); }).join("") + "</section>";
+        var outras = []; PD.cursos.forEach(function (c) { c.disciplinas.forEach(function (d) { if (outras.indexOf(d[1]) < 0 && em.pastas.indexOf(d[1]) < 0 && !ehComum(d[1])) outras.push(d[1]); }); });
+        if (outras.length) corpo += '<section class="lc-curso"><h3>Liberar outras disciplinas para esta turma</h3><p class="lc-dica">Fora do ementário: ficam <b>ocultas</b>. Escolha “Visível” para liberar.</p>' + outras.map(function (p) { return linhaPasta(p, vistos, true); }).join("") + "</section>";
+      } else corpo += '<p class="lc-dica cartao">Não consegui saber o ano ou período desta turma. Escreva-o na coluna <b>curso</b> da aba Turmas (ex.: “Integrado em Desenvolvimento de Sistemas · 2º ano”).</p>';
+    }
     var comp = (PPC.complementares || []).map(function (p) { return linhaPasta(p, vistos); }).join("");
-    if (comp) corpo += '<section class="lc-curso"><h3>M\u00f3dulos comuns a todos os cursos</h3><p class="lc-dica">Ficam <b>ocultos</b> para os alunos at\u00e9 voc\u00ea liberar. Escolha \u201cVis\u00edvel\u201d para a turma que precisar.</p>' + comp + "</section>";
+    if (comp) corpo += '<section class="lc-curso"><h3>M\u00f3dulos comuns a todos os cursos</h3><p class="lc-dica">Ficam <b>ocultos</b> at\u00e9 voc\u00ea liberar. Escolha \u201cVis\u00edvel\u201d em \u201cTodas as turmas\u201d ou s\u00f3 na turma que precisar.</p>' + comp + "</section>";
     var ocultas = 0, agend = 0, d = S.rascunho[S.escopo] || {};
     Object.keys(d).forEach(function (k) { var s = situacao(d[k]); if (s === "o") ocultas++; else if (s === "d") agend++; });
     host.innerHTML =
