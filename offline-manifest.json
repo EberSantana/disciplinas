@@ -6,6 +6,8 @@
   "acessibilidade.js",
   "aparencia.js",
   "barra-hub.js",
+  "atividades-comum.css",
+  "atividades-comum.js",
   "img/logo-hub.png",
   "img/logo-hub-escuro.png",
   "offline.js",
