@@ -146,8 +146,44 @@
       nos.forEach(function (n, i) { var a = -Math.PI / 2 + (i * 2 * Math.PI) / nos.length; n.x = cx + rx * Math.cos(a); n.y = cy + ry * Math.sin(a); });
     }
     nos.forEach(function (n) { var m = medir(n.t); n.w = m.w; n.h = m.h; n.ls = m.ls; mapa[n.id] = n; });
+    /* layout automático: detecta sobreposição (caixa × caixa ou seta atravessando caixa) e refaz em camadas */
+    function problemas() {
+      var i, j, a, b;
+      for (i = 0; i < nos.length; i++) for (j = i + 1; j < nos.length; j++) { a = nos[i]; b = nos[j]; if (Math.abs(a.x - b.x) < (a.w + b.w) / 2 + 6 && Math.abs(a.y - b.y) < (a.h + b.h) / 2 + 6) return true; }
+      return v.liga.some(function (l) {
+        var p = mapa[l[0]], q = mapa[l[1]];
+        return nos.some(function (n) {
+          if (n === p || n === q) return false;
+          for (var s = 0.05; s < 0.96; s += 0.05) { var x = p.x + (q.x - p.x) * s, y = p.y + (q.y - p.y) * s; if (Math.abs(x - n.x) < n.w / 2 + 4 && Math.abs(y - n.y) < n.h / 2 + 4) return true; }
+          return false;
+        });
+      });
+    }
+    function emCamadas() {
+      var adj = {}, ent = {}, nv = {}, fila = [], grau = {}, ordem = nos.slice().sort(function (a, b) { return a.x - b.x; });
+      nos.forEach(function (n) { adj[n.id] = []; ent[n.id] = 0; grau[n.id] = 0; });
+      v.liga.forEach(function (l) { adj[l[0]].push(l[1]); if (v.dir) ent[l[1]]++; else adj[l[1]].push(l[0]); grau[l[0]]++; grau[l[1]]++; });
+      function semear(n) { nv[n.id] = 0; fila.push(n.id); while (fila.length) { var u = fila.shift(); adj[u].forEach(function (w) { if (nv[w] === undefined) { nv[w] = nv[u] + 1; fila.push(w); } }); } }
+      var raizes = ordem.filter(function (n) { return v.dir ? ent[n.id] === 0 : false; });
+      if (!raizes.length) raizes = [ordem.slice().sort(function (a, b) { return grau[b.id] - grau[a.id]; })[0]];
+      raizes.forEach(function (n) { if (nv[n.id] === undefined) semear(n); });
+      ordem.forEach(function (n) { if (nv[n.id] === undefined) semear(n); });
+      var niveis = [];
+      ordem.forEach(function (n) { (niveis[nv[n.id]] = niveis[nv[n.id]] || []).push(n); });
+      var gap = 34, gy = 0; nos.forEach(function (n) { if (n.h > gy) gy = n.h; }); gy += 76;
+      var larg = niveis.map(function (L) { return L.reduce(function (s, n) { return s + n.w; }, 0) + gap * (L.length - 1); }), W2 = Math.max.apply(null, larg);
+      niveis.forEach(function (L, k) {
+        if (k) { L.forEach(function (n) { var xs = []; v.liga.forEach(function (l) { var o = l[0] === n.id ? l[1] : l[1] === n.id ? l[0] : null; if (o && nv[o] === k - 1) xs.push(mapa[o].x); }); n._b = xs.length ? xs.reduce(function (a, b) { return a + b; }, 0) / xs.length : n.x; }); L.sort(function (a, b) { return a._b - b._b; }); }
+        var x = (W2 - larg[k]) / 2;
+        L.forEach(function (n) { n.x = x + n.w / 2; n.y = k * gy; x += n.w + gap; });
+      });
+    }
+    if (v.layout !== "ciclo" && nos.length > 2 && problemas()) emCamadas();
+    var bx0 = Infinity, by0 = Infinity, bx1 = -Infinity, by1 = -Infinity;
+    nos.forEach(function (n) { bx0 = Math.min(bx0, n.x - n.w / 2); bx1 = Math.max(bx1, n.x + n.w / 2); by0 = Math.min(by0, n.y - n.h / 2); by1 = Math.max(by1, n.y + n.h / 2); });
+    var pad = 28, vw = Math.max(bx1 - bx0 + 2 * pad, 560), vh = by1 - by0 + 2 * pad, vx = (bx0 + bx1) / 2 - vw / 2, vy = by0 - pad;
     function borda(a, b) { var dx = b.x - a.x, dy = b.y - a.y; if (!dx && !dy) return { x: a.x, y: a.y }; var s = Math.min((a.w / 2 + 4) / Math.abs(dx || 1e-9), (a.h / 2 + 4) / Math.abs(dy || 1e-9)); return { x: a.x + dx * s, y: a.y + dy * s }; }
-    var svg = '<svg viewBox="0 0 ' + W + " " + H + '" role="group" aria-label="' + esc(v.titulo) + '">';
+    var svg = '<svg viewBox="' + [vx, vy, vw, vh].map(function (z) { return Math.round(z); }).join(" ") + '" role="group" aria-label="' + esc(v.titulo) + '">';
     var lig = v.liga.map(function (l, i) {
       var a = mapa[l[0]], b = mapa[l[1]], p1 = borda(a, b), p2 = borda(b, a), s = '<g class="lg" data-i="' + i + '"><line class="lig" x1="' + p1.x + '" y1="' + p1.y + '" x2="' + p2.x + '" y2="' + p2.y + '"/>';
       if (v.dir) { var ang = Math.atan2(p2.y - p1.y, p2.x - p1.x), L = 11; s += '<polygon class="lig lh" fill="currentColor" points="' + p2.x + "," + p2.y + " " + (p2.x - L * Math.cos(ang - 0.4)) + "," + (p2.y - L * Math.sin(ang - 0.4)) + " " + (p2.x - L * Math.cos(ang + 0.4)) + "," + (p2.y - L * Math.sin(ang + 0.4)) + '"/>'; }
