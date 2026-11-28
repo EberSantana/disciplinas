@@ -29,8 +29,8 @@
   {
    "id": "redes-de-computadores",
    "nome": "Redes de Computadores",
-   "versao": "ff94bf9d25",
-   "bytes": 1683380,
+   "versao": "89eb12f0b6",
+   "bytes": 1538256,
    "arquivos": [
     "redes-de-computadores/atividades.html",
     "redes-de-computadores/console-de-estudo.html",
@@ -69,8 +69,8 @@
   {
    "id": "projeto-de-redes",
    "nome": "Projeto de Redes",
-   "versao": "455ed8fa65",
-   "bytes": 1305608,
+   "versao": "8fc851b967",
+   "bytes": 1160484,
    "arquivos": [
     "projeto-de-redes/atividades.html",
     "projeto-de-redes/dados/m1.js",
