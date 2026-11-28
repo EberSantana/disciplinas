@@ -459,8 +459,8 @@ input[type=range]{accent-color:var(--accent)}
 @media (max-width:640px){
   .trilha-lista{grid-template-columns:1fr;gap:0}
   .trilha-lista li{text-align:left}
-  .trilha-lista li:not(:last-child)::after{content:"";position:absolute;top:56px;bottom:-4px;left:30px;right:auto;width:3px;height:auto;background:var(--line);border-radius:2px}
-  .trilha-lista li.fim:not(:last-child)::after{display:block}
+  .trilha-lista li:not(:last-child):not(.fim)::after,.trilha-lista li.fim:not(:last-child)::after{content:"";display:block;position:absolute;top:56px;bottom:-4px;left:30px;right:auto;width:3px;height:auto;background:var(--line);border-radius:2px}
+  .trilha-lista li.ok:not(:last-child)::after{background:var(--ok)}
   .trilha-lista a{flex-direction:row;gap:12px;padding:6px 4px;min-height:60px}
   .trilha-lista .nome{max-width:none;flex:1;text-align:left}
 }
