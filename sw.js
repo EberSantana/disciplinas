@@ -1,7 +1,7 @@
 /* Service worker do portal · uso offline.
  * Só guarda o que o aluno escolheu baixar (e o essencial do portal). Tudo o mais vai direto à internet.
  * Para forçar atualização de todos os aparelhos, mude VERSAO. */
-var VERSAO = "v1";
+var VERSAO = "v2";
 var CORE = "portal-core-" + VERSAO, MAT = "portal-mat-" + VERSAO, EXT = "portal-ext-" + VERSAO;
 var BASE = new URL("./", self.location).href;
 var EXTERNOS = /^(fonts\.googleapis\.com|fonts\.gstatic\.com|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net)$/;
