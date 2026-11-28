@@ -27,8 +27,8 @@
   {
    "id": "redes-de-computadores",
    "nome": "Redes de Computadores",
-   "versao": "c7788eaf40",
-   "bytes": 1733507,
+   "versao": "c6dfda9967",
+   "bytes": 1677591,
    "arquivos": [
     "redes-de-computadores/atividades.html",
     "redes-de-computadores/console-de-estudo.html",
@@ -49,7 +49,6 @@
     "redes-de-computadores/modulo-6.html",
     "redes-de-computadores/simulado.html",
     "redes-de-computadores/subnetting-na-pratica.html",
-    "redes-de-computadores/subnetting-na-prática.html",
     "redes-de-computadores/trilha.html",
     "motor-interativo/labs.js",
     "motor-interativo/motor.css",
