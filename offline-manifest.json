@@ -5,9 +5,9 @@
   "progresso-turma.js",
   "acessibilidade.js",
   "aparencia.js",
-  "img/logo-hub-escuro.png",
-  "img/logo-hub.png",
   "barra-hub.js",
+  "img/logo-hub.png",
+  "img/logo-hub-escuro.png",
   "offline.js",
   "manifest.webmanifest",
   "offline.html",
@@ -27,8 +27,8 @@
   {
    "id": "redes-de-computadores",
    "nome": "Redes de Computadores",
-   "versao": "ecbd113276",
-   "bytes": 1733461,
+   "versao": "c7788eaf40",
+   "bytes": 1733507,
    "arquivos": [
     "redes-de-computadores/atividades.html",
     "redes-de-computadores/console-de-estudo.html",
@@ -68,8 +68,8 @@
   {
    "id": "projeto-de-redes",
    "nome": "Projeto de Redes",
-   "versao": "a89d032fb9",
-   "bytes": 1299773,
+   "versao": "76b9955d80",
+   "bytes": 1299819,
    "arquivos": [
     "projeto-de-redes/atividades.html",
     "projeto-de-redes/dados/m1.js",
@@ -100,8 +100,8 @@
   {
    "id": "seguranca-da-informacao",
    "nome": "Segurança da Informação",
-   "versao": "fd5dc56003",
-   "bytes": 1468739,
+   "versao": "d13bfc3746",
+   "bytes": 1468785,
    "arquivos": [
     "seguranca-da-informacao/console-de-estudo.html",
     "seguranca-da-informacao/dados/m1.js",
@@ -142,8 +142,8 @@
   {
    "id": "informatica-basica",
    "nome": "Informática Básica",
-   "versao": "b6d0a01360",
-   "bytes": 12156255,
+   "versao": "92007d58e3",
+   "bytes": 12156301,
    "arquivos": [
     "informatica-basica/ambiente-interativo.html",
     "informatica-basica/apostila.html",
@@ -287,8 +287,8 @@
   {
    "id": "engenharia-de-software",
    "nome": "Engenharia de Software",
-   "versao": "be963de3aa",
-   "bytes": 1917920,
+   "versao": "1157e282fd",
+   "bytes": 1917966,
    "arquivos": [
     "engenharia-de-software/apostila-engenharia-de-requisitos.html",
     "engenharia-de-software/apostila-engenharia-de-software-1.html",
@@ -326,8 +326,8 @@
   {
    "id": "construcao-de-sites-1",
    "nome": "Construção de Sites 1",
-   "versao": "a378fd157d",
-   "bytes": 1493759,
+   "versao": "c558766c88",
+   "bytes": 1493805,
    "arquivos": [
     "construcao-de-sites-1/apostila.html",
     "construcao-de-sites-1/dados/m1.js",
@@ -359,8 +359,8 @@
   {
    "id": "programacao-1",
    "nome": "Programação 1",
-   "versao": "4ee4dab0a5",
-   "bytes": 1127145,
+   "versao": "888bdbb5ac",
+   "bytes": 1127191,
    "arquivos": [
     "programacao-1/dados/m1.js",
     "programacao-1/dados/m2.js",
@@ -394,8 +394,8 @@
   {
    "id": "programacao-web",
    "nome": "Programação Web",
-   "versao": "52345e26b7",
-   "bytes": 1167851,
+   "versao": "66bc37a8bc",
+   "bytes": 1167897,
    "arquivos": [
     "programacao-web/dados/m1.js",
     "programacao-web/dados/m2.js",
@@ -429,8 +429,8 @@
   {
    "id": "banco-de-dados",
    "nome": "Banco de Dados",
-   "versao": "fcb4115903",
-   "bytes": 2630283,
+   "versao": "8e02f6ca4c",
+   "bytes": 2630329,
    "arquivos": [
     "banco-de-dados/apostila.html",
     "banco-de-dados/console-de-estudo.html",
@@ -478,8 +478,8 @@
   {
    "id": "fundamentos-de-sistemas-de-informacao",
    "nome": "Fundamentos para Sistemas de Informação",
-   "versao": "0cc73926c7",
-   "bytes": 1172867,
+   "versao": "8724f1f291",
+   "bytes": 1172913,
    "arquivos": [
     "fundamentos-de-sistemas-de-informacao/dados/m1.js",
     "fundamentos-de-sistemas-de-informacao/dados/m2.js",
@@ -509,8 +509,8 @@
   {
    "id": "sistemas-operacionais",
    "nome": "Fundamentos de Sistemas Operacionais",
-   "versao": "277960a997",
-   "bytes": 1197149,
+   "versao": "9d4d5be949",
+   "bytes": 1197195,
    "arquivos": [
     "sistemas-operacionais/dados/m1.js",
     "sistemas-operacionais/dados/m2.js",
@@ -544,8 +544,8 @@
   {
    "id": "organizacao-de-computadores",
    "nome": "Organização de Computadores",
-   "versao": "56505bb434",
-   "bytes": 1100554,
+   "versao": "8a0835f77f",
+   "bytes": 1100600,
    "arquivos": [
     "organizacao-de-computadores/dados/m1.js",
     "organizacao-de-computadores/dados/m2.js",
@@ -573,8 +573,8 @@
   {
    "id": "mapas-mentais",
    "nome": "Mapas Mentais de TI",
-   "versao": "94508dcb50",
-   "bytes": 1133697,
+   "versao": "2d27524a71",
+   "bytes": 1133743,
    "arquivos": [
     "mapas-mentais/dados/m1.js",
     "mapas-mentais/dados/m2.js",
@@ -610,8 +610,8 @@
   {
    "id": "recursos-de-aula",
    "nome": "Recursos de aula",
-   "versao": "5be5db3c4a",
-   "bytes": 555421,
+   "versao": "12fd135013",
+   "bytes": 555467,
    "arquivos": [
     "recursos-de-aula/codigos-para-aprender-com-ia.html",
     "recursos-de-aula/cronometro-de-equipes.html",
@@ -628,8 +628,8 @@
   {
    "id": "laboratorio-3d",
    "nome": "Laboratório 3D",
-   "versao": "4cad8d2b81",
-   "bytes": 178416,
+   "versao": "f1a0df02a8",
+   "bytes": 178462,
    "arquivos": [
     "laboratorio-3d/esp32-lab-3d.html",
     "laboratorio-3d/index.html",
