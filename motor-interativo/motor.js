@@ -583,7 +583,7 @@
     if (cfg.analogia) h += '<div class="analogia"><span class="eb">Comece por aqui</span><h3>' + esc(cfg.analogia.titulo) + "</h3>" + cfg.analogia.txt + "</div>";
     h += '<div class="duas"><div class="card nivel"><span class="eb">Seu nível</span><h3 data-nvt></h3><div class="nbar" aria-hidden="true"><i data-nvb></i></div><p data-nvp></p><p class="selos" aria-label="Selos de módulo completo"></p></div><div class="card desafio" id="desafio"></div></div>';
     if (cfg.como || cfg.aulas) h += '<div class="duas">' + (cfg.como ? '<div class="card"><h3>Como estudar</h3><ol>' + cfg.como.map(function (c) { return "<li>" + c + "</li>"; }).join("") + "</ol></div>" : "") + (cfg.aulas ? '<div class="card"><h3>Sugestão de aulas</h3><ul>' + cfg.aulas.map(function (c) { return "<li>" + c + "</li>"; }).join("") + "</ul></div>" : "") + "</div>";
-    h += '<div class="secab"><h2 class="t">Módulos</h2><span class="eb">' + lista.length + " módulos · " + g.t + " atividades" + (nlab ? " · " + nlab + " laboratórios" : "") + '</span></div><div class="grid" id="modulos"></div><div class="viz" id="mapa" style="margin-top:22px"></div><div class="grid"><a class="mod" href="simulado.html"><span class="meta">Para finalizar</span><h3>Simulado final</h3><p>20 afirmações sorteadas de todos os módulos, com a justificativa de cada gabarito.</p><span class="go">Começar →</span></a></div>';
+    h += '<div class="secab"><h2 class="t">Módulos</h2><span class="eb">' + lista.length + " módulos · " + g.t + " atividades" + (nlab ? " · " + nlab + " laboratórios" : "") + '</span></div><div class="grid" id="modulos"></div><section class="trilha" id="mapa" aria-labelledby="trilha-t" style="margin-top:22px"></section><div class="grid"><a class="mod" href="simulado.html"><span class="meta">Para finalizar</span><h3>Simulado final</h3><p>20 afirmações sorteadas de todos os módulos, com a justificativa de cada gabarito.</p><span class="go">Começar →</span></a></div>';
     main.innerHTML = h;
     function nivelBox() {
       var gg = geral(), nv = gg.nv, p = nv.prox ? Math.round((100 * (gg.xp - nv.ini)) / (nv.prox - nv.ini)) : 100;
@@ -599,13 +599,19 @@
       var d = FSI.mods[n], c = g.mods[n]; resumo(n);
       grade.appendChild(el("a", { class: "mod" + (selo(c) ? " feito" : ""), href: "modulo-" + n + ".html" }, '<span class="meta">Módulo ' + n + " · " + esc(d.unidade) + " · " + c.total + " atividades" + (d.lab ? " · laboratório" : "") + "</span><h3>" + esc(d.titulo) + "</h3><p>" + esc(d.resumoCurto) + '</p><div class="mini" aria-hidden="true"><i style="width:' + Math.round((100 * c.feitas) / (c.total || 1)) + '%"></i></div><span class="go">' + (selo(c) ? "✓ Concluído — revisar" : c.feitas ? "Continuar (" + c.feitas + "/" + c.total + ")" : "Começar") + " →</span>"));
     });
-    var mapa = {
-      tipo: "rede", id: "mapa-geral", titulo: "Mapa da disciplina", forma: "elipse", h: lista.length <= 6 ? 420 : Math.ceil(lista.length / 3) * 210 - 10, dir: true,
-      instr: "Clique em cada módulo para ver o que ele traz e como se liga aos outros. Use o botão para abrir.",
-      nos: lista.map(function (n, i) { var xs = lista.length <= 6 ? [[130, 80], [360, 80], [590, 80], [590, 330], [360, 330], [130, 330]][i] : (function () { var r = Math.floor(i / 3), c = i % 3; if (r % 2) c = 2 - c; return [130 + 230 * c, 80 + 210 * r]; })(); var d = FSI.mods[n]; return { id: "m" + n, x: xs[0], y: xs[1], t: "Módulo " + n + "\n" + (lista.length > 6 ? d.nome.replace(/(.{1,15})(\s|$)/g, "$1\n").replace(/\n+$/, "") : d.nome), d: d.resumoCurto, href: "modulo-" + n + ".html" }; }),
-      liga: lista.slice(0, -1).map(function (n) { return ["m" + n, "m" + (n + 1)]; })
-    };
-    visRede(mapa, $("#mapa"), {}, function () { });
+    (function trilha() {
+      var box = $("#mapa"), feitos = 0;
+      var passos = lista.map(function (n) {
+        var d = FSI.mods[n], c = g.mods[n], pct = Math.round((100 * c.feitas) / (c.total || 1)), ok = selo(c); if (ok) feitos++;
+        return '<li class="' + (ok ? "ok" : c.feitas ? "em" : "") + '"><a href="modulo-' + n + '.html" aria-label="Módulo ' + n + ": " + esc(d.nome || d.titulo) + ", " + pct + '% concluído">' +
+          '<span class="bola" style="--p:' + pct + '"><b>' + (ok ? "✓" : n) + '</b></span><span class="nome">' + esc(d.nome || d.titulo) + '</span><span class="pc">' + c.feitas + "/" + c.total + "</span></a></li>";
+      }).join("");
+      var cols = lista.length <= 4 ? lista.length : lista.length <= 8 ? Math.ceil(lista.length / Math.ceil(lista.length / 4)) : 5;
+      box.style.setProperty("--cols", cols);
+      box.innerHTML = '<div class="trilha-cab"><h3 id="trilha-t">Trilha da disciplina</h3><span class="eb">' + feitos + " de " + lista.length + " módulos concluídos</span></div>" +
+        '<ol class="trilha-lista">' + passos + "</ol>";
+      [].forEach.call(box.querySelectorAll("li"), function (li, i) { if ((i + 1) % cols === 0) li.classList.add("fim"); });
+    })();
     if (location.hash === "#desafio") setTimeout(function () { $("#desafio").scrollIntoView(); }, 50);
     window.addEventListener("hashchange", function () { if (location.hash === "#desafio") $("#desafio").scrollIntoView(); });
     window.PROGRESSO_ID = cfg.disc + "-v1";
